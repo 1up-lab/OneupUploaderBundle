@@ -1,0 +1,14 @@
+{
+    "name": "oneup/uploader-bundle",
+    "type": "symfony-bundle",
+    "description": "valums/file-uploader integration",
+    "keywords": ["fileupload", "upload", "multifileupload"],
+    "homepage": "http://1up.io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jim Schmid",
+            "email": "js@1up.io"
+        }
+    ]
+}
