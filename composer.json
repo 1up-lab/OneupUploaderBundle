@@ -10,5 +10,24 @@
             "name": "Jim Schmid",
             "email": "js@1up.io"
         }
-    ]
+    ],
+    
+    "repositories": {
+        "file-uploader": {
+            "type": "package",
+            "package": {
+                "name": "valums/file-uploader",
+                "version": "3.3.0",
+                "source": {
+                    "url": "git://github.com/valums/file-uploader.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        }
+    },
+    
+    "require": {
+        "valums/file-uploader": "3.3.*"
+    }
 }
