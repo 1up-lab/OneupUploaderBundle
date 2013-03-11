@@ -12,10 +12,10 @@ class RouteLoader extends Loader
     protected $prefix;
     protected $mappings;
     
-    public function __construct($action, $prefix, array $mappings)
+    public function __construct($action, $name, array $mappings)
     {
+        $this->name = $name;
         $this->action = $action;
-        $this->prefix = $prefix;
         $this->mappings = $mappings;
     }
     
@@ -27,16 +27,17 @@ class RouteLoader extends Loader
     public function load($resource, $type = null)
     {
         $requirements = array('_method' => 'POST', 'mapping' => '[A-z0-9_\-]*');
-        $defaults = array('_controller' => $this->action);
-        
         $routes = new RouteCollection();
         
         foreach($this->mappings as $key => $mapping)
         {
-            $defaults += array('mapping' => $key);
+            $defaults = array(
+                '_controller' => is_null($mapping['action']) ? $this->action : $mapping['action'],
+                'mapping' => $key
+            );
             
             $routes->add(sprintf('_uploader_%s', $key), new Route(
-                sprintf('%s/{mapping}', $this->prefix),
+                sprintf('%s/{mapping}', $this->name),
                 $defaults,
                 $requirements,
                 array()
