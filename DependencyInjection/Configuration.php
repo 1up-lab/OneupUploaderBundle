@@ -14,6 +14,13 @@ class Configuration implements ConfigurationInterface
         
         $rootNode
             ->children()
+                ->arrayNode('routing')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('prefix')->defaultValue('/oneup/uploader')->end()
+                        ->scalarNode('action')->defaultValue('OneupUploaderBundle:Uploader:upload')->end()
+                    ->end()
+                ->end()
                 ->arrayNode('chunks')
                     ->addDefaultsIfNotSet()
                     ->children()

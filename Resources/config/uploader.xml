@@ -5,12 +5,22 @@
 
            <parameters>
                <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunk\ChunkManager</parameter>
+               <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
            </parameters>
 
            <services>
                <service id="oneup_uploader.chunks.manager" class="%oneup_uploader.chunks.manager.class%">
                    <argument>%oneup_uploader.chunks%</argument>
                </service>
+               
+               <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
+                   <argument>%oneup_uploader.routing.action%</argument>
+                   <argument>%oneup_uploader.routing.prefix%</argument>
+                   <argument>%oneup_uploader.mappings%</argument>
+                   
+                   <tag name="routing.loader" />
+               </service>
+               
            </services>
 
 </container>

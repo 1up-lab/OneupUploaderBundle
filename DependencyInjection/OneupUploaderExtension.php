@@ -17,6 +17,12 @@ class OneupUploaderExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('uploader.xml');
         
+        // handle routing configuration
+        foreach($config['routing'] as $key => $value)
+        {
+            $container->setParameter(sprintf('oneup_uploader.routing.%s', $key), $value);
+        }
+        
         // handling chunk configuration
         if(!array_key_exists('directory', $config['chunks']))
         {
@@ -24,5 +30,13 @@ class OneupUploaderExtension extends Extension
         }
         
         $container->setParameter('oneup_uploader.chunks', $config['chunks']);
+        
+        // handle mappings
+        foreach($config['mappings'] as $key => $mapping)
+        {
+            $container->setParameter(sprintf('oneup_uploader.mapping.%s', $key), $value);
+        }
+        
+        $container->setParameter('oneup_uploader.mappings', $config['mappings']);
     }
 }
