@@ -4,7 +4,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
            <parameters>
-               <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunks\ChunkManager</parameter>
+               <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunk\ChunkManager</parameter>
            </parameters>
 
            <services>
