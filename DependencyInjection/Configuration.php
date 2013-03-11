@@ -11,6 +11,17 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oneup_uploader');
+        
+        $rootNode
+            ->children()
+                ->arrayNode('chunks')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('directory')->end()
+                        ->scalarNode('maxage')->defaultValue(604800)->end()
+                    ->end()
+            ->end()
+        ;
  
         return $treeBuilder;
     }

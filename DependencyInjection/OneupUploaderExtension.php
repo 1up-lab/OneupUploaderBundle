@@ -16,5 +16,13 @@ class OneupUploaderExtension extends Extension
  
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('uploader.xml');
+        
+        // handling chunk configuration
+        if(!array_key_exists('directory', $config['chunks']))
+        {
+            $config['chunks']['directory'] = sprintf('%s/chunks', $container->getParameter('kernel.cache_dir'));
+        }
+        
+        $container->setParameter('oneup_uploader.chunks', $config['chunks']);
     }
 }
