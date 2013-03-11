@@ -28,6 +28,14 @@
     },
     
     "require": {
-        "valums/file-uploader": "3.3.*"
-    }
+        "symfony/finder":           ">=2.0.16,<2.3-dev",
+        "symfony/filesystem":       ">=2.0.16,<2.3-dev",
+        "valums/file-uploader":     "3.3.*"
+    },
+    
+    "autoload": {
+        "psr-0": { "Oneup\\UploaderBundle": "" }
+    },
+
+    "target-dir": "Oneup/UploaderBundle"
 }
