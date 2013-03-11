@@ -20,6 +20,18 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('directory')->end()
                         ->scalarNode('maxage')->defaultValue(604800)->end()
                     ->end()
+                ->end()
+                ->arrayNode('mappings')
+                    ->useAttributeAsKey('id')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('namer')->defaultNull()->end()
+                            ->scalarNode('storage')->isRequired()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
  
