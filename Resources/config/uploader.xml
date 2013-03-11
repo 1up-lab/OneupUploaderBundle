@@ -2,5 +2,15 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
- 
+
+           <parameters>
+               <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunks\ChunkManager</parameter>
+           </parameters>
+
+           <services>
+               <service id="oneup_uploader.chunks.manager" class="%oneup_uploader.chunks.manager.class%">
+                   <argument>%oneup_uploader.chunks%</argument>
+               </service>
+           </services>
+
 </container>
