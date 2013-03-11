@@ -37,7 +37,6 @@ class ChunkManager implements ChunkManagerInterface
             return;
         }
         
-        
         foreach($finder as $file)
         {
             $system->remove($file);
