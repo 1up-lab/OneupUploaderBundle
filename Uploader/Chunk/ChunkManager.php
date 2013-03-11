@@ -25,7 +25,18 @@ class ChunkManager implements ChunkManagerInterface
         $system = new Filesystem();
         $finder = new Finder();
         
-        $finder->in($this->configuration['directory'])->date('<=' . -1 * (int) $this->configuration['maxage'] . 'seconds');
+        try
+        {
+            $finder->in($this->configuration['directory'])->date('<=' . -1 * (int) $this->configuration['maxage'] . 'seconds');
+        }
+        catch(\InvalidArgumentException $e)
+        {
+            // the finder will throw an exception of type InvalidArgumentException
+            // if the directory he should search in does not exist
+            // in that case we don't have anything to clean
+            return;
+        }
+        
         
         foreach($finder as $file)
         {
