@@ -1,11 +1,13 @@
 <?php
 
-namespace Oneup\UploaderBundle\Uploder\Chunk;
+namespace Oneup\UploaderBundle\Uploader\Chunk;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use Oneup\UploaderBundle\Uploader\ChunkManagerInterface;
 
-class ChunkManager implements ChunkManagerInterafce
+use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
+
+class ChunkManager implements ChunkManagerInterface
 {
     public function __construct($configuration)
     {
@@ -20,9 +22,14 @@ class ChunkManager implements ChunkManagerInterafce
     
     public function clear()
     {
-        $fileSystem = new FileSystem();
-        $fileSystem->remove($this->configuration['directory']);
+        $system = new Filesystem();
+        $finder = new Finder();
         
-        $this->warmup();
+        $finder->in($this->configuration['directory'])->date('<=' . -1 * (int) $this->configuration['maxage'] . 'seconds');
+        
+        foreach($finder as $file)
+        {
+            $system->remove($file);
+        }
     }
 }
