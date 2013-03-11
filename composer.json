@@ -28,9 +28,10 @@
     },
     
     "require": {
-        "symfony/finder":           ">=2.0.16,<2.3-dev",
-        "symfony/filesystem":       ">=2.0.16,<2.3-dev",
-        "valums/file-uploader":     "3.3.*"
+        "symfony/finder": ">=2.0.16,<2.3-dev",
+        "symfony/filesystem": ">=2.0.16,<2.3-dev",
+        "knplabs/knp-gaufrette-bundle": "0.1.*",
+        "valums/file-uploader": "3.3.*"
     },
     
     "autoload": {
