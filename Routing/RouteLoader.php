@@ -8,15 +8,17 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouteLoader extends Loader
 {
-    protected $action;
-    protected $prefix;
-    protected $mappings;
+    protected $name;
+    protected $controllers;
     
-    public function __construct($action, $name, array $mappings)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->action = $action;
-        $this->mappings = $mappings;
+        $this->controllers = array();
+    }
+    
+    public function addController($type, $controller)
+    {
+        $this->controllers[$type] = $controller;
     }
     
     public function supports($resource, $type = null)
@@ -26,22 +28,17 @@ class RouteLoader extends Loader
     
     public function load($resource, $type = null)
     {
-        $requirements = array('_method' => 'POST', 'mapping' => '[A-z0-9_\-]*');
         $routes = new RouteCollection();
         
-        foreach($this->mappings as $key => $mapping)
+        foreach($this->controllers as $type => $service)
         {
-            $defaults = array(
-                '_controller' => is_null($mapping['action']) ? $this->action : $mapping['action'],
-                'mapping' => $key
+            $route = new Route(
+                sprintf('/_uploader/%s', $type),
+                array('_controller' => $service . ':upload'),
+                array('_method' => 'POST')
             );
             
-            $routes->add(sprintf('_uploader_%s', $key), new Route(
-                sprintf('%s/{mapping}', $this->name),
-                $defaults,
-                $requirements,
-                array()
-            ));
+            $routes->add(sprintf('_uploader_%s', $type), $route);
         }
         
         return $routes;

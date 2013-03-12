@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -16,12 +17,6 @@ class OneupUploaderExtension extends Extension
  
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('uploader.xml');
-        
-        // handle routing configuration
-        foreach($config['routing'] as $key => $value)
-        {
-            $container->setParameter(sprintf('oneup_uploader.routing.%s', $key), $value);
-        }
         
         // handling chunk configuration
         if(!array_key_exists('directory', $config['chunks']))
@@ -42,9 +37,23 @@ class OneupUploaderExtension extends Extension
         // handle mappings
         foreach($config['mappings'] as $key => $mapping)
         {
-            $container->setParameter(sprintf('oneup_uploader.mapping.%s', $key), $value);
+            $this->registerServicesPerMap($container, $key, $mapping);
         }
-        
-        $container->setParameter('oneup_uploader.mappings', $config['mappings']);
+    }
+    
+    public function registerServicesPerMap(ContainerBuilder $container, $type, $mapping)
+    {
+        // create controllers based on mapping
+        $container
+            ->register(sprintf('oneup_uploader.controller.%s', $type), $container->getParameter('oneup_uploader.controller.class'))
+            
+            // add the correct namer as argument
+            ->addArgument(new Reference($mapping['namer']))
+            
+            // add the correspoding storage service as argument    
+            ->addArgument(new Reference($mapping['storage']))
+                
+            ->addTag('oneup_uploader.routable', array('type' => $type))
+        ;
     }
 }

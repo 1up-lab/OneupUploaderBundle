@@ -23,18 +23,8 @@
                <!-- namer -->
                <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" />
                
-               <!-- controller -->
-               <service id="oneup_uploader.controller" class="%oneup_uploader.controller.class%">
-                   <argument>%oneup_uploader.mappings%</argument>
-                   <argument type="service" id="service_container" />
-               </service>
-               
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
-                   <argument>%oneup_uploader.routing.action%</argument>
-                   <argument>%oneup_uploader.routing.name%</argument>
-                   <argument>%oneup_uploader.mappings%</argument>
-                   
                    <tag name="routing.loader" />
                </service>
                
