@@ -20,5 +20,7 @@ class UploaderController
         
         if(!$container->has($config['storage']))
             throw new \InvalidArgumentException(sprintf('The storage service "%s" must be defined.'));
+
+        $storage = $container->get($config['storage']);
     }
 }
