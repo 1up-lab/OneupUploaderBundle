@@ -2,6 +2,10 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Gaufrette\Stream\Local as LocalStream;
+use Gaufrette\StreamMode;
+
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 
 class UploaderController implements UploadControllerInterface
@@ -29,13 +33,28 @@ class UploaderController implements UploadControllerInterface
         // get filebag from request
         $files = $this->request->files;
         
-        var_dump(get_class($this->storage)); die();
-        
         foreach($files as $file)
         {
+            $name = $this->namer->name($file);
+            $path = $file->getPathname();
+            
+            $src = new LocalStream($path);
+            $dst = $this->storage->createStream($name);
+            
+            $src->open(new StreamMode('rb+'));
+            $dst->open(new StreamMode('ab+'));
+            
+            while(!$src->eof())
+            {
+                $data = $src->read(100000);
+                $written = $dst->write($data);
+            }
+            
+            $dst->close();
+            $src->close();
         }
         
-        die();
+        return new JsonResponse(array('success' => true));
     }
     
     protected function handleChunkedUpload()
