@@ -42,7 +42,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('storage')->isRequired()->end()
-                            ->scalarNode('use_orphanage')->defaultFalse()->end()
+                            ->booleanNode('use_orphanage')->defaultFalse()->end()
                             ->scalarNode('action')->defaultNull()->end()
                             ->scalarNode('namer')->defaultNull()->end()
                         ->end()
