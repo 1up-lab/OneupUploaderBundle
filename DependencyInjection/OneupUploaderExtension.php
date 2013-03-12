@@ -37,6 +37,11 @@ class OneupUploaderExtension extends Extension
         // handle mappings
         foreach($config['mappings'] as $key => $mapping)
         {
+            if(!array_key_exists($mapping['directory_prefix']))
+            {
+                $mapping['directory_prefix'] = $key;
+            }
+            
             $this->registerServicesPerMap($container, $key, $mapping);
         }
     }
@@ -47,13 +52,19 @@ class OneupUploaderExtension extends Extension
         $container
             ->register(sprintf('oneup_uploader.controller.%s', $type), $container->getParameter('oneup_uploader.controller.class'))
             
+            ->addArgument(new Reference('request'))
+            
             // add the correct namer as argument
             ->addArgument(new Reference($mapping['namer']))
             
             // add the correspoding storage service as argument    
             ->addArgument(new Reference($mapping['storage']))
                 
+            // after all, add the config as argument
+            ->addArgument($mapping)
+                
             ->addTag('oneup_uploader.routable', array('type' => $type))
+            ->setScope('request')
         ;
     }
 }

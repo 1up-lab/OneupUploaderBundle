@@ -9,37 +9,37 @@ class UploaderController implements UploadControllerInterface
     protected $namer;
     protected $storage;
     
-    public function __construct($namer, $storage)
+    public function __construct($request, $namer, $storage, $config)
     {
+        $this->request = $request;
         $this->namer = $namer;
         $this->storage = $storage;
+        $this->config = $config;
     }
     
     public function upload()
     {
-        /*
-        $container = $this->container;
-        $config = $this->mappings[$mapping];
-        $request = $container->get('request');
-        $files = $request->files;
+        $totalParts = $this->request->get('qqtotalparts', 1);
         
-        if(!$container->has($config['storage']))
-            throw new \InvalidArgumentException(sprintf('The storage service "%s" must be defined.'));
+        return $totalParts > 1 ? $this->handleChunkedUpload() : $this->handleUpload();
+    }
+    
+    protected function handleUpload()
+    {
+        // get filebag from request
+        $files = $this->request->files;
         
-        if(!$container->has($config['namer']))
-            throw new \InvalidArgumentException(sprintf('The namer service "%s" must be defined.'));
-
-        $storage = $container->get($config['storage']);
-        $namer = $container->get($config['namer']);
+        var_dump(get_class($this->storage)); die();
         
-        var_dump($request);
-        
-        die();
         foreach($files as $file)
         {
-            var_dump($namer->name($file, $config));
         }
-        */
+        
         die();
+    }
+    
+    protected function handleChunkedUpload()
+    {
+        
     }
 }
