@@ -37,7 +37,7 @@ class OneupUploaderExtension extends Extension
         // handle mappings
         foreach($config['mappings'] as $key => $mapping)
         {
-            if(!array_key_exists($mapping['directory_prefix']))
+            if(!array_key_exists('directory_prefix', $mapping))
             {
                 $mapping['directory_prefix'] = $key;
             }
