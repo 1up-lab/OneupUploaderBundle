@@ -34,7 +34,7 @@ class RouteLoader extends Loader
         {
             $route = new Route(
                 sprintf('/_uploader/%s', $type),
-                array('_controller' => $service . ':upload'),
+                array('_controller' => $service . ':upload', '_format' => 'json'),
                 array('_method' => 'POST')
             );
             
