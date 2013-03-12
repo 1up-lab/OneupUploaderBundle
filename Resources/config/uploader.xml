@@ -6,6 +6,7 @@
            <parameters>
                <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunk\ChunkManager</parameter>
                <parameter key="oneup_uploader.orphanage.manager.class">Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager</parameter>
+               <parameter key="oneup_uploader.namer.uniqid.class">Oneup\UploaderBundle\Uploader\Naming\UniqidNamer</parameter>
                <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
                <parameter key="oneup_uploader.controller.class">Oneup\UploaderBundle\Controller\UploaderController</parameter>
            </parameters>
@@ -18,6 +19,9 @@
                <service id="oneup_uploader.orphanage.manager" class="%oneup_uploader.orphanage.manager.class%">
                    <argument>%oneup_uploader.orphanage%</argument>
                </service>
+               
+               <!-- namer -->
+               <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" />
                
                <!-- controller -->
                <service id="oneup_uploader.controller" class="%oneup_uploader.controller.class%">
