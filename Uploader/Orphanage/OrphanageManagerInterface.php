@@ -2,7 +2,7 @@
 
 namespace Oneup\UploaderBundle\Uploader\Orphanage;
 
-interface OrphanageInterface
+interface OrphanageManagerInterface
 {
     public function warmup();
     public function clear();

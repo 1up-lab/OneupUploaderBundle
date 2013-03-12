@@ -5,9 +5,9 @@ namespace Oneup\UploaderBundle\Uploader\Orphanage;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 
-use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageInterface;
+use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManagerInterface;
 
-class Orphanage implements OrphanageInterface
+class OrphanageManager implements OrphanageManagerInterface
 {
     public function __construct($configuration)
     {
