@@ -78,6 +78,29 @@ class OneupUploaderExtension extends Extension
     
     protected function registerServicesPerMap(ContainerBuilder $container, $type, $mapping)
     {
+        if($mapping['use_orphanage'])
+        {
+            // this mapping want to use the orphanage, so create a typed one
+            $container
+                ->register(sprintf('oneup_uploader.orphanage.%s', $type), $container->getParameter('oneup_uploader.orphanage.class'))
+                
+                ->addArgument(new Reference('session'))
+                ->addArgument(new Reference($mapping['storage']))
+                ->addArgument($container->getParameter('oneup_uploader.orphanage'))
+                ->addArgument($type)
+            ;
+            
+            $container
+                ->getDefinition('oneup_uploader.orphanage_manager')
+                    
+                // add this service to the orphanage manager
+                ->addMethodCall('addImplementation', array(
+                    $type,
+                    new Reference(sprintf('oneup_uploader.orphanage.%s', $type))
+                ))
+            ;
+        }
+        
         // create controllers based on mapping
         $container
             ->register(sprintf('oneup_uploader.controller.%s', $type), $container->getParameter('oneup_uploader.controller.class'))

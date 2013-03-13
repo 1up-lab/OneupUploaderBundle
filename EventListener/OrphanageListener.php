@@ -7,15 +7,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\UploadEvents;
-use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageInterface;
+use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManagerInterface;
 
 class OrphanageListener implements EventSubscriberInterface
 {
-    protected $orphanage;
+    protected $manager;
     
-    public function __construct(OrphanageInterface $orphanage)
+    public function __construct(OrphanageManagerInterface $manager)
     {
-        $this->orphanage = $orphanage;
+        $this->manager = $manager;
     }
     
     public function add(PostUploadEvent $event)
@@ -23,11 +23,12 @@ class OrphanageListener implements EventSubscriberInterface
         $options = $event->getOptions();
         $request = $event->getRequest();
         $file = $event->getFile();
+        $type = $event->getType();
         
         if(!array_key_exists('use_orphanage', $options) || !$options['use_orphanage'])
             return;
         
-        $this->orphanage->addFile($file, $options['file_name']);
+        $this->manager->get($type)->addFile($file, $options['file_name']);
     }
     
     public static function getSubscribedEvents()

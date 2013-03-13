@@ -2,7 +2,7 @@
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Finder\SplFileInfo as File;
 use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Gaufrette\Filesystem;
@@ -17,10 +17,11 @@ class GaufretteStorage implements StorageInterface
         $this->filesystem = $filesystem;
     }
     
-    public function upload(File $file, $name)
+    public function upload(File $file, $name = null)
     {
         $path = $file->getPathname();
-            
+        $name = is_null($name) ? $file->getRelativePathname() : $name;
+        
         $src = new LocalStream($path);
         $dst = $this->filesystem->createStream($name);
         
@@ -28,7 +29,7 @@ class GaufretteStorage implements StorageInterface
         // because the stream-mode is not able to create
         // subdirectories.
         if(!$this->filesystem->has($name))
-            $this->filesystem->createFile($name);
+            $this->filesystem->write($name, '', true);
         
         $src->open(new StreamMode('rb+'));
         $dst->open(new StreamMode('ab+'));

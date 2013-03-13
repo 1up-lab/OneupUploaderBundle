@@ -15,17 +15,13 @@
            </parameters>
 
            <services>
-               <service id="oneup_uploader.chunks.manager" class="%oneup_uploader.chunks.manager.class%">
+               <service id="oneup_uploader.chunks_manager" class="%oneup_uploader.chunks.manager.class%">
                    <argument>%oneup_uploader.chunks%</argument>
                </service>
                
                <!-- orphanage -->
-               <service id="oneup_uploader.orphanage.manager" class="%oneup_uploader.orphanage.manager.class%">
-                   <argument>%oneup_uploader.orphanage%</argument>
-               </service>
-               
-               <service id="oneup_uploader.orphanage" class="%oneup_uploader.orphanage.class%">
-                   <argument type="service" id="session" />
+               <service id="oneup_uploader.orphanage_manager" class="%oneup_uploader.orphanage.manager.class%">
+                   <argument type="service" id="service_container" />
                    <argument>%oneup_uploader.orphanage%</argument>
                </service>
                
@@ -39,7 +35,7 @@
                
                <!-- events -->
                <service id="oneup_uploader.listener.orphanage" class="%oneup_uploader.listener.session.class%">
-                   <argument type="service" id="oneup_uploader.orphanage" />
+                   <argument type="service" id="oneup_uploader.orphanage_manager" />
                    
                    <tag name="kernel.event_subscriber" />
                </service>

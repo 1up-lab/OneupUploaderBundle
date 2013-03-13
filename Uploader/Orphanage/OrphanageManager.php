@@ -9,9 +9,13 @@ use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManagerInterface;
 
 class OrphanageManager implements OrphanageManagerInterface
 {
-    public function __construct($configuration)
+    protected $orphanages;
+    
+    public function __construct($container, $configuration)
     {
+        $this->container = $container;
         $this->configuration = $configuration;
+        $this->orphanages = array();
     }
     
     public function warmup()
@@ -41,5 +45,23 @@ class OrphanageManager implements OrphanageManagerInterface
         {
             $system->remove($file);
         }
+    }
+    
+    public function get($type)
+    {
+        return $this->getImplementation($type);
+    }
+    
+    public function getImplementation($type)
+    {
+        if(!array_key_exists($type, $this->orphanages))
+            throw new \InvalidArgumentException(sprintf('No Orphanage implementation of type "%s" found.', $type));
+        
+        return $this->orphanages[$type];
+    }
+    
+    public function addImplementation($type, OrphanageInterface $orphanage)
+    {
+        $this->orphanages[$type] = $orphanage;
     }
 }
