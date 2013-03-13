@@ -6,5 +6,5 @@ use Symfony\Component\HttpFoundation\File\File;
 
 interface OrphanageInterface
 {
-    public function add(File $file, $name);
+    public function addFile(File $file, $name);
 }
