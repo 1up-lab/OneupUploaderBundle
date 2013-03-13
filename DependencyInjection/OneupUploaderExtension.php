@@ -94,7 +94,7 @@ class OneupUploaderExtension extends Extension
             ->addArgument($mapping)
                 
             // we need the EventDispatcher for post upload events
-            ->addArgument(new Reference('event.dispatcher'))
+            ->addArgument(new Reference('event_dispatcher'))
                 
             ->addTag('oneup_uploader.routable', array('type' => $type))
             ->setScope('request')

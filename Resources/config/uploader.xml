@@ -10,6 +10,7 @@
                <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
                <parameter key="oneup_uploader.controller.class">Oneup\UploaderBundle\Controller\UploaderController</parameter>
                <parameter key="oneup_uploader.storage.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
+               <parameter key="oneup_uploader.listener.session.class">Oneup\UploaderBundle\EventListener\SessionStoreListener</parameter>
            </parameters>
 
            <services>
@@ -27,6 +28,13 @@
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
                    <tag name="routing.loader" />
+               </service>
+               
+               <!-- events -->
+               <service id="oneup_uploader.listener.session" class="%oneup_uploader.listener.session.class%">
+                   <argument type="service" id="session" />
+                   
+                   <tag name="kernel.event_subscriber" />
                </service>
                
            </services>
