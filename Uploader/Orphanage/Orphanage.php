@@ -18,14 +18,17 @@ class Orphanage implements OrphanageInterface
         $this->config = $config;
     }
     
-    public function addFile(File $file)
+    public function addFile(File $file, $name)
     {
-        // prefix directory with session id
-        $id = $session->getId();
-        $path = sprintf('%s/%s/%s', $this->config['directory'], $id, $file->getRealPath());
+        if(!$this->session->isStarted())
+            throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         
-        var_dump($path);
-        die();
+        // prefix directory with session id
+        $id = $this->session->getId();
+        $path = sprintf('%s/%s', $this->config['directory'], $id);
+        
+        // move file to orphanage
+        return $file->move($path, $name);
     }
     
     public function removeFile(File $file)

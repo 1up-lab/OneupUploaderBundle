@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
+use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 
 class UploaderController implements UploadControllerInterface
@@ -38,16 +39,20 @@ class UploaderController implements UploadControllerInterface
         {
             $name = $this->namer->name($file, $this->config['directory_prefix']);
             
+            $postUploadEvent = new PostUploadEvent($file, $this->request, array(
+                'use_orphanage' => $this->config['use_orphanage'],
+                'file_name' => $name,
+            ));
+            $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+            
             if(!$this->config['use_orphanage'])
             {
                 $uploaded = $this->storage->upload($file, $name);
             
                 // dispatch post upload event
-                $event = new PostPersistEvent($uploaded, $this->request);
-                $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $event);
+                $postPersistEvent = new PostPersistEvent($uploaded, $this->request);
+                $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
             }
-            
-            
         }
         
         return new JsonResponse(array('success' => true));

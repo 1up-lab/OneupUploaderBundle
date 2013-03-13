@@ -18,18 +18,22 @@ class OrphanageListener implements EventSubscriberInterface
         $this->orphanage = $orphanage;
     }
     
-    public function addToSession(PostUploadEvent $event)
+    public function add(PostUploadEvent $event)
     {
+        $options = $event->getOptions();
         $request = $event->getRequest();
         $file = $event->getFile();
         
-        $this->orphanage->addFile($file);
+        if(!$options['use_orphanage'])
+            return;
+        
+        $this->orphanage->addFile($file, $options['file_name']);
     }
     
     public static function getSubscribedEvents()
     {
         return array(
-            UploadEvents::POST_UPLOAD => 'addToSession',
+            UploadEvents::POST_UPLOAD => 'add',
         );
     }
 }
