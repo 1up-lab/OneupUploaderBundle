@@ -37,7 +37,6 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('storage')->isRequired()->end()
                             ->scalarNode('directory_prefix')->end()
                             ->booleanNode('use_orphanage')->defaultFalse()->end()
-                            ->scalarNode('action')->defaultNull()->end()
                             ->scalarNode('namer')->defaultValue('oneup_uploader.namer.uniqid')->end()
                         ->end()
                     ->end()
