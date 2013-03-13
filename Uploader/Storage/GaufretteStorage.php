@@ -26,9 +26,9 @@ class GaufretteStorage implements StorageInterface
         
         // this is a somehow ugly workaround introduced
         // because the stream-mode is not able to create
-        // subdirectories, while "write" does.
+        // subdirectories.
         if(!$this->filesystem->has($name))
-            $this->filesystem->write($name, '', true);
+            $this->filesystem->createFile($name);
         
         $src->open(new StreamMode('rb+'));
         $dst->open(new StreamMode('ab+'));
