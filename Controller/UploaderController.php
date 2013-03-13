@@ -14,13 +14,14 @@ class UploaderController implements UploadControllerInterface
     protected $namer;
     protected $storage;
     
-    public function __construct($request, $namer, $storage, $config, $dispatcher)
+    public function __construct($request, $namer, $storage, $dispatcher, $type, $config)
     {
         $this->request = $request;
         $this->namer = $namer;
         $this->storage = $storage;
         $this->config = $config;
         $this->dispatcher = $dispatcher;
+        $this->type = $type;
     }
     
     public function upload()
@@ -39,7 +40,7 @@ class UploaderController implements UploadControllerInterface
         {
             $name = $this->namer->name($file, $this->config['directory_prefix']);
             
-            $postUploadEvent = new PostUploadEvent($file, $this->request, array(
+            $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
                 'use_orphanage' => $this->config['use_orphanage'],
                 'file_name' => $name,
             ));
@@ -50,7 +51,7 @@ class UploaderController implements UploadControllerInterface
                 $uploaded = $this->storage->upload($file, $name);
             
                 // dispatch post upload event
-                $postPersistEvent = new PostPersistEvent($uploaded, $this->request);
+                $postPersistEvent = new PostPersistEvent($uploaded, $this->request, $this->type);
                 $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
             }
         }

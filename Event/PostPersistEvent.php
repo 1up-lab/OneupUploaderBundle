@@ -11,11 +11,13 @@ class PostPersistEvent extends Event
 {
     protected $file;
     protected $request;
+    protected $type;
     
-    public function __construct(File $file, Request $request)
+    public function __construct(File $file, Request $request, $type)
     {
         $this->file = $file;
         $this->request = $request;
+        $this->type = $type;
     }
     
     public function getFile()
@@ -26,5 +28,10 @@ class PostPersistEvent extends Event
     public function getRequest()
     {
         return $this->request;
+    }
+    
+    public function getType()
+    {
+        return $this->type;
     }
 }

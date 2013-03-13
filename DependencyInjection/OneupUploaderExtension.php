@@ -90,11 +90,12 @@ class OneupUploaderExtension extends Extension
             // add the correspoding storage service as argument    
             ->addArgument(new Reference($mapping['storage']))
                 
-            // after all, add the config as argument
-            ->addArgument($mapping)
-                
             // we need the EventDispatcher for post upload events
             ->addArgument(new Reference('event_dispatcher'))
+            
+            // after all, add the type and config as argument
+            ->addArgument($type)
+            ->addArgument($mapping)
                 
             ->addTag('oneup_uploader.routable', array('type' => $type))
             ->setScope('request')

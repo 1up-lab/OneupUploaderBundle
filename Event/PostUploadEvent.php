@@ -11,11 +11,14 @@ class PostUploadEvent extends Event
 {
     protected $file;
     protected $request;
+    protected $type;
+    protected $options;
     
-    public function __construct(File $file, Request $request, array $options = array())
+    public function __construct(File $file, Request $request, $type, array $options = array())
     {
         $this->file = $file;
         $this->request = $request;
+        $this->type = $type;
         $this->options = $options;
     }
     
@@ -27,6 +30,11 @@ class PostUploadEvent extends Event
     public function getRequest()
     {
         return $this->request;
+    }
+    
+    public function getType()
+    {
+        return $this->type;
     }
     
     public function getOptions()

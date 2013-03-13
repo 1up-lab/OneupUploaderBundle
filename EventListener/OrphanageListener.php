@@ -24,7 +24,7 @@ class OrphanageListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $file = $event->getFile();
         
-        if(!$options['use_orphanage'])
+        if(!array_key_exists('use_orphanage', $options) || !$options['use_orphanage'])
             return;
         
         $this->orphanage->addFile($file, $options['file_name']);

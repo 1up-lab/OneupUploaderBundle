@@ -27,11 +27,6 @@ class Orphanage implements OrphanageInterface
         return $file->move($this->getPath(), $name);
     }
     
-    public function removeFile(File $file)
-    {
-        
-    }
-    
     public function getFiles()
     {
         
