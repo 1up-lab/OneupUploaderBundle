@@ -32,10 +32,7 @@ class UploaderController implements UploadControllerInterface
         
         foreach($files as $file)
         {
-            // get name and directory and put them together
-            $name = $this->namer->name($file);
-            $name  = sprintf('%s/%s', $this->config['directory_prefix'], $name);
-            
+            $name = $this->namer->name($file, $this->config['directory_prefix']);
             $this->storage->upload($file, $name);
         }
         
