@@ -3,9 +3,6 @@
 namespace Oneup\UploaderBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Gaufrette\Stream\Local as LocalStream;
-use Gaufrette\StreamMode;
-
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 
 class UploaderController implements UploadControllerInterface
@@ -35,23 +32,11 @@ class UploaderController implements UploadControllerInterface
         
         foreach($files as $file)
         {
+            // get name and directory and put them together
             $name = $this->namer->name($file);
-            $path = $file->getPathname();
+            $name  = sprintf('%s/%s', $this->config['directory_prefix'], $name);
             
-            $src = new LocalStream($path);
-            $dst = $this->storage->createStream($name);
-            
-            $src->open(new StreamMode('rb+'));
-            $dst->open(new StreamMode('ab+'));
-            
-            while(!$src->eof())
-            {
-                $data = $src->read(100000);
-                $written = $dst->write($data);
-            }
-            
-            $dst->close();
-            $src->close();
+            $this->storage->upload($file, $name);
         }
         
         return new JsonResponse(array('success' => true));

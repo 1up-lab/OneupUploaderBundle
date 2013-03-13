@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\Loader;
 
 class OneupUploaderExtension extends Extension
 {
+    protected static $storageServices = array();
+    
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
@@ -42,11 +44,39 @@ class OneupUploaderExtension extends Extension
                 $mapping['directory_prefix'] = $key;
             }
             
+            $mapping['storage'] = $this->registerStorageService($container, $mapping);
             $this->registerServicesPerMap($container, $key, $mapping);
         }
     }
     
-    public function registerServicesPerMap(ContainerBuilder $container, $type, $mapping)
+    protected function registerStorageService(ContainerBuilder $container, $mapping)
+    {
+        $storage = $mapping['storage'];
+        
+        // if service has already been declared, return
+        if(in_array($storage, self::$storageServices))
+            return;
+        
+        // get base name of gaufrette storage
+        $name = explode('.', $storage);
+        $name = end($name);
+        
+        // create name of new storage service
+        $service = sprintf('oneup_uploader.storage.%s', $name);
+        
+        $container
+            ->register($service, $container->getParameter('oneup_uploader.storage.class'))
+                
+            // inject the actual gaufrette filesystem
+            ->addArgument(new Reference($storage))
+        ;
+        
+        self::$storageServices[] = $name;
+        
+        return $service;
+    }
+    
+    protected function registerServicesPerMap(ContainerBuilder $container, $type, $mapping)
     {
         // create controllers based on mapping
         $container
