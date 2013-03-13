@@ -18,7 +18,7 @@ class ClearOrphansCommand extends ContainerAwareCommand
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->getContainer()->get('oneup_uploader.orphanage');
+        $manager = $this->getContainer()->get('oneup_uploader.orphanage_manager');
         $manager->clear();
     }
 }

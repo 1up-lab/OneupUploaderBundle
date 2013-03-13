@@ -31,7 +31,7 @@ class OrphanageManager implements OrphanageManagerInterface
         
         try
         {
-            $finder->in($this->configuration['directory'])->date('<=' . -1 * (int) $this->configuration['maxage'] . 'seconds');
+            $finder->in($this->configuration['directory'])->date('<=' . -1 * (int) $this->configuration['maxage'] . 'seconds')->files();
         }
         catch(\InvalidArgumentException $e)
         {
