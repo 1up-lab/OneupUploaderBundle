@@ -7,18 +7,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\UploadEvents;
+use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageInterface;
 
-class SessionStoreListener implements EventSubscriberInterface
+class OrphanageListener implements EventSubscriberInterface
 {
-    public function __construct(SessionInterface $session)
+    protected $orphanage;
+    
+    public function __construct(OrphanageInterface $orphanage)
     {
-        $this->session = $session;
+        $this->orphanage = $orphanage;
     }
     
     public function addToSession(PostUploadEvent $event)
     {
         $request = $event->getRequest();
         $file = $event->getFile();
+        
+        $this->orphanage->addFile($file);
     }
     
     public static function getSubscribedEvents()

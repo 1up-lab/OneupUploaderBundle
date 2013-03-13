@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Gaufrette\File;
 
-class PostUploadEvent extends Event
+class PostPersistEvent extends Event
 {
     protected $file;
     protected $request;
