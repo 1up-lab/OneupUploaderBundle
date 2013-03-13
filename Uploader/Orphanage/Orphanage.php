@@ -23,12 +23,8 @@ class Orphanage implements OrphanageInterface
         if(!$this->session->isStarted())
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         
-        // prefix directory with session id
-        $id = $this->session->getId();
-        $path = sprintf('%s/%s', $this->config['directory'], $id);
-        
         // move file to orphanage
-        return $file->move($path, $name);
+        return $file->move($this->getPath(), $name);
     }
     
     public function removeFile(File $file)
@@ -39,5 +35,13 @@ class Orphanage implements OrphanageInterface
     public function getFiles()
     {
         
+    }
+    
+    protected function getPath()
+    {
+        $id = $this->session->getId();
+        $path = sprintf('%s/%s', $this->config['directory'], $id);
+        
+        return $path;
     }
 }
