@@ -42,7 +42,7 @@ class GaufretteStorage implements StorageInterface
         $dst->close();
         $src->close();
         
-        return true;
+        return $this->filesystem->get($name);
     }
     
     public function remove(File $file)
