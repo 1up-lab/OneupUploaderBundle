@@ -47,7 +47,7 @@ class UploaderController implements UploadControllerInterface
         {
             try
             {
-                $ret = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
+                $status = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
             }
             catch(UploadException $e)
             {
@@ -56,7 +56,10 @@ class UploaderController implements UploadControllerInterface
             }
         }
         
-        return $ret;
+        return $status ?
+            new JsonResponse(array('success' => true)):
+            new JsonResponse(array('error' => 'An unknown error occured.'))
+        ;
     }
     
     protected function handleUpload(UploadedFile $file)
@@ -94,7 +97,7 @@ class UploaderController implements UploadControllerInterface
             $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
         }
         
-        return new JsonResponse(array('success' => true));
+        return true;
     }
     
     protected function handleChunkedUpload(UploadedFile $file)
@@ -126,6 +129,6 @@ class UploaderController implements UploadControllerInterface
             $this->chunkManager->cleanup($path);
         }
         
-        return new JsonResponse(array('success' => true));
+        return true;
     }
 }
