@@ -70,12 +70,15 @@ class UploaderController implements UploadControllerInterface
         
         $result = $this->storage->remove($this->type, $uuid);
         
-        $postUploadEvent = new PostUploadEvent($this->request, $uuid, $this->type);
-        $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+        if($result)
+        {
+            $postUploadEvent = new PostUploadEvent($this->request, $uuid, $this->type);
+            $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+            
+            return new JsonResponse(array('success' => true)):
+        }
         
-        return $result ?
-            new JsonResponse(array('success' => true)):
-            new JsonResponse(array('error' => 'An unknown error occured.'));
+        return new JsonResponse(array('error' => 'An unknown error occured.'));
     }
     
     protected function handleUpload(UploadedFile $file)
