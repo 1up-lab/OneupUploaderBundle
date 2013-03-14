@@ -5,12 +5,17 @@ namespace Oneup\UploaderBundle\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
+use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
+use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
+use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
 
 class UploaderController implements UploadControllerInterface
 {
@@ -22,7 +27,7 @@ class UploaderController implements UploadControllerInterface
     protected $type;
     protected $chunkManager;
     
-    public function __construct($request, $namer, $storage, $dispatcher, $type, $config, $chunkManager)
+    public function __construct(Request $request, NamerInterface $namer, StorageInterface $storage, EventDispatcherInterface $dispatcher, $type, array $config, ChunkManagerInterface $chunkManager)
     {
         $this->request = $request;
         $this->namer = $namer;
