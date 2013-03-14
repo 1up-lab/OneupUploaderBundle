@@ -6,15 +6,19 @@ use Symfony\Component\HttpFoundation\File\File;
 use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Gaufrette\Filesystem;
+
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
+use Oneup\UploaderBundle\Uploader\Deletable\DeletableManagerInterface;
 
 class GaufretteStorage implements StorageInterface
 {
     protected $filesystem;
+    protected $deletableManager;
     
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, DeletableManagerInterface $deletableManager)
     {
         $this->filesystem = $filesystem;
+        $this->deletableManager = $deletableManager;
     }
     
     public function upload(File $file, $name = null)
@@ -46,8 +50,28 @@ class GaufretteStorage implements StorageInterface
         return $this->filesystem->get($name);
     }
     
-    public function remove(File $file)
+    public function remove($type, $uuid)
     {
+        try
+        {
+            // get associated file path
+            $name = $this->deletableManager->getFile($type, $uuid);
+            
+            if($this->filesystem->has($name))
+            {
+                $this->filesystem->delete($name);
+            }
+            
+            // delete this reference anyway
+            $this->deletableManager->removeFile($type, $uuid);
+        }
+        catch(\Exception $e)
+        {
+            // whoopsi, something went terribly wrong
+            // better leave this method now and never look back
+            return false;
+        }
         
+        return true;
     }
 }

@@ -71,6 +71,8 @@ class OneupUploaderExtension extends Extension
                 
             // inject the actual gaufrette filesystem
             ->addArgument(new Reference($storage))
+                
+            ->addArgument(new Reference('oneup_uploader.deletable_manager'))
         ;
         
         self::$storageServices[] = $name;

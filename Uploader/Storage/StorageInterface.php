@@ -7,5 +7,5 @@ use Symfony\Component\HttpFoundation\File\File;
 interface StorageInterface
 {
     public function upload(File $file, $name);
-    public function remove(File $file);
+    public function remove($type, $uuid);
 }

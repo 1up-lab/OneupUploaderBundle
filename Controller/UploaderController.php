@@ -5,6 +5,7 @@ namespace Oneup\UploaderBundle\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
@@ -61,6 +62,16 @@ class UploaderController implements UploadControllerInterface
             new JsonResponse(array('error' => 'An unknown error occured.'))
         ;
     }
+
+    public function delete($uuid = null)
+    {
+        if(is_null($uuid))
+            return new HttpException(400, 'You must provide a file uuid.');
+        
+        return $this->storage->remove($this->type, $uuid) ?
+            new JsonResponse(array('success' => true)):
+            new JsonResponse(array('error' => 'An unknown error occured.'));
+    }
     
     protected function handleUpload(UploadedFile $file)
     {
@@ -85,6 +96,7 @@ class UploaderController implements UploadControllerInterface
         $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
             'use_orphanage' => $this->config['use_orphanage'],
             'file_name' => $name,
+            'deletable' => $this->config['deletable'],
         ));
         $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
             
