@@ -34,6 +34,10 @@ class UploaderController implements UploadControllerInterface
         
         foreach($files as $file)
         {
+            // some error handling
+            if($file->getClientSize() > $this->config['max_size'])
+                return new JsonResponse(array('error' => 'File is too large'));
+            
             $ret = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
         }
         

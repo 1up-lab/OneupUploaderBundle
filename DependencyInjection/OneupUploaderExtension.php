@@ -39,10 +39,12 @@ class OneupUploaderExtension extends Extension
         // handle mappings
         foreach($config['mappings'] as $key => $mapping)
         {
-            if(!array_key_exists('directory_prefix', $mapping))
+            if(is_null($mapping['directory_prefix']))
             {
                 $mapping['directory_prefix'] = $key;
             }
+            
+            $mapping['max_size'] = min(min($mapping['max_size'], ini_get('upload_max_filesize')), ini_get('post_max_size'));
             
             $mapping['storage'] = $this->registerStorageService($container, $mapping);
             $this->registerServicesPerMap($container, $key, $mapping);
