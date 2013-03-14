@@ -7,4 +7,5 @@ use Symfony\Component\HttpFoundation\File\File;
 interface OrphanageInterface
 {
     public function addFile(File $file, $name);
+    public function uploadFiles($keep = false);
 }
