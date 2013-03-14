@@ -13,6 +13,7 @@ use Symfony\Component\Finder\Finder;
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
+use Oneup\UploaderBundle\Event\PostDeleteEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
@@ -72,10 +73,10 @@ class UploaderController implements UploadControllerInterface
         
         if($result)
         {
-            $postUploadEvent = new PostUploadEvent($this->request, $uuid, $this->type);
-            $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+            $postUploadEvent = new PostDeleteEvent($this->request, $uuid, $this->type);
+            $this->dispatcher->dispatch(UploadEvents::POST_DELETE, $postUploadEvent);
             
-            return new JsonResponse(array('success' => true)):
+            return new JsonResponse(array('success' => true));
         }
         
         return new JsonResponse(array('error' => 'An unknown error occured.'));
