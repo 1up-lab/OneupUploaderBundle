@@ -5,26 +5,17 @@ namespace Oneup\UploaderBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Component\HttpFoundation\File\File;
-
 class PostDeleteEvent extends Event
 {
-    protected $file;
-    protected $request;
+    protected $requets;
+    protected $uuid;
     protected $type;
-    protected $options;
     
-    public function __construct(File $file, Request $request, $type, array $options = array())
+    public function __construct(Request $request, $uuid, $type)
     {
-        $this->file = $file;
         $this->request = $request;
+        $this->uuid = $uuid;
         $this->type = $type;
-        $this->options = $options;
-    }
-    
-    public function getFile()
-    {
-        return $this->file;
     }
     
     public function getRequest()
@@ -32,13 +23,13 @@ class PostDeleteEvent extends Event
         return $this->request;
     }
     
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+    
     public function getType()
     {
         return $this->type;
-    }
-    
-    public function getOptions()
-    {
-        return $this->options;
     }
 }

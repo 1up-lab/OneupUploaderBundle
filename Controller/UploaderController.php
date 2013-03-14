@@ -68,7 +68,12 @@ class UploaderController implements UploadControllerInterface
         if(is_null($uuid))
             return new HttpException(400, 'You must provide a file uuid.');
         
-        return $this->storage->remove($this->type, $uuid) ?
+        $result = $this->storage->remove($this->type, $uuid);
+        
+        $postUploadEvent = new PostUploadEvent($this->request, $uuid, $this->type);
+        $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+        
+        return $result ?
             new JsonResponse(array('success' => true)):
             new JsonResponse(array('error' => 'An unknown error occured.'));
     }
@@ -92,7 +97,7 @@ class UploaderController implements UploadControllerInterface
             throw new UploadException('This extension is not allowed.');
         
         $name = $this->namer->name($file, $this->config['directory_prefix']);
-            
+        
         $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
             'use_orphanage' => $this->config['use_orphanage'],
             'file_name' => $name,
