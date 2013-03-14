@@ -84,8 +84,11 @@ class UploaderController implements UploadControllerInterface
                 
             // assemble parts
             $assembled = $this->chunkManager->assembleChunks($chunks);
+            $path = $assembled->getPath();
             
-            return $this->handleUpload(new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, null, true));
+            $ret = $this->handleUpload(new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, null, true));
+            
+            $this->chunkManager->cleanup($path);
         }
         
         return new JsonResponse(array('success' => true));

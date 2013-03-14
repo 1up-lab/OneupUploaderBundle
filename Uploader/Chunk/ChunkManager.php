@@ -84,6 +84,15 @@ class ChunkManager implements ChunkManagerInterface
         return $base;
     }
     
+    public function cleanup($path)
+    {
+        // cleanup
+        $filesystem = new Filesystem();
+        $filesystem->remove($path);
+        
+        return true;
+    }
+    
     public function getChunks($uuid)
     {
         $finder = new Finder();
