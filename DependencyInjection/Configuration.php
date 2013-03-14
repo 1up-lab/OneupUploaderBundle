@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('storage')->isRequired()->end()
-                            ->scalarNode('max_size')->defaultNull()->end()
+                            ->scalarNode('max_size')->defaultValue(\PHP_INT_MAX)->end()
                             ->scalarNode('directory_prefix')->defaultNull()->end()
                             ->booleanNode('use_orphanage')->defaultFalse()->end()
                             ->scalarNode('namer')->defaultValue('oneup_uploader.namer.uniqid')->end()

@@ -4,6 +4,7 @@ namespace Oneup\UploaderBundle\Uploader\Orphanage;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
@@ -48,7 +49,7 @@ class Orphanage implements OrphanageInterface
         
         foreach($finder as $file)
         {
-            $uploaded[] = $this->storage->upload($file);
+            $uploaded[] = $this->storage->upload(new UploadedFile($file->getPathname(), $file->getBasename(), null, null, null, true));
             
             if(!$keep)
             {

@@ -2,7 +2,7 @@
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use Symfony\Component\Finder\SplFileInfo as File;
+use Symfony\Component\HttpFoundation\File\File;
 use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Gaufrette\Filesystem;

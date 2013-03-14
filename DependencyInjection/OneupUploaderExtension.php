@@ -44,7 +44,7 @@ class OneupUploaderExtension extends Extension
                 $mapping['directory_prefix'] = $key;
             }
             
-            $mapping['max_size'] = min(min($mapping['max_size'], ini_get('upload_max_filesize')), ini_get('post_max_size'));
+            $mapping['max_size'] = $this->getMaxUploadSize($mapping['max_size']);
             
             $mapping['storage'] = $this->registerStorageService($container, $mapping);
             $this->registerServicesPerMap($container, $key, $mapping);
@@ -127,5 +127,30 @@ class OneupUploaderExtension extends Extension
             ->addTag('oneup_uploader.routable', array('type' => $type))
             ->setScope('request')
         ;
+    }
+    
+    protected function getMaxUploadSize($input)
+    {
+        $input   = $this->getValueInBytes($input);
+        $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
+        $maxFile = $this->getValueInBytes(ini_get('post_max_size'));
+        
+        return min(min($input, $maxPost), $maxFile);
+    }
+    
+    protected function getValueInBytes($input)
+    {
+        // see: http://www.php.net/manual/en/function.ini-get.php
+        $input = trim($input);
+        $last  = strtolower($input[strlen($input) - 1]);
+        
+        switch($last)
+        {
+            case 'g': $input *= 1024;
+            case 'm': $input *= 1024;
+            case 'k': $input *= 1024;
+        }
+        
+        return $input;
     }
 }
