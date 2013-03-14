@@ -49,7 +49,7 @@ class UploaderController implements UploadControllerInterface
         {
             try
             {
-                $status = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
+                $name = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
             }
             catch(UploadException $e)
             {
@@ -58,10 +58,7 @@ class UploaderController implements UploadControllerInterface
             }
         }
         
-        return $status ?
-            new JsonResponse(array('success' => true)):
-            new JsonResponse(array('error' => 'An unknown error occured.'))
-        ;
+        return new JsonResponse(array('success' => true, 'name' => $name));
     }
 
     public function delete($uuid = null)
@@ -118,7 +115,7 @@ class UploaderController implements UploadControllerInterface
             $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
         }
         
-        return true;
+        return $name;
     }
     
     protected function handleChunkedUpload(UploadedFile $file)
@@ -150,6 +147,6 @@ class UploaderController implements UploadControllerInterface
             $this->chunkManager->cleanup($path);
         }
         
-        return true;
+        return $name;
     }
 }
