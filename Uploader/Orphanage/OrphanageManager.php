@@ -4,14 +4,17 @@ namespace Oneup\UploaderBundle\Uploader\Orphanage;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManagerInterface;
 
 class OrphanageManager implements OrphanageManagerInterface
 {
+    protected $container;
+    protected $configuration;
     protected $orphanages;
     
-    public function __construct($container, $configuration)
+    public function __construct(ContainerInterface $container, array $configuration)
     {
         $this->container = $container;
         $this->configuration = $configuration;
