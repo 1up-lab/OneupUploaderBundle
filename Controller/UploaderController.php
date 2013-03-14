@@ -14,8 +14,13 @@ use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 
 class UploaderController implements UploadControllerInterface
 {
+    protected $request;
     protected $namer;
     protected $storage;
+    protected $config;
+    protected $dispatcher;
+    protected $type;
+    protected $chunkManager;
     
     public function __construct($request, $namer, $storage, $dispatcher, $type, $config, $chunkManager)
     {
