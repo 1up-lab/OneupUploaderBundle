@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Finder\Finder;
@@ -34,11 +35,15 @@ class UploaderController implements UploadControllerInterface
         
         foreach($files as $file)
         {
-            // some error handling
-            if($file->getClientSize() > $this->config['max_size'])
-                return new JsonResponse(array('error' => 'File is too large'));
-            
-            $ret = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
+            try
+            {
+                $ret = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
+            }
+            catch(UploadException $e)
+            {
+                // an error happended, return this error message.
+                return new JsonResponse(array('error' => $e->getMessage()));
+            }
         }
         
         return $ret;
@@ -46,6 +51,17 @@ class UploaderController implements UploadControllerInterface
     
     protected function handleUpload(UploadedFile $file)
     {
+        // check if the file size submited by the client is over the max size in our config
+        if($file->getClientSize() > $this->config['max_size'])
+            throw new UploadException('File is too large.');
+        
+        $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        
+        // if this mapping defines at least one type of an allowed extension,
+        // test if the current is in this array
+        if(count($this->config['allowed_types']) > 0 && !in_array($extension, $this->config['allowed_types']))
+            throw new UploadException('This extension is not allowed.');
+        
         $name = $this->namer->name($file, $this->config['directory_prefix']);
             
         $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
