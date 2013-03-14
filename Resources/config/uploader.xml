@@ -15,7 +15,7 @@
            </parameters>
 
            <services>
-               <service id="oneup_uploader.chunks_manager" class="%oneup_uploader.chunks.manager.class%">
+               <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%">
                    <argument>%oneup_uploader.chunks%</argument>
                </service>
                

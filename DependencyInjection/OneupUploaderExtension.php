@@ -120,6 +120,8 @@ class OneupUploaderExtension extends Extension
             ->addArgument($type)
             ->addArgument($mapping)
                 
+            ->addArgument(new Reference('oneup_uploader.chunk_manager'))
+                
             ->addTag('oneup_uploader.routable', array('type' => $type))
             ->setScope('request')
         ;
