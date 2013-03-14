@@ -62,6 +62,11 @@ class UploaderController implements UploadControllerInterface
         if(count($this->config['allowed_types']) > 0 && !in_array($extension, $this->config['allowed_types']))
             throw new UploadException('This extension is not allowed.');
         
+        // check if the current extension is mentioned in the disallowed types
+        // and if so, throw an exception
+        if(count($this->config['disallowed_types']) > 0 && in_array($extension, $this->config['disallowed_types']))
+            throw new UploadException('This extension is not allowed.');
+        
         $name = $this->namer->name($file, $this->config['directory_prefix']);
             
         $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
