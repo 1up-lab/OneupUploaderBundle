@@ -60,24 +60,6 @@ class UploaderController implements UploadControllerInterface
         
         return new JsonResponse(array('success' => true, 'name' => $name));
     }
-
-    public function delete($uuid = null)
-    {
-        if(is_null($uuid))
-            return new HttpException(400, 'You must provide a file uuid.');
-        
-        $result = $this->storage->remove($this->type, $uuid);
-        
-        if($result)
-        {
-            $postUploadEvent = new PostDeleteEvent($this->request, $uuid, $this->type);
-            $this->dispatcher->dispatch(UploadEvents::POST_DELETE, $postUploadEvent);
-            
-            return new JsonResponse(array('success' => true));
-        }
-        
-        return new JsonResponse(array('error' => 'An unknown error occured.'));
-    }
     
     protected function handleUpload(UploadedFile $file)
     {
