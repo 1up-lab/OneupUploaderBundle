@@ -82,8 +82,7 @@ class UploaderController implements UploadControllerInterface
         
         $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
             'use_orphanage' => $this->config['use_orphanage'],
-            'file_name' => $name,
-            'deletable' => $this->config['deletable'],
+            'file_name' => $name
         ));
         $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
             
