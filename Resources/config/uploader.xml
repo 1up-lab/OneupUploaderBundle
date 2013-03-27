@@ -12,7 +12,6 @@
                <parameter key="oneup_uploader.controller.class">Oneup\UploaderBundle\Controller\UploaderController</parameter>
                <parameter key="oneup_uploader.storage.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
                <parameter key="oneup_uploader.listener.orphanage.class">Oneup\UploaderBundle\EventListener\OrphanageListener</parameter>
-               <parameter key="oneup_uploader.listener.deletable.class">Oneup\UploaderBundle\EventListener\DeletableListener</parameter>
            </parameters>
 
            <services>

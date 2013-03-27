@@ -13,7 +13,6 @@ use Symfony\Component\Finder\Finder;
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
-use Oneup\UploaderBundle\Event\PostDeleteEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
