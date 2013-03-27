@@ -46,7 +46,6 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('max_size')->defaultValue(\PHP_INT_MAX)->end()
                             ->scalarNode('directory_prefix')->defaultNull()->end()
                             ->booleanNode('use_orphanage')->defaultFalse()->end()
-                            ->booleanNode('deletable')->defaultFalse()->end()
                             ->scalarNode('namer')->defaultValue('oneup_uploader.namer.uniqid')->end()
                         ->end()
                     ->end()

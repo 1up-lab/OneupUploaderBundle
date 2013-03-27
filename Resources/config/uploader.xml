@@ -4,7 +4,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
            <parameters>
-               <parameter key="oneup_uploader.deletable.manager.class">Oneup\UploaderBundle\Uploader\Deletable\DeletableManager</parameter>
                <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunk\ChunkManager</parameter>
                <parameter key="oneup_uploader.orphanage.manager.class">Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager</parameter>
                <parameter key="oneup_uploader.orphanage.class">Oneup\UploaderBundle\Uploader\Orphanage\Orphanage</parameter>
@@ -30,11 +29,6 @@
                <!-- namer -->
                <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" />
                
-               <!-- deletable -->
-               <service id="oneup_uploader.deletable_manager" class="%oneup_uploader.deletable.manager.class%">
-                   <argument type="service" id="session" />
-               </service>
-               
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
                    <tag name="routing.loader" />
@@ -43,12 +37,6 @@
                <!-- events -->
                <service id="oneup_uploader.listener.orphanage" class="%oneup_uploader.listener.orphanage.class%">
                    <argument type="service" id="oneup_uploader.orphanage_manager" />
-                   
-                   <tag name="kernel.event_subscriber" />
-               </service>
-               
-               <service id="oneup_uploader.listener.deletable" class="%oneup_uploader.listener.deletable.class%">
-                   <argument type="service" id="oneup_uploader.deletable_manager" />
                    
                    <tag name="kernel.event_subscriber" />
                </service>
