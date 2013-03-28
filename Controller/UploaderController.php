@@ -43,12 +43,13 @@ class UploaderController implements UploadControllerInterface
     {
         $totalParts = $this->request->get('qqtotalparts', 1);
         $files = $this->request->files;
+        $chunked = $totalParts > 1;
         
         foreach($files as $file)
         {
             try
             {
-                $name = $totalParts > 1 ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
+                $name = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
             }
             catch(UploadException $e)
             {
@@ -62,21 +63,7 @@ class UploaderController implements UploadControllerInterface
     
     protected function handleUpload(UploadedFile $file)
     {
-        // check if the file size submited by the client is over the max size in our config
-        if($file->getClientSize() > $this->config['max_size'])
-            throw new UploadException('File is too large.');
-        
-        $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-        
-        // if this mapping defines at least one type of an allowed extension,
-        // test if the current is in this array
-        if(count($this->config['allowed_types']) > 0 && !in_array($extension, $this->config['allowed_types']))
-            throw new UploadException('This extension is not allowed.');
-        
-        // check if the current extension is mentioned in the disallowed types
-        // and if so, throw an exception
-        if(count($this->config['disallowed_types']) > 0 && in_array($extension, $this->config['disallowed_types']))
-            throw new UploadException('This extension is not allowed.');
+        $this->validate($file);
         
         $name = $this->namer->name($file, $this->config['directory_prefix']);
         $uploaded = $this->storage->upload($file, $name);
@@ -121,11 +108,36 @@ class UploaderController implements UploadControllerInterface
             $assembled = $this->chunkManager->assembleChunks($chunks);
             $path = $assembled->getPath();
             
-            $ret = $this->handleUpload(new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, null, true));
+            // create a temporary uploaded file to meet the interface restrictions
+            $uploadedFile = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, null, true);
+            
+            // validate this entity and upload on success
+            $this->validate($uploadedFile);
+            $ret = $this->handleUpload();
             
             $this->chunkManager->cleanup($path);
         }
         
         return $name;
+    }
+    
+    protected function validate(UploadedFile $file)
+    {
+        // check if the file size submited by the client is over the max size in our config
+        if($file->getClientSize() > $this->config['max_size'])
+            throw new UploadException('File is too large.');
+        
+        $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        
+        // if this mapping defines at least one type of an allowed extension,
+        // test if the current is in this array
+        if(count($this->config['allowed_types']) > 0 && !in_array($extension, $this->config['allowed_types']))
+            throw new UploadException('This extension is not allowed.');
+        
+        // check if the current extension is mentioned in the disallowed types
+        // and if so, throw an exception
+        if(count($this->config['disallowed_types']) > 0 && in_array($extension, $this->config['disallowed_types']))
+            throw new UploadException('This extension is not allowed.');
+        
     }
 }
