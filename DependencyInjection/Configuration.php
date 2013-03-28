@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('enabled')->defaultFalse()->end()
                         ->scalarNode('filesystem')->defaultNull()->end()
                         ->scalarNode('maxage')->defaultValue(604800)->end()
+                        ->scalarNode('directory')->defaultValue('orphanage')->end()
                     ->end()
                 ->end()
                 ->arrayNode('mappings')

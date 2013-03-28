@@ -27,15 +27,7 @@ class OneupUploaderExtension extends Extension
         }
         
         $container->setParameter('oneup_uploader.chunks', $config['chunks']);
-        
-        // handling orphanage configuration
-        if(!array_key_exists('directory', $config['orphanage']))
-        {
-            $config['orphanage']['directory'] = sprintf('%s/uploader/orphanage', $container->getParameter('kernel.cache_dir'));
-        }
-        
         $container->setParameter('oneup_uploader.orphanage', $config['orphanage']);
-        //$config['orphanage']['storage'] = $this->registerStorageService($container, $config['orphanage']);
         
         // handle mappings
         foreach($config['mappings'] as $key => $mapping)

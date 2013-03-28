@@ -18,19 +18,19 @@ class GaufretteStorage implements StorageInterface
         $this->filesystem = $filesystem;
     }
     
-    public function upload(File $file, $name = null)
+    public function upload(File $file, $name = null, $path = null)
     {
-        $path = $file->getPathname();
         $name = is_null($name) ? $file->getRelativePathname() : $name;
+        $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
         
-        $src = new LocalStream($path);
-        $dst = $this->filesystem->createStream($name);
+        $src = new LocalStream($file->getPathname());
+        $dst = $this->filesystem->createStream($path);
         
         // this is a somehow ugly workaround introduced
         // because the stream-mode is not able to create
         // subdirectories.
-        if(!$this->filesystem->has($name))
-            $this->filesystem->write($name, '', true);
+        if(!$this->filesystem->has($path))
+            $this->filesystem->write($path, '', true);
         
         $src->open(new StreamMode('rb+'));
         $dst->open(new StreamMode('ab+'));
@@ -44,6 +44,6 @@ class GaufretteStorage implements StorageInterface
         $dst->close();
         $src->close();
         
-        return $this->filesystem->get($name);
+        return $this->filesystem->get($path);
     }
 }

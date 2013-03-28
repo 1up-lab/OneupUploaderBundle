@@ -115,7 +115,7 @@ class UploaderController implements UploadControllerInterface
             
             // validate this entity and upload on success
             $this->validate($uploadedFile);
-            $uploaded = $this->handleUpload();
+            $uploaded = $this->handleUpload($uploadedFile);
             
             $this->chunkManager->cleanup($path);
         }
