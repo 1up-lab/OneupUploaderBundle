@@ -26,6 +26,17 @@ class OneupUploaderExtension extends Extension
             $config['chunks']['directory'] = sprintf('%s/uploader/chunks', $container->getParameter('kernel.cache_dir'));
         }
         
+        if(!array_key_exists('domain', $config['orphanage']))
+        {
+            $tmpArr = explode('.', $config['orphanage']['filesystem']);
+            $tmpArr = explode('_', end($tmpArr));
+            
+            $domain = reset($tmpArr);
+            
+            $config['orphanage']['domain'] = $domain;
+        }
+        
+        
         $container->setParameter('oneup_uploader.chunks', $config['chunks']);
         $container->setParameter('oneup_uploader.orphanage', $config['orphanage']);
         

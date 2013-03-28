@@ -10,11 +10,18 @@
                <parameter key="oneup_uploader.controller.class">Oneup\UploaderBundle\Controller\UploaderController</parameter>
                <parameter key="oneup_uploader.storage.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
                <parameter key="oneup_uploader.orphanage.class">Oneup\UploaderBundle\Uploader\Storage\OrphanageStorage</parameter>
+               <parameter key="oneup_uploader.orphanage.manager.class">Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager</parameter>
            </parameters>
 
            <services>
+               
+               <!-- managers -->
                <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%">
                    <argument>%oneup_uploader.chunks%</argument>
+               </service>
+               
+               <service id="oneup_uploader.orphanage_manager" class="%oneup_uploader.orphanage.manager.class%">
+                   <argument type="service" id="service_container" />
                </service>
                
                <!-- namer -->

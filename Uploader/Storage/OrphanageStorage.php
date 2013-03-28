@@ -4,8 +4,6 @@ namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Filesystem\Filesystem;
 use Gaufrette\Filesystem as GaufretteFilesystem;
 
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
@@ -13,6 +11,7 @@ use Oneup\UploaderBundle\Uploader\Storage\OrphanageStorageInterface;
 
 class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
 {
+    protected $orphanage;
     protected $masked;
     protected $session;
     protected $config;
@@ -22,6 +21,7 @@ class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInter
     {
         parent::__construct($orphanage);
         
+        $this->orphanage = $orphanage;
         $this->masked = $filesystem;
         $this->session = $session;
         $this->config = $config;
@@ -41,36 +41,40 @@ class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInter
     
     public function uploadFiles($keep = false)
     {
-        $system = new Filesystem();
-        $finder = new Finder();
-        
         // switch orphanage with masked filesystem
         $this->filesystem = $this->masked;
         
-        if(!$system->exists($this->getPath()))
-            return array();
-        
-        $finder->in($this->getPath())->files();
-        
         $uploaded = array();
-        foreach($finder as $file)
+        foreach($this->getFiles() as $file)
         {
-            $uploaded[] = $this->upload(new UploadedFile($file->getPathname(), $file->getBasename(), null, null, null, true));
+            $uploaded[] = parent::upload(new File($this->getWrapper($file)), str_replace($this->getPath(), '', $file));
             
             if(!$keep)
             {
-                $system->remove($file);
+                $this->orphanage->delete($file);
             }
         }
         
         return $uploaded;
     }
     
+    public function getFiles()
+    {
+        $keys = $this->orphanage->listKeys($this->getPath());
+        
+        return $keys['keys'];
+    }
+    
     protected function getPath()
     {
         $id = $this->session->getId();
-        $path = sprintf('%s/%s', $this->config['directory'], $id);
+        $path = sprintf('%s/%s/%s', $this->config['directory'], $id, $this->type);
         
         return $path;
+    }
+    
+    protected function getWrapper($key)
+    {
+        return sprintf('gaufrette://%s/%s', $this->config['domain'], $key);
     }
 }
