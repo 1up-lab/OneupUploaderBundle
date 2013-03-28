@@ -13,7 +13,6 @@ use Symfony\Component\Finder\Finder;
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
-use Oneup\UploaderBundle\Event\PostDeleteEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
@@ -60,24 +59,6 @@ class UploaderController implements UploadControllerInterface
         
         return new JsonResponse(array('success' => true, 'name' => $name));
     }
-
-    public function delete($uuid = null)
-    {
-        if(is_null($uuid))
-            return new HttpException(400, 'You must provide a file uuid.');
-        
-        $result = $this->storage->remove($this->type, $uuid);
-        
-        if($result)
-        {
-            $postUploadEvent = new PostDeleteEvent($this->request, $uuid, $this->type);
-            $this->dispatcher->dispatch(UploadEvents::POST_DELETE, $postUploadEvent);
-            
-            return new JsonResponse(array('success' => true));
-        }
-        
-        return new JsonResponse(array('error' => 'An unknown error occured.'));
-    }
     
     protected function handleUpload(UploadedFile $file)
     {
@@ -98,18 +79,16 @@ class UploaderController implements UploadControllerInterface
             throw new UploadException('This extension is not allowed.');
         
         $name = $this->namer->name($file, $this->config['directory_prefix']);
+        $uploaded = $this->storage->upload($file, $name);
         
         $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
             'use_orphanage' => $this->config['use_orphanage'],
-            'file_name' => $name,
-            'deletable' => $this->config['deletable'],
+            'file_name' => $name
         ));
         $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
             
         if(!$this->config['use_orphanage'])
         {
-            $uploaded = $this->storage->upload($file, $name);
-            
             // dispatch post upload event
             $postPersistEvent = new PostPersistEvent($uploaded, $this->request, $this->type);
             $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
