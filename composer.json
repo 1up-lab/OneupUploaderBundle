@@ -13,13 +13,13 @@
     ],
     
     "repositories": {
-        "file-uploader": {
+        "fine-uploader": {
             "type": "package",
             "package": {
-                "name": "valums/file-uploader",
-                "version": "3.3.0",
+                "name": "widen/fine-uploader",
+                "version": "3.3.1",
                 "source": {
-                    "url": "git://github.com/valums/file-uploader.git",
+                    "url": "git://github.com/Widen/fine-uploader.git",
                     "type": "git",
                     "reference": "origin/master"
                 }
@@ -32,7 +32,7 @@
         "symfony/filesystem": ">=2.0.16,<2.3-dev",
         "symfony/event-dispatcher": ">=2.0.16,<2.3-dev",
         "knplabs/knp-gaufrette-bundle": "0.1.*",
-        "valums/file-uploader": "3.3.*"
+        "widen/fine-uploader": "3.3.*"
     },
     
     "autoload": {
