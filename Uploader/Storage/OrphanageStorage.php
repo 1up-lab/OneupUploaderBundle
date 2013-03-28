@@ -33,7 +33,7 @@ class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInter
         if(!$this->session->isStarted())
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         
-        parent::upload($file, $name);
+        return parent::upload($file, $name);
     }
     
     public function uploadFiles($keep = false)

@@ -17,6 +17,7 @@ use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
+use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
 
 class UploaderController implements UploadControllerInterface
 {
@@ -41,6 +42,7 @@ class UploaderController implements UploadControllerInterface
     
     public function upload()
     {
+        $response = new UploaderResponse();
         $totalParts = $this->request->get('qqtotalparts', 1);
         $files = $this->request->files;
         $chunked = $totalParts > 1;
@@ -49,16 +51,28 @@ class UploaderController implements UploadControllerInterface
         {
             try
             {
-                $name = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
+                $uploaded = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
+        
+                $postUploadEvent = new PostUploadEvent($uploaded, $response, $this->request, $this->type, $this->config);
+                $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+            
+                if(!$this->config['use_orphanage'])
+                {
+                    // dispatch post upload event
+                    $postPersistEvent = new PostPersistEvent($uploaded, $response, $this->request, $this->type, $this->config);
+                    $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
+                }
             }
             catch(UploadException $e)
             {
+                $response->setSuccess(false);
+                
                 // an error happended, return this error message.
-                return new JsonResponse(array('error' => $e->getMessage()));
+                return new JsonResponse($response->assemble());
             }
         }
         
-        return new JsonResponse(array('success' => true, 'name' => $name));
+        return new JsonResponse($response->assemble());
     }
     
     protected function handleUpload(UploadedFile $file)
@@ -68,25 +82,13 @@ class UploaderController implements UploadControllerInterface
         $name = $this->namer->name($file, $this->config['directory_prefix']);
         $uploaded = $this->storage->upload($file, $name);
         
-        $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
-            'use_orphanage' => $this->config['use_orphanage'],
-            'file_name' => $name
-        ));
-        $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
-            
-        if(!$this->config['use_orphanage'])
-        {
-            // dispatch post upload event
-            $postPersistEvent = new PostPersistEvent($uploaded, $this->request, $this->type);
-            $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
-        }
-        
-        return $name;
+        return $uploaded;
     }
     
     protected function handleChunkedUpload(UploadedFile $file)
     {
-        $request = $this->request;
+        $request  = $this->request;
+        $uploaded = null;
         
         // getting information about chunks
         $index = $request->get('qqpartindex');
@@ -113,12 +115,12 @@ class UploaderController implements UploadControllerInterface
             
             // validate this entity and upload on success
             $this->validate($uploadedFile);
-            $ret = $this->handleUpload();
+            $uploaded = $this->handleUpload();
             
             $this->chunkManager->cleanup($path);
         }
         
-        return $name;
+        return $uploaded;
     }
     
     protected function validate(UploadedFile $file)

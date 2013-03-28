@@ -5,21 +5,25 @@ namespace Oneup\UploaderBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Gaufrette\File;
+
+use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
 
 class PostUploadEvent extends Event
 {
     protected $file;
     protected $request;
     protected $type;
-    protected $options;
+    protected $response;
+    protected $config;
     
-    public function __construct(File $file, Request $request, $type, array $options = array())
+    public function __construct(File $file, UploaderResponse $response, Request $request, $type, array $config)
     {
         $this->file = $file;
         $this->request = $request;
+        $this->response = $response;
         $this->type = $type;
-        $this->options = $options;
+        $this->config = $config;
     }
     
     public function getFile()
@@ -37,8 +41,13 @@ class PostUploadEvent extends Event
         return $this->type;
     }
     
-    public function getOptions()
+    public function getResponse()
     {
-        return $this->options;
+        return $this->response;
+    }
+    
+    public function getConfig()
+    {
+        return $this->config;
     }
 }

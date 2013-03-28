@@ -7,17 +7,23 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Gaufrette\File;
 
+use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
+
 class PostPersistEvent extends Event
 {
     protected $file;
     protected $request;
     protected $type;
+    protected $response;
+    protected $config;
     
-    public function __construct(File $file, Request $request, $type)
+    public function __construct(File $file, UploaderResponse $response, Request $request, $type, array $config)
     {
         $this->file = $file;
         $this->request = $request;
+        $this->response = $response;
         $this->type = $type;
+        $this->config = $config;
     }
     
     public function getFile()
@@ -33,5 +39,15 @@ class PostPersistEvent extends Event
     public function getType()
     {
         return $this->type;
+    }
+    
+    public function getResponse()
+    {
+        return $this->response;
+    }
+    
+    public function getConfig()
+    {
+        return $this->config;
     }
 }
