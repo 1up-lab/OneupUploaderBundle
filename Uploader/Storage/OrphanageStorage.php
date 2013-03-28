@@ -1,12 +1,15 @@
 <?php
 
-namespace Oneup\UploaderBundle\Storage;
+namespace Oneup\UploaderBundle\Uploader\Storage;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use Gaufrette\Filesystem;
+use Gaufrette\Filesystem as GaufretteFilesystem;
 
-use Oneup\UploaderBundle\Storage\GaufretteStorage;
+use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
+use Oneup\UploaderBundle\Uploader\Storage\OrphanageStorageInterface;
 
 class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
 {
@@ -15,7 +18,7 @@ class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInter
     protected $config;
     protected $type;
     
-    public function __construct(Gaufrette $orphanage, Gaufrette $filesystem, SessionInterface $session, $config, $type)
+    public function __construct(GaufretteFilesystem $orphanage, GaufretteFilesystem $filesystem, SessionInterface $session, $config, $type)
     {
         parent::__construct($orphanage);
         

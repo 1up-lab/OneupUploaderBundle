@@ -79,6 +79,7 @@ class UploaderController implements UploadControllerInterface
             throw new UploadException('This extension is not allowed.');
         
         $name = $this->namer->name($file, $this->config['directory_prefix']);
+        $uploaded = $this->storage->upload($file, $name);
         
         $postUploadEvent = new PostUploadEvent($file, $this->request, $this->type, array(
             'use_orphanage' => $this->config['use_orphanage'],
@@ -88,8 +89,6 @@ class UploaderController implements UploadControllerInterface
             
         if(!$this->config['use_orphanage'])
         {
-            $uploaded = $this->storage->upload($file, $name);
-            
             // dispatch post upload event
             $postPersistEvent = new PostPersistEvent($uploaded, $this->request, $this->type);
             $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
