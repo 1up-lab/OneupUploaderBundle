@@ -1,38 +1,39 @@
 <?php
 
-namespace Oneup\UploaderBundle\Uploader\Orphanage;
+namespace Oneup\UploaderBundle\Uploader\Storage;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageInterface;
+use Gaufrette\Filesystem as GaufretteFilesystem;
 
-class Orphanage implements OrphanageInterface
+use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
+use Oneup\UploaderBundle\Uploader\Storage\OrphanageStorageInterface;
+
+class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
 {
+    protected $masked;
     protected $session;
-    protected $storage;
-    protected $namer;
     protected $config;
     protected $type;
     
-    public function __construct(SessionInterface $session, StorageInterface $storage, $config, $type)
+    public function __construct(GaufretteFilesystem $orphanage, GaufretteFilesystem $filesystem, SessionInterface $session, $config, $type)
     {
+        parent::__construct($orphanage);
+        
+        $this->masked = $filesystem;
         $this->session = $session;
-        $this->storage = $storage;
-        $this->config  = $config;
-        $this->type    = $type;
+        $this->config = $config;
+        $this->type = $type;
     }
     
-    public function addFile(File $file, $name)
+    public function upload(File $file, $name = null)
     {
         if(!$this->session->isStarted())
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         
-        // move file to orphanage
-        return $file->move($this->getPath(), $name);
+        parent::upload($file, $name);
     }
     
     public function uploadFiles($keep = false)
@@ -40,16 +41,18 @@ class Orphanage implements OrphanageInterface
         $system = new Filesystem();
         $finder = new Finder();
         
+        // switch orphanage with masked filesystem
+        $this->filesystem = $this->masked;
+        
         if(!$system->exists($this->getPath()))
             return array();
         
         $finder->in($this->getPathRelativeToSession())->files();
         
         $uploaded = array();
-        
         foreach($finder as $file)
         {
-            $uploaded[] = $this->storage->upload(new UploadedFile($file->getPathname(), $file->getBasename(), null, null, null, true));
+            $uploaded[] = $this->upload(new UploadedFile($file->getPathname(), $file->getBasename(), null, null, null, true));
             
             if(!$keep)
             {

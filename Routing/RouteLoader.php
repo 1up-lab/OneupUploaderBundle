@@ -38,21 +38,7 @@ class RouteLoader extends Loader
                 array('_method' => 'POST')
             );
             
-            $delete = new Route(
-                sprintf('/_uploader/%s/delete/{uuid}', $type),
-                array('_controller' => $service . ':delete', '_format' => 'json'),
-                array('_method' => 'DELETE', 'uuid' => '[A-z0-9-]*')
-            );
-            
-            $base = new Route(
-                sprintf('/_uploader/%s/delete', $type),
-                array('_controller' => $service . ':delete', '_format' => 'json'),
-                array('_method' => 'DELETE')
-            );
-            
             $routes->add(sprintf('_uploader_%s_upload', $type), $upload);
-            $routes->add(sprintf('_uploader_%s_delete', $type), $delete);
-            $routes->add(sprintf('_uploader_%s_delete_base', $type), $base);
         }
         
         return $routes;

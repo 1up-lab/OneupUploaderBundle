@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Loader;
 
 class OneupUploaderExtension extends Extension
 {
-    protected static $storageServices = array();
+    protected $storageServices = array();
     
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -35,6 +35,7 @@ class OneupUploaderExtension extends Extension
         }
         
         $container->setParameter('oneup_uploader.orphanage', $config['orphanage']);
+        //$config['orphanage']['storage'] = $this->registerStorageService($container, $config['orphanage']);
         
         // handle mappings
         foreach($config['mappings'] as $key => $mapping)
@@ -46,22 +47,20 @@ class OneupUploaderExtension extends Extension
             
             $mapping['max_size'] = $this->getMaxUploadSize($mapping['max_size']);
             
-            $mapping['storage'] = $this->registerStorageService($container, $mapping);
-            $this->registerServicesPerMap($container, $key, $mapping);
+            $mapping['storage'] = $this->registerStorageService($container, $mapping['filesystem']);
+            $this->registerServicesPerMap($container, $key, $mapping, $config);
         }
     }
     
-    protected function registerStorageService(ContainerBuilder $container, $mapping)
+    protected function registerStorageService(ContainerBuilder $container, $filesystem)
     {
-        $storage = $mapping['storage'];
-        
-        // if service has already been declared, return
-        if(in_array($storage, self::$storageServices))
-            return;
-        
         // get base name of gaufrette storage
-        $name = explode('.', $storage);
+        $name = explode('.', $filesystem);
         $name = end($name);
+
+        // if service has already been declared, return
+        if(in_array($name, $this->storageServices))
+            return;
         
         // create name of new storage service
         $service = sprintf('oneup_uploader.storage.%s', $name);
@@ -70,39 +69,34 @@ class OneupUploaderExtension extends Extension
             ->register($service, $container->getParameter('oneup_uploader.storage.class'))
                 
             // inject the actual gaufrette filesystem
-            ->addArgument(new Reference($storage))
-                
-            ->addArgument(new Reference('oneup_uploader.deletable_manager'))
+            ->addArgument(new Reference($filesystem))
         ;
         
-        self::$storageServices[] = $name;
+        $this->storageServices[] = $name;
         
         return $service;
     }
     
-    protected function registerServicesPerMap(ContainerBuilder $container, $type, $mapping)
+    protected function registerServicesPerMap(ContainerBuilder $container, $type, $mapping, $config)
     {
         if($mapping['use_orphanage'])
         {
-            // this mapping want to use the orphanage, so create a typed one
+            $orphanage = sprintf('oneup_uploader.orphanage.%s', $type);
+            
+            // this mapping wants to use the orphanage, so create
+            // a masked filesystem for the controller
             $container
-                ->register(sprintf('oneup_uploader.orphanage.%s', $type), $container->getParameter('oneup_uploader.orphanage.class'))
+                ->register($orphanage, $container->getParameter('oneup_uploader.orphanage.class'))
                 
+                ->addArgument(new Reference($config['orphanage']['filesystem']))
+                ->addArgument(new Reference($mapping['filesystem']))
                 ->addArgument(new Reference('session'))
-                ->addArgument(new Reference($mapping['storage']))
-                ->addArgument($container->getParameter('oneup_uploader.orphanage'))
+                ->addArgument($config['orphanage'])
                 ->addArgument($type)
             ;
             
-            $container
-                ->getDefinition('oneup_uploader.orphanage_manager')
-                    
-                // add this service to the orphanage manager
-                ->addMethodCall('addImplementation', array(
-                    $type,
-                    new Reference(sprintf('oneup_uploader.orphanage.%s', $type))
-                ))
-            ;
+            // switch storage of mapping to orphanage
+            $mapping['storage'] = $orphanage;
         }
         
         // create controllers based on mapping

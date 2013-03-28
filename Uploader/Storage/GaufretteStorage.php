@@ -8,17 +8,14 @@ use Gaufrette\StreamMode;
 use Gaufrette\Filesystem;
 
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\Uploader\Deletable\DeletableManagerInterface;
 
 class GaufretteStorage implements StorageInterface
 {
     protected $filesystem;
-    protected $deletableManager;
     
-    public function __construct(Filesystem $filesystem, DeletableManagerInterface $deletableManager)
+    public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->deletableManager = $deletableManager;
     }
     
     public function upload(File $file, $name = null)
@@ -48,30 +45,5 @@ class GaufretteStorage implements StorageInterface
         $src->close();
         
         return $this->filesystem->get($name);
-    }
-    
-    public function remove($type, $uuid)
-    {
-        try
-        {
-            // get associated file path
-            $name = $this->deletableManager->getFile($type, $uuid);
-            
-            if($this->filesystem->has($name))
-            {
-                $this->filesystem->delete($name);
-            }
-            
-            // delete this reference anyway
-            $this->deletableManager->removeFile($type, $uuid);
-        }
-        catch(\Exception $e)
-        {
-            // whoopsi, something went terribly wrong
-            // better leave this method now and never look back
-            return false;
-        }
-        
-        return true;
     }
 }
