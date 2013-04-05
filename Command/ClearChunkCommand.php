@@ -18,7 +18,7 @@ class ClearChunkCommand extends ContainerAwareCommand
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->getContainer()->get('oneup_uploader.chunks.manager');
+        $manager = $this->getContainer()->get('oneup_uploader.chunk_manager');
         $manager->clear();
     }
 }

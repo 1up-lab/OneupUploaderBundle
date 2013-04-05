@@ -102,7 +102,7 @@ class UploaderController implements UploadControllerInterface
             // we'll take the first chunk and append the others to it
             // this way we don't need another file in temporary space for assembling
             $chunks = $chunkManager->getChunks($uuid);
-                
+            die();
             // assemble parts
             $assembled = $chunkManager->assembleChunks($chunks);
             $path = $assembled->getPath();
