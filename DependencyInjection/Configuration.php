@@ -17,7 +17,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('chunks')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultFalse()->end()
                         ->scalarNode('maxage')->defaultValue(604800)->end()
                         ->scalarNode('directory')->defaultNull()->end()
                     ->end()
@@ -35,7 +34,6 @@ class Configuration implements ConfigurationInterface
                     ->requiresAtLeastOneElement()
                     ->prototype('array')
                         ->children()
-
                             ->arrayNode('storage')
                                 ->addDefaultsIfNotSet()
                                 ->children()
