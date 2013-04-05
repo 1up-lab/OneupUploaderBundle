@@ -4,25 +4,25 @@ namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Gaufrette\Filesystem as GaufretteFilesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
 
-use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
+use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
+use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Storage\OrphanageStorageInterface;
 
-class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
+class OrphanageStorage extends FilesystemStorage implements OrphanageStorageInterface
 {
-    protected $orphanage;
-    protected $masked;
+    protected $storage;
     protected $session;
     protected $config;
     protected $type;
     
-    public function __construct(GaufretteFilesystem $orphanage, GaufretteFilesystem $filesystem, SessionInterface $session, $config, $type)
+    public function __construct(StorageInterface $storage, SessionInterface $session, $config, $type)
     {
-        parent::__construct($orphanage);
+        parent::__construct($config['directory']);
         
-        $this->orphanage = $orphanage;
-        $this->masked = $filesystem;
+        $this->storage = $storage;
         $this->session = $session;
         $this->config = $config;
         $this->type = $type;
@@ -33,48 +33,38 @@ class OrphanageStorage extends GaufretteStorage implements OrphanageStorageInter
         if(!$this->session->isStarted())
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         
-        // generate a path based on session id
-        $path = $this->getPath();
-        
-        return parent::upload($file, $name, $path);
+        return parent::upload($file, $name, $this->getPath());
     }
     
-    public function uploadFiles($keep = false)
+    public function uploadFiles()
     {
-        // switch orphanage with masked filesystem
-        $this->filesystem = $this->masked;
+        $filesystem = new Filesystem();
+        $files = $this->getFiles();
+        $return = array();
         
-        $uploaded = array();
-        foreach($this->getFiles() as $file)
+        foreach($files as $file)
         {
-            $uploaded[] = parent::upload(new File($this->getWrapper($file)), str_replace($this->getPath(), '', $file));
-            
-            if(!$keep)
-            {
-                $this->orphanage->delete($file);
-            }
+            $return[] = $this->storage->upload(new File($file->getPathname()), str_replace($this->getFindPath(), '', $file));
         }
         
-        return $uploaded;
+        return $return;
     }
     
-    public function getFiles()
+    protected function getFiles()
     {
-        $keys = $this->orphanage->listKeys($this->getPath());
+        $finder = new Finder();
+        $finder->in($this->getFindPath())->files();
         
-        return $keys['keys'];
+        return $finder;
     }
     
     protected function getPath()
     {
-        $id = $this->session->getId();
-        $path = sprintf('%s/%s/%s', $this->config['directory'], $id, $this->type);
-        
-        return $path;
+        return sprintf('%s/%s', $this->session->getId(), $this->type);
     }
     
-    protected function getWrapper($key)
+    protected function getFindPath()
     {
-        return sprintf('gaufrette://%s/%s', $this->config['domain'], $key);
+        return sprintf('%s/%s', $this->config['directory'], $this->getPath());
     }
 }

@@ -20,12 +20,12 @@ class OneupUploaderExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('uploader.xml');
         
-        $config['chunks']['directory'] = !array_key_exists('directory', $config['chunks']) ?
+        $config['chunks']['directory'] = is_null($config['chunks']['directory']) ?
             sprintf('%s/uploader/chunks', $container->getParameter('kernel.cache_dir')) :
             $this->normalizePath($config['chunks']['directory'])
         ;
         
-        $config['orphanage']['directory'] = !array_key_exists('directory', $config['orphanage']) ?
+        $config['orphanage']['directory'] = is_null($config['orphanage']['directory']) ?
             sprintf('%s/uploader/orphanage', $container->getParameter('kernel.cache_dir')) :
             $this->normalizePath($config['orphanage']['directory'])
         ;
@@ -74,6 +74,24 @@ class OneupUploaderExtension extends Extension
                 }
                 
                 $storageService = new Reference($storageName);
+                
+                if($mapping['use_orphanage'])
+                {
+                    $orphanageName = sprintf('oneup_uploader.orphanage.%s', $key);
+                    
+                    // this mapping wants to use the orphanage, so create
+                    // a masked filesystem for the controller
+                    $container
+                        ->register($orphanageName, $container->getParameter('oneup_uploader.orphanage.class'))
+                        ->addArgument($storageService)
+                        ->addArgument(new Reference('session'))
+                        ->addArgument($config['orphanage'])
+                        ->addArgument($key)
+                    ;
+
+                    // switch storage of mapping to orphanage
+                    $storageService = new Reference($orphanageName);
+                }
             }
             
             // create controllers based on mapping

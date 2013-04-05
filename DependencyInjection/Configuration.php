@@ -25,7 +25,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('orphanage')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultFalse()->end()
                         ->scalarNode('maxage')->defaultValue(604800)->end()
                         ->scalarNode('directory')->defaultNull()->end()
                     ->end()
