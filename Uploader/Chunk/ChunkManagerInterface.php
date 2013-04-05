@@ -9,7 +9,7 @@ interface ChunkManagerInterface
     public function warmup();
     public function clear();
     public function addChunk($uuid, $index, UploadedFile $chunk, $original);
-    public function assembleChunks(array $chunks);
+    public function assembleChunks(\Traversable $chunks);
     public function cleanup($path);
     public function getChunks($uuid);
 }

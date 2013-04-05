@@ -58,7 +58,7 @@ class ChunkManager implements ChunkManagerInterface
         $chunk->move($path, $name);
     }
     
-    public function assembleChunks(array $chunks)
+    public function assembleChunks(\Traversable $chunks)
     {
         // I don't really get it why getIterator()->current() always
         // gives me a null-value, due to that I've to implement this
