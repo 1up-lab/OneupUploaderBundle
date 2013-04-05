@@ -69,7 +69,7 @@ class OneupUploaderExtension extends Extension
                 {
                     $container
                         ->register($storageName, $container->getParameter(sprintf('oneup_uploader.storage.%s.class', $mapping['storage']['type'])))
-                        ->addArgument($mapping['storage']['filesystem'])
+                        ->addArgument(new Reference($mapping['storage']['filesystem']))
                     ;
                 }
                 
