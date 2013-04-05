@@ -9,11 +9,15 @@
                <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
                <parameter key="oneup_uploader.controller.class">Oneup\UploaderBundle\Controller\UploaderController</parameter>
                <parameter key="oneup_uploader.storage.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
+               <parameter key="oneup_uploader.storage.filesystem.class">Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage</parameter>
                <parameter key="oneup_uploader.orphanage.class">Oneup\UploaderBundle\Uploader\Storage\OrphanageStorage</parameter>
                <parameter key="oneup_uploader.orphanage.manager.class">Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager</parameter>
            </parameters>
 
            <services>
+               
+               <!-- storage -->
+               <service id="oneup_uploader.filesystem_storage" class="%oneup_uploader.storage.filesystem.class%" />
                
                <!-- managers -->
                <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%">

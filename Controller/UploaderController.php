@@ -2,49 +2,41 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Finder\Finder;
 
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
-use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
 use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
 
 class UploaderController implements UploadControllerInterface
 {
-    protected $request;
-    protected $namer;
+    protected $container;
     protected $storage;
     protected $config;
-    protected $dispatcher;
     protected $type;
-    protected $chunkManager;
     
-    public function __construct(Request $request, NamerInterface $namer, StorageInterface $storage, EventDispatcherInterface $dispatcher, $type, array $config, ChunkManagerInterface $chunkManager)
+    public function __construct(ContainerInterface $container, StorageInterface $storage, array $config, $type)
     {
-        $this->request = $request;
-        $this->namer = $namer;
+        $this->container = $container;
         $this->storage = $storage;
         $this->config = $config;
-        $this->dispatcher = $dispatcher;
         $this->type = $type;
-        $this->chunkManager = $chunkManager;
     }
     
     public function upload()
     {
+        $request = $this->container->get('request');
+        $dispatcher = $this->container->get('event_dispatcher');
+        
         $response = new UploaderResponse();
-        $totalParts = $this->request->get('qqtotalparts', 1);
-        $files = $this->request->files;
+        $totalParts = $request->get('qqtotalparts', 1);
+        $files = $request->files;
         $chunked = $totalParts > 1;
         
         foreach($files as $file)
@@ -53,14 +45,14 @@ class UploaderController implements UploadControllerInterface
             {
                 $uploaded = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
         
-                $postUploadEvent = new PostUploadEvent($uploaded, $response, $this->request, $this->type, $this->config);
-                $this->dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+                $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
+                $dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
             
                 if(!$this->config['use_orphanage'])
                 {
                     // dispatch post upload event
-                    $postPersistEvent = new PostPersistEvent($uploaded, $response, $this->request, $this->type, $this->config);
-                    $this->dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
+                    $postPersistEvent = new PostPersistEvent($uploaded, $response, $request, $this->type, $this->config);
+                    $dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
                 }
             }
             catch(UploadException $e)
@@ -79,7 +71,11 @@ class UploaderController implements UploadControllerInterface
     {
         $this->validate($file);
         
-        $name = $this->namer->name($file, $this->config['directory_prefix']);
+        // no error happend, proceed
+        $namer = $this->container->get($this->config['namer']);
+        $name  = $namer->name($file);
+        
+        // perform the real upload
         $uploaded = $this->storage->upload($file, $name);
         
         return $uploaded;
@@ -87,7 +83,8 @@ class UploaderController implements UploadControllerInterface
     
     protected function handleChunkedUpload(UploadedFile $file)
     {
-        $request  = $this->request;
+        $request = $this->container->get('request');
+        $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
         $uploaded = null;
         
         // getting information about chunks
@@ -96,7 +93,7 @@ class UploaderController implements UploadControllerInterface
         $uuid  = $request->get('qquuid');
         $orig  = $request->get('qqfilename');
             
-        $this->chunkManager->addChunk($uuid, $index, $file, $orig);
+        $chunkManager->addChunk($uuid, $index, $file, $orig);
         
         // if all chunks collected and stored, proceed
         // with reassembling the parts
@@ -104,10 +101,10 @@ class UploaderController implements UploadControllerInterface
         {
             // we'll take the first chunk and append the others to it
             // this way we don't need another file in temporary space for assembling
-            $chunks = $this->chunkManager->getChunks($uuid);
+            $chunks = $chunkManager->getChunks($uuid);
                 
             // assemble parts
-            $assembled = $this->chunkManager->assembleChunks($chunks);
+            $assembled = $chunkManager->assembleChunks($chunks);
             $path = $assembled->getPath();
             
             // create a temporary uploaded file to meet the interface restrictions
@@ -117,7 +114,7 @@ class UploaderController implements UploadControllerInterface
             $this->validate($uploadedFile);
             $uploaded = $this->handleUpload($uploadedFile);
             
-            $this->chunkManager->cleanup($path);
+            $chunkManager->cleanup($path);
         }
         
         return $uploaded;

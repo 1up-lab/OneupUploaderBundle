@@ -46,4 +46,18 @@ class GaufretteStorage implements StorageInterface
         
         return $this->filesystem->get($path);
     }
+    
+    public function remove($path)
+    {
+        try
+        {
+            $this->filesystem->delete($path);
+        }
+        catch(\RuntimeException $e)
+        {
+            return false;
+        }
+        
+        return true;
+    }
 }
