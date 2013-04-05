@@ -16,12 +16,6 @@ class ChunkManager implements ChunkManagerInterface
         $this->configuration = $configuration;
     }
     
-    public function warmup()
-    {
-        $filesystem = new FileSystem();
-        $filesystem->mkdir($this->configuration['directory']);
-    }
-    
     public function clear()
     {
         $system = new Filesystem();
