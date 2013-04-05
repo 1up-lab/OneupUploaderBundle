@@ -5,6 +5,7 @@ namespace Oneup\UploaderBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
@@ -70,6 +71,9 @@ class OneupUploaderExtension extends Extension
                 {
                     if(!class_exists('Gaufrette\\Filesystem'))
                         throw new InvalidArgumentException('You have to install Gaufrette in order to use it as a storage service.');
+                    
+                    if(strlen($mapping['storage']['filesystem']) <= 0)
+                        throw new ServiceNotFoundException('Empty service name');
                     
                     $container
                         ->register($storageName, $container->getParameter(sprintf('oneup_uploader.storage.%s.class', $mapping['storage']['type'])))
