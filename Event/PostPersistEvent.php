@@ -17,7 +17,7 @@ class PostPersistEvent extends Event
     protected $response;
     protected $config;
     
-    public function __construct(File $file, UploaderResponse $response, Request $request, $type, array $config)
+    public function __construct($file, UploaderResponse $response, Request $request, $type, array $config)
     {
         $this->file = $file;
         $this->request = $request;
