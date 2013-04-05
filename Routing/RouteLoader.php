@@ -38,7 +38,7 @@ class RouteLoader extends Loader
                 array('_method' => 'POST')
             );
             
-            $routes->add(sprintf('_uploader_%s_upload', $type), $upload);
+            $routes->add(sprintf('_uploader_%s', $type), $upload);
         }
         
         return $routes;
