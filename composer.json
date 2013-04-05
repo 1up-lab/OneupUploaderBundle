@@ -13,9 +13,7 @@
     ],
     
     "require": {
-        "symfony/finder": ">=2.0.16,<2.3-dev",
-        "symfony/filesystem": ">=2.0.16,<2.3-dev",
-        "symfony/event-dispatcher": ">=2.0.16,<2.3-dev"
+        "symfony/framework-bundle": "2.*"
     },
     
     "suggest": {
