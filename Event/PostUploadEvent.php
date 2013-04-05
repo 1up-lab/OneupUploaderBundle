@@ -4,9 +4,6 @@ namespace Oneup\UploaderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
-
-use Gaufrette\File;
-
 use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
 
 class PostUploadEvent extends Event
