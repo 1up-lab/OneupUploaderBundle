@@ -98,6 +98,9 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
         
         if($inp == 'namer')
             return new UniqidNamer();
+        
+        if($inp == 'translator')
+            return $this->getTranslatorMock();
     }
     
     protected function getEventDispatcherMock()
@@ -125,6 +128,18 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
         $mock->files = array(
             $this->getUploadedFile()
         );
+        
+        return $mock;
+    }
+    
+    protected function getTranslatorMock()
+    {
+        $mock = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $mock
+            ->expects($this->any())
+            ->method('trans')
+            ->will($this->returnValue('A translated error.'))
+        ;
         
         return $mock;
     }

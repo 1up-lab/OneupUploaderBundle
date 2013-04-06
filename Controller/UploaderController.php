@@ -33,6 +33,7 @@ class UploaderController implements UploadControllerInterface
     {
         $request = $this->container->get('request');
         $dispatcher = $this->container->get('event_dispatcher');
+        $translator = $this->container->get('translator');
         
         $response = new UploaderResponse();
         $totalParts = $request->get('qqtotalparts', 1);
@@ -58,6 +59,7 @@ class UploaderController implements UploadControllerInterface
             catch(UploadException $e)
             {
                 $response->setSuccess(false);
+                $response->setError($translator->trans($e->getMessage(), array(), 'OneupUploaderBundle'));
                 
                 // an error happended, return this error message.
                 return new JsonResponse($response->assemble());
