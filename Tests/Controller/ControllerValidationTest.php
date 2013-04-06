@@ -14,8 +14,8 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         // create a config
         $config = array();
         $config['max_size'] = 10;
-        $config['allowed_types'] = array();
-        $config['disallowed_types'] = array();
+        $config['allowed_extensions'] = array();
+        $config['disallowed_extensions'] = array();
         
         // prepare mock
         $file = $this->getUploadedFileMock();
@@ -33,8 +33,55 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         // create a config
         $config = array();
         $config['max_size'] = 20;
-        $config['allowed_types'] = array();
-        $config['disallowed_types'] = array();
+        $config['allowed_extensions'] = array();
+        $config['disallowed_extensions'] = array();
+        
+        // prepare mock
+        $file = $this->getUploadedFileMock();
+        $method = $this->getValidationMethod();
+        
+        $container = $this->getContainerMock();
+        $storage = $this->getStorageMock();
+        
+        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $method->invoke($controller, $file);
+        
+        // yey, no exception thrown
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpFoundation\File\Exception\UploadException
+     */
+    public function testAllowedExtensionValidationFails()
+    {
+        // create a config
+        $config = array();
+        $config['max_size'] = 20;
+        $config['allowed_extensions'] = array('txt', 'pdf');
+        $config['disallowed_extensions'] = array();
+        
+        // prepare mock
+        $file = $this->getUploadedFileMock();
+        $method = $this->getValidationMethod();
+        
+        $container = $this->getContainerMock();
+        $storage = $this->getStorageMock();
+        
+        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $method->invoke($controller, $file);
+        
+        // yey, no exception thrown
+        $this->assertTrue(true);
+    }
+    
+    public function testAllowedExtensionValidationPasses()
+    {
+        // create a config
+        $config = array();
+        $config['max_size'] = 20;
+        $config['allowed_extensions'] = array('png', 'jpg', 'jpeg', 'gif');
+        $config['disallowed_extensions'] = array();
         
         // prepare mock
         $file = $this->getUploadedFileMock();
