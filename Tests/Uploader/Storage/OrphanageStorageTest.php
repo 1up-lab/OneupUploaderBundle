@@ -23,8 +23,8 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->numberOfPayloads = 5;
-        $this->tempDirectory = sys_get_temp_dir() . '/storage';
-        $this->realDirectory = sys_get_temp_dir() . '/orphanage';
+        $this->tempDirectory = sys_get_temp_dir() . '/orphanage';
+        $this->realDirectory = sys_get_temp_dir() . '/storage';
         $this->payloads = array();
         
         $filesystem = new Filesystem();
@@ -44,7 +44,7 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
         }
         
         // create underlying storage
-        $this->storage = new FilesystemStorage($this->tempDirectory);
+        $this->storage = new FilesystemStorage($this->realDirectory);
         
         // create orphanage
         $session = new Session(new MockArraySessionStorage());
@@ -62,15 +62,42 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
             $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
         }
         
-        // find in tempDirectory, should equals numberOfPayloads
         $finder = new Finder();
         $finder->in($this->tempDirectory)->files();
         $this->assertCount($this->numberOfPayloads, $finder);
         
-        // find in realDirectory, should equals 0
         $finder = new Finder();
         $finder->in($this->realDirectory)->files();
         $this->assertCount(0, $finder);
+    }
+    
+    public function testUploadAndFetching()
+    {
+        for($i = 0; $i < $this->numberOfPayloads; $i ++)
+        {
+            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
+        }
+        
+        $finder = new Finder();
+        $finder->in($this->tempDirectory)->files();
+        $this->assertCount($this->numberOfPayloads, $finder);
+        
+        $finder = new Finder();
+        $finder->in($this->realDirectory)->files();
+        $this->assertCount(0, $finder);
+        
+        $files = $this->orphanage->uploadFiles();
+        
+        $this->assertTrue(is_array($files));
+        $this->assertCount($this->numberOfPayloads, $files);
+        
+        $finder = new Finder();
+        $finder->in($this->tempDirectory)->files();
+        $this->assertCount(0, $finder);
+        
+        $finder = new Finder();
+        $finder->in($this->realDirectory)->files();
+        $this->assertCount($this->numberOfPayloads, $finder);
     }
     
     public function tearDown()
