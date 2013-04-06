@@ -33,17 +33,4 @@ class FilesystemStorage implements StorageInterface
         
         return $file;
     }
-    
-    public function remove($path)
-    {
-        $filesystem = new Filesystem();
-        
-        if($filesystem->exists($path))
-        {
-            $filesystem->remove($path);
-            return true;
-        }
-        
-        return false;
-    }
 }
