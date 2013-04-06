@@ -96,6 +96,53 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         // yey, no exception thrown
         $this->assertTrue(true);
     }
+
+    /**
+     * @expectedException Symfony\Component\HttpFoundation\File\Exception\UploadException
+     */
+    public function testDisallowedExtensionValidationFails()
+    {
+        // create a config
+        $config = array();
+        $config['max_size'] = 20;
+        $config['allowed_extensions'] = array();
+        $config['disallowed_extensions'] = array('jpeg');
+        
+        // prepare mock
+        $file = $this->getUploadedFileMock();
+        $method = $this->getValidationMethod();
+        
+        $container = $this->getContainerMock();
+        $storage = $this->getStorageMock();
+        
+        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $method->invoke($controller, $file);
+        
+        // yey, no exception thrown
+        $this->assertTrue(true);
+    }
+    
+    public function testDisallowedExtensionValidationPasses()
+    {
+        // create a config
+        $config = array();
+        $config['max_size'] = 20;
+        $config['allowed_extensions'] = array();
+        $config['disallowed_extensions'] = array('exe', 'bat');
+        
+        // prepare mock
+        $file = $this->getUploadedFileMock();
+        $method = $this->getValidationMethod();
+        
+        $container = $this->getContainerMock();
+        $storage = $this->getStorageMock();
+        
+        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $method->invoke($controller, $file);
+        
+        // yey, no exception thrown
+        $this->assertTrue(true);
+    }
     
     protected function getUploadedFileMock()
     {
