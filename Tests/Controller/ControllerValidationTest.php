@@ -17,15 +17,7 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         $config['allowed_extensions'] = array();
         $config['disallowed_extensions'] = array();
         
-        // prepare mock
-        $file = $this->getUploadedFileMock();
-        $method = $this->getValidationMethod();
-        
-        $container = $this->getContainerMock();
-        $storage = $this->getStorageMock();
-        
-        $controller = new UploaderController($container, $storage, $config, 'cat');
-        $method->invoke($controller, $file);
+        $this->performConfigTest($config);
     }
     
     public function testMaxSizeValidationPasses()
@@ -36,18 +28,7 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         $config['allowed_extensions'] = array();
         $config['disallowed_extensions'] = array();
         
-        // prepare mock
-        $file = $this->getUploadedFileMock();
-        $method = $this->getValidationMethod();
-        
-        $container = $this->getContainerMock();
-        $storage = $this->getStorageMock();
-        
-        $controller = new UploaderController($container, $storage, $config, 'cat');
-        $method->invoke($controller, $file);
-        
-        // yey, no exception thrown
-        $this->assertTrue(true);
+        $this->performConfigTest($config);
     }
 
     /**
@@ -61,18 +42,7 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         $config['allowed_extensions'] = array('txt', 'pdf');
         $config['disallowed_extensions'] = array();
         
-        // prepare mock
-        $file = $this->getUploadedFileMock();
-        $method = $this->getValidationMethod();
-        
-        $container = $this->getContainerMock();
-        $storage = $this->getStorageMock();
-        
-        $controller = new UploaderController($container, $storage, $config, 'cat');
-        $method->invoke($controller, $file);
-        
-        // yey, no exception thrown
-        $this->assertTrue(true);
+        $this->performConfigTest($config);
     }
     
     public function testAllowedExtensionValidationPasses()
@@ -83,18 +53,7 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         $config['allowed_extensions'] = array('png', 'jpg', 'jpeg', 'gif');
         $config['disallowed_extensions'] = array();
         
-        // prepare mock
-        $file = $this->getUploadedFileMock();
-        $method = $this->getValidationMethod();
-        
-        $container = $this->getContainerMock();
-        $storage = $this->getStorageMock();
-        
-        $controller = new UploaderController($container, $storage, $config, 'cat');
-        $method->invoke($controller, $file);
-        
-        // yey, no exception thrown
-        $this->assertTrue(true);
+        $this->performConfigTest($config);
     }
 
     /**
@@ -108,18 +67,7 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         $config['allowed_extensions'] = array();
         $config['disallowed_extensions'] = array('jpeg');
         
-        // prepare mock
-        $file = $this->getUploadedFileMock();
-        $method = $this->getValidationMethod();
-        
-        $container = $this->getContainerMock();
-        $storage = $this->getStorageMock();
-        
-        $controller = new UploaderController($container, $storage, $config, 'cat');
-        $method->invoke($controller, $file);
-        
-        // yey, no exception thrown
-        $this->assertTrue(true);
+        $this->performConfigTest($config);
     }
     
     public function testDisallowedExtensionValidationPasses()
@@ -130,6 +78,11 @@ class ControllerValidationTest extends \PHPUnit_Framework_TestCase
         $config['allowed_extensions'] = array();
         $config['disallowed_extensions'] = array('exe', 'bat');
         
+        $this->performConfigTest($config);
+    }
+    
+    protected function performConfigTest($config)
+    {
         // prepare mock
         $file = $this->getUploadedFileMock();
         $method = $this->getValidationMethod();
