@@ -6,5 +6,5 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface NamerInterface
 {
-    public function name(UploadedFile $file, $prefix = null);
+    public function name(UploadedFile $file);
 }
