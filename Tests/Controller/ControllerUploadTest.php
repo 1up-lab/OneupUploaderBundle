@@ -10,7 +10,7 @@ use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
 use Oneup\UploaderBundle\Controller\UploaderController;
 
-class ControllerTest extends \PHPUnit_Framework_TestCase
+class ControllerUploadTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempFile;
     
