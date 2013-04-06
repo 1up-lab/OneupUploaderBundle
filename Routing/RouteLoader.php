@@ -8,7 +8,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouteLoader extends Loader
 {
-    protected $name;
     protected $controllers;
     
     public function __construct()
