@@ -20,10 +20,18 @@ class TestUploaderResponse extends \PHPUnit_Framework_TestCase
         
         $cat = 'is grumpy';
         $dog = 'has no idea';
+        $del = 'nothing here';
         
         $response['cat'] = $cat;
         $response['dog'] = $dog;
+        $response['del'] = $del;
         $response->setSuccess(false);
+
+        // the next three lines are from code coverage
+        $this->assertTrue(isset($response['cat']));
+        $this->assertEquals($response['cat'], $cat);
+        
+        unset($response['del']);
         
         $assembled = $response->assemble();
         
