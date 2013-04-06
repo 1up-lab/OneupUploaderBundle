@@ -100,6 +100,17 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertCount($this->numberOfPayloads, $finder);
     }
     
+    public function testUploadAndFetchingIfDirectoryDoesNotExist()
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->tempDirectory);
+        
+        $files = $this->orphanage->uploadFiles();
+        
+        $this->assertTrue(is_array($files));
+        $this->assertCount(0, $files);
+    }
+    
     public function tearDown()
     {
         $filesystem = new Filesystem();
