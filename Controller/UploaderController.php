@@ -126,19 +126,19 @@ class UploaderController implements UploadControllerInterface
     {
         // check if the file size submited by the client is over the max size in our config
         if($file->getClientSize() > $this->config['max_size'])
-            throw new UploadException('File is too large.');
+            throw new UploadException('error.maxsize');
         
         $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         
         // if this mapping defines at least one type of an allowed extension,
         // test if the current is in this array
         if(count($this->config['allowed_extensions']) > 0 && !in_array($extension, $this->config['allowed_extensions']))
-            throw new UploadException('This extension is not allowed.');
+            throw new UploadException('error.whitelist');
         
         // check if the current extension is mentioned in the disallowed types
         // and if so, throw an exception
         if(count($this->config['disallowed_extensions']) > 0 && in_array($extension, $this->config['disallowed_extensions']))
-            throw new UploadException('This extension is not allowed.');
+            throw new UploadException('error.blacklist');
         
     }
 }
