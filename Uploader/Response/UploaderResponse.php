@@ -44,7 +44,7 @@ class UploaderResponse implements \ArrayAccess
     
     public function offsetGet($offset)
     {
-        return isset($this->data[$offset]) ? $this->container[$offset] : null;
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
     
     public function setSuccess($success)
