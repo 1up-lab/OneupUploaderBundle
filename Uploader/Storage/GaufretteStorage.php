@@ -18,7 +18,7 @@ class GaufretteStorage implements StorageInterface
         $this->filesystem = $filesystem;
     }
     
-    public function upload(File $file, $name = null, $path = null)
+    public function upload(File $file, $name, $path = null)
     {
         $name = is_null($name) ? $file->getRelativePathname() : $name;
         $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);

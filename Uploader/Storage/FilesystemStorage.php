@@ -16,7 +16,7 @@ class FilesystemStorage implements StorageInterface
         $this->directory = $directory;
     }
     
-    public function upload(File $file, $name = null, $path = null)
+    public function upload(File $file, $name, $path = null)
     {
         $filesystem = new Filesystem();
         
