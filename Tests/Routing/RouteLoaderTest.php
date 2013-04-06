@@ -4,7 +4,7 @@ namespace Oneup\UploaderBundle\Tests\Routing;
 
 use Oneup\UploaderBundle\Routing\RouteLoader;
 
-class RoutingTest extends \PHPUnit_Framework_TestCase
+class RouteLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRouteLoader()
     {
