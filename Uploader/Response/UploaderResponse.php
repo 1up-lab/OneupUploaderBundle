@@ -23,6 +23,9 @@ class UploaderResponse implements \ArrayAccess
         $data = $this->data;
         $data['success'] = $this->success;
         
+        if($this->success)
+            unset($data['error']);
+        
         if(!$this->success)
             $data['error'] = $this->error;
         
