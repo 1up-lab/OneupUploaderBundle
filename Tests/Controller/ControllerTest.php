@@ -2,6 +2,8 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
@@ -35,10 +37,20 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         );
         
         $controller = new UploaderController($container, $storage, $config, 'cat');
-        $controller->upload();
+        $response = $controller->upload();
         
         // check if original file has been moved
         $this->assertFalse(file_exists($this->tempFile));
+        
+        // testing response
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertEquals(200, $response->getStatusCode());
+        
+        // check if file is present
+        $finder = new Finder();
+        $finder->in(sys_get_temp_dir() . '/uploader')->files();
+        
+        $this->assertCount(1, $finder);
     }
     
     protected function getContainerMock()
@@ -97,5 +109,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     protected function getUploadedFile()
     {
         return new UploadedFile($this->tempFile, 'grumpy-cat.jpeg', 'image/jpeg', 1024, null, true);
+    }
+    
+    public function tearDown()
+    {
+        // remove all files in tmp folder
+        $filesystem = new Filesystem();
+        $filesystem->remove(sys_get_temp_dir() . '/uploader');
     }
 }
