@@ -39,15 +39,23 @@ class OrphanageStorage extends FilesystemStorage implements OrphanageStorageInte
     public function uploadFiles()
     {
         $filesystem = new Filesystem();
-        $files = $this->getFiles();
-        $return = array();
         
-        foreach($files as $file)
+        try
         {
-            $return[] = $this->storage->upload(new File($file->getPathname()), str_replace($this->getFindPath(), '', $file));
-        }
+            $files = $this->getFiles();
+            $return = array();
         
-        return $return;
+            foreach($files as $file)
+            {
+                $return[] = $this->storage->upload(new File($file->getPathname()), str_replace($this->getFindPath(), '', $file));
+            }
+
+            return $return;
+        }
+        catch(\Exception $e)
+        {
+            return array();
+        }
     }
     
     protected function getFiles()
