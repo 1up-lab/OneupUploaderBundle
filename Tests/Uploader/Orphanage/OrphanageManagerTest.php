@@ -78,6 +78,18 @@ class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount($this->numberOfOrphans / 2, $finder);
     }
     
+    public function testClearIfDirectoryDoesNotExist()
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->mockConfig['directory']);
+        
+        $manager = new OrphanageManager($this->mockContainer, $this->mockConfig);
+        $manager->clear();
+        
+        // yey, no exception
+        $this->assertTrue(true);
+    }
+    
     protected function getContainerMock()
     {
         $mock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');

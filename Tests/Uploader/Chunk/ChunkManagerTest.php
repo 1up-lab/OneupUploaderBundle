@@ -25,15 +25,6 @@ class ChunkManagerTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $system = new Filesystem();
-        $finder = new Finder();
-        
-        // first remove every file in temporary directory
-        foreach($finder->in($this->tmpDir) as $file)
-        {
-            $system->remove($file);
-        }
-        
-        // and finally remove the directory itself
         $system->remove($this->tmpDir);
     }
     
@@ -78,6 +69,18 @@ class ChunkManagerTest extends \PHPUnit_Framework_TestCase
         {
             $this->assertGreaterThanOrEqual(time() - $maxage, filemtime($file));
         }
+    }
+    
+    public function testClearIfDirectoryDoesNotExist()
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->tmpDir);
+        
+        $manager = $this->getManager(10);
+        $manager->clear();
+        
+        // yey, no exception
+        $this->assertTrue(true);
     }
     
     protected function getManager($maxage)
