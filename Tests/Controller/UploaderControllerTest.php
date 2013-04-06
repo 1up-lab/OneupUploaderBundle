@@ -10,7 +10,7 @@ use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
 use Oneup\UploaderBundle\Controller\UploaderController;
 
-class ControllerUploadTest extends \PHPUnit_Framework_TestCase
+class UploaderControllerTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempFile;
     
@@ -51,6 +51,29 @@ class ControllerUploadTest extends \PHPUnit_Framework_TestCase
         $finder->in(sys_get_temp_dir() . '/uploader')->files();
         
         $this->assertCount(1, $finder);
+    }
+    
+    public function testUploadWhichFails()
+    {
+        $container = $this->getContainerMock();
+        $storage = new FilesystemStorage(sys_get_temp_dir() . '/uploader');
+        $config = array(
+            'use_orphanage' => false,
+            'namer' => 'namer',
+            'max_size' => 1,
+            'allowed_extensions' => array(),
+            'disallowed_extensions' => array()
+        );
+        
+        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $response = $controller->upload();
+        
+        $json = json_decode($response->getContent());
+        
+        // testing response
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertFalse($json->success);
     }
     
     protected function getContainerMock()

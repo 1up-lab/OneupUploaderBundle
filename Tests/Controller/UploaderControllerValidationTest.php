@@ -4,7 +4,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Controller\UploaderController;
 
-class ControllerValidationTest extends \PHPUnit_Framework_TestCase
+class UploaderControllerValidationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException Symfony\Component\HttpFoundation\File\Exception\UploadException

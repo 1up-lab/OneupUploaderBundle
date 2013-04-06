@@ -11,7 +11,7 @@ use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
 use Oneup\UploaderBundle\Controller\UploaderController;
 
-class ControllerChunkedUploadTest extends \PHPUnit_Framework_TestCase
+class UploaderControllerChunkedTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempChunks;
     protected $currentChunk;
