@@ -42,6 +42,21 @@ public function registerBundles()
 
 ## Configure your Filesystems
 
+```yml
+knp_gaufrette:
+    adapters:
+        gallery:
+            local:
+                directory: %kernel.root_dir%/../web/uploads
+                create: true
+    
+    filesystems:
+        gallery:
+            adapter: gallery
+    
+    stream_wrapper: ~
+```
+
 ## Configure your mappings
 
 ```yml
