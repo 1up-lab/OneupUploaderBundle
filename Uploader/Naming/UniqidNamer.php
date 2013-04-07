@@ -7,7 +7,7 @@ use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 
 class UniqidNamer implements NamerInterface
 {
-    public function name(UploadedFile $file, $prefix = null)
+    public function name(UploadedFile $file)
     {
         return sprintf('%s.%s', uniqid(), $file->guessExtension());
     }
