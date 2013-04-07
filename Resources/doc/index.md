@@ -102,4 +102,9 @@ This is of course a very minimal setup. Be sure to include stylesheets for Fine 
 After installing and setting up the basic functionality of this bundle you can move on and integrate
 some more advanced features.
 
+* Enable chunked uploads
+* Using the Orphanage
+* Use Gaufrette as storage layer
+* Include your own Namer
+* Testing this bundle
 * [Configuration Reference](configuration_reference.md)
