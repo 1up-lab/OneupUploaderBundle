@@ -9,7 +9,7 @@ This bundle tested using Symfony2 versions 2.1+.
 If you wish to use the default texts provided with this bundle, you have to make sure that you have translator
 enabled in your configuration file.
 
-```
+```yaml
 # app/config/config.yml
 
 framework:
@@ -64,7 +64,7 @@ public function registerBundles()
 
 This bundle was designed to just work out of the box. The only thing you have to configure in order to get this bundle up and running is a mapping.
 
-```
+```yaml
 # app/config/config.yml
 
 oneup_uploader:
@@ -77,7 +77,7 @@ As this is a server implementation for Fine Uploader, you have to include this l
 
     _uploader_{mapping_key}
 
-```
+```html
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.fineuploader-3.4.1.js"></script>
 <script type="text/javascript">
