@@ -13,6 +13,13 @@ Features included:
 
 [![Build Status](https://travis-ci.org/1up-lab/OneupUploaderBundle.png?branch=master)](https://travis-ci.org/1up-lab/OneupUploaderBundle)
 
+Documentation
+-------------
+
+The entry point of the documentation can be found in the file `Resources/docs/index.md`
+
+[Read the documentation for master](...)
+
 License
 -------
 
