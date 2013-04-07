@@ -105,6 +105,6 @@ some more advanced features.
 * [Enable chunked uploads](chunked_uploads.md)
 * Using the Orphanage
 * Use Gaufrette as storage layer
-* Include your own Namer
+* [Include your own Namer](custom_namer.md)
 * Testing this bundle
 * [Configuration Reference](configuration_reference.md)
