@@ -96,3 +96,10 @@ $(document).ready(function()
 ```
 
 This is of course a very minimal setup. Be sure to include stylesheets for Fine Uploader if you want to use them.
+
+## Next steps
+
+After installing and setting up the basic functionality of this bundle you can move on and integrate
+some more advanced features.
+
+* [Configuration Reference](configuration_reference.md)
