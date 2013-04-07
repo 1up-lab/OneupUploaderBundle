@@ -18,7 +18,7 @@ Documentation
 
 The entry point of the documentation can be found in the file `Resources/docs/index.md`
 
-[Read the documentation for master](...)
+[Read the documentation for master](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/index.md)
 
 License
 -------
