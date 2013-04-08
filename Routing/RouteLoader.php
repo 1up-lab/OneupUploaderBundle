@@ -10,14 +10,9 @@ class RouteLoader extends Loader
 {
     protected $controllers;
     
-    public function __construct()
+    public function __construct(array $controllers)
     {
-        $this->controllers = array();
-    }
-    
-    public function addController($type, $controller)
-    {
-        $this->controllers[$type] = $controller;
+        $this->controllers = $controllers;
     }
     
     public function supports($resource, $type = null)

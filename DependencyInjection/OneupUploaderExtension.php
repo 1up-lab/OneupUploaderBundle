@@ -35,6 +35,8 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.chunks', $config['chunks']);
         $container->setParameter('oneup_uploader.orphanage', $config['orphanage']);
         
+        $controllers = array();
+        
         // handle mappings
         foreach($config['mappings'] as $key => $mapping)
         {
@@ -102,9 +104,11 @@ class OneupUploaderExtension extends Extension
                 }
             }
             
+            $controllerName = sprintf('oneup_uploader.controller.%s', $key);
+            
             // create controllers based on mapping
             $container
-                ->register(sprintf('oneup_uploader.controller.%s', $key), $container->getParameter('oneup_uploader.controller.class'))
+                ->register($controllerName, $container->getParameter('oneup_uploader.controller.class'))
             
                 ->addArgument(new Reference('service_container'))
                 ->addArgument($storageService)
@@ -114,7 +118,11 @@ class OneupUploaderExtension extends Extension
                 ->addTag('oneup_uploader.routable', array('type' => $key))
                 ->setScope('request')
             ;
+            
+            $controllers[$key] = $controllerName;
         }
+        
+        $container->setParameter('oneup_uploader.controllers', $controllers);
     }
     
     protected function getMaxUploadSize($input)

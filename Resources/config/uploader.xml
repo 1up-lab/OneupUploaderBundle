@@ -31,6 +31,7 @@
                
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
+                   <argument>%oneup_uploader.controllers%</argument>
                    <tag name="routing.loader" />
                </service>
                
