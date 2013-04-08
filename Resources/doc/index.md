@@ -72,6 +72,17 @@ oneup_uploader:
         gallery: ~
 ```
 
+To enable the dynamic routes, add the following to your routing configuration file.
+
+```yaml
+#  app/config/routing.yml
+
+oneup_uploader:
+    resource: .
+    type: uploader
+
+```
+
 ### Step 4: Prepare your frontend
 
 As this is a server implementation for Fine Uploader, you have to include this library in order to upload files through this bundle. You can find them on the [official page](http://fineuploader.com) of Fine Uploader. Be sure to connect the endpoint property to the dynamic route created from your mapping. It has the following form:
