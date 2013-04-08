@@ -29,7 +29,7 @@ class FilesystemStorage implements StorageInterface
         $targetName = basename($path);
         $targetDir  = dirname($path);
         
-        $file->move($targetDir, $targetName);
+        $file = $file->move($targetDir, $targetName);
         
         return $file;
     }
