@@ -80,7 +80,6 @@ To enable the dynamic routes, add the following to your routing configuration fi
 oneup_uploader:
     resource: .
     type: uploader
-
 ```
 
 ### Step 4: Prepare your frontend
