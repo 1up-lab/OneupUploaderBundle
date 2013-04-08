@@ -8,19 +8,18 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRouteLoader()
     {
-        $routeLoader = new RouteLoader();
-        
-        // for code coverage
-        $this->assertTrue($routeLoader->supports('grumpy', 'uploader'));
-        
         $cat = 'GrumpyCatController';
         $dog = 'HelloThisIsDogController';
+
+        $routeLoader = new RouteLoader(array(
+            'cat' => $cat,
+            'dog' => $dog
+        ));
         
-        // add a new controller and check if the route will be added
-        $routeLoader->addController('cat', $cat);
-        $routeLoader->addController('dog', $dog);
         $routes = $routeLoader->load(null);
-        
+            
+        // for code coverage
+        $this->assertTrue($routeLoader->supports('grumpy', 'uploader'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
         $this->assertCount(2, $routes);
         
