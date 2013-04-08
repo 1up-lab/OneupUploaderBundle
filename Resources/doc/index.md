@@ -68,7 +68,8 @@ This bundle was designed to just work out of the box. The only thing you have to
 # app/config/config.yml
 
 oneup_uploader:
-    gallery: ~
+    mappings:
+        gallery: ~
 ```
 
 ### Step 4: Prepare your frontend
