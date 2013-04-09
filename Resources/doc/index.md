@@ -3,7 +3,7 @@ Getting started
 
 ## Prerequisites
 
-This bundle tested using Symfony2 versions 2.1+.
+This bundle is tested using Symfony2 versions 2.1+.
 
 ### Translations
 If you wish to use the default texts provided with this bundle, you have to make sure that you have translator
