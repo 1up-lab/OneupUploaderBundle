@@ -2,9 +2,9 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
-use Oneup\UploaderBundle\Controller\UploaderController;
+use Oneup\UploaderBundle\Controller\FineUploaderController;
 
-class UploaderControllerValidationTest extends \PHPUnit_Framework_TestCase
+class FineUploaderControllerValidationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException Symfony\Component\HttpFoundation\File\Exception\UploadException
@@ -90,7 +90,7 @@ class UploaderControllerValidationTest extends \PHPUnit_Framework_TestCase
         $container = $this->getContainerMock();
         $storage = $this->getStorageMock();
         
-        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $controller = new FineUploaderController($container, $storage, $config, 'cat');
         $method->invoke($controller, $file);
         
         // yey, no exception thrown
@@ -132,7 +132,7 @@ class UploaderControllerValidationTest extends \PHPUnit_Framework_TestCase
     protected function getValidationMethod()
     {
         // create a public version of the validate method
-        $class = new \ReflectionClass('Oneup\\UploaderBundle\\Controller\\UploaderController');
+        $class = new \ReflectionClass('Oneup\\UploaderBundle\\Controller\\FineUploaderController');
         $method = $class->getMethod('validate');
         $method->setAccessible(true);
         

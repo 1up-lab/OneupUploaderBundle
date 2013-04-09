@@ -9,9 +9,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManager;
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
-use Oneup\UploaderBundle\Controller\UploaderController;
+use Oneup\UploaderBundle\Controller\FineUploaderController;
 
-class UploaderControllerChunkedTest extends \PHPUnit_Framework_TestCase
+class FineUploaderControllerChunkedTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempChunks;
     protected $currentChunk;
@@ -52,7 +52,7 @@ class UploaderControllerChunkedTest extends \PHPUnit_Framework_TestCase
         );
 
         $responses = array();
-        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $controller = new FineUploaderController($container, $storage, $config, 'cat');
         
         // mock as much requests as there are parts to assemble
         for($i = 0; $i < $this->numberOfChunks; $i ++)

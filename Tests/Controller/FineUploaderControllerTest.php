@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
-use Oneup\UploaderBundle\Controller\UploaderController;
+use Oneup\UploaderBundle\Controller\FineUploaderController;
 
-class UploaderControllerTest extends \PHPUnit_Framework_TestCase
+class FineUploaderControllerTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempFile;
     
@@ -36,7 +36,7 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
             'disallowed_extensions' => array()
         );
         
-        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $controller = new FineUploaderController($container, $storage, $config, 'cat');
         $response = $controller->upload();
         
         // check if original file has been moved
@@ -65,7 +65,7 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
             'disallowed_extensions' => array()
         );
         
-        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $controller = new FineUploaderController($container, $storage, $config, 'cat');
         $response = $controller->upload();
         
         $json = json_decode($response->getContent());
