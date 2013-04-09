@@ -19,7 +19,7 @@ class UploadListener
 
 The `UploaderResponse` class implements the `ArrayAccess` interface, so you can just add data using it like an array:
 
-´´´php
+```php
 $response['id'] = $uploadedImage->getId();
 $response['url'] = $uploadedImage->getUrl();
 ```
