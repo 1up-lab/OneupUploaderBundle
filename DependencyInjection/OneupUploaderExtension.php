@@ -105,7 +105,7 @@ class OneupUploaderExtension extends Extension
             }
             
             $controllerName = sprintf('oneup_uploader.controller.%s', $key);
-            $controllerType = sprintf('oneup_uploader.controller.%s.class', $mapping['frontend']);
+            $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $mapping['frontend']);
             
             // create controllers based on mapping
             $container
