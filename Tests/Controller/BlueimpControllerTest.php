@@ -4,25 +4,27 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Tests\Controller\AbstractControllerTest;
 
-class FineUploaderControllerTest extends AbstractControllerTest
+class BlueimpControllerTest extends AbstractControllerTest
 {
     public function getControllerString()
     {
-        return 'Oneup\UploaderBundle\Controller\FineUploaderController';
+        return 'Oneup\UploaderBundle\Controller\BlueimpController';
     }
 
     protected function getRequestMock()
     {
         $mock = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $mock
+        $headers = $this->getMock('Symfony\Component\HttpFoundation\HeaderBag');
+        $headers
             ->expects($this->any())
             ->method('get')
-            ->with('qqtotalparts')
-            ->will($this->returnValue(1))
+            ->will($this->returnValue(null))
         ;
         
+        $mock->headers = $headers;
+
         $mock->files = array(
-            $this->getUploadedFile()
+            array($this->getUploadedFile())
         );
         
         return $mock;

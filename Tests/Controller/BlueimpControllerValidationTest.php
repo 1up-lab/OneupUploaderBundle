@@ -4,10 +4,10 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Tests\Controller\AbstractControllerValidationTest;
 
-class FineUploaderControllerValidationTest extends AbstractControllerValidationTest
+class BlueimpControllerValidationTest extends AbstractControllerValidationTest
 {
     public function getControllerString()
     {
-        return 'Oneup\UploaderBundle\Controller\FineUploaderController';
+        return 'Oneup\UploaderBundle\Controller\BlueimpController';
     }
 }
