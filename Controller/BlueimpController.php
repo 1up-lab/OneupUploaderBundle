@@ -12,7 +12,7 @@ use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\Uploader\Response\BlueimpResponse;
+use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 
 class BlueimpController implements UploadControllerInterface
 {
@@ -35,8 +35,10 @@ class BlueimpController implements UploadControllerInterface
         $dispatcher = $this->container->get('event_dispatcher');
         $translator = $this->container->get('translator');
         
-        $response = new BlueimpResponse();
+        $response = new EmptyResponse();
         $files = $request->files;
+        
+        $chunked = !is_null($request->headers->get('content-range'));
         
         foreach($files as $file)
         {
@@ -44,7 +46,7 @@ class BlueimpController implements UploadControllerInterface
             
             try
             {
-                $uploaded = $this->handleUpload($file);
+                $uploaded = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
         
                 $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
                 $dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
@@ -81,6 +83,66 @@ class BlueimpController implements UploadControllerInterface
         $uploaded = $this->storage->upload($file, $name);
         
         return $uploaded;
+    }
+    
+    protected function handleChunkedUpload(UploadedFile $file)
+    {
+        $request = $this->container->get('request');
+        $session = $this->container->get('session');
+        $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
+        $headerRange = $request->headers->get('content-range');
+        $attachmentName = rawurldecode(preg_replace('/(^[^"]+")|("$)/', '', $request->headers->get('content-disposition')));
+        
+        // split the header string to the appropriate parts
+        list($tmp, $startByte, $endByte, $totalBytes) = preg_split('/[^0-9]+/', $headerRange);
+        
+        $uploaded = null;
+        
+        // getting information about chunks
+        // note: We don't have a chance to get the last $total
+        // correct. This is due to the fact that the $size variable
+        // is incorrect. As it will always be a higher number than
+        // the one before, we just let that happen, if you have
+        // any idea to fix this without fetching information about
+        // previously saved files, let me know.
+        $size  = ($endByte + 1 - $startByte);
+        $last  = ($endByte + 1) == $totalBytes;
+        $index = $last ? \PHP_INT_MAX : floor($startByte / $size);
+        $total = ceil($totalBytes / $size);
+        
+        // it is possible, that two clients send a file with the
+        // exact same filename, therefore we have to add the session
+        // to the uuid otherwise we will get a mess
+        $uuid  = md5(sprintf('%s.%s', $attachmentName, $session->getId()));
+        $orig  = $attachmentName;
+        
+        $chunkManager->addChunk($uuid, $index, $file, $orig);
+        
+        // if all chunks collected and stored, proceed
+        // with reassembling the parts
+        if(($endByte + 1) == $totalBytes)
+        {
+            // we'll take the first chunk and append the others to it
+            // this way we don't need another file in temporary space for assembling
+            $chunks = $chunkManager->getChunks($uuid);
+            
+            // assemble parts
+            $assembled = $chunkManager->assembleChunks($chunks);
+            $path = $assembled->getPath();
+            
+            // create a temporary uploaded file to meet the interface restrictions
+            $uploadedFile = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, null, true);
+            
+            // validate this entity and upload on success
+            $this->validate($uploadedFile);
+            $uploaded = $this->handleUpload($uploadedFile);
+            
+            $chunkManager->cleanup($path);
+        }
+        
+        return $uploaded;
+        
+        die();
     }
     
     protected function validate(UploadedFile $file)
