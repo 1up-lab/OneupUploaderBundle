@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->enumNode('frontend')
-                                ->values(array('fineuploader', 'reserved'))
+                                ->values(array('fineuploader', 'blueimp'))
                                 ->defaultValue('fineuploader')
                             ->end()
                             ->arrayNode('storage')
