@@ -4,8 +4,12 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 
-class FineUploaderResponse extends AbstractResponse
+class BlueimpResponse extends AbstractResponse
 {
+    /**
+     * This is an array containing elements of the following type
+     * array(url, thumbnail_url, type, size, delete_url, delete_type)
+     */
     protected $files;
     
     public function __construct()
