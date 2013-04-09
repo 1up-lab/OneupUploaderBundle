@@ -1,8 +1,6 @@
 Testing the Bundle
 ==================
 
-## Install the Environment
-
 In order to run the UnitTests of this bundle, clone it first
 
     $> git clone git://github.com/1up-lab/OneupUploaderBundle.git
