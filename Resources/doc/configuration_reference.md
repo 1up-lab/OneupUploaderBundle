@@ -1,7 +1,7 @@
 Configuration Reference
 =======================
 
-All available configuration options are listed below with their default values.
+All available configuration options along with their default values are listed below.
 
 ``` yaml
 oneup_uploader:
