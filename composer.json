@@ -1,8 +1,8 @@
 {
     "name": "oneup/uploader-bundle",
     "type": "symfony-bundle",
-    "description": "valums/file-uploader integration",
-    "keywords": ["fileupload", "upload", "multifileupload"],
+    "description": "widen/file-uploader integration",
+    "keywords": ["fileupload", "upload", "multifileupload", "chunked upload", "orphans"],
     "homepage": "http://1up.io",
     "license": "MIT",
     "authors": [
