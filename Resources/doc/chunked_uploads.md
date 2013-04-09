@@ -1,8 +1,6 @@
 Using Chunked Uploads
 =====================
 
-## Enable
-
 Fine Uploader comes bundled with the possibility to use so called chunked uploads. If enabed, an uploaded file will be split into equal sized blobs which are sequentially uploaded afterwards. In order to use this feature, be sure to enable it in the frontend.
 
 ```js
