@@ -2,13 +2,13 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
-use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
+use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
 
-class TestUploaderResponse extends \PHPUnit_Framework_TestCase
+class TestFineUploaderResponse extends \PHPUnit_Framework_TestCase
 {
     public function testCreationOfResponse()
     {
-        $response = new UploaderResponse();
+        $response = new FineUploaderResponse();
         
         $this->assertTrue($response->getSuccess());
         $this->assertNull($response->getError());
@@ -16,7 +16,7 @@ class TestUploaderResponse extends \PHPUnit_Framework_TestCase
     
     public function testFillOfResponse()
     {
-        $response = new UploaderResponse();
+        $response = new FineUploaderResponse();
         
         $cat = 'is grumpy';
         $dog = 'has no idea';
@@ -46,7 +46,7 @@ class TestUploaderResponse extends \PHPUnit_Framework_TestCase
     
     public function testError()
     {
-        $response = new UploaderResponse();
+        $response = new FineUploaderResponse();
         $response->setError('This response is grumpy');
         
         $this->assertEquals($response->getError(), 'This response is grumpy');
@@ -54,7 +54,7 @@ class TestUploaderResponse extends \PHPUnit_Framework_TestCase
     
     public function testOverwriteOfInternals()
     {
-        $response = new UploaderResponse();
+        $response = new FineUploaderResponse();
         $response['success'] = false;
         $response['error'] = 42;
         

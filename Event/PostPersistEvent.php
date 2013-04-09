@@ -4,7 +4,7 @@ namespace Oneup\UploaderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
-use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
+use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 
 class PostPersistEvent extends Event
 {
@@ -14,7 +14,7 @@ class PostPersistEvent extends Event
     protected $response;
     protected $config;
     
-    public function __construct($file, UploaderResponse $response, Request $request, $type, array $config)
+    public function __construct($file, ResponseInterface $response, Request $request, $type, array $config)
     {
         $this->file = $file;
         $this->request = $request;
