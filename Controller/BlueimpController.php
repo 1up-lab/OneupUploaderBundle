@@ -141,8 +141,6 @@ class BlueimpController implements UploadControllerInterface
         }
         
         return $uploaded;
-        
-        die();
     }
     
     protected function validate(UploadedFile $file)
