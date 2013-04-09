@@ -14,7 +14,7 @@ class BlueimpResponse extends AbstractResponse
     
     public function __construct()
     {
-        $this->success = array();
+        $this->files = array();
         
         parent::__construct();
     }
