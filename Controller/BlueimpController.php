@@ -37,7 +37,7 @@ class BlueimpController extends AbstractChunkedController
                 $uploaded = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
                 
                 // dispatch POST_PERSIST AND POST_UPLOAD events
-                $this->dispatchEvents($uploaded, $response);
+                $this->dispatchEvents($uploaded, $response, $request);
             }
             catch(UploadException $e)
             {

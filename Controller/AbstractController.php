@@ -11,12 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
-use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 
-abstract class AbstractController implements UploadControllerInterface
+abstract class AbstractController
 {
     protected $container;
     protected $storage;
@@ -30,6 +29,8 @@ abstract class AbstractController implements UploadControllerInterface
         $this->config = $config;
         $this->type = $type;
     }
+    
+    abstract public function upload();
 
     protected function handleUpload(UploadedFile $file)
     {
@@ -45,9 +46,9 @@ abstract class AbstractController implements UploadControllerInterface
         return $uploaded;
     }
     
-    protected function dispatchEvents($uploaded, ResponseInterface $response)
+    protected function dispatchEvents($uploaded, ResponseInterface $response, Request $request)
     {
-        $request = $this->container->get('request');
+        $dispatcher = $this->container->get('event_dispatcher');
         
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
         $dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
