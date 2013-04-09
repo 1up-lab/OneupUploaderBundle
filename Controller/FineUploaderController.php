@@ -14,7 +14,7 @@ use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
 
-class UploaderController implements UploadControllerInterface
+class FineUploaderController implements UploadControllerInterface
 {
     protected $container;
     protected $storage;
