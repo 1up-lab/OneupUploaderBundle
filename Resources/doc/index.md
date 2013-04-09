@@ -117,5 +117,5 @@ some more advanced features.
 * Using the Orphanage
 * [Use Gaufrette as storage layer](gaufrette_storage.md)
 * [Include your own Namer](custom_namer.md)
-* Testing this bundle
+* [Testing this bundle](testing.md)
 * [Configuration Reference](configuration_reference.md)
