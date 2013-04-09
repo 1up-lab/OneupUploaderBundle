@@ -18,7 +18,7 @@ framework:
 
 ## Installation
 
-Perform the following step to install and use the basic functionality of the OneupUploaderBundle:
+Perform the following steps to install and use the basic functionality of the OneupUploaderBundle:
 
 * Download OnueupUploaderBundle using Composer
 * Enable the bundle
