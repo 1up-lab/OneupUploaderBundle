@@ -114,7 +114,7 @@ After installing and setting up the basic functionality of this bundle you can m
 some more advanced features.
 
 * [Enable chunked uploads](chunked_uploads.md)
-* Using the Orphanage
+* [Using the Orphanage](orphanage.md)
 * [Use Gaufrette as storage layer](gaufrette_storage.md)
 * [Include your own Namer](custom_namer.md)
 * [Testing this bundle](testing.md)
