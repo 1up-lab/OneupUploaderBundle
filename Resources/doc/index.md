@@ -113,6 +113,7 @@ This is of course a very minimal setup. Be sure to include stylesheets for Fine 
 After installing and setting up the basic functionality of this bundle you can move on and integrate
 some more advanced features.
 
+* [Return custom data to frontend](response.md)
 * [Enable chunked uploads](chunked_uploads.md)
 * [Using the Orphanage](orphanage.md)
 * [Use Gaufrette as storage layer](gaufrette_storage.md)
