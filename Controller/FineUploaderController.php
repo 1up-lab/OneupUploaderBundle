@@ -12,7 +12,7 @@ use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Controller\UploadControllerInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\Uploader\Response\UploaderResponse;
+use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
 
 class FineUploaderController implements UploadControllerInterface
 {
@@ -35,7 +35,7 @@ class FineUploaderController implements UploadControllerInterface
         $dispatcher = $this->container->get('event_dispatcher');
         $translator = $this->container->get('translator');
         
-        $response = new UploaderResponse();
+        $response = new FineUploaderResponse();
         $totalParts = $request->get('qqtotalparts', 1);
         $files = $request->files;
         $chunked = $totalParts > 1;
