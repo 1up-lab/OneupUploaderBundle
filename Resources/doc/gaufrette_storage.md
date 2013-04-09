@@ -45,6 +45,8 @@ public function registerBundles()
 The following is a sample configuration for the KnpGaufretteBundle. It will create a filystem service called `gaufrette.gallery_filesystem` which can be used in the OneupUploaderBundle. For a complete list of features refer to the [official documentation](https://github.com/KnpLabs/KnpGaufretteBundle).
 
 ```yml
+# app/config/config.yml
+
 knp_gaufrette:
     adapters:
         gallery:
@@ -55,8 +57,6 @@ knp_gaufrette:
     filesystems:
         gallery:
             adapter: gallery
-    
-    stream_wrapper: ~
 ```
 
 ## Configure your mappings
@@ -64,6 +64,8 @@ knp_gaufrette:
 Activate Gaufrette by switching the `type` property to `gaufrette` and pass the Gaufrette filesystem configured in the previous step.
 
 ```yml
+# app/config/config.yml
+
 oneup_uploader:
     mappings:
         gallery:
