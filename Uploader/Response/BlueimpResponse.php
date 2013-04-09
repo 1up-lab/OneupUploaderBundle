@@ -21,9 +21,6 @@ class BlueimpResponse extends AbstractResponse
     
     public function assemble()
     {
-        // explicitly overwrite success and error key
-        // as these keys are used internaly by the
-        // frontend uploader
         $data = $this->data;
         $data['files'] = $this->files;
         
