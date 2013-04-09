@@ -2,17 +2,19 @@
 
 namespace Oneup\UploaderBundle\Uploader\Response;
 
-class UploaderResponse implements \ArrayAccess
+use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
+
+class FineUploaderResponse extends AbstractResponse
 {
     protected $success;
     protected $error;
-    protected $data;
     
     public function __construct()
     {
         $this->success = true;
         $this->error = null;
-        $this->data = array();
+        
+        parent::__construct();
     }
     
     public function assemble()
@@ -30,24 +32,6 @@ class UploaderResponse implements \ArrayAccess
             $data['error'] = $this->error;
         
         return $data;
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        is_null($offset) ? $this->data[] = $value : $this->data[$offset] = $value;
-    }
-    public function offsetExists($offset)
-    {
-        return isset($this->data[$offset]);
-    }
-    public function offsetUnset($offset)
-    {
-        unset($this->data[$offset]);
-    }
-    
-    public function offsetGet($offset)
-    {
-        return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
     
     public function setSuccess($success)

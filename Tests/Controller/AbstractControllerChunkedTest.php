@@ -9,14 +9,16 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManager;
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
-use Oneup\UploaderBundle\Controller\UploaderController;
 
-class UploaderControllerChunkedTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractControllerChunkedTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempChunks;
     protected $currentChunk;
     protected $chunkUuid;
     protected $numberOfChunks;
+    
+    abstract public function getControllerString();
+    abstract protected function getRequestMock();
     
     public function setUp()
     {
@@ -52,7 +54,8 @@ class UploaderControllerChunkedTest extends \PHPUnit_Framework_TestCase
         );
 
         $responses = array();
-        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $str = $this->getControllerString();
+        $controller = new $str($container, $storage, $config, 'cat');
         
         // mock as much requests as there are parts to assemble
         for($i = 0; $i < $this->numberOfChunks; $i ++)
@@ -120,37 +123,6 @@ class UploaderControllerChunkedTest extends \PHPUnit_Framework_TestCase
         ;
         
         return $mock;
-    }
-    
-    protected function getRequestMock()
-    {
-        $mock = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $mock
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(array($this, 'requestGetCb')))
-        ;
-        
-        $mock->files = array(
-            $this->getUploadedFile()
-        );
-        
-        return $mock;
-    }
-    
-    public function requestGetCb($inp)
-    {
-        if($inp == 'qqtotalparts')
-            return $this->numberOfChunks;
-        
-        if($inp == 'qqpartindex')
-            return $this->currentChunk;
-        
-        if($inp == 'qquuid')
-            return $this->chunkUuid;
-        
-        if($inp == 'qqfilename')
-            return 'grumpy-cat.jpeg';
     }
     
     protected function getUploadedFile()

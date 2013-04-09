@@ -105,10 +105,11 @@ class OneupUploaderExtension extends Extension
             }
             
             $controllerName = sprintf('oneup_uploader.controller.%s', $key);
+            $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $mapping['frontend']);
             
             // create controllers based on mapping
             $container
-                ->register($controllerName, $container->getParameter('oneup_uploader.controller.class'))
+                ->register($controllerName, $controllerType)
             
                 ->addArgument(new Reference('service_container'))
                 ->addArgument($storageService)

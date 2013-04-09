@@ -8,11 +8,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
-use Oneup\UploaderBundle\Controller\UploaderController;
 
-class UploaderControllerTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractControllerTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempFile;
+    
+    abstract public function getControllerString();
+    abstract protected function getRequestMock();
     
     public function setUp()
     {
@@ -36,7 +38,8 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
             'disallowed_extensions' => array()
         );
         
-        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $str = $this->getControllerString();
+        $controller = new $str($container, $storage, $config, 'cat');
         $response = $controller->upload();
         
         // check if original file has been moved
@@ -65,7 +68,8 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
             'disallowed_extensions' => array()
         );
         
-        $controller = new UploaderController($container, $storage, $config, 'cat');
+        $str = $this->getControllerString();
+        $controller = new $str($container, $storage, $config, 'cat');
         $response = $controller->upload();
         
         $json = json_decode($response->getContent());
@@ -73,7 +77,6 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
         // testing response
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertFalse($json->success);
     }
     
     protected function getContainerMock()
@@ -111,23 +114,6 @@ class UploaderControllerTest extends \PHPUnit_Framework_TestCase
             ->method('dispatch')
             ->will($this->returnValue(true))
         ;
-        
-        return $mock;
-    }
-    
-    protected function getRequestMock()
-    {
-        $mock = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $mock
-            ->expects($this->any())
-            ->method('get')
-            ->with('qqtotalparts')
-            ->will($this->returnValue(1))
-        ;
-        
-        $mock->files = array(
-            $this->getUploadedFile()
-        );
         
         return $mock;
     }
