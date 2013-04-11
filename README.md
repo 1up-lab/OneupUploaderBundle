@@ -1,7 +1,11 @@
 OneupUploaderBundle
 ===================
-The OneupUploaderBundle adds support for handling file uploads using the popular
-Javascript library [Fine Uploader](http://fineuploader.com/).
+The OneupUploaderBundle adds support for handling file uploads using one of the following Javascript libraries:
+
+* [FineUploader](http://fineuploader.com/)
+* [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/)
+* [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/)
+* [Uploadify](http://www.uploadify.com/)
 
 Features included:
 
