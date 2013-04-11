@@ -3,7 +3,7 @@ Use Uploadify
 
 Download [Uploadify](http://www.uploadify.com/download/) and include it in your template. Connect the `uploader` property to the dynamic route `_uploader_{mapping_name}` and include the FlashUploader file.
 
-> If you are using UploadiFive, please drop me a note. I'd like to know if this bundle also works works for the HTML5-Version of this frontend library.
+> If you are using UploadiFive, please drop me a note. I'd like to know if this bundle also works for the HTML5-Version of this frontend library.
 
 ```html
 
