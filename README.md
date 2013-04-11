@@ -6,6 +6,7 @@ The OneupUploaderBundle adds support for handling file uploads using one of the 
 * [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/)
 * [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/)
 * [Uploadify](http://www.uploadify.com/)
+* [FancyUpload](http://digitarald.de/project/fancyupload/)
 
 Features included:
 
