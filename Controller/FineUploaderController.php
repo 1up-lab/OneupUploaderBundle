@@ -2,17 +2,11 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-use Oneup\UploaderBundle\UploadEvents;
-use Oneup\UploaderBundle\Event\PostPersistEvent;
-use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Controller\AbstractChunkedController;
-use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
 
 class FineUploaderController extends AbstractChunkedController
