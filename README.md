@@ -9,7 +9,7 @@ The OneupUploaderBundle adds support for handling file uploads using one of the 
 
 Features included:
 
-* Multiple file uploads handled by Fine Uploader
+* Multiple file uploads handled by your chosen frontend library
 * Chunked uploads
 * Supports [Gaufrette](https://github.com/KnpLabs/Gaufrette) and/or local filesystem
 * Provides an orphanage for cleaning up orphaned files

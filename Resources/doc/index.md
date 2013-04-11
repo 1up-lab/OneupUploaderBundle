@@ -84,27 +84,16 @@ oneup_uploader:
 
 ### Step 4: Prepare your frontend
 
-As this is a server implementation for Fine Uploader, you have to include this library in order to upload files through this bundle. You can find them on the [official page](http://fineuploader.com) of Fine Uploader. Be sure to connect the endpoint property to the dynamic route created from your mapping. It has the following form:
+Currently the OneupUploaderBundle supports four different kind of frontends. ([FineUploader](http://fineuploader.com/), [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/), [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/), [Uploadify](http://www.uploadify.com/)) No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. It has the following form:
 
     _uploader_{mapping_key}
+    
+So if you take the mapping described before, the generated route name would be `_uploader_gallery`. Follow one of the listed guides to include your frontend:
 
-```html
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.fineuploader-3.4.1.js"></script>
-<script type="text/javascript">
-$(document).ready(function()
-{
-    var uploader = new qq.FineUploader({
-        element: $('#uploader'),
-        request: {
-            endpoint: "{{ path('_uploader_gallery') }}"
-        }
-    });
-});
-</script>
-
-<div id="uploader"></div>
-```
+* [Use FineUploader](frontend_fineuploader.md)
+* [Use jQuery File Upload](frontend_blueimp.md)
+* [Use YUI3 Uploader](frontend_yui3.md)
+* [Use Uploadify](frontend_uploadify.md)
 
 This is of course a very minimal setup. Be sure to include stylesheets for Fine Uploader if you want to use them.
 
