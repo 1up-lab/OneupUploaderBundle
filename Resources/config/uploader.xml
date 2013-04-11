@@ -13,6 +13,7 @@
                <parameter key="oneup_uploader.orphanage.manager.class">Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager</parameter>
                <parameter key="oneup_uploader.controller.fineuploader.class">Oneup\UploaderBundle\Controller\FineUploaderController</parameter>
                <parameter key="oneup_uploader.controller.blueimp.class">Oneup\UploaderBundle\Controller\BlueimpController</parameter>
+               <parameter key="oneup_uploader.controller.uploadify.class">Oneup\UploaderBundle\Controller\UploadifyController</parameter>
            </parameters>
 
            <services>
