@@ -104,7 +104,7 @@ class OneupUploaderExtension extends Extension
                 }
             }
             
-            if($mapping['frontent'] != 'custom')
+            if($mapping['frontend'] != 'custom')
             {
                 $controllerName = sprintf('oneup_uploader.controller.%s', $key);
                 $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $mapping['frontend']);
@@ -117,7 +117,7 @@ class OneupUploaderExtension extends Extension
                 $controllerType = $customFrontend['name'];
                 
                 if(empty($controllerName) || empty($controllerType))
-                    throw new ServiceNotFoundException('Empty controller class. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
+                    throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
             
             // create controllers based on mapping
