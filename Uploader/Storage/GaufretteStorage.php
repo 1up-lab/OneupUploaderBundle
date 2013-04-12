@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Gaufrette\Filesystem;
+use Gaufrette\Adapter\MetadataSupporter;
 
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 
@@ -20,8 +21,12 @@ class GaufretteStorage implements StorageInterface
     
     public function upload(File $file, $name, $path = null)
     {
-        $name = is_null($name) ? $file->getRelativePathname() : $name;
         $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
+        
+        if($this->filesystem->getAdapter() instanceof MetadataSupporter)
+        {
+            $this->filesystem->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
+        }
         
         $src = new LocalStream($file->getPathname());
         $dst = $this->filesystem->createStream($path);
