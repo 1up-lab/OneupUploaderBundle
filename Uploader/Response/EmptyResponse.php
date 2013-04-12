@@ -10,5 +10,4 @@ class EmptyResponse extends AbstractResponse
     {
         return $this->data;
     }
-    
 }
