@@ -50,7 +50,7 @@ class MooUploadController extends AbstractChunkedController
             $response = $this->response;
             
             $response->setId($headers->get('x-file-id'));
-            $response->setSize($headers->get('x-file-size'));
+            $response->setSize($headers->get('content-length'));
             $response->setName($headers->get('x-file-name'));
             $response->setUploadedName($uploadFileName);
             
@@ -108,13 +108,13 @@ class MooUploadController extends AbstractChunkedController
     
     protected function createIndex($id)
     {
-        $ints = '';
+        $ints = 0;
         
         // loop through every char and convert it to an integer
         // we need this for sorting
         foreach(str_split($id) as $char)
         {
-            $ints .= ord($char);
+            $ints += ord($char);
         }
         
         return $ints;
