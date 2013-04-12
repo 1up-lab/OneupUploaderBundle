@@ -104,18 +104,31 @@ class OneupUploaderExtension extends Extension
                 }
             }
             
-            $controllerName = sprintf('oneup_uploader.controller.%s', $key);
-            $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $mapping['frontend']);
+            if($mapping['frontent'] != 'custom')
+            {
+                $controllerName = sprintf('oneup_uploader.controller.%s', $key);
+                $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $mapping['frontend']);
+            }
+            else
+            {
+                $customFrontend = $mapping['custom_frontend'];
+                
+                $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['class']);
+                $controllerType = $customFrontend['name'];
+                
+                if(empty($controllerName) || empty($controllerType))
+                    throw new ServiceNotFoundException('Empty controller class. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
+            }
             
             // create controllers based on mapping
             $container
                 ->register($controllerName, $controllerType)
-            
+        
                 ->addArgument(new Reference('service_container'))
                 ->addArgument($storageService)
                 ->addArgument($mapping)
                 ->addArgument($key)
-                
+            
                 ->addTag('oneup_uploader.routable', array('type' => $key))
                 ->setScope('request')
             ;
