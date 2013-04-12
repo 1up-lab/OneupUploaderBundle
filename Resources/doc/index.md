@@ -86,9 +86,16 @@ oneup_uploader:
 
 ### Step 4: Prepare your frontend
 
-Currently the OneupUploaderBundle supports four different kind of frontends. ([FineUploader](http://fineuploader.com/), [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/), [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/), [Uploadify](http://www.uploadify.com/)) No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. It has the following form:
+Currently the OneupUploaderBundle supports four different kind of frontends. ([FineUploader](http://fineuploader.com/), [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/), [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/), [Uploadify](http://www.uploadify.com/)) No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
 
-    _uploader_{mapping_key}
+```php
+$helper = $this->container->get('oneup_uploader.templating.uploader_helper');
+$endpoint = $helper->endpoint('gallery');
+```
+
+or in a Twig template you can use the `oneup_uploader_endpoint` function:
+
+    {{ oneup_uploader_endpoint('gallery') }}
     
 So if you take the mapping described before, the generated route name would be `_uploader_gallery`. Follow one of the listed guides to include your frontend:
 

@@ -48,7 +48,7 @@ FineUploader supports passing custom data through the request as the following e
 var uploader = new qq.FineUploader({
     element: document.getElementById('fine-uploader'),
     request: {
-        endpoint: "{{ path('_uploader_gallery') }}",
+        endpoint: "{{ oneup_uploader_endpoint('gallery') }}",
         params: {
             gallery: "{{ gallery.id }}"
         }

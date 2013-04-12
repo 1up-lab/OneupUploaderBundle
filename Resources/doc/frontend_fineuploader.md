@@ -12,7 +12,7 @@ $(document).ready(function()
     var uploader = new qq.FineUploader({
         element: $('#uploader'),
         request: {
-            endpoint: "{{ path('_uploader_gallery') }}"
+            endpoint: "{{ oneup_uploader_endpoint('gallery') }}"
         }
     });
 });

@@ -11,7 +11,7 @@ YUI().use('uploader', function (Y) {
     var uploader = new Y.Uploader(
     {
         multipleFiles: true,
-        uploadURL: "{{ path('_uploader_gallery') }}"
+        uploadURL: "{{ oneup_uploader_endpoint('gallery') }}"
     }).render("#fileupload");
     
     uploader.on('fileselect', function()

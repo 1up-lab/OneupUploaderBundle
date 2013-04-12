@@ -12,7 +12,7 @@ window.addEvent("domready", function()
 {
 	var myUpload = new MooUpload("fileupload",
     {
-		action: "{{ path('_uploader_gallery') }}",
+		action: "{{ oneup_uploader_endpoint('gallery') }}",
 		method: "auto"
 	});
 });

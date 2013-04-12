@@ -15,7 +15,7 @@ $(document).ready(function()
 });
 </script>
 
-<input id="fileupload" type="file" name="files[]" data-url="{{ path('_uploader_gallery') }}" multiple />
+<input id="fileupload" type="file" name="files[]" data-url="{{ oneup_uploader_endpoint('gallery') }}" multiple />
 ```
 
 Configure the OneupUploaderBundle to use the correct controller:

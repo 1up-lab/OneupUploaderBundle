@@ -16,7 +16,7 @@ $(document).ready(function()
     $("#fileupload").plupload(
     {
         runtimes: "html5",
-        url: "{{ path('_uploader_gallery') }}"
+        url: "{{ oneup_uploader_endpoint('gallery') }}"
     });
 });
 </script>

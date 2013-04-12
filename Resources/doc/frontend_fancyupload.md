@@ -59,7 +59,7 @@ window.addEvent('domready', function()
 </script>
 
 
-<form action="{{ path('_uploader_gallery') }}" method="post" enctype="multipart/form-data" id="form-demo">
+<form action="{{ oneup_uploader_endpoint('gallery') }}" method="post" enctype="multipart/form-data" id="form-demo">
 	<fieldset id="demo-fallback">
 		<legend>File Upload</legend>
 		<p>

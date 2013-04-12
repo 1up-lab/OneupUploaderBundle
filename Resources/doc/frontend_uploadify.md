@@ -14,7 +14,7 @@ $(document).ready(function()
     $('#fileupload').uploadify(
     {
         swf: "{{ asset('bundles/acmedemo/js/uploadify.swf') }}",
-        uploader: "{{ path('_uploader_gallery') }}"
+        uploader: "{{ oneup_uploader_endpoint('gallery') }}"
     });
     
 });
