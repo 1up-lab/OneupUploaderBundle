@@ -21,6 +21,12 @@ class OneupUploaderExtension extends Extension
  
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('uploader.xml');
+        $loader->load('templating.xml');
+        
+        if($config['twig'])
+        {
+            $loader->load('twig.xml');
+        }
         
         $config['chunks']['directory'] = is_null($config['chunks']['directory']) ?
             sprintf('%s/uploader/chunks', $container->getParameter('kernel.cache_dir')) :

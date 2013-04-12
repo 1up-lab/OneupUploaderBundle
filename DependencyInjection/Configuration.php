@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('directory')->defaultNull()->end()
                     ->end()
                 ->end()
+                ->scalarNode('twig')->defaultTrue()->end()
                 ->arrayNode('mappings')
                     ->useAttributeAsKey('id')
                     ->isRequired()
