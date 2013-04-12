@@ -49,7 +49,7 @@ class ChunkManager implements ChunkManagerInterface
         if(!$filesystem->exists($path))
             $filesystem->mkdir(sprintf('%s/%s', $this->configuration['directory'], $uuid));
         
-        $chunk->move($path, $name);
+        return $chunk->move($path, $name);
     }
     
     public function assembleChunks(\Traversable $chunks)
