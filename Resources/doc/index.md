@@ -86,7 +86,7 @@ oneup_uploader:
 
 ### Step 4: Prepare your frontend
 
-Currently the OneupUploaderBundle supports four different kind of frontends. ([FineUploader](http://fineuploader.com/), [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/), [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/), [Uploadify](http://www.uploadify.com/)) No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
+No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
 
 ```php
 $helper = $this->container->get('oneup_uploader.templating.uploader_helper');
