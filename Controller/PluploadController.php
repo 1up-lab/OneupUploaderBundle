@@ -40,10 +40,16 @@ class PluploadController extends AbstractChunkedController
     
     protected function parseChunkedRequest(Request $request)
     {
+        $session = $this->container->get('session');
+        
         $orig  = $request->get('name');
-        $uuid  = $request->get('name');
         $index = $request->get('chunk');
         $last  = $request->get('chunks') - 1 == $request->get('chunk');
+        
+        // it is possible, that two clients send a file with the
+        // exact same filename, therefore we have to add the session
+        // to the uuid otherwise we will get a mess
+        $uuid = md5(sprintf('%s.%s', $orig, $session->getId()));
         
         return array($last, $uuid, $index, $orig);
     }
