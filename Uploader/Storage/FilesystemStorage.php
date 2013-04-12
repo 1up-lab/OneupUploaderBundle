@@ -20,7 +20,6 @@ class FilesystemStorage implements StorageInterface
     {
         $filesystem = new Filesystem();
         
-        $name = is_null($name) ? $file->getRelativePathname() : $name;
         $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
         $path = sprintf('%s/%s', $this->directory, $path);
         
