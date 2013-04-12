@@ -1,6 +1,8 @@
 Getting started
 ===============
 
+The OneupUploaderBundle is a Symfony2 bundle developed and tested for versions 2.1+. This bundle does only provide a solid backend for the supported types of Javascript libraries. It does however not provide the assets itself. So in order to use any uploader, you first have to download and integrate it by yourself.
+
 ## Prerequisites
 
 This bundle is tested using Symfony2 versions 2.1+.
@@ -117,4 +119,8 @@ some more advanced features.
 
 > Why didn't you implement the _delete_ feature provided by Fine Uploader?
 
-Fine Uploaders _delete Feature_ is using generated unique names we would have to store in order to track down which file to delete. But both the storage and the deletetion of files are tight-coupled with the logic of your very own implementation. This means we leave the _delete Feature_ open for you to implement. Information on how the route must be crafted can be found on the [official documentation](https://github.com/Widen/fine-uploader/blob/master/docs/options-fineuploaderbasic.md#deletefile-option-properties) and on [the blog](http://blog.fineuploader.com/2013/01/delete-uploaded-file-in-33.html) of Fine Uploader.
+FineUploaders _delete Feature_ is using generated unique names we would have to store in order to track down which file to delete. But both the storage and the deletetion of files are tight-coupled with the logic of your very own implementation. This means we leave the _delete Feature_ open for you to implement. Information on how the route must be crafted can be found on the [official documentation](https://github.com/Widen/fine-uploader/blob/master/docs/options-fineuploaderbasic.md#deletefile-option-properties) and on [the blog](http://blog.fineuploader.com/2013/01/delete-uploaded-file-in-33.html) of Fine Uploader.
+
+> Why didn't you implement the _delete_ feature provided by another library?
+
+See the answer to the previous question and replace _FineUploader_ by the library you have chosen.

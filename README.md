@@ -1,6 +1,6 @@
 OneupUploaderBundle
 ===================
-The OneupUploaderBundle adds support for handling file uploads using one of the following Javascript libraries:
+The OneupUploaderBundle adds support for handling file uploads using one of the following Javascript libraries to your Symfony2 application:
 
 * [FineUploader](http://fineuploader.com/)
 * [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/)
