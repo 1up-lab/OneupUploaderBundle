@@ -112,9 +112,14 @@ some more advanced features.
 * [Use Gaufrette as storage layer](gaufrette_storage.md)
 * [Include your own Namer](custom_namer.md)
 * [Testing this bundle](testing.md)
+* [Support a custom uploader](custom_uploader.md)
 * [Configuration Reference](configuration_reference.md)
 
 ## FAQ
+
+> I want to use a frontend library you don't yet support
+
+This is absolutely no problem, just follow the instructions given in the corresponding [documentation file](custom_uploader.md). If you think that others could profit of your code, please consider making a pull request. I'm always happy for any kind of contribution.
 
 > Why didn't you implement the _delete_ feature provided by Fine Uploader?
 
