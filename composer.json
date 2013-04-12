@@ -1,8 +1,8 @@
 {
     "name": "oneup/uploader-bundle",
     "type": "symfony-bundle",
-    "description": "widen/file-uploader integration",
-    "keywords": ["fileupload", "upload", "multifileupload", "chunked upload", "orphans"],
+    "description": "Handle multi file uploads. Features included: Chunked upload, Orphans management, Gaufrette support...",
+    "keywords": ["fileupload", "upload", "multifileupload", "chunked upload", "orphans", "FineUploader", "blueimp", "jQuery File Uploader", "YUI3 Uploader", "Uploadify", "FancyUpload"],
     "homepage": "http://1up.io",
     "license": "MIT",
     "authors": [
