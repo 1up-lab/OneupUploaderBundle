@@ -22,7 +22,7 @@ abstract class AbstractChunkedController extends AbstractController
         // get information about this chunked request
         list($last, $uuid, $index, $orig) = $this->parseChunkedRequest($request);
         
-        $chunkManager->addChunk($uuid, $index, $file, $orig);
+        $uploaded = $chunkManager->addChunk($uuid, $index, $file, $orig);
         
         // if all chunks collected and stored, proceed
         // with reassembling the parts
