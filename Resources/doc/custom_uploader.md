@@ -122,6 +122,7 @@ class FineUploaderResponse extends AbstractResponse
     
     // ... snip, setters/getters
 }
+```
 
 ## Notes
 
