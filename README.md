@@ -7,6 +7,7 @@ The OneupUploaderBundle adds support for handling file uploads using one of the 
 * [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/)
 * [Uploadify](http://www.uploadify.com/)
 * [FancyUpload](http://digitarald.de/project/fancyupload/)
+* [MooUpload](https://github.com/juanparati/MooUpload)
 
 Features included:
 
