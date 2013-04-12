@@ -8,6 +8,7 @@ The OneupUploaderBundle adds support for handling file uploads using one of the 
 * [Uploadify](http://www.uploadify.com/)
 * [FancyUpload](http://digitarald.de/project/fancyupload/)
 * [MooUpload](https://github.com/juanparati/MooUpload)
+* [Plupload](http://www.plupload.com/)
 
 Features included:
 
