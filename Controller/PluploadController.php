@@ -17,11 +17,13 @@ class PluploadController extends AbstractChunkedController
         $response = new EmptyResponse();
         $files = $request->files;
         
+        $chunked = !is_null($request->get('chunks'));
+        
         foreach($files as $file)
         {
             try
             {
-                $uploaded = $this->handleUpload($file);
+                $uploaded = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
                 
                 // dispatch POST_PERSIST AND POST_UPLOAD events
                 $this->dispatchEvents($uploaded, $response, $request);
@@ -38,6 +40,11 @@ class PluploadController extends AbstractChunkedController
     
     protected function parseChunkedRequest(Request $request)
     {
-        die("foobar");
+        $orig  = $request->get('name');
+        $uuid  = $request->get('name');
+        $index = $request->get('chunk');
+        $last  = $request->get('chunks') - 1 == $request->get('chunk');
+        
+        return array($last, $uuid, $index, $orig);
     }
 }
