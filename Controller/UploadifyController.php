@@ -13,9 +13,6 @@ class UploadifyController extends AbstractController
     public function upload()
     {
         $request = $this->container->get('request');
-        $dispatcher = $this->container->get('event_dispatcher');
-        $translator = $this->container->get('translator');
-        
         $response = new EmptyResponse();
         $files = $request->files;
         
