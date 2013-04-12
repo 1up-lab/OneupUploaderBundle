@@ -16,6 +16,7 @@
                <parameter key="oneup_uploader.controller.uploadify.class">Oneup\UploaderBundle\Controller\UploadifyController</parameter>
                <parameter key="oneup_uploader.controller.yui3.class">Oneup\UploaderBundle\Controller\YUI3Controller</parameter>
                <parameter key="oneup_uploader.controller.fancyupload.class">Oneup\UploaderBundle\Controller\FancyUploadController</parameter>
+               <parameter key="oneup_uploader.controller.mooupload.class">Oneup\UploaderBundle\Controller\MooUploadController</parameter>
            </parameters>
 
            <services>

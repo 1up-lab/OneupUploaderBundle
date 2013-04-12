@@ -95,6 +95,7 @@ So if you take the mapping described before, the generated route name would be `
 * [Use YUI3 Uploader](frontend_yui3.md)
 * [Use Uploadify](frontend_uploadify.md)
 * [Use FancyUpload](frontend_fancyupload.md)
+* [Use MooUpload](frontend_mooupload.md)
 
 This is of course a very minimal setup. Be sure to include stylesheets for Fine Uploader if you want to use them.
 
