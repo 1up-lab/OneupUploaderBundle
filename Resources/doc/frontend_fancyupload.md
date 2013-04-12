@@ -3,6 +3,8 @@ Use FancyUpload
 
 Download [FancyUpload](http://digitarald.de/project/fancyupload/) and include it in your template. Connect the `url` property to the dynamic route `_uploader_{mapping_name}` and include the FlashUploader file (`path`).
 
+> If you have any idea on how to make a minimal example about the usage of FancyUpload, consider creating a pull-request.
+
 ```html
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.2/mootools.js"></script>
