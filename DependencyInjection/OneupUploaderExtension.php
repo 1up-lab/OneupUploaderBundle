@@ -113,8 +113,8 @@ class OneupUploaderExtension extends Extension
             {
                 $customFrontend = $mapping['custom_frontend'];
                 
-                $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['class']);
-                $controllerType = $customFrontend['name'];
+                $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
+                $controllerType = $customFrontend['class'];
                 
                 if(empty($controllerName) || empty($controllerType))
                     throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
