@@ -99,8 +99,6 @@ So if you take the mapping described before, the generated route name would be `
 * [Use FancyUpload](frontend_fancyupload.md)
 * [Use MooUpload](frontend_mooupload.md)
 
-This is of course a very minimal setup. Be sure to include stylesheets for Fine Uploader if you want to use them.
-
 ## Next steps
 
 After installing and setting up the basic functionality of this bundle you can move on and integrate
