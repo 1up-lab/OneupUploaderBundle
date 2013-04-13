@@ -27,6 +27,10 @@ The entry point of the documentation can be found in the file `Resources/docs/in
 
 [Read the documentation for master](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/index.md)
 
+Upgrade Notes
+-------------
+Event names [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/f5d5fe4b6f7b9a04ce633acbc9c94a2dd0e0d6be) in Version 0.9.3, update your EventListener accordingly.
+
 License
 -------
 
