@@ -33,7 +33,7 @@ And register it in your `services.xml`.
 <services>
     <service id="acme_hello.upload_listener" class="Acme\HelloBundle\EventListener">
         <argument type="service" id="doctrine" />
-        <tag name="kernel.event_listener" event="oneup.uploader.post.persist" method="onUpload" />
+        <tag name="kernel.event_listener" event="oneup_uploader.post_persist" method="onUpload" />
     </service>
 </services>
 ```
@@ -41,11 +41,12 @@ And register it in your `services.xml`.
 You can now implement you custom logic in the `onUpload` method of your EventListener.
 
 ## Use custom input data
-FineUploader supports passing custom data through the request as the following examples states. For example you can pass the id of an entity you wish to paste the images to.
+Many of the supported frontends support passing custom data through the request. Here's an example for [FineUploader](frontend_fineuploader.md) sending an id of an Entity along the normal request.
 
 ```html
 <script type="text/javascript">
-var uploader = new qq.FineUploader({
+var uploader = new qq.FineUploader(
+{
     element: document.getElementById('fine-uploader'),
     request: {
         endpoint: "{{ oneup_uploader_endpoint('gallery') }}",
@@ -57,7 +58,7 @@ var uploader = new qq.FineUploader({
 </script>
 ```
 
-As you can see, we extended the `request` part of the Fine Uploader by adding a `params` section. These variables are accessible through the request object in the EventHander.
+As you can see, we extended the `request` part of the FineUploader by adding a `params` section. These variables are accessible through the request object in the EventHander.
 
 ```php
 public function onUpload(PostPersistEvent $event)

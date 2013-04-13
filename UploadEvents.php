@@ -4,6 +4,6 @@ namespace Oneup\UploaderBundle;
 
 final class UploadEvents
 {
-    const POST_PERSIST = 'oneup.uploader.post.persist';
-    const POST_UPLOAD  = 'oneup.uploader.post.upload';
+    const POST_PERSIST = 'oneup_uploader.post_persist';
+    const POST_UPLOAD  = 'oneup_uploader.post_upload';
 }
