@@ -50,15 +50,19 @@ abstract class AbstractController
     {
         $dispatcher = $this->container->get('event_dispatcher');
         
-        // dispatch post upload event
+        // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
         $dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
+        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_UPLOAD, $this->type), $postUploadEvent);
+        
+        var_dump(sprintf('%s.%s', UploadEvents::POST_UPLOAD, $this->type));
     
         if(!$this->config['use_orphanage'])
         {
-            // dispatch post persist event
+            // dispatch post persist event (both the specific and the general)
             $postPersistEvent = new PostPersistEvent($uploaded, $response, $request, $this->type, $this->config);
             $dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
+            $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_UPLOAD, $this->type), $postPersistEvent);
         }
     }
 

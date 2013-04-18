@@ -6,6 +6,8 @@ In almost every use case you need to further process uploaded files. For example
 * `PostUploadEvent`: Will be dispatched after a file has been uploaded and moved.
 * `PostPersistEvent`: The same as `PostUploadEvent` but will only be dispatched if no `Orphanage` is used.
 
+> You'll find more information on this topic in the [Event documentation](events.md)
+
 To listen to one of these events you need to create an `EventListener`.
 
 ```php

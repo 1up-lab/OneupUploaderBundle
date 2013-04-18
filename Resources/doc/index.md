@@ -120,6 +120,7 @@ some more advanced features.
 * [Include your own Namer](custom_namer.md)
 * [Testing this bundle](testing.md)
 * [Support a custom uploader](custom_uploader.md)
+* [General/Generic Events](events.md)
 * [Configuration Reference](configuration_reference.md)
 
 ## FAQ
