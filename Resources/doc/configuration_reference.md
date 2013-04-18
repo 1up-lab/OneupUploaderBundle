@@ -11,10 +11,15 @@ oneup_uploader:
     orphanage:
         maxage:               604800
         directory:            ~
+    twig:                 true
     mappings:             # Required
 
         # Prototype
         id:
+            frontend:             fineuploader
+            custom_frontend:
+                name:                 ~
+                class:                ~
             storage:
                 service:              ~
                 type:                 filesystem
