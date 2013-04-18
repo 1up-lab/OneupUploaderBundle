@@ -56,7 +56,7 @@ class MooUploadResponse extends AbstractResponse
     
     public function getName()
     {
-        return $this->id;
+        return $this->name;
     }
     
     public function setSize($size)
