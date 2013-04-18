@@ -14,4 +14,4 @@ Moreover this bundles also dispatches some special kind of generic events you ca
 The `{mapping}` part is the key of your configured mapping. The examples in this documentation always uses the mapping key `gallery`. So the dispatched event would be called `oneup_uploader.post_upload.gallery`.
 Using these generic events can save you some time and coding lines, as you don't have to check for the correct type in the `EventListener`.
 
-See the [custom_logic.md](custom logic section) of this documentation for specific examples on how to use these Events.
+See the [custom logic section](custom_logic.md) of this documentation for specific examples on how to use these Events.
