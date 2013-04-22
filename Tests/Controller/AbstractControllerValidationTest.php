@@ -122,7 +122,32 @@ abstract class AbstractControllerValidationTest extends \PHPUnit_Framework_TestC
     
     protected function getContainerMock()
     {
-        return $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $mock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $mock
+            ->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(array($this, 'containerGetCb')))
+        ;
+        
+        return $mock;
+    }
+
+    public function containerGetCb($inp)
+    {
+        if($inp == 'event_dispatcher')
+            return $this->getEventDispatcherMock();
+    }
+    
+    protected function getEventDispatcherMock()
+    {
+        $mock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $mock
+            ->expects($this->any())
+            ->method('dispatch')
+            ->will($this->returnValue(true))
+        ;
+        
+        return $mock;
     }
     
     protected function getStorageMock()
