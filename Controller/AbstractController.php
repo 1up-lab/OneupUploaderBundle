@@ -15,6 +15,7 @@ use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Oneup\UploaderBundle\Uploader\Exception\ValidationException;
 
 abstract class AbstractController
 {
