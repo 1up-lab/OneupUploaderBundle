@@ -22,6 +22,7 @@ class OneupUploaderExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('uploader.xml');
         $loader->load('templating.xml');
+        $loader->load('validation.xml');
         
         if($config['twig'])
         {
