@@ -9,7 +9,6 @@
         <service
             id="oneup_uploader.validation_listener.max_size"
             class="Oneup\UploaderBundle\EventListener\MaxSizeValidationListener"
-            public="false"
         >
             <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
@@ -17,7 +16,6 @@
         <service
             id="oneup_uploader.validation_listener.allowed_extension"
             class="Oneup\UploaderBundle\EventListener\AllowedExtensionValidationListener"
-            public="false"
         >
             <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
@@ -25,7 +23,6 @@
         <service
             id="oneup_uploader.validation_listener.disallowed_extension"
             class="Oneup\UploaderBundle\EventListener\DisallowedExtensionValidationListener"
-            public="false"
         >
             <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
