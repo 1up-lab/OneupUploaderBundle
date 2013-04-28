@@ -2,7 +2,7 @@
 
 namespace Oneup\UploaderBundle\Uploader\Response;
 
-interface ResponseInterface extends \ArrayAccess
+interface ResponseInterface
 {
     public function assemble();
 }

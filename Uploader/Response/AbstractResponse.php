@@ -4,7 +4,7 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 
-abstract class AbstractResponse implements ResponseInterface
+abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
 {
     protected $data;
     
@@ -12,8 +12,6 @@ abstract class AbstractResponse implements ResponseInterface
     {
         $this->data = array();
     }
-    
-    abstract public function assemble();
 
     public function offsetSet($offset, $value)
     {
