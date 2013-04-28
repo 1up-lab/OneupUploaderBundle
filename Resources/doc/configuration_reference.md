@@ -25,8 +25,10 @@ oneup_uploader:
                 type:                 filesystem
                 filesystem:           ~
                 directory:            ~
-            allowed_extensions:   []
-            disallowed_extensions:  []
+            allowed_extensions:    []
+            disallowed_extensions: []
+            allowed_mimetypes:     []
+            disallowed_mimetypes:  []
             max_size:             9223372036854775807
             use_orphanage:        false
             namer:                oneup_uploader.namer.uniqid
