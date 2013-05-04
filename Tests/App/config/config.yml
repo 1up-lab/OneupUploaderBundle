@@ -1,0 +1,33 @@
+framework:
+    #esi:             ~
+    translator:      { fallback: en }
+    secret:          secret
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: %kernel.debug%
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['php']
+        #assets_version: SomeVersionScheme
+    default_locale:  en
+    trusted_proxies: ~
+    session:         ~
+    fragments:       ~
+    test:            ~
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+
+oneup_uploader:
+    mappings:
+        gallery: ~
