@@ -19,15 +19,15 @@
     
     "require-dev": {
         "knplabs/gaufrette": "0.2.*@dev",
-        "symfony/class-loader": "dev-master",
-        "symfony/security-bundle": "dev-master",
-        "symfony/monolog-bundle": "dev-master",
-        "sensio/framework-extra-bundle": "dev-master",
+        "symfony/class-loader": "2.*",
+        "symfony/security-bundle": "2.*",
+        "symfony/monolog-bundle": "2.*",
+        "sensio/framework-extra-bundle": "2.*",
         "jms/serializer-bundle": "dev-master",
-        "symfony/yaml": "dev-master",
+        "symfony/yaml": "2.*",
         "symfony/form": "2.*",
-        "symfony/twig-bundle": "dev-master",
-        "symfony/browser-kit": "dev-master"
+        "symfony/twig-bundle": "2.*",
+        "symfony/browser-kit": "2.*"
     },
     
     "suggest": {
