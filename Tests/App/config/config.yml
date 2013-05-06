@@ -1,5 +1,4 @@
 framework:
-    #esi:             ~
     translator:      { fallback: en }
     secret:          secret
     router:
@@ -10,7 +9,6 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['php']
-        #assets_version: SomeVersionScheme
     default_locale:  en
     trusted_proxies: ~
     session:         ~
@@ -30,4 +28,6 @@ monolog:
 
 oneup_uploader:
     mappings:
-        gallery: ~
+        blueimp:
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
