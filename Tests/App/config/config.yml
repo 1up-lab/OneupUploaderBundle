@@ -34,6 +34,21 @@ oneup_uploader:
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
         
+        yui3:
+            frontend: yui3
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+        
+        plupload:
+            frontend: plupload
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+        
+        uploadify:
+            frontend: uploadify
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+        
         blueimp:
             frontend: blueimp
             storage:
