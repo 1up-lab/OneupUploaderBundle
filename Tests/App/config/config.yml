@@ -29,6 +29,11 @@ oneup_uploader:
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
         
+        fancyupload:
+            frontend: fancyupload
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+        
         blueimp:
             frontend: blueimp
             storage:
