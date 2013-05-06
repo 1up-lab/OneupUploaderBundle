@@ -18,7 +18,16 @@
     },
     
     "require-dev": {
-        "knplabs/gaufrette": "0.2.*@dev"
+        "knplabs/gaufrette": "0.2.*@dev",
+        "symfony/class-loader": "2.*",
+        "symfony/security-bundle": "2.*",
+        "symfony/monolog-bundle": "2.*",
+        "sensio/framework-extra-bundle": "2.*",
+        "jms/serializer-bundle": "dev-master",
+        "symfony/yaml": "2.*",
+        "symfony/form": "2.*",
+        "symfony/twig-bundle": "2.*",
+        "symfony/browser-kit": "2.*"
     },
     
     "suggest": {
