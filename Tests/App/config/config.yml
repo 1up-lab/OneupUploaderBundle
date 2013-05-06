@@ -4,15 +4,10 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: %kernel.debug%
-    form:            ~
-    csrf_protection: ~
-    validation:      { enable_annotations: true }
     templating:
         engines: ['php']
     default_locale:  en
-    trusted_proxies: ~
     session:         ~
-    fragments:       ~
     test:            ~
 
 monolog:
