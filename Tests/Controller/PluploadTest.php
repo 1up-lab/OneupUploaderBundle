@@ -39,10 +39,10 @@ class PluploadTest extends AbstractChunkedControllerTest
     protected function getNextFile($i)
     {
         return new UploadedFile(
-            $this->createTempFile(21),
+            $this->createTempFile(20),
             'cat.txt',
             'text/plain',
-            21
+            20
         );
     }
 }
