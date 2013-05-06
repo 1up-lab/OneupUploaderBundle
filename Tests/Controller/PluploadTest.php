@@ -3,9 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractControllerTest;
+use Oneup\UploaderBundle\Tests\Controller\AbstractChunkedControllerTest;
 
-class PluploadTest extends AbstractControllerTest
+class PluploadTest extends AbstractChunkedControllerTest
 {
     protected function getConfigKey()
     {
@@ -24,6 +24,25 @@ class PluploadTest extends AbstractControllerTest
             'cat.txt',
             'text/plain',
             128
+        );
+    }
+    
+    protected function getNextRequestParameters($i)
+    {
+        return array(
+            'chunks' => $this->total,
+            'chunk' => $i,
+            'name' => 'cat.txt'
+        );
+    }
+    
+    protected function getNextFile($i)
+    {
+        return new UploadedFile(
+            $this->createTempFile(21),
+            'cat.txt',
+            'text/plain',
+            21
         );
     }
 }
