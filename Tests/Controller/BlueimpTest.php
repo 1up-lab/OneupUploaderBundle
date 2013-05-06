@@ -12,20 +12,18 @@ class BlueimpTest extends AbstractControllerTest
         return 'blueimp';
     }
     
-    protected function getSingleRequestParameters()
+    protected function getRequestParameters()
     {
         return array();
     }
     
-    protected function getSingleRequestFile()
+    protected function getRequestFile()
     {
-        $file = new UploadedFile(
+        return array(new UploadedFile(
             $this->createTempFile(128),
             'cat.txt',
             'text/plain',
             128
-        );
-        
-        return array($file);
+        ));
     }
 }

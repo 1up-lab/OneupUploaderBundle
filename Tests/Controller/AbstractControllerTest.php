@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractControllerTest extends WebTestCase
@@ -21,8 +22,8 @@ abstract class AbstractControllerTest extends WebTestCase
     }
     
     abstract protected function getConfigKey();
-    abstract protected function getSingleRequestParameters();
-    abstract protected function getSingleRequestFile();
+    abstract protected function getRequestParameters();
+    abstract protected function getRequestFile();
     
     public function testSingleUpload()
     {
@@ -30,11 +31,18 @@ abstract class AbstractControllerTest extends WebTestCase
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
         
-        $client->request('POST', $endpoint, $this->getSingleRequestParameters(), $this->getSingleRequestFile());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getRequestFile()));
         $response = $client->getResponse();
         
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertCount(1, $this->getUploadedFiles());
+        
+        foreach($this->getUploadedFiles() as $file) {
+            $this->assertTrue($file->isFile());
+            $this->assertTrue($file->isReadable());
+            $this->assertEquals(128, $file->getSize());
+        }
     }
     
     public function testRoute()
@@ -94,9 +102,27 @@ abstract class AbstractControllerTest extends WebTestCase
         return $file;
     }
     
+    protected function getUploadedFiles()
+    {
+        $env  = $this->container->getParameter('kernel.environment');
+        $root = $this->container->getParameter('kernel.root_dir');
+        
+        // assemble path
+        $path = sprintf('%s/cache/%s/upload', $root, $env);
+        
+        $finder = new Finder();
+        $files  = $finder->in($path);
+        
+        return $files;
+    }
+    
     public function tearDown()
     {
         foreach($this->createdFiles as $file) {
+            @unlink($file);
+        }
+        
+        foreach($this->getUploadedFiles() as $file) {
             @unlink($file);
         }
     }

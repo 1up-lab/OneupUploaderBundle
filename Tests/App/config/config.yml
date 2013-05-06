@@ -29,5 +29,6 @@ monolog:
 oneup_uploader:
     mappings:
         blueimp:
+            frontend: blueimp
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
