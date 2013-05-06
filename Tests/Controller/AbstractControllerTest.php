@@ -3,142 +3,127 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
-use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
-
-abstract class AbstractControllerTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractControllerTest extends WebTestCase
 {
-    protected $tempFile;
-    
-    abstract public function getControllerString();
-    abstract protected function getRequestMock();
+    protected $client;
+    protected $container;
+    protected $createdFiles;
     
     public function setUp()
     {
-        // create temporary file
-        $this->tempFile = tempnam(sys_get_temp_dir(), 'uploader');
+        $this->client = static::createClient();
+        $this->container = $this->client->getContainer();
+        $this->helper = $this->container->get('oneup_uploader.templating.uploader_helper');
+        $this->createdFiles = array();
         
-        $pointer = fopen($this->tempFile, 'w+');
-        fwrite($pointer, str_repeat('A', 1024), 1024);
-        fclose($pointer);
+        $routes = $this->container->get('router')->getRouteCollection()->all();
     }
     
-    public function testUpload()
+    abstract protected function getConfigKey();
+    abstract protected function getRequestParameters();
+    abstract protected function getRequestFile();
+    
+    public function testSingleUpload()
     {
-        $container = $this->getContainerMock();
-        $storage = new FilesystemStorage(sys_get_temp_dir() . '/uploader');
-        $config = array(
-            'use_orphanage' => false,
-            'namer' => 'namer',
-            'max_size' => 2048,
-            'allowed_extensions' => array(),
-            'disallowed_extensions' => array()
-        );
+        // assemble a request
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
         
-        $str = $this->getControllerString();
-        $controller = new $str($container, $storage, $config, 'cat');
-        $response = $controller->upload();
+        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getRequestFile()));
+        $response = $client->getResponse();
         
-        // check if original file has been moved
-        $this->assertFalse(file_exists($this->tempFile));
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertCount(1, $this->getUploadedFiles());
         
-        // testing response
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
-        $this->assertEquals(200, $response->getStatusCode());
+        foreach($this->getUploadedFiles() as $file) {
+            $this->assertTrue($file->isFile());
+            $this->assertTrue($file->isReadable());
+            $this->assertEquals(128, $file->getSize());
+        }
+    }
+    
+    public function testRoute()
+    {
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
         
-        // check if file is present
+        $this->assertNotNull($endpoint);
+        $this->assertEquals(0, strpos('_uploader', $endpoint));
+    }
+    
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     */
+    public function testCallByGet()
+    {
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+        $this->client->request('GET', $endpoint);
+    }
+    
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     */
+    public function testCallByDelete()
+    {
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+        $this->client->request('DELETE', $endpoint);
+    }
+    
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     */
+    public function testCallByPut()
+    {
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+        $this->client->request('PUT', $endpoint);
+    }
+    
+    public function testCallByPost()
+    {
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+        
+        $client->request('POST', $endpoint);
+        $response = $client->getResponse();
+        
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+    }
+    
+    protected function createTempFile($size = 128)
+    {
+        $file = tempnam(sys_get_temp_dir(), 'uploader_');
+        file_put_contents($file, str_repeat('A', $size));
+        
+        $this->createdFiles[] = $file;
+        
+        return $file;
+    }
+    
+    protected function getUploadedFiles()
+    {
+        $env  = $this->container->getParameter('kernel.environment');
+        $root = $this->container->getParameter('kernel.root_dir');
+        
+        // assemble path
+        $path = sprintf('%s/cache/%s/upload', $root, $env);
+        
         $finder = new Finder();
-        $finder->in(sys_get_temp_dir() . '/uploader')->files();
+        $files  = $finder->in($path);
         
-        $this->assertCount(1, $finder);
-    }
-    
-    public function testUploadWhichFails()
-    {
-        $container = $this->getContainerMock();
-        $storage = new FilesystemStorage(sys_get_temp_dir() . '/uploader');
-        $config = array(
-            'use_orphanage' => false,
-            'namer' => 'namer',
-            'max_size' => 1,
-            'allowed_extensions' => array(),
-            'disallowed_extensions' => array()
-        );
-        
-        $str = $this->getControllerString();
-        $controller = new $str($container, $storage, $config, 'cat');
-        $response = $controller->upload();
-        
-        $json = json_decode($response->getContent());
-        
-        // testing response
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
-        $this->assertEquals(200, $response->getStatusCode());
-    }
-    
-    protected function getContainerMock()
-    {
-        $mock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $mock
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(array($this, 'containerGetCb')))
-        ;
-        
-        return $mock;
-    }
-    
-    public function containerGetCb($inp)
-    {
-        if($inp == 'request')
-            return $this->getRequestMock();
-        
-        if($inp == 'event_dispatcher')
-            return $this->getEventDispatcherMock();
-        
-        if($inp == 'namer')
-            return new UniqidNamer();
-        
-        if($inp == 'translator')
-            return $this->getTranslatorMock();
-    }
-    
-    protected function getEventDispatcherMock()
-    {
-        $mock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $mock
-            ->expects($this->any())
-            ->method('dispatch')
-            ->will($this->returnValue(true))
-        ;
-        
-        return $mock;
-    }
-    
-    protected function getTranslatorMock()
-    {
-        $mock = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
-        $mock
-            ->expects($this->any())
-            ->method('trans')
-            ->will($this->returnValue('A translated error.'))
-        ;
-        
-        return $mock;
-    }
-    
-    protected function getUploadedFile()
-    {
-        return new UploadedFile($this->tempFile, 'grumpy-cat.jpeg', 'image/jpeg', 1024, null, true);
+        return $files;
     }
     
     public function tearDown()
     {
-        // remove all files in tmp folder
-        $filesystem = new Filesystem();
-        $filesystem->remove(sys_get_temp_dir() . '/uploader');
+        foreach($this->createdFiles as $file) {
+            @unlink($file);
+        }
+        
+        foreach($this->getUploadedFiles() as $file) {
+            @unlink($file);
+        }
     }
 }

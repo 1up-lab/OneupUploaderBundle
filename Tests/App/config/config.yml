@@ -1,0 +1,35 @@
+framework:
+    translator:      { fallback: en }
+    secret:          secret
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: %kernel.debug%
+    templating:
+        engines: ['php']
+    default_locale:  en
+    session:         ~
+    test:            ~
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+
+oneup_uploader:
+    mappings:
+        
+        fineuploader:
+            frontend: fineuploader
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+        
+        blueimp:
+            frontend: blueimp
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
