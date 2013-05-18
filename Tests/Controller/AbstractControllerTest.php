@@ -7,9 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
+    protected $createdFiles;
     protected $client;
     protected $container;
-    protected $createdFiles;
     
     public function setUp()
     {
@@ -22,28 +22,6 @@ abstract class AbstractControllerTest extends WebTestCase
     }
     
     abstract protected function getConfigKey();
-    abstract protected function getRequestParameters();
-    abstract protected function getRequestFile();
-    
-    public function testSingleUpload()
-    {
-        // assemble a request
-        $client = $this->client;
-        $endpoint = $this->helper->endpoint($this->getConfigKey());
-        
-        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getRequestFile()));
-        $response = $client->getResponse();
-        
-        $this->assertTrue($response->isSuccessful());
-        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
-        $this->assertCount(1, $this->getUploadedFiles());
-        
-        foreach($this->getUploadedFiles() as $file) {
-            $this->assertTrue($file->isFile());
-            $this->assertTrue($file->isReadable());
-            $this->assertEquals(128, $file->getSize());
-        }
-    }
     
     public function testRoute()
     {
@@ -91,7 +69,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
     }
-    
+
     protected function createTempFile($size = 128)
     {
         $file = tempnam(sys_get_temp_dir(), 'uploader_');
@@ -125,5 +103,8 @@ abstract class AbstractControllerTest extends WebTestCase
         foreach($this->getUploadedFiles() as $file) {
             @unlink($file);
         }
+
+        unset($this->client);
+        unset($this->controller);
     }
 }

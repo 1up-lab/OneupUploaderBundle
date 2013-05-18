@@ -3,9 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractChunkedControllerTest;
+use Oneup\UploaderBundle\Tests\Controller\AbstractChunkedUploadTest;
 
-class PluploadTest extends AbstractChunkedControllerTest
+class PluploadTest extends AbstractChunkedUploadTest
 {
     protected function getConfigKey()
     {

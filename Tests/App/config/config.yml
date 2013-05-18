@@ -48,8 +48,26 @@ oneup_uploader:
             frontend: uploadify
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                
+        uploadify_validation:
+            frontend: uploadify
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+            allowed_extensions: [ "ok" ]
+            disallowed_extensions: [ "fail" ]
+            allowed_mimetypes: [ "image/jpg", "text/plain" ]
+            disallowed_mimetypes: [ "image/gif" ]
         
         blueimp:
             frontend: blueimp
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+        
+        blueimp_validation:
+            frontend: blueimp
+            storage:
+                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+            allowed_extensions: [ "ok" ]
+            disallowed_extensions: [ "fail" ]
+            allowed_mimetypes: [ "image/jpg", "text/plain" ]
+            disallowed_mimetypes: [ "image/gif" ]

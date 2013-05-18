@@ -3,9 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractControllerTest;
+use Oneup\UploaderBundle\Tests\Controller\AbstractUploadTest;
 
-class BlueimpTest extends AbstractControllerTest
+class BlueimpTest extends AbstractUploadTest
 {
     protected function getConfigKey()
     {

@@ -2,9 +2,9 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
-use Oneup\UploaderBundle\Tests\Controller\AbstractControllerTest;
+use Oneup\UploaderBundle\Tests\Controller\AbstractUploadTest;
 
-abstract class AbstractChunkedControllerTest extends AbstractControllerTest
+abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 {
     protected $total = 6;
     
