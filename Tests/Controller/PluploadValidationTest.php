@@ -5,11 +5,11 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Oneup\UploaderBundle\Tests\Controller\AbstractValidationTest;
 
-class YUI3ValidationTest extends AbstractValidationTest
+class PluploadValidationTest extends AbstractValidationTest
 {
     protected function getConfigKey()
     {
-        return 'yui3_validation';
+        return 'plupload_validation';
     }
     
     protected function getRequestParameters()
