@@ -31,7 +31,7 @@ abstract class AbstractChunkedController extends AbstractController
      *
      *  This function also calls the chunk manager if the function
      *  parseChunkedRequest has set true for the "last" key of the
-     *  returned array.
+     *  returned array to reassemble the uploaded chunks.
      *
      *  @param file The uploaded chunk.
      */
