@@ -19,6 +19,7 @@ Features included:
 * Fully unit tested
 
 [![Build Status](https://travis-ci.org/1up-lab/OneupUploaderBundle.png?branch=master)](https://travis-ci.org/1up-lab/OneupUploaderBundle)
+[![Dependencies Status](https://d2xishtp1ojlk0.cloudfront.net/d/8654803)](http://depending.in/1up-lab/OneupUploaderBundle)
 
 Documentation
 -------------
