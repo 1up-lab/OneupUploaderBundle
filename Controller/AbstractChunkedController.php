@@ -8,8 +8,33 @@ use Oneup\UploaderBundle\Controller\AbstractController;
 
 abstract class AbstractChunkedController extends AbstractController
 {
+    /**
+     *  Parses a chunked request and return relevant information.
+     *
+     *  This function must return an array containing the following
+     *  keys and their corresponding values:
+     *    - last: Wheter this is the last chunk of the uploaded file
+     *    - uuid: A unique id which distinguishes two uploaded files
+     *            This uuid must stay the same among the task of
+     *            uploading a chunked file.
+     *    - index: A numerical representation of the currently uploaded
+     *            chunk. Must be higher that in the previous request.
+     *    - orig: The original file name.
+     *
+     *  @param request The request object
+     */
     abstract protected function parseChunkedRequest(Request $request);
     
+    /**
+     *  This function will be called in order to upload and save an
+     *  uploaded chunk.
+     *
+     *  This function also calls the chunk manager if the function
+     *  parseChunkedRequest has set true for the "last" key of the
+     *  returned array to reassemble the uploaded chunks.
+     *
+     *  @param file The uploaded chunk.
+     */
     protected function handleChunkedUpload(UploadedFile $file)
     {
         // get basic container stuff
