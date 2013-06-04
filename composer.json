@@ -14,7 +14,7 @@
     
     "require": {
         "symfony/framework-bundle": "2.*",
-        "symfony/finder": ">=2.0.16,<2.3-dev"
+        "symfony/finder": ">=2.0.16,<2.4-dev"
     },
     
     "require-dev": {
