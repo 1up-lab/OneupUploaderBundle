@@ -34,6 +34,16 @@ abstract class AbstractController
     
     abstract public function upload();
 
+    /**
+     *  This internal function handles the actual upload process
+     *  and will most likely be called from the upload()
+     *  function in the implemented Controller.
+     *
+     *  Note: The return value differs when
+     *
+     *  @param UploadedFile The file to upload
+     *  @return File the actual file
+     */
     protected function handleUpload(UploadedFile $file)
     {
         $this->validate($file);
@@ -48,6 +58,10 @@ abstract class AbstractController
         return $uploaded;
     }
     
+    /**
+     *  This function is a helper function which dispatches post upload
+     *  and post persist events.
+     */
     protected function dispatchEvents($uploaded, ResponseInterface $response, Request $request)
     {
         $dispatcher = $this->container->get('event_dispatcher');
