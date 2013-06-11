@@ -18,6 +18,7 @@
     },
     
     "require-dev": {
+        "amazonwebservices/aws-sdk-for-php": "1.5.*",
         "knplabs/gaufrette": "0.2.*@dev",
         "symfony/class-loader": "2.*",
         "symfony/security-bundle": "2.*",
