@@ -38,7 +38,7 @@ class GaufretteStorage implements StorageInterface
             $this->filesystem->write($path, '', true);
         
         $src->open(new StreamMode('rb+'));
-        $dst->open(new StreamMode('ab+'));
+        $dst->open(new StreamMode('wb+'));
             
         while(!$src->eof())
         {
