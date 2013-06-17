@@ -76,7 +76,7 @@ abstract class AbstractController
             // dispatch post persist event (both the specific and the general)
             $postPersistEvent = new PostPersistEvent($uploaded, $response, $request, $this->type, $this->config);
             $dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
-            $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_UPLOAD, $this->type), $postPersistEvent);
+            $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_PERSIST, $this->type), $postPersistEvent);
         }
     }
 
