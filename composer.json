@@ -8,7 +8,9 @@
     "authors": [
         {
             "name": "Jim Schmid",
-            "email": "js@1up.io"
+            "email": "js@1up.io",
+            "homepage": "http://1up.io",
+            "role": "Developer"
         }
     ],
     
