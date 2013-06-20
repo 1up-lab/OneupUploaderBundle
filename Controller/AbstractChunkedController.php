@@ -4,7 +4,11 @@ namespace Oneup\UploaderBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use Oneup\UploaderBundle\UploadEvents;
+use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Controller\AbstractController;
+use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 
 abstract class AbstractChunkedController extends AbstractController
 {
@@ -35,7 +39,7 @@ abstract class AbstractChunkedController extends AbstractController
      *
      *  @param file The uploaded chunk.
      */
-    protected function handleChunkedUpload(UploadedFile $file)
+    protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
         // get basic container stuff
         $request = $this->container->get('request');
@@ -47,12 +51,13 @@ abstract class AbstractChunkedController extends AbstractController
         // get information about this chunked request
         list($last, $uuid, $index, $orig) = $this->parseChunkedRequest($request);
         
-        $uploaded = $chunkManager->addChunk($uuid, $index, $file, $orig);
+        $chunk = $chunkManager->addChunk($uuid, $index, $file, $orig);
+        
+        $this->dispatchChunkEvents($chunk, $response, $request, $last);
         
         // if all chunks collected and stored, proceed
         // with reassembling the parts
-        if($last)
-        {
+        if ($last) {
             // we'll take the first chunk and append the others to it
             // this way we don't need another file in temporary space for assembling
             $chunks = $chunkManager->getChunks($uuid);
@@ -66,11 +71,22 @@ abstract class AbstractChunkedController extends AbstractController
             
             // validate this entity and upload on success
             $this->validate($uploadedFile);
-            $uploaded = $this->handleUpload($uploadedFile);
+            $uploaded = $this->handleUpload($uploadedFile, $response, $request);
             
             $chunkManager->cleanup($path);
         }
+    }
+
+    /**
+     *  This function is a helper function which dispatches post chunk upload event.
+     */
+    protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
         
-        return $uploaded;
+        // dispatch post upload event (both the specific and the general)
+        $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);
+        $dispatcher->dispatch(UploadEvents::POST_CHUNK_UPLOAD, $postUploadEvent);
+        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_CHUNK_UPLOAD, $this->type), $postUploadEvent);
     }
 }

@@ -6,6 +6,10 @@ For a list of general Events, you can always have a look at the `UploadEvents.ph
 * `oneup_uploader.post_upload` Will be dispatched after a file has been uploaded and moved.
 * `oneup_uploader.post_persist` The same as `oneup_uploader.post_upload` but will only be dispatched if no `Orphanage` is used.
 
+In case you are using chunked uploads on your frontend, you can listen to:
+
+* `oneup_uploader.post_chunk_upload` Will be dispatched after a chunk has been uploaded (including the last and assembled one)
+
 Moreover this bundles also dispatches some special kind of generic events you can listen to.
 
 * `oneup_uploader.post_upload.{mapping}`

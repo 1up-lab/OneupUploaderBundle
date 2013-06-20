@@ -44,7 +44,7 @@ abstract class AbstractController
      *  @param UploadedFile The file to upload
      *  @return File the actual file
      */
-    protected function handleUpload(UploadedFile $file)
+    protected function handleUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
         $this->validate($file);
         
@@ -55,7 +55,7 @@ abstract class AbstractController
         // perform the real upload
         $uploaded = $this->storage->upload($file, $name);
         
-        return $uploaded;
+        $this->dispatchEvents($uploaded, $response, $request);
     }
     
     /**
@@ -71,8 +71,7 @@ abstract class AbstractController
         $dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
         $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_UPLOAD, $this->type), $postUploadEvent);
         
-        if(!$this->config['use_orphanage'])
-        {
+        if (!$this->config['use_orphanage'])  {
             // dispatch post persist event (both the specific and the general)
             $postPersistEvent = new PostPersistEvent($uploaded, $response, $request, $this->type, $this->config);
             $dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);

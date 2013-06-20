@@ -33,8 +33,6 @@ class MooUploadController extends AbstractChunkedController
         
         try
         {
-            $uploaded = $chunked ? $this->handleChunkedUpload($file) : $this->handleUpload($file);
-            
             // fill response object
             $response = $this->response;
             
@@ -42,9 +40,11 @@ class MooUploadController extends AbstractChunkedController
             $response->setSize($headers->get('content-length'));
             $response->setName($headers->get('x-file-name'));
             $response->setUploadedName($uploadFileName);
-            
-            // dispatch POST_PERSIST AND POST_UPLOAD events
-            $this->dispatchEvents($uploaded, $response, $request);
+
+            $chunked ?
+                $this->handleChunkedUpload($file, $response, $request) :
+                $this->handleUpload($file, $response, $request)
+            ;
         }
         catch(UploadException $e)
         {

@@ -20,7 +20,7 @@ class UploadifyController extends AbstractController
         {
             try
             {
-                $uploaded = $this->handleUpload($file);
+                $uploaded = $this->handleUpload($file, $response, $request);
                 
                 // dispatch POST_PERSIST AND POST_UPLOAD events
                 $this->dispatchEvents($uploaded, $response, $request);
