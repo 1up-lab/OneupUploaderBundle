@@ -11,10 +11,10 @@ class AllowedExtensionValidationListener
     {
         $config = $event->getConfig();
         $file   = $event->getFile();
-        
+
         $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-        
-        if(count($config['allowed_extensions']) > 0 && !in_array($extension, $config['allowed_extensions'])) {
+
+        if (count($config['allowed_extensions']) > 0 && !in_array($extension, $config['allowed_extensions'])) {
             throw new ValidationException('error.whitelist');
         }
     }

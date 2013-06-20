@@ -13,7 +13,7 @@ class PostUploadEvent extends Event
     protected $type;
     protected $response;
     protected $config;
-    
+
     public function __construct($file, ResponseInterface $response, Request $request, $type, array $config)
     {
         $this->file = $file;
@@ -22,27 +22,27 @@ class PostUploadEvent extends Event
         $this->type = $type;
         $this->config = $config;
     }
-    
+
     public function getFile()
     {
         return $this->file;
     }
-    
+
     public function getRequest()
     {
         return $this->request;
     }
-    
+
     public function getType()
     {
         return $this->type;
     }
-    
+
     public function getResponse()
     {
         return $this->response;
     }
-    
+
     public function getConfig()
     {
         return $this->config;
