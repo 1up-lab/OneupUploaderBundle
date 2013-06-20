@@ -77,5 +77,17 @@ The Event object provides the following methods.
 
 * `getFile`: Get the uploaded file. Is either an instance of `Gaufrette\File` or `Symfony\Component\HttpFoundation\File\File`.
 * `getRequest`: Get the current request including custom variables.
+* `getResponse`: Get the response object to add custom return data.
 * `getType`: Get the name of the mapping of the current upload. Useful if you have multiple mappings and EventListeners.
 * `getConfig`: Get the config of the mapping.
+
+## Using chunked uploads
+If you are using chunked uploads and hook into the `oneup_uploader.post_chunk_upload` event, you will get `PostChunkUploadEvent` in your listeners. This Event type differs from the previously introduced ones. You'll have the following methods.
+
+
+* `getChunk`: Get the chunk file. Is an instance of `Symfony\Component\HttpFoundation\File\File`.
+* `getRequest`: Get the current request including custom variables.
+* `getResponse`: Get the response object to add custom return data.
+* `getType`: Get the name of the mapping of the current upload. Useful if you have multiple mappings and EventListeners.
+* `getConfig`: Get the config of the mapping.
+* `isLast`: Returns `true` if this is the last chunk to be uploaded, `false` otherwise.

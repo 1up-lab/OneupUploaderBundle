@@ -8,7 +8,7 @@ For a list of general Events, you can always have a look at the `UploadEvents.ph
 
 In case you are using chunked uploads on your frontend, you can listen to:
 
-* `oneup_uploader.post_chunk_upload` Will be dispatched after a chunk has been uploaded (including the last and assembled one)
+* `oneup_uploader.post_chunk_upload` Will be dispatched after a chunk has been uploaded. The Event itself has a property `isLast` which shows if this is the last chunk for the uploaded file.
 
 Moreover this bundles also dispatches some special kind of generic events you can listen to.
 
