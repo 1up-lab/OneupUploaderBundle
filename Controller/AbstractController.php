@@ -42,6 +42,9 @@ abstract class AbstractController
      *  Note: The return value differs when
      *
      *  @param UploadedFile The file to upload
+     *  @param response A response object.
+     *  @param request The request object.
+     *
      *  @return File the actual file
      */
     protected function handleUpload(UploadedFile $file, ResponseInterface $response, Request $request)
@@ -61,6 +64,10 @@ abstract class AbstractController
     /**
      *  This function is a helper function which dispatches post upload
      *  and post persist events.
+     *
+     *  @param uploaded The uploaded file.
+     *  @param response A response object.
+     *  @param request The request object.
      */
     protected function dispatchEvents($uploaded, ResponseInterface $response, Request $request)
     {
@@ -84,12 +91,9 @@ abstract class AbstractController
         $dispatcher = $this->container->get('event_dispatcher');
         $event = new ValidationEvent($file, $this->config, $this->type);
         
-        try
-        {
+        try {
             $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
-        }
-        catch(ValidationException $exception)
-        {
+        } catch(ValidationException $exception) {
             // pass the exception one level up
             throw new UploadException($exception->getMessage());
         }

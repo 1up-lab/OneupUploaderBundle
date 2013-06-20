@@ -26,6 +26,7 @@ abstract class AbstractChunkedController extends AbstractController
      *    - orig: The original file name.
      *
      *  @param request The request object
+     *  @return array
      */
     abstract protected function parseChunkedRequest(Request $request);
     
@@ -38,6 +39,8 @@ abstract class AbstractChunkedController extends AbstractController
      *  returned array to reassemble the uploaded chunks.
      *
      *  @param file The uploaded chunk.
+     *  @param response A response object.
+     *  @param request The request object.
      */
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
@@ -79,6 +82,11 @@ abstract class AbstractChunkedController extends AbstractController
 
     /**
      *  This function is a helper function which dispatches post chunk upload event.
+     *
+     *  @param uploaded The uploaded chunk.
+     *  @param response A response object.
+     *  @param request The request object.
+     *  @param isLast True if this is the last chunk, false otherwise.
      */
     protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast)
     {
