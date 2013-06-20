@@ -10,27 +10,27 @@ abstract class AbstractControllerTest extends WebTestCase
     protected $createdFiles;
     protected $client;
     protected $container;
-    
+
     public function setUp()
     {
         $this->client = static::createClient();
         $this->container = $this->client->getContainer();
         $this->helper = $this->container->get('oneup_uploader.templating.uploader_helper');
         $this->createdFiles = array();
-        
+
         $routes = $this->container->get('router')->getRouteCollection()->all();
     }
-    
+
     abstract protected function getConfigKey();
-    
+
     public function testRoute()
     {
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-        
+
         $this->assertNotNull($endpoint);
         $this->assertEquals(0, strpos('_uploader', $endpoint));
     }
-    
+
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      */
@@ -39,7 +39,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $endpoint = $this->helper->endpoint($this->getConfigKey());
         $this->client->request('GET', $endpoint);
     }
-    
+
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      */
@@ -48,7 +48,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $endpoint = $this->helper->endpoint($this->getConfigKey());
         $this->client->request('DELETE', $endpoint);
     }
-    
+
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      */
@@ -57,15 +57,15 @@ abstract class AbstractControllerTest extends WebTestCase
         $endpoint = $this->helper->endpoint($this->getConfigKey());
         $this->client->request('PUT', $endpoint);
     }
-    
+
     public function testCallByPost()
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-        
+
         $client->request('POST', $endpoint);
         $response = $client->getResponse();
-        
+
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
     }
@@ -74,33 +74,33 @@ abstract class AbstractControllerTest extends WebTestCase
     {
         $file = tempnam(sys_get_temp_dir(), 'uploader_');
         file_put_contents($file, str_repeat('A', $size));
-        
+
         $this->createdFiles[] = $file;
-        
+
         return $file;
     }
-    
+
     protected function getUploadedFiles()
     {
         $env  = $this->container->getParameter('kernel.environment');
         $root = $this->container->getParameter('kernel.root_dir');
-        
+
         // assemble path
         $path = sprintf('%s/cache/%s/upload', $root, $env);
-        
+
         $finder = new Finder();
         $files  = $finder->in($path);
-        
+
         return $files;
     }
-    
+
     public function tearDown()
     {
-        foreach($this->createdFiles as $file) {
+        foreach ($this->createdFiles as $file) {
             @unlink($file);
         }
-        
-        foreach($this->getUploadedFiles() as $file) {
+
+        foreach ($this->getUploadedFiles() as $file) {
             @unlink($file);
         }
 

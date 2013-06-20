@@ -11,12 +11,12 @@ class FineUploaderTest extends AbstractChunkedUploadTest
     {
         return 'fineuploader';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getRequestFile()
     {
         return new UploadedFile(
@@ -26,7 +26,7 @@ class FineUploaderTest extends AbstractChunkedUploadTest
             128
         );
     }
-    
+
     protected function getNextRequestParameters($i)
     {
         return array(
@@ -36,7 +36,7 @@ class FineUploaderTest extends AbstractChunkedUploadTest
             'qqfilename' => 'cat.txt'
         );
     }
-    
+
     protected function getNextFile($i)
     {
         return new UploadedFile(

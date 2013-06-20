@@ -9,11 +9,11 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
     public function testCreationOfResponse()
     {
         $response = new MooUploadResponse();
-        
+
         $this->assertTrue($response->getFinish());
         $this->assertEquals(0, $response->getError());
     }
-    
+
     public function testFunctionsOfResponse()
     {
         $response = new MooUploadResponse();
@@ -23,7 +23,7 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
         $response->setError(-1);
         $response->setFinish(true);
         $response->setUploadedName('b1/2d/b12d23.jpg');
-        
+
         $this->assertEquals(3, $response->getId());
         $this->assertEquals('grumpy_cat.jpg', $response->getName());
         $this->assertEquals(15093, $response->getSize());
@@ -31,7 +31,7 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $response->getFinish());
         $this->assertEquals('b1/2d/b12d23.jpg', $response->getUploadedName());
     }
-    
+
     public function testFunctionsAfterOverwrite()
     {
         $response = new MooUploadResponse();
@@ -41,7 +41,7 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
         $response->setError(-1);
         $response->setFinish(true);
         $response->setUploadedName('b1/2d/b12d23.jpg');
-        
+
         $response['id'] = null;
         $response['name'] = null;
         $response['size'] = null;
@@ -49,7 +49,7 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
         $response['finish'] = null;
         $response['uploadedName'] = null;
         $response['princess'] = !null;
-        
+
         $this->assertEquals(3, $response->getId());
         $this->assertEquals('grumpy_cat.jpg', $response->getName());
         $this->assertEquals(15093, $response->getSize());
@@ -58,7 +58,7 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('b1/2d/b12d23.jpg', $response->getUploadedName());
         $this->assertEquals(!null, $response['princess']);
     }
-    
+
     public function testAssemble()
     {
 
@@ -69,7 +69,7 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
         $response->setError(-1);
         $response->setFinish(true);
         $response->setUploadedName('b1/2d/b12d23.jpg');
-        
+
         $response['id'] = null;
         $response['name'] = null;
         $response['size'] = null;
@@ -78,9 +78,9 @@ class MooUploadResponseTest extends \PHPUnit_Framework_TestCase
         $response['uploadedName'] = null;
         $response['upload_name'] = null;
         $response['princess'] = !null;
-        
+
         $data = $response->assemble();
-        
+
         $this->assertEquals(3, $data['id']);
         $this->assertEquals('grumpy_cat.jpg', $data['name']);
         $this->assertEquals(15093, $data['size']);

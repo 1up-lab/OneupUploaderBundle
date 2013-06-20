@@ -11,12 +11,12 @@ class PluploadTest extends AbstractChunkedUploadTest
     {
         return 'plupload';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getRequestFile()
     {
         return new UploadedFile(
@@ -26,7 +26,7 @@ class PluploadTest extends AbstractChunkedUploadTest
             128
         );
     }
-    
+
     protected function getNextRequestParameters($i)
     {
         return array(
@@ -35,7 +35,7 @@ class PluploadTest extends AbstractChunkedUploadTest
             'name' => 'cat.txt'
         );
     }
-    
+
     protected function getNextFile($i)
     {
         return new UploadedFile(

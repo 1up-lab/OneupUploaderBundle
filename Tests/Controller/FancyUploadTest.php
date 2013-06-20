@@ -11,12 +11,12 @@ class FancyUploadTest extends AbstractUploadTest
     {
         return 'fancyupload';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getRequestFile()
     {
         return new UploadedFile(

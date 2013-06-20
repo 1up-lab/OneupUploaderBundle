@@ -11,12 +11,12 @@ class YUI3Test extends AbstractUploadTest
     {
         return 'yui3';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getRequestFile()
     {
         return new UploadedFile(

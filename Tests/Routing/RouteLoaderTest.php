@@ -15,16 +15,15 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             'cat' => $cat,
             'dog' => $dog
         ));
-        
+
         $routes = $routeLoader->load(null);
-            
+
         // for code coverage
         $this->assertTrue($routeLoader->supports('grumpy', 'uploader'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
         $this->assertCount(2, $routes);
-        
-        foreach($routes as $route)
-        {
+
+        foreach ($routes as $route) {
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
             $this->assertEquals($route->getDefault('_format'), 'json');
             $this->assertEquals($route->getRequirement('_method'), 'POST');

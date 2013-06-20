@@ -10,12 +10,12 @@ class MooUploadTest extends AbstractControllerTest
     {
         return 'mooupload';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getRequestFile()
     {
         return array(new UploadedFile(

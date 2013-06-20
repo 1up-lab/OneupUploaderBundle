@@ -10,9 +10,9 @@ class TemplateHelperTest extends WebTestCase
     {
         $client = static::createClient();
         $container = $client->getContainer();
-        
+
         $helper = $container->get('oneup_uploader.templating.uploader_helper');
-        
+
         // this is for code coverage
         $this->assertEquals($helper->getName(), 'oneup_uploader');
     }

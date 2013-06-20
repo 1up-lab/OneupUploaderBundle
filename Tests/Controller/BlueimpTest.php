@@ -11,12 +11,12 @@ class BlueimpTest extends AbstractUploadTest
     {
         return 'blueimp';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getRequestFile()
     {
         return array(new UploadedFile(

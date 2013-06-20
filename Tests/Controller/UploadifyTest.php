@@ -11,12 +11,12 @@ class UploadifyTest extends AbstractUploadTest
     {
         return 'uploadify';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getRequestFile()
     {
         return new UploadedFile(

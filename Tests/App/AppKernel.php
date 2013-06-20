@@ -13,7 +13,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle($this),
-            
+
             // bundle to test
             new Oneup\UploaderBundle\OneupUploaderBundle(),
         );

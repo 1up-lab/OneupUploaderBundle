@@ -11,12 +11,12 @@ class YUI3ValidationTest extends AbstractValidationTest
     {
         return 'yui3_validation';
     }
-    
+
     protected function getRequestParameters()
     {
         return array();
     }
-    
+
     protected function getFileWithCorrectExtension()
     {
         return new UploadedFile(
@@ -26,7 +26,7 @@ class YUI3ValidationTest extends AbstractValidationTest
             128
         );
     }
-    
+
     protected function getFileWithIncorrectExtension()
     {
         return new UploadedFile(
@@ -36,7 +36,7 @@ class YUI3ValidationTest extends AbstractValidationTest
             128
         );
     }
-    
+
     protected function getFileWithCorrectMimeType()
     {
         return new UploadedFile(
@@ -46,7 +46,7 @@ class YUI3ValidationTest extends AbstractValidationTest
             128
         );
     }
-    
+
     protected function getFileWithIncorrectMimeType()
     {
         return new UploadedFile(

@@ -23,12 +23,12 @@ monolog:
 
 oneup_uploader:
     mappings:
-        
+
         fineuploader:
             frontend: fineuploader
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-                
+
         fineuploader_validation:
             frontend: fineuploader
             storage:
@@ -37,12 +37,12 @@ oneup_uploader:
             disallowed_extensions: [ "fail" ]
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
-        
+
         fancyupload:
             frontend: fancyupload
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-                
+
         fancyupload_validation:
             frontend: fancyupload
             storage:
@@ -51,12 +51,12 @@ oneup_uploader:
             disallowed_extensions: [ "fail" ]
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
-        
+
         yui3:
             frontend: yui3
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-                
+
         yui3_validation:
             frontend: yui3
             storage:
@@ -65,12 +65,12 @@ oneup_uploader:
             disallowed_extensions: [ "fail" ]
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
-        
+
         plupload:
             frontend: plupload
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-                
+
         plupload_validation:
             frontend: plupload
             storage:
@@ -79,12 +79,12 @@ oneup_uploader:
             disallowed_extensions: [ "fail" ]
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
-        
+
         uploadify:
             frontend: uploadify
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-                
+
         uploadify_validation:
             frontend: uploadify
             storage:
@@ -93,12 +93,12 @@ oneup_uploader:
             disallowed_extensions: [ "fail" ]
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
-        
+
         blueimp:
             frontend: blueimp
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-        
+
         blueimp_validation:
             frontend: blueimp
             storage:
@@ -107,7 +107,7 @@ oneup_uploader:
             disallowed_extensions: [ "fail" ]
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
-        
+
         mooupload:
             frontend: mooupload
             storage:
