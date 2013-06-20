@@ -15,20 +15,16 @@ class UploadifyController extends AbstractController
         $request = $this->container->get('request');
         $response = new EmptyResponse();
         $files = $request->files;
-        
-        foreach($files as $file)
-        {
-            try
-            {
+
+        foreach ($files as $file) {
+            try {
                 $uploaded = $this->handleUpload($file, $response, $request);
-            }
-            catch(UploadException $e)
-            {
+            } catch (UploadException $e) {
                 // return nothing
                 return new JsonResponse(array());
             }
         }
-        
+
         return new JsonResponse($response->assemble());
     }
 }

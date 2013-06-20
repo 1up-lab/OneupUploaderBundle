@@ -29,7 +29,7 @@ abstract class AbstractChunkedController extends AbstractController
      *  @return array
      */
     abstract protected function parseChunkedRequest(Request $request);
-    
+
     /**
      *  This function will be called in order to upload and save an
      *  uploaded chunk.
@@ -47,35 +47,35 @@ abstract class AbstractChunkedController extends AbstractController
         // get basic container stuff
         $request = $this->container->get('request');
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
-        
+
         // reset uploaded to always have a return value
         $uploaded = null;
-        
+
         // get information about this chunked request
         list($last, $uuid, $index, $orig) = $this->parseChunkedRequest($request);
-        
+
         $chunk = $chunkManager->addChunk($uuid, $index, $file, $orig);
-        
+
         $this->dispatchChunkEvents($chunk, $response, $request, $last);
-        
+
         // if all chunks collected and stored, proceed
         // with reassembling the parts
         if ($last) {
             // we'll take the first chunk and append the others to it
             // this way we don't need another file in temporary space for assembling
             $chunks = $chunkManager->getChunks($uuid);
-            
+
             // assemble parts
             $assembled = $chunkManager->assembleChunks($chunks);
             $path = $assembled->getPath();
-            
+
             // create a temporary uploaded file to meet the interface restrictions
             $uploadedFile = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, null, true);
-            
+
             // validate this entity and upload on success
             $this->validate($uploadedFile);
             $uploaded = $this->handleUpload($uploadedFile, $response, $request);
-            
+
             $chunkManager->cleanup($path);
         }
     }
@@ -91,7 +91,7 @@ abstract class AbstractChunkedController extends AbstractController
     protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast)
     {
         $dispatcher = $this->container->get('event_dispatcher');
-        
+
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);
         $dispatcher->dispatch(UploadEvents::POST_CHUNK_UPLOAD, $postUploadEvent);

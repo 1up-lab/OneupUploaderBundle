@@ -16,41 +16,37 @@ class PluploadController extends AbstractChunkedController
         $request = $this->container->get('request');
         $response = new EmptyResponse();
         $files = $request->files;
-        
+
         $chunked = !is_null($request->get('chunks'));
-        
-        foreach($files as $file)
-        {
-            try
-            {
+
+        foreach ($files as $file) {
+            try {
                 $chunked ?
                     $this->handleChunkedUpload($file, $response, $request) :
                     $this->handleUpload($file, $response, $request)
                 ;
-            }
-            catch(UploadException $e)
-            {
+            } catch (UploadException $e) {
                 // return nothing
                 return new JsonResponse(array());
             }
         }
-        
+
         return new JsonResponse($response->assemble());
     }
-    
+
     protected function parseChunkedRequest(Request $request)
     {
         $session = $this->container->get('session');
-        
+
         $orig  = $request->get('name');
         $index = $request->get('chunk');
         $last  = $request->get('chunks') - 1 == $request->get('chunk');
-        
+
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session
         // to the uuid otherwise we will get a mess
         $uuid = md5(sprintf('%s.%s', $orig, $session->getId()));
-        
+
         return array($last, $uuid, $index, $orig);
     }
 }

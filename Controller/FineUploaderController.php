@@ -15,34 +15,30 @@ class FineUploaderController extends AbstractChunkedController
     {
         $request = $this->container->get('request');
         $translator = $this->container->get('translator');
-        
+
         $response = new FineUploaderResponse();
         $totalParts = $request->get('qqtotalparts', 1);
         $files = $request->files;
         $chunked = $totalParts > 1;
-        
-        foreach($files as $file)
-        {
-            try
-            {
+
+        foreach ($files as $file) {
+            try {
                 $chunked ?
                     $this->handleChunkedUpload($file, $response, $request) :
                     $this->handleUpload($file, $response, $request)
                 ;
-            }
-            catch(UploadException $e)
-            {
+            } catch (UploadException $e) {
                 $response->setSuccess(false);
                 $response->setError($translator->trans($e->getMessage(), array(), 'OneupUploaderBundle'));
-                
+
                 // an error happended, return this error message.
                 return new JsonResponse($response->assemble());
             }
         }
-        
+
         return new JsonResponse($response->assemble());
     }
-    
+
     protected function parseChunkedRequest(Request $request)
     {
         $index = $request->get('qqpartindex');
@@ -50,7 +46,7 @@ class FineUploaderController extends AbstractChunkedController
         $uuid  = $request->get('qquuid');
         $orig  = $request->get('qqfilename');
         $last  = ($total - 1) == $index;
-        
+
         return array($last, $uuid, $index, $orig);
     }
 }
