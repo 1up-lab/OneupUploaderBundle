@@ -84,7 +84,6 @@ The Event object provides the following methods.
 ## Using chunked uploads
 If you are using chunked uploads and hook into the `oneup_uploader.post_chunk_upload` event, you will get `PostChunkUploadEvent` in your listeners. This Event type differs from the previously introduced ones. You'll have the following methods.
 
-
 * `getChunk`: Get the chunk file. Is an instance of `Symfony\Component\HttpFoundation\File\File`.
 * `getRequest`: Get the current request including custom variables.
 * `getResponse`: Get the response object to add custom return data.
