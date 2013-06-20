@@ -15,7 +15,7 @@ class ClearOrphansCommand extends ContainerAwareCommand
             ->setDescription('Clear orphaned uploads according to the max-age you defined in your configuration.')
         ;
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $manager = $this->getContainer()->get('oneup_uploader.orphanage_manager');

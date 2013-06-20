@@ -15,7 +15,7 @@ class ClearChunkCommand extends ContainerAwareCommand
             ->setDescription('Clear chunks according to the max-age you defined in your configuration.')
         ;
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $manager = $this->getContainer()->get('oneup_uploader.chunk_manager');
