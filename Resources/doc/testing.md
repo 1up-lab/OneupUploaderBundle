@@ -14,6 +14,17 @@ You can run the unit tests by simply performing the follwowing command.
 
     $> phpunit
 
+If you are using the Gaufrette storage to upload files to an Amazon S3 instance be sure to add your AWS credentials by exporting them as environment variables.
+It will enable an otherwise skipped test.
+
+```bash
+export AWS_ACCESS_KEY_ID="your-id-here"
+export AWS_SECRET_ACCESS_KEY="your-key-here"
+export AWS_BUCKET="your-bucket-name-here"
+```
+
+Details can be found in the corresponding [pull request](https://github.com/1up-lab/OneupUploaderBundle/pull/18).
+
 ## Testing Code Coverage
 PHPUnit comes bundles with a handy feature to test the code coverage of a project. I recommend using the following configuration to enable the creation of code coverage reports in the `log` directory in the root of this bundle. This directory is gitignored by default.
 
