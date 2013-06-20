@@ -21,26 +21,26 @@
            </parameters>
 
            <services>
-               
+
                <!-- managers -->
                <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%">
                    <argument>%oneup_uploader.chunks%</argument>
                </service>
-               
+
                <service id="oneup_uploader.orphanage_manager" class="%oneup_uploader.orphanage.manager.class%">
                    <argument type="service" id="service_container" />
                    <argument>%oneup_uploader.orphanage%</argument>
                </service>
-               
+
                <!-- namer -->
                <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" />
-               
+
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
                    <argument>%oneup_uploader.controllers%</argument>
                    <tag name="routing.loader" />
                </service>
-               
+
            </services>
 
 </container>
