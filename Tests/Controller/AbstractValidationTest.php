@@ -2,6 +2,9 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
+use Oneup\UploaderBundle\Event\ValidationEvent;
+use Oneup\UploaderBundle\UploadEvents;
+
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
     abstract protected function getFileWithCorrectExtension();
@@ -27,6 +30,24 @@ abstract class AbstractValidationTest extends AbstractControllerTest
             $this->assertTrue($file->isReadable());
             $this->assertEquals(128, $file->getSize());
         }
+    }
+
+    public function testEvents()
+    {
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+        $dispatcher = $client->getContainer()->get('event_dispatcher');
+
+        // event data
+        $validationCount = 0;
+
+        $dispatcher->addListener(UploadEvents::VALIDATION, function(ValidationEvent $event) use (&$validationCount) {
+            ++ $validationCount;
+        });
+
+        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getFileWithCorrectExtension()));
+
+        $this->assertEquals(1, $validationCount);
     }
 
     public function testAgainstIncorrectExtension()
