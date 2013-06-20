@@ -30,7 +30,8 @@ The entry point of the documentation can be found in the file `Resources/docs/in
 
 Upgrade Notes
 -------------
-Event names [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/f5d5fe4b6f7b9a04ce633acbc9c94a2dd0e0d6be) in Version 0.9.3, update your EventListener accordingly.
+* Event names [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/f5d5fe4b6f7b9a04ce633acbc9c94a2dd0e0d6be) in Version **0.9.3**, update your EventListener accordingly.
+* Event dispatching [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/a408548b241f47af3539b2137c1817a21a51fde9) in Version **0.9.5**. The dispatching is now handled in the `upload*` functions. So if you have created your own implementation, be sure to remove the call to the `dispatchEvents` function, otherwise it will be called twice. Furthermore no `POST_UPLOAD` event will be fired anymore after uploading a chunk. You can get more information on this topic in the [documentation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_logic.md#using-chunked-uploads).
 
 License
 -------
