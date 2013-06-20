@@ -46,15 +46,9 @@ class CustomUploader extends UploaderController
         // get file from request (your own logic)
         $file = ...;
         
-        try
-        {
+        try {
             $uploaded = $this->handleUpload($file);
-            
-            // dispatch POST_PERSIST AND POST_UPLOAD events
-            $this->dispatchEvents($uploaded, $response, $request);
-        }
-        catch(UploadException $e)
-        {
+        } catch(UploadException $e) {
             // return nothing
             return new JsonResponse(array());
         }
