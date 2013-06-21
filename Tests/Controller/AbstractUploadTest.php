@@ -4,6 +4,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Tests\Controller\AbstractControllerTest;
 use Oneup\UploaderBundle\UploadEvents;
+use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 
 abstract class AbstractUploadTest extends AbstractControllerTest
@@ -47,9 +48,19 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         // event data
         $me = $this;
         $uploadCount = 0;
+        $preValidation = 1;
+        
+        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function(PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+            $preValidation -= 2;
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function(PostUploadEvent $event) use (&$uploadCount, &$me) {
+            $file = $event->getFile();
+
+            $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $file);
+        });
+
+        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function(PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
             ++ $uploadCount;
+            $preValidation *= -1;
 
             $file = $event->getFile();
 
@@ -61,5 +72,6 @@ abstract class AbstractUploadTest extends AbstractControllerTest
 
         $this->assertCount(1, $this->getUploadedFiles());
         $this->assertEquals($uploadCount, count($this->getUploadedFiles()));
+        $this->assertEquals(1, $preValidation);
     }
 }

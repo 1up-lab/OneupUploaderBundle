@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oneup\UploaderBundle\UploadEvents;
+use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
@@ -42,12 +43,12 @@ abstract class AbstractController
      *  @param UploadedFile The file to upload
      *  @param response A response object.
      *  @param request The request object.
-     *
-     *  @return File the actual file
      */
     protected function handleUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
         $this->validate($file);
+
+        $this->dispatchPreUploadEvent($file, $response, $request);
 
         // no error happend, proceed
         $namer = $this->container->get($this->config['namer']);
@@ -56,7 +57,24 @@ abstract class AbstractController
         // perform the real upload
         $uploaded = $this->storage->upload($file, $name);
 
-        $this->dispatchEvents($uploaded, $response, $request);
+        $this->dispatchPostEvents($uploaded, $response, $request);
+    }
+
+    /**
+     *  This function is a helper function which dispatches pre upload event
+     *
+     *  @param uploaded The uploaded file.
+     *  @param response A response object.
+     *  @param request The request object.
+     */
+    protected function dispatchPreUploadEvent(UploadedFile $uploaded, ResponseInterface $response, Request $request)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
+
+        // dispatch pre upload event (both the specific and the general)
+        $postUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
+        $dispatcher->dispatch(UploadEvents::PRE_UPLOAD, $postUploadEvent);
+        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::PRE_UPLOAD, $this->type), $postUploadEvent);
     }
 
     /**
@@ -67,7 +85,7 @@ abstract class AbstractController
      *  @param response A response object.
      *  @param request The request object.
      */
-    protected function dispatchEvents($uploaded, ResponseInterface $response, Request $request)
+    protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request)
     {
         $dispatcher = $this->container->get('event_dispatcher');
 
