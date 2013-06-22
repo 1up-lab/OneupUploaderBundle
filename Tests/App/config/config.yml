@@ -31,6 +31,7 @@ oneup_uploader:
 
         fineuploader_validation:
             frontend: fineuploader
+            max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
             allowed_extensions: [ "ok" ]
@@ -45,6 +46,7 @@ oneup_uploader:
 
         fancyupload_validation:
             frontend: fancyupload
+            max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
             allowed_extensions: [ "ok" ]
@@ -59,6 +61,7 @@ oneup_uploader:
 
         yui3_validation:
             frontend: yui3
+            max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
             allowed_extensions: [ "ok" ]
@@ -73,6 +76,7 @@ oneup_uploader:
 
         plupload_validation:
             frontend: plupload
+            max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
             allowed_extensions: [ "ok" ]
@@ -87,6 +91,7 @@ oneup_uploader:
 
         uploadify_validation:
             frontend: uploadify
+            max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
             allowed_extensions: [ "ok" ]
@@ -101,6 +106,7 @@ oneup_uploader:
 
         blueimp_validation:
             frontend: blueimp
+            max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
             allowed_extensions: [ "ok" ]

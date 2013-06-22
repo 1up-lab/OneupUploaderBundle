@@ -17,6 +17,16 @@ class UploadifyValidationTest extends AbstractValidationTest
         return array();
     }
 
+    protected function getOversizedFile()
+    {
+        return new UploadedFile(
+            $this->createTempFile(512),
+            'cat.ok',
+            'text/plain',
+            512
+        );
+    }
+
     protected function getFileWithCorrectExtension()
     {
         return new UploadedFile(

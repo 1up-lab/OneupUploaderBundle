@@ -11,6 +11,21 @@ abstract class AbstractValidationTest extends AbstractControllerTest
     abstract protected function getFileWithIncorrectExtension();
     abstract protected function getFileWithCorrectMimeType();
     abstract protected function getFileWithIncorrectMimeType();
+    abstract protected function getOversizedFile();
+
+    public function testAgainstMaxSize()
+    {
+        // assemble a request
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+
+        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getOversizedFile()));
+        $response = $client->getResponse();
+
+        //$this->assertTrue($response->isNotSuccessful());
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertCount(0, $this->getUploadedFiles());
+    }
 
     public function testAgainstCorrectExtension()
     {

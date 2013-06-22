@@ -17,6 +17,16 @@ class BlueimpValidationTest extends AbstractValidationTest
         return array();
     }
 
+    protected function getOversizedFile()
+    {
+        return array(new UploadedFile(
+            $this->createTempFile(512),
+            'cat.ok',
+            'text/plain',
+            512
+        ));
+    }
+
     protected function getFileWithCorrectExtension()
     {
         return array(new UploadedFile(

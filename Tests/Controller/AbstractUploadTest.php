@@ -49,13 +49,13 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $me = $this;
         $uploadCount = 0;
         $preValidation = 1;
-        
+
         $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function(PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
             $preValidation -= 2;
 
             $file = $event->getFile();
             $request = $event->getRequest();
-            
+
             // add a new key to the attribute list
             $request->attributes->set('grumpy', 'cat');
 
