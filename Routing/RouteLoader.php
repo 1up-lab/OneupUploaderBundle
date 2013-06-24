@@ -41,9 +41,11 @@ class RouteLoader extends Loader
                     array('_controller' => $service . ':progress', '_format' => 'json'),
                     array('_method' => 'POST')
                 );
+
+                $routes->add(sprintf('_uploader_progress_%s', $type), $progress);
             }
 
-            $routes->add(sprintf('_uploader_%s', $type), $upload);
+            $routes->add(sprintf('_uploader_upload_%s', $type), $upload);
         }
 
         return $routes;
