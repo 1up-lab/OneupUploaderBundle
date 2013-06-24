@@ -47,7 +47,7 @@ class ChunkManager implements ChunkManagerInterface
         return $chunk->move($path, $name);
     }
 
-    public function assembleChunks(\Traversable $chunks)
+    public function assembleChunks(\IteratorAggregate $chunks)
     {
         $iterator = $chunks->getIterator()->getInnerIterator();
 
