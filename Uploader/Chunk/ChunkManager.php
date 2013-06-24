@@ -49,23 +49,20 @@ class ChunkManager implements ChunkManagerInterface
 
     public function assembleChunks(\Traversable $chunks)
     {
-        // I don't really get it why getIterator()->current() always
-        // gives me a null-value, due to that I've to implement this
-        // in a rather unorthodox way.
-        $i = 0;
-        $base = null;
+        $iterator = $chunks->getIterator()->getInnerIterator();
 
-        foreach ($chunks as $file) {
-            if ($i++ == 0) {
-                $base = $file;
+        $base = $iterator->current();
+        $iterator->next();
 
-                // proceed with next files, as we have our
-                // base data-container
-                continue;
+        while ($iterator->valid()) {
+
+            $file = $iterator->current();
+
+            if (false === file_put_contents($base->getPathname(), file_get_contents($file->getPathname()), \FILE_APPEND | \LOCK_EX)) {
+                throw new \RuntimeException('Reassembling chunks failed.');
             }
 
-            if(false === file_put_contents($base->getPathname(), file_get_contents($file->getPathname()), \FILE_APPEND | \LOCK_EX))
-                throw new \RuntimeException('Reassembling chunks failed.');
+            $iterator->next();
         }
 
         return $base;
