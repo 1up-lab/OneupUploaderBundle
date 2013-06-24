@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
@@ -65,7 +66,11 @@ class ChunkManager implements ChunkManagerInterface
             $iterator->next();
         }
 
-        return $base;
+        // remove the prefix added by self::addChunk
+        $assembled = new File($base->getRealPath());
+        $assembled = $assembled->move($base->getPath(), preg_replace('/^(.+?)_/', '', $base->getBasename()));
+
+        return $assembled;
     }
 
     public function cleanup($path)

@@ -4,8 +4,9 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\EventDispatcher\Event;
 use Oneup\UploaderBundle\Tests\Controller\AbstractUploadTest;
-use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
+use Oneup\UploaderBundle\Event\PreUploadEvent;
+use Oneup\UploaderBundle\UploadEvents;
 
 abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 {
@@ -17,11 +18,27 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
     public function testChunkedUpload()
     {
         // assemble a request
-        $client = $this->client;
+        $me = $this;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
+        $basename = '';
 
         for ($i = 0; $i < $this->total; $i ++) {
-            $client->request('POST', $endpoint, $this->getNextRequestParameters($i), array($this->getNextFile($i)));
+            $file = $this->getNextFile($i);
+
+            if ($basename === '') {
+                $basename = $file->getClientOriginalName();
+            }
+
+            $client = static::createClient();
+            $dispatcher = $client->getContainer()->get('event_dispatcher');
+
+            $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function(PreUploadEvent $event) use (&$me, $basename) {
+                $file = $event->getFile();
+
+                $me->assertEquals($file->getBasename(), $basename);
+            });
+
+            $client->request('POST', $endpoint, $this->getNextRequestParameters($i), array($file));
             $response = $client->getResponse();
 
             $this->assertTrue($response->isSuccessful());
