@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -32,6 +33,22 @@ abstract class AbstractController
     }
 
     abstract public function upload();
+
+    public function progress()
+    {
+        $request = $this->container->get('request');
+        $session = $this->container->get('session');
+
+        $prefix = ini_get('session.upload_progress.prefix');
+        $name   = ini_get('session.upload_progress.name');
+
+        // assemble session key
+        // ref: http://php.net/manual/en/session.upload-progress.php
+        $key = sprintf('%s.%s', $prefix, $name);
+        $value = $session->get($key);
+
+        return new JsonResponse($value);
+    }
 
     /**
      *  This internal function handles the actual upload process
