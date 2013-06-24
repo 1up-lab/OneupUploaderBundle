@@ -24,12 +24,24 @@ class RouteLoader extends Loader
     {
         $routes = new RouteCollection();
 
-        foreach ($this->controllers as $type => $service) {
+        foreach ($this->controllers as $type => $controllerArray) {
+
+            $service = $controllerArray[0];
+            $options = $controllerArray[1];
+
             $upload = new Route(
                 sprintf('/_uploader/%s/upload', $type),
                 array('_controller' => $service . ':upload', '_format' => 'json'),
                 array('_method' => 'POST')
             );
+
+            if ($options['use_upload_progress'] === true) {
+                $progress = new Route(
+                    sprintf('/_uploader/%s/progress', $type),
+                    array('_controller' => $service . ':progress', '_format' => 'json'),
+                    array('_method' => 'POST')
+                );
+            }
 
             $routes->add(sprintf('_uploader_%s', $type), $upload);
         }

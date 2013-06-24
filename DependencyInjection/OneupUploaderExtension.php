@@ -129,7 +129,9 @@ class OneupUploaderExtension extends Extension
                 ->setScope('request')
             ;
 
-            $controllers[$key] = $controllerName;
+            $controllers[$key] = array($controllerName, array(
+                'use_upload_progress' => $mapping['use_upload_progress']
+            ));
         }
 
         $container->setParameter('oneup_uploader.controllers', $controllers);
