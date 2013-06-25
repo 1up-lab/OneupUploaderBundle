@@ -35,7 +35,7 @@ class RouteLoader extends Loader
                 array('_method' => 'POST')
             );
 
-            if ($options['use_upload_progress'] === true) {
+            if ($options['enable_progress'] === true) {
                 $progress = new Route(
                     sprintf('/_uploader/%s/progress', $type),
                     array('_controller' => $service . ':progress', '_format' => 'json'),

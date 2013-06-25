@@ -13,11 +13,11 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
 
         $routeLoader = new RouteLoader(array(
             'cat' => array($cat, array(
-                'use_upload_progress' => false,
+                'enable_progress' => false,
                 'enable_cancelation' => false
             )),
             'dog' => array($dog, array(
-                'use_upload_progress' => true,
+                'enable_progress' => true,
                 'enable_cancelation' => true
             )),
         ));

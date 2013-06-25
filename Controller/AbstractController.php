@@ -49,7 +49,7 @@ abstract class AbstractController
 
         return new JsonResponse($value);
     }
-    
+
     public function cancel()
     {
         $request = $this->container->get('request');
@@ -57,12 +57,12 @@ abstract class AbstractController
 
         $prefix = ini_get('session.upload_progress.prefix');
         $name   = ini_get('session.upload_progress.name');
-        
+
         $key = sprintf('%s.%s', $prefix, $request->get($name));
-        
+
         $progress = $session->get($key);
         $progress['cancel_upload'] = false;
-        
+
         $session->set($key, $progress);
 
         return new JsonResponse(true);
