@@ -31,5 +31,7 @@ oneup_uploader:
             disallowed_mimetypes:  []
             max_size:             9223372036854775807
             use_orphanage:        false
+            enable_progress:      false
+            enable_cancelation:   false
             namer:                oneup_uploader.namer.uniqid
 ```
