@@ -36,6 +36,27 @@ class BlueimpController extends AbstractChunkedController
         return new JsonResponse($response->assemble());
     }
 
+    public function progress()
+    {
+        $request = $this->container->get('request');
+        $session = $this->container->get('session');
+
+        $prefix = ini_get('session.upload_progress.prefix');
+        $name   = ini_get('session.upload_progress.name');
+
+        // ref: https://github.com/blueimp/jQuery-File-Upload/wiki/PHP-Session-Upload-Progress
+        $key = sprintf('%s.%s', $prefix, $request->get($name));
+        $value = $session->get($key);
+
+        $progress = array(
+            'lengthComputable' => true,
+            'loaded' => $value['bytes_processed'],
+            'total' => $value['content_length']
+        );
+
+        return new JsonResponse($progress);
+    }
+
     protected function parseChunkedRequest(Request $request)
     {
         $session = $this->container->get('session');
