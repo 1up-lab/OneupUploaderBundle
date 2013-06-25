@@ -24,8 +24,13 @@ class UploaderHelper extends Helper
         return $this->router->generate(sprintf('_uploader_upload_%s', $key));
     }
 
-    public function progress($key)
+    public function progressRoute($key)
     {
         return $this->router->generate(sprintf('_uploader_progress_%s', $key));
+    }
+
+    public function progressKey()
+    {
+        return ini_get('session.upload_progress.name');
     }
 }

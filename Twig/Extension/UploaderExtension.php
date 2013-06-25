@@ -21,8 +21,9 @@ class UploaderExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'oneup_uploader_endpoint' => new \Twig_Function_Method($this, 'endpoint')
-            'oneup_uploader_progress' => new \Twig_Function_Method($this, 'progress')
+            'oneup_uploader_endpoint' => new \Twig_Function_Method($this, 'endpoint'),
+            'oneup_uploader_progress_route' => new \Twig_Function_Method($this, 'progressRoute'),
+            'oneup_uploader_progress_key' => new \Twig_Function_Method($this, 'progressKey')
         );
     }
 
@@ -31,8 +32,13 @@ class UploaderExtension extends \Twig_Extension
         return $this->helper->endpoint($key);
     }
 
-    public function progress($key)
+    public function progressRoute($key)
     {
-        return $this->helper->progress($key);
+        return $this->helper->progressRoute($key);
+    }
+
+    public function progressKey()
+    {
+        return $this->helper->progressKey();
     }
 }
