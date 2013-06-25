@@ -16,6 +16,7 @@ Features included:
 * Chunked uploads
 * Supports [Gaufrette](https://github.com/KnpLabs/Gaufrette) and/or local filesystem
 * Provides an orphanage for cleaning up orphaned files
+* Supports [Session upload progress & cancelation of uploads](http://php.net/manual/en/session.upload-progress.php) as of PHP 5.4
 * Fully unit tested
 
 [![Build Status](https://travis-ci.org/1up-lab/OneupUploaderBundle.png?branch=master)](https://travis-ci.org/1up-lab/OneupUploaderBundle)
