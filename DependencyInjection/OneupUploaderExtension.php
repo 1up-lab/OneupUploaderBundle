@@ -129,6 +129,12 @@ class OneupUploaderExtension extends Extension
                 ->setScope('request')
             ;
 
+            if($mapping['enable_progress'] || $mapping['enable_cancelation']) {
+                if(strnatcmp(phpversion(), '5.4.0') < 0) {
+                    throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
+                }
+            }
+
             $controllers[$key] = array($controllerName, array(
                 'enable_progress' => $mapping['enable_progress'],
                 'enable_cancelation' => $mapping['enable_cancelation']
