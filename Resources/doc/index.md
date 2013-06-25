@@ -122,6 +122,7 @@ some more advanced features.
 * [Support a custom uploader](custom_uploader.md)
 * [Validate your uploads](custom_validator.md)
 * [General/Generic Events](events.md)
+* [Enable Session upload progress / upload cancelation](progress.md)
 * [Configuration Reference](configuration_reference.md)
 
 ## FAQ
