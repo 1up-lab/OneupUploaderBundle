@@ -12,8 +12,14 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $dog = 'HelloThisIsDogController';
 
         $routeLoader = new RouteLoader(array(
-            'cat' => array($cat, array('use_upload_progress' => false)),
-            'dog' => array($dog, array('use_upload_progress' => true)),
+            'cat' => array($cat, array(
+                'use_upload_progress' => false,
+                'enable_cancelation' => false
+            )),
+            'dog' => array($dog, array(
+                'use_upload_progress' => true,
+                'enable_cancelation' => true
+            )),
         ));
 
         $routes = $routeLoader->load(null);
@@ -21,7 +27,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         // for code coverage
         $this->assertTrue($routeLoader->supports('grumpy', 'uploader'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
-        $this->assertCount(3, $routes);
+        $this->assertCount(4, $routes);
 
         foreach ($routes as $route) {
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);

@@ -130,7 +130,8 @@ class OneupUploaderExtension extends Extension
             ;
 
             $controllers[$key] = array($controllerName, array(
-                'use_upload_progress' => $mapping['use_upload_progress']
+                'use_upload_progress' => $mapping['use_upload_progress'],
+                'enable_cancelation' => $mapping['enable_cancelation']
             ));
         }
 

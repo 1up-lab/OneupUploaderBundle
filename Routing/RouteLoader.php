@@ -45,6 +45,16 @@ class RouteLoader extends Loader
                 $routes->add(sprintf('_uploader_progress_%s', $type), $progress);
             }
 
+            if ($options['enable_cancelation'] === true) {
+                $progress = new Route(
+                    sprintf('/_uploader/%s/cancel', $type),
+                    array('_controller' => $service . ':cancel', '_format' => 'json'),
+                    array('_method' => 'POST')
+                );
+
+                $routes->add(sprintf('_uploader_cancel_%s', $type), $progress);
+            }
+
             $routes->add(sprintf('_uploader_upload_%s', $type), $upload);
         }
 
