@@ -23,6 +23,7 @@ class UploaderExtension extends \Twig_Extension
         return array(
             'oneup_uploader_endpoint' => new \Twig_Function_Method($this, 'endpoint'),
             'oneup_uploader_progress' => new \Twig_Function_Method($this, 'progress'),
+            'oneup_uploader_cancel' => new \Twig_Function_Method($this, 'cancel'),
             'oneup_uploader_upload_key' => new \Twig_Function_Method($this, 'uploadKey')
         );
     }
@@ -35,6 +36,11 @@ class UploaderExtension extends \Twig_Extension
     public function progress($key)
     {
         return $this->helper->progress($key);
+    }
+
+    public function cancel($key)
+    {
+        return $this->helper->cancel($key);
     }
 
     public function uploadKey()
