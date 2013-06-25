@@ -44,7 +44,7 @@ abstract class AbstractController
 
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
-        $key = sprintf('%s.%s', $prefix, $name);
+        $key = sprintf('%s.%s', $prefix, $request->get($name));
         $value = $session->get($key);
 
         return new JsonResponse($value);
