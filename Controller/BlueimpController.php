@@ -31,6 +31,7 @@ class BlueimpController extends AbstractChunkedController
                 $response->addToOffset(array("error" => $e->getMessage()), 'files');
             }
         }
+
         return new JsonResponse($response->assemble());
     }
 
