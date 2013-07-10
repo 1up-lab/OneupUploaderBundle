@@ -15,10 +15,10 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
 
     /**
      * The \ArrayAccess interface does not support multi-dimensional array syntax such as $array["foo"][] = bar
-     * This function will take a path of arrays and add a new element to it.
+     * This function will take a path of arrays and add a new element to it, creating the path if needed.
      *
      * @param mixed $value
-     * @param string $offset,...
+     * @param mixed $offset,...
      *
      * @throws \InvalidArgumentException if the path contains non-array or unset items.
      *
@@ -30,10 +30,15 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
         array_shift($args);
         $element =& $this->data;
         foreach ($args as $offset) {
-            if (isset($element[$offset]) && is_array($element[$offset])) {
-                $element =& $element[$offset];
+            if (isset($element[$offset])) {
+                if (is_array($element[$offset])) {
+                    $element =& $element[$offset];
+                } else {
+                    throw new \InvalidArgumentException("The specified offset is set but is not an array at" . $offset);
+                }
             } else {
-                throw new \InvalidArgumentException("The specified path does not exsist or is not an array at " . $offset);
+                $element[$offset] = array();
+                $element =& $element[$offset];
             }
         }
         $element = $value;
