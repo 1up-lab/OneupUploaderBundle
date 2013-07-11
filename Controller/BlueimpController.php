@@ -28,7 +28,7 @@ class BlueimpController extends AbstractChunkedController
             } catch (UploadException $e) {
                 // According to blueimp documentation 'files' is the expected response array, still not so flexible.
                 // ref: https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#using-jquery-file-upload-ui-version-with-a-custom-server-side-upload-handler
-                $response->addToOffset(array(array("error" => $e->getMessage())), 'files');
+                $response->addToOffset(array("error" => $e->getMessage()), 'files');
             }
         }
 
