@@ -23,10 +23,9 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
      * @throws \InvalidArgumentException if the path contains non-array or unset items.
      *
      */
-    public function addToOffset()
+    public function addToOffset($value, $offset)
     {
         $args = func_get_args();
-        $value = $args[0];
         array_shift($args);
         $element =& $this->data;
         foreach ($args as $offset) {
