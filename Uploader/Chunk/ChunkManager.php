@@ -48,7 +48,7 @@ class ChunkManager implements ChunkManagerInterface
         return $chunk->move($path, $name);
     }
 
-    public function assembleChunks(\IteratorAggregate $chunks)
+    public function assembleChunks(\IteratorAggregate $chunks, $removeChunk = true)
     {
         $iterator = $chunks->getIterator()->getInnerIterator();
 
@@ -61,6 +61,11 @@ class ChunkManager implements ChunkManagerInterface
 
             if (false === file_put_contents($base->getPathname(), file_get_contents($file->getPathname()), \FILE_APPEND | \LOCK_EX)) {
                 throw new \RuntimeException('Reassembling chunks failed.');
+            }
+
+            if ($removeChunk) {
+                $filesystem = new Filesystem();
+                $filesystem->remove($file->getPathname());
             }
 
             $iterator->next();
@@ -96,5 +101,10 @@ class ChunkManager implements ChunkManagerInterface
         });
 
         return $finder;
+    }
+    
+    public function getLoadDistribution()
+    {
+        return $this->configuration['load_distribution'];
     }
 }

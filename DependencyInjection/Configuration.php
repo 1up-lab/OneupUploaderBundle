@@ -19,6 +19,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('maxage')->defaultValue(604800)->end()
                         ->scalarNode('directory')->defaultNull()->end()
+                        ->booleanNode('load_distribution')->defaultTrue()->end()
                     ->end()
                 ->end()
                 ->arrayNode('orphanage')
