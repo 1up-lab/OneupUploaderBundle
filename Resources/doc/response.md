@@ -20,8 +20,8 @@ class UploadListener
 The `UploaderResponse` class implements the `ArrayAccess` interface, so you can just add data using it like an array:
 
 ```php
-$response['id'] = $id;
-$response['url'] = $url;
+$response['key'] = 'value';
+$response['foo'] = 'bar';
 ```
 
 If you like to indicate an error, be sure to set the `success` property to `false` and provide an error message:
