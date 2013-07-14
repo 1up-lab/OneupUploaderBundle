@@ -13,6 +13,36 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
         $this->data = array();
     }
 
+    /**
+     * The \ArrayAccess interface does not support multi-dimensional array syntax such as $array["foo"][] = bar
+     * This function will take a path of arrays and add a new element to it, creating the path if needed.
+     *
+     * @param mixed $value
+     * @param mixed $offset,...
+     *
+     * @throws \InvalidArgumentException if the path contains non-array or unset items.
+     *
+     */
+    public function addToOffset($value, $offset)
+    {
+        $args = func_get_args();
+        array_shift($args);
+        $element =& $this->data;
+        foreach ($args as $offset) {
+            if (isset($element[$offset])) {
+                if (is_array($element[$offset])) {
+                    $element =& $element[$offset];
+                } else {
+                    throw new \InvalidArgumentException("The specified offset is set but is not an array at" . $offset);
+                }
+            } else {
+                $element[$offset] = array();
+                $element =& $element[$offset];
+            }
+        }
+        $element[] = $value;
+    }
+
     public function offsetSet($offset, $value)
     {
         is_null($offset) ? $this->data[] = $value : $this->data[$offset] = $value;

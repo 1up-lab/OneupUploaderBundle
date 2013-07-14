@@ -15,21 +15,20 @@ class BlueimpController extends AbstractChunkedController
     {
         $request = $this->container->get('request');
         $response = new EmptyResponse();
-        $files = $request->files;
+        $files = $request->files->get('files');
 
         $chunked = !is_null($request->headers->get('content-range'));
 
         foreach ($files as $file) {
-            $file = $file[0];
-
             try {
                 $chunked ?
                     $this->handleChunkedUpload($file, $response, $request) :
                     $this->handleUpload($file, $response, $request)
                 ;
             } catch (UploadException $e) {
-                // return nothing
-                return new JsonResponse(array());
+                // According to blueimp documentation 'files' is the expected response array, still not so flexible.
+                // ref: https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#using-jquery-file-upload-ui-version-with-a-custom-server-side-upload-handler
+                $response->addToOffset(array("error" => $e->getMessage()), 'files');
             }
         }
 
