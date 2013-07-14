@@ -15,13 +15,11 @@ class BlueimpController extends AbstractChunkedController
     {
         $request = $this->container->get('request');
         $response = new EmptyResponse();
-        $files = $request->files;
+        $files = $request->files->get('files');
 
         $chunked = !is_null($request->headers->get('content-range'));
 
-        foreach ($files as $file) {
-            $file = $file[0];
-
+        foreach ((array)$files as $file) {
             try {
                 $chunked ?
                     $this->handleChunkedUpload($file, $response, $request) :
