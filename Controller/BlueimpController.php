@@ -28,8 +28,7 @@ class BlueimpController extends AbstractChunkedController
                     $this->handleUpload($file, $response, $request)
                 ;
             } catch (UploadException $e) {
-                // return nothing
-                return new JsonResponse(array());
+                $this->errorHandler->addException($response, $e);
             }
         }
 

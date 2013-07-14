@@ -23,6 +23,7 @@ class OneupUploaderExtension extends Extension
         $loader->load('uploader.xml');
         $loader->load('templating.xml');
         $loader->load('validators.xml');
+        $loader->load('errorhandler.xml');
 
         if ($config['twig']) {
             $loader->load('twig.xml');
@@ -115,6 +116,8 @@ class OneupUploaderExtension extends Extension
                 if(empty($controllerName) || empty($controllerType))
                     throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
+            
+            $errorHandler = new Reference($mapping['error_handler']);
 
             // create controllers based on mapping
             $container
@@ -122,6 +125,7 @@ class OneupUploaderExtension extends Extension
 
                 ->addArgument(new Reference('service_container'))
                 ->addArgument($storageService)
+                ->addArgument($errorHandler)
                 ->addArgument($mapping)
                 ->addArgument($key)
 

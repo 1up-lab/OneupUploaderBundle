@@ -16,6 +16,7 @@ use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Uploader\Exception\ValidationException;
+use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
 
 abstract class AbstractController
 {
@@ -24,8 +25,9 @@ abstract class AbstractController
     protected $config;
     protected $type;
 
-    public function __construct(ContainerInterface $container, StorageInterface $storage, array $config, $type)
+    public function __construct(ContainerInterface $container, StorageInterface $storage, ErrorHandlerInterface $errorHandler, array $config, $type)
     {
+        $this->errorHandler = $errorHandler;
         $this->container = $container;
         $this->storage = $storage;
         $this->config = $config;
