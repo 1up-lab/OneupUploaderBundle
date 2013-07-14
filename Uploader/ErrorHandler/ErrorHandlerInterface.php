@@ -1,5 +1,5 @@
 <?php
-    
+
 namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;

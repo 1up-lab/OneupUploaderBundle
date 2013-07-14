@@ -19,7 +19,7 @@ class BlueimpController extends AbstractChunkedController
 
         $chunked = !is_null($request->headers->get('content-range'));
 
-        foreach ((array)$files as $file) {
+        foreach ((array) $files as $file) {
             try {
                 $chunked ?
                     $this->handleChunkedUpload($file, $response, $request) :

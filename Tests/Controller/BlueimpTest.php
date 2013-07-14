@@ -71,7 +71,7 @@ class BlueimpTest extends AbstractUploadTest
         $this->assertEquals($uploadCount, count($this->getUploadedFiles()));
         $this->assertEquals(1, $preValidation);
     }
-    
+
     protected function getConfigKey()
     {
         return 'blueimp';

@@ -10,6 +10,12 @@ class BlueimpErrorHandler implements ErrorHandlerInterface
 {
     public function addException(ResponseInterface $response, UploadException $exception)
     {
-        $response->addToOffset($exception->getMessage(), 'files');
+        if ($exception instanceof ValidationException) {
+            $message = $exception->getErrorMessage();
+        } else {
+            $message = $exception->getMessage();
+        }
+
+        $response->addToOffset(array('error' => $message), 'files');
     }
 }

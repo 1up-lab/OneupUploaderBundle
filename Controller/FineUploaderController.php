@@ -30,7 +30,7 @@ class FineUploaderController extends AbstractChunkedController
             } catch (UploadException $e) {
                 $response->setSuccess(false);
                 $response->setError($translator->trans($e->getMessage(), array(), 'OneupUploaderBundle'));
-                
+
                 $this->errorHandler->addException($response, $e);
 
                 // an error happended, return this error message.

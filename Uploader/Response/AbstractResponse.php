@@ -32,4 +32,13 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
     {
         return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
+
+    public function addToOffset($offset, array $value)
+    {
+        if (!array_key_exists($offset, $this->data)) {
+            $this->data[$offset] = array();
+        }
+
+        $this->data[$offset] += $value;
+    }
 }

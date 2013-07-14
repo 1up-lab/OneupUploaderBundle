@@ -4,7 +4,6 @@ namespace Oneup\UploaderBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,7 +14,6 @@ use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
-use Oneup\UploaderBundle\Uploader\Exception\ValidationException;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
 
 abstract class AbstractController
@@ -144,11 +142,6 @@ abstract class AbstractController
         $dispatcher = $this->container->get('event_dispatcher');
         $event = new ValidationEvent($file, $this->config, $this->type);
 
-        try {
-            $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
-        } catch (ValidationException $exception) {
-            // pass the exception one level up
-            throw new UploadException($exception->getMessage());
-        }
+        $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
     }
 }

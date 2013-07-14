@@ -116,7 +116,7 @@ class OneupUploaderExtension extends Extension
                 if(empty($controllerName) || empty($controllerType))
                     throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
-            
+
             $errorHandler = new Reference($mapping['error_handler']);
 
             // create controllers based on mapping
@@ -133,8 +133,8 @@ class OneupUploaderExtension extends Extension
                 ->setScope('request')
             ;
 
-            if($mapping['enable_progress'] || $mapping['enable_cancelation']) {
-                if(strnatcmp(phpversion(), '5.4.0') < 0) {
+            if ($mapping['enable_progress'] || $mapping['enable_cancelation']) {
+                if (strnatcmp(phpversion(), '5.4.0') < 0) {
                     throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
                 }
             }

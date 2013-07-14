@@ -110,7 +110,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }
-    
+
     protected function getConfigKey()
     {
         return 'blueimp_validation';
