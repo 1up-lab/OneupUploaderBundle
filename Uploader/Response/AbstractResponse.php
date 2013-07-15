@@ -38,29 +38,26 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
      * This function will take a path of arrays and add a new element to it, creating the path if needed.
      *
      * @param mixed $value
-     * @param mixed $offset,...
+     * @param array $offsets 
      *
-     * @throws \InvalidArgumentException if the path contains non-array or unset items.
+     * @throws \InvalidArgumentException if the path contains non-array items.
+     *
      */
-    public function addToOffset($value, $offset)
+    public function addToOffset($value, array $offsets)
     {
-        $args = func_get_args();
-        array_shift($args);
-
         $element =& $this->data;
-
-        foreach ($args as $offset) {
+        foreach ($offsets as $offset) {
             if (isset($element[$offset])) {
                 if (is_array($element[$offset])) {
                     $element =& $element[$offset];
                 } else {
-                    throw new \InvalidArgumentException('The specified offset is set but is not an array at ' . $offset);
+                    throw new \InvalidArgumentException("The specified offset is set but is not an array at" . $offset);
                 }
             } else {
                 $element[$offset] = array();
                 $element =& $element[$offset];
             }
         }
-        $element[] = $value;
+        $element = $value;
     }
 }
