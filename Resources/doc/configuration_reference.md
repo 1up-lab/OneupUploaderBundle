@@ -29,6 +29,7 @@ oneup_uploader:
             disallowed_extensions: []
             allowed_mimetypes:     []
             disallowed_mimetypes:  []
+            error_handler:        oneup_uploader.error_handler.noop
             max_size:             9223372036854775807
             use_orphanage:        false
             enable_progress:      false

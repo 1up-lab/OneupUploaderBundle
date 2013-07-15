@@ -118,12 +118,13 @@ some more advanced features.
 * [Using the Orphanage](orphanage.md)
 * [Use Gaufrette as storage layer](gaufrette_storage.md)
 * [Include your own Namer](custom_namer.md)
-* [Testing this bundle](testing.md)
+* [Use custom error handlers](custom_error_handler.md)
 * [Support a custom uploader](custom_uploader.md)
 * [Validate your uploads](custom_validator.md)
 * [General/Generic Events](events.md)
 * [Enable Session upload progress / upload cancelation](progress.md)
 * [Configuration Reference](configuration_reference.md)
+* [Testing this bundle](testing.md)
 
 ## FAQ
 
