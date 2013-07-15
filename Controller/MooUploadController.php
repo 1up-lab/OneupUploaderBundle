@@ -50,6 +50,8 @@ class MooUploadController extends AbstractChunkedController
             $response->setFinish(true);
             $response->setError(-1);
 
+            $this->errorHandler->addException($response, $e);
+
             // return nothing
             return new JsonResponse($response->assemble());
         }

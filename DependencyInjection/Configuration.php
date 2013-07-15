@@ -71,6 +71,7 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('disallowed_mimetypes')
                                 ->prototype('scalar')->end()
                             ->end()
+                            ->scalarNode('error_handler')->defaultValue('oneup_uploader.error_handler.noop')->end()
                             ->scalarNode('max_size')->defaultValue(\PHP_INT_MAX)->end()
                             ->booleanNode('use_orphanage')->defaultFalse()->end()
                             ->booleanNode('enable_progress')->defaultFalse()->end()
