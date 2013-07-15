@@ -58,6 +58,6 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
                 $element =& $element[$offset];
             }
         }
-        $element = $value;
+        $element[] = $value;
     }
 }
