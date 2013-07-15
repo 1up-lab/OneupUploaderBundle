@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+           <parameters>
+               <parameter key="oneup_uploader.error_handler.noop.class">Oneup\UploaderBundle\Uploader\ErrorHandler\NoopErrorHandler</parameter>
+               <parameter key="oneup_uploader.error_handler.blueimp.class">Oneup\UploaderBundle\Uploader\ErrorHandler\BlueimpErrorHandler</parameter>
+           </parameters>
+
+           <services>
+               <service id="oneup_uploader.error_handler.noop" class="%oneup_uploader.error_handler.noop.class%" public="false" />
+               <service id="oneup_uploader.error_handler.blueimp" class="%oneup_uploader.error_handler.blueimp.class%" public="false" />
+           </services>
+
+</container>

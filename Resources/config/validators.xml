@@ -8,7 +8,7 @@
             <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
 
-        <service id="oneup_uploader.validation_listener.allowed_extension" class="Oneup\UploaderBundle\EventListener\AllowedExtensionValidationListener" >
+        <service id="oneup_uploader.validation_listener.allowed_extension" class="Oneup\UploaderBundle\EventListener\AllowedExtensionValidationListener">
             <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
 

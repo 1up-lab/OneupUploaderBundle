@@ -23,6 +23,7 @@ class OneupUploaderExtension extends Extension
         $loader->load('uploader.xml');
         $loader->load('templating.xml');
         $loader->load('validators.xml');
+        $loader->load('errorhandler.xml');
 
         if ($config['twig']) {
             $loader->load('twig.xml');
@@ -116,12 +117,15 @@ class OneupUploaderExtension extends Extension
                     throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
 
+            $errorHandler = new Reference($mapping['error_handler']);
+
             // create controllers based on mapping
             $container
                 ->register($controllerName, $controllerType)
 
                 ->addArgument(new Reference('service_container'))
                 ->addArgument($storageService)
+                ->addArgument($errorHandler)
                 ->addArgument($mapping)
                 ->addArgument($key)
 
@@ -129,8 +133,8 @@ class OneupUploaderExtension extends Extension
                 ->setScope('request')
             ;
 
-            if($mapping['enable_progress'] || $mapping['enable_cancelation']) {
-                if(strnatcmp(phpversion(), '5.4.0') < 0) {
+            if ($mapping['enable_progress'] || $mapping['enable_cancelation']) {
+                if (strnatcmp(phpversion(), '5.4.0') < 0) {
                     throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
                 }
             }
