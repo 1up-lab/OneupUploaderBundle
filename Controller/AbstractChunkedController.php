@@ -25,8 +25,8 @@ abstract class AbstractChunkedController extends AbstractController
      *            chunk. Must be higher that in the previous request.
      *    - orig: The original file name.
      *
-     *  @param request The request object
-     *  @return array
+     * @param Request $request - The request object
+     * @return array
      */
     abstract protected function parseChunkedRequest(Request $request);
 
@@ -38,9 +38,9 @@ abstract class AbstractChunkedController extends AbstractController
      *  parseChunkedRequest has set true for the "last" key of the
      *  returned array to reassemble the uploaded chunks.
      *
-     *  @param file The uploaded chunk.
-     *  @param response A response object.
-     *  @param request The request object.
+     * @param UploadedFile      $file     - The uploaded chunk.
+     * @param ResponseInterface $response - A response object.
+     * @param Request           $request  - The request object.
      */
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
@@ -57,7 +57,7 @@ abstract class AbstractChunkedController extends AbstractController
         $chunk = $chunkManager->addChunk($uuid, $index, $file, $orig);
 
         $this->dispatchChunkEvents($chunk, $response, $request, $last);
-        
+
         if ($chunkManager->getLoadDistribution()) {
             $chunks = $chunkManager->getChunks($uuid);
             $assembled = $chunkManager->assembleChunks($chunks);
@@ -70,7 +70,7 @@ abstract class AbstractChunkedController extends AbstractController
                 $chunks = $chunkManager->getChunks($uuid);
                 $assembled = $chunkManager->assembleChunks($chunks);
             }
-            
+
             $path = $assembled->getPath();
 
             // create a temporary uploaded file to meet the interface restrictions
@@ -87,10 +87,10 @@ abstract class AbstractChunkedController extends AbstractController
     /**
      *  This function is a helper function which dispatches post chunk upload event.
      *
-     *  @param uploaded The uploaded chunk.
-     *  @param response A response object.
-     *  @param request The request object.
-     *  @param isLast True if this is the last chunk, false otherwise.
+     * @param mixed             $uploaded - The uploaded chunk.
+     * @param ResponseInterface $response - A response object.
+     * @param Request           $request  - The request object.
+     * @param bool              $isLast   - True if this is the last chunk, false otherwise.
      */
     protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast)
     {
