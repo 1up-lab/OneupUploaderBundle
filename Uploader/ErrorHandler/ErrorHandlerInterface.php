@@ -2,10 +2,10 @@
 
 namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
-use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Exception;
+use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 
 interface ErrorHandlerInterface
 {
-    public function addException(ResponseInterface $response, UploadException $exception);
+    public function addException(AbstractResponse $response, Exception $exception);
 }
