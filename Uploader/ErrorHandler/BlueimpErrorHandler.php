@@ -2,15 +2,15 @@
 
 namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
-use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Exception;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
-use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 
 class BlueimpErrorHandler implements ErrorHandlerInterface
 {
-    public function addException(ResponseInterface $response, UploadException $exception)
+    public function addException(AbstractResponse $response, Exception $exception)
     {
-        $message = $exception->getErrorMessage();
+        $message = $exception->getMessage();
         $response->addToOffset(array('error' => $message), array('files'));
     }
 }

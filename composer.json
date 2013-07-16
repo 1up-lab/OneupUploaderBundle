@@ -30,7 +30,8 @@
         "symfony/yaml": "2.*",
         "symfony/form": "2.*",
         "symfony/twig-bundle": "2.*",
-        "symfony/browser-kit": "2.*"
+        "symfony/browser-kit": "2.*",
+        "phpunit/phpunit": "3.7.*"
     },
     
     "suggest": {
