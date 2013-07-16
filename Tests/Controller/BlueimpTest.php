@@ -30,6 +30,29 @@ class BlueimpTest extends AbstractUploadTest
         }
     }
 
+    /**
+     * @dataProvider inputNamesDataProvider
+     */
+    public function testInputNames($configKey, $files)
+    {
+        // assemble a request
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($configKey);
+
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $files);
+        $response = $client->getResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertCount(5, $this->getUploadedFiles());
+
+        foreach ($this->getUploadedFiles() as $file) {
+            $this->assertTrue($file->isFile());
+            $this->assertTrue($file->isReadable());
+            $this->assertEquals(128, $file->getSize());
+        }
+    }
+
     public function testEvents()
     {
         $client = $this->client;
@@ -70,6 +93,51 @@ class BlueimpTest extends AbstractUploadTest
         $this->assertCount(1, $this->getUploadedFiles());
         $this->assertEquals($uploadCount, count($this->getUploadedFiles()));
         $this->assertEquals(1, $preValidation);
+    }
+
+    public function inputNamesDataProvider()
+    {
+        return array(
+            array(
+                'blueimp_input_names',
+                array(
+                    'single' => new UploadedFile(
+                        $this->createTempFile(128),
+                        'single.txt',
+                        'text/plain',
+                        128
+                    ),
+                    'multi'  => new UploadedFile(
+                        $this->createTempFile(128),
+                        'multi.txt',
+                        'text/plain',
+                        128
+                    ),
+                    'array'  => array(
+                        'one' => new UploadedFile(
+                            $this->createTempFile(128),
+                            'array_one.txt',
+                            'text/plain',
+                            128
+                        ),
+                        'two' => array(
+                            'one' => new UploadedFile(
+                                $this->createTempFile(128),
+                                'array_two_one.txt',
+                                'text/plain',
+                                128
+                            ),
+                            'two' => new UploadedFile(
+                                $this->createTempFile(128),
+                                'array_two_two.txt',
+                                'text/plain',
+                                128
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
     }
 
     protected function getConfigKey()

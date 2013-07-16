@@ -2,31 +2,32 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Oneup\UploaderBundle\Controller\AbstractChunkedController;
+use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
+use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
-use Oneup\UploaderBundle\Controller\AbstractChunkedController;
-use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 
 class BlueimpController extends AbstractChunkedController
 {
     public function upload()
     {
-        $request = $this->container->get('request');
+        /** @var Request $request */
+        $request  = $this->container->get('request');
         $response = new EmptyResponse();
-        $files = $request->files->get('files');
+        $chunked  = !is_null($request->headers->get('content-range'));
 
-        $chunked = !is_null($request->headers->get('content-range'));
-
-        foreach ((array) $files as $file) {
-            try {
-                $chunked ?
-                    $this->handleChunkedUpload($file, $response, $request) :
-                    $this->handleUpload($file, $response, $request)
-                ;
-            } catch (UploadException $e) {
-                $this->errorHandler->addException($response, $e);
+        foreach ($this->config['input_names'] as $inputName) {
+            $files = $this->getFiles($request, $response, $inputName);
+            foreach ($files as $file) {
+                try {
+                    $chunked
+                        ? $this->handleChunkedUpload($file, $response, $request)
+                        : $this->handleUpload($file, $response, $request);
+                } catch (UploadException $e) {
+                    $this->errorHandler->addException($response, $e);
+                }
             }
         }
 
@@ -52,6 +53,37 @@ class BlueimpController extends AbstractChunkedController
         );
 
         return new JsonResponse($progress);
+    }
+
+    protected function getFiles(Request $request, AbstractResponse $response, $inputName)
+    {
+        $nameParts = explode('.', $inputName);
+        $fieldName = $nameParts[0];
+        $nestedNames = count($nameParts) > 1 ? array_slice($nameParts, 1) : array();
+        $files = $request->files->get($fieldName);
+        if ($files == null) {
+            $this->errorHandler->addException(
+                $response,
+                new \RuntimeException(
+                    sprintf("Cannot find field '%s'", $fieldName)
+                )
+            );
+            return array();
+        }
+        foreach ($nestedNames as $name) {
+            if (!array_key_exists($name, $files)) {
+                $this->errorHandler->addException(
+                    $response,
+                    new \RuntimeException(
+                        sprintf("Cannot find '%s' name part of file field '%s'", $name, $inputName)
+                    )
+                );
+                return array();
+            }
+            $files = $files[$name];
+        }
+        // (array)$files not work
+        return is_array($files) ? $files : array($files);
     }
 
     protected function parseChunkedRequest(Request $request)
