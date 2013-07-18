@@ -18,7 +18,7 @@ class FineUploaderController extends AbstractChunkedController
 
         $response = new FineUploaderResponse();
         $totalParts = $request->get('qqtotalparts', 1);
-        $files = $request->files;
+        $files = $this->getFiles($request->files);
         $chunked = $totalParts > 1;
 
         foreach ($files as $file) {

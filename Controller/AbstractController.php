@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\FileBag;
 
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
@@ -66,6 +67,29 @@ abstract class AbstractController
         $session->set($key, $progress);
 
         return new JsonResponse(true);
+    }
+
+    /**
+     *  Flattens a given filebag to extract all files.
+     *
+     *  @param bag The filebag to use
+     *  @return array An array of files
+     */
+    protected function getFiles(FileBag $bag)
+    {
+        $files = array();
+        $fileBag = $bag->all();
+        $fileIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fileBag), \RecursiveIteratorIterator::SELF_FIRST);
+
+        foreach ($fileIterator as $file) {
+            if (is_array($file)) {
+                continue;
+            }
+
+            $files[] = $file;
+        }
+        
+        return $files;
     }
 
     /**

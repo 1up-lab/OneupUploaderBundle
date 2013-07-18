@@ -15,7 +15,7 @@ class PluploadController extends AbstractChunkedController
     {
         $request = $this->container->get('request');
         $response = new EmptyResponse();
-        $files = $request->files;
+        $files = $this->getFiles($request->files);
 
         $chunked = !is_null($request->get('chunks'));
 

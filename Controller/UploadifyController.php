@@ -14,7 +14,7 @@ class UploadifyController extends AbstractController
     {
         $request = $this->container->get('request');
         $response = new EmptyResponse();
-        $files = $request->files;
+        $files = $this->getFiles($request->files);
 
         foreach ($files as $file) {
             try {
