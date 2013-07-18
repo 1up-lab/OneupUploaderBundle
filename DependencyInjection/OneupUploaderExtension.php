@@ -66,7 +66,7 @@ class OneupUploaderExtension extends Extension
                     ;
 
                     $container
-                        ->register($storageName, $container->getParameter(sprintf('oneup_uploader.storage.%s.class', $mapping['storage']['type'])))
+                        ->register($storageName, sprintf('%%oneup_uploader.storage.%s.class%%', $mapping['storage']['type']))
                         ->addArgument($mapping['storage']['directory'])
                     ;
                 }
@@ -79,7 +79,7 @@ class OneupUploaderExtension extends Extension
                         throw new ServiceNotFoundException('Empty service name');
 
                     $container
-                        ->register($storageName, $container->getParameter(sprintf('oneup_uploader.storage.%s.class', $mapping['storage']['type'])))
+                        ->register($storageName, sprintf('%%oneup_uploader.storage.%s.class%%', $mapping['storage']['type']))
                         ->addArgument(new Reference($mapping['storage']['filesystem']))
                     ;
                 }
@@ -92,7 +92,7 @@ class OneupUploaderExtension extends Extension
                     // this mapping wants to use the orphanage, so create
                     // a masked filesystem for the controller
                     $container
-                        ->register($orphanageName, $container->getParameter('oneup_uploader.orphanage.class'))
+                        ->register($orphanageName, '%oneup_uploader.orphanage.class%')
                         ->addArgument($storageService)
                         ->addArgument(new Reference('session'))
                         ->addArgument($config['orphanage'])
