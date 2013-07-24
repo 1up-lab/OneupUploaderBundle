@@ -29,7 +29,7 @@ You can configure the `ChunkManager` by using the following configuration parame
 
 ```
 oneup_uploader:
-    chunk_manager:
+    chunks:
         maxage: 86400
         directory: %kernel.cache_dir%/uploader/chunks
 ```
