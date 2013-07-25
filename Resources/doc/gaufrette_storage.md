@@ -74,3 +74,17 @@ oneup_uploader:
                 filesystem: gaufrette.gallery_filesystem 
 ```
 
+You can specify the buffer size used for syncing files from your filesystem to the gaufrette storage by changing the property `sync_buffer_size`.
+
+```yml
+# app/config/config.yml
+
+oneup_uploader:
+    mappings:
+        gallery:
+            storage:
+                type: gaufrette
+                filesystem: gaufrette.gallery_filesystem 
+                sync_buffer_size: 1M
+```
+

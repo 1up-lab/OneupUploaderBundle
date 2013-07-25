@@ -84,6 +84,7 @@ class OneupUploaderExtension extends Extension
                     $container
                         ->register($storageName, sprintf('%%oneup_uploader.storage.%s.class%%', $mapping['storage']['type']))
                         ->addArgument(new Reference($mapping['storage']['filesystem']))
+                        ->addArgument($this->getValueInBytes($mapping['storage']['sync_buffer_size']))
                     ;
                 }
 

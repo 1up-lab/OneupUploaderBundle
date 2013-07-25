@@ -13,10 +13,12 @@ use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 class GaufretteStorage implements StorageInterface
 {
     protected $filesystem;
+    protected $bufferSize;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, $bufferSize)
     {
         $this->filesystem = $filesystem;
+        $this->bufferSize = $bufferSize;
     }
 
     public function upload(File $file, $name, $path = null)
@@ -40,7 +42,7 @@ class GaufretteStorage implements StorageInterface
         $dst->open(new StreamMode('wb+'));
 
         while (!$src->eof()) {
-            $data = $src->read(100000);
+            $data = $src->read($this->bufferSize);
             $written = $dst->write($data);
         }
 

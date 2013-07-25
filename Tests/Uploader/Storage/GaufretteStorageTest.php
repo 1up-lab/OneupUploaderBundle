@@ -28,7 +28,7 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $adapter = new Adapter($this->directory, true);
         $filesystem = new GaufretteFilesystem($adapter);
 
-        $this->storage = new GaufretteStorage($filesystem);
+        $this->storage = new GaufretteStorage($filesystem, 100000);
     }
 
     public function testUpload()

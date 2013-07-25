@@ -57,6 +57,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                     ->scalarNode('filesystem')->defaultNull()->end()
                                     ->scalarNode('directory')->defaultNull()->end()
+                                    ->scalarNode('sync_buffer_size')->defaultValue('100K')->end()
                                 ->end()
                             ->end()
                             ->arrayNode('allowed_extensions')

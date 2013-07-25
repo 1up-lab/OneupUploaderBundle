@@ -26,11 +26,12 @@ oneup_uploader:
                 type:                 filesystem
                 filesystem:           ~
                 directory:            ~
+                sync_buffer_size:     100K
             allowed_extensions:    []
             disallowed_extensions: []
             allowed_mimetypes:     []
             disallowed_mimetypes:  []
-            error_handler:         oneup_uploader.error_handler.noop
+            error_handler:        oneup_uploader.error_handler.noop
 
             # Set max_size to -1 for gracefully downgrade this number to the systems max upload size.
             max_size:             9223372036854775807
