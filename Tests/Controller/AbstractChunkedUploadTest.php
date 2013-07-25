@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Oneup\UploaderBundle\Tests\Controller\AbstractUploadTest;
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
+use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\UploadEvents;
 
@@ -37,6 +38,8 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
             $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function(PreUploadEvent $event) use (&$me, $basename) {
                 $file = $event->getFile();
 
+                $me->assertNotNull($file->getClientSize());
+                $me->assertGreaterThan(0, $file->getClientSize());
                 $me->assertEquals($file->getBasename(), $basename);
             });
 
