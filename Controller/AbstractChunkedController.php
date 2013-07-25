@@ -75,9 +75,6 @@ abstract class AbstractChunkedController extends AbstractController
 
             // create a temporary uploaded file to meet the interface restrictions
             $uploadedFile = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, null, true);
-
-            // validate this entity and upload on success
-            $this->validate($uploadedFile);
             $uploaded = $this->handleUpload($uploadedFile, $response, $request);
 
             $chunkManager->cleanup($path);

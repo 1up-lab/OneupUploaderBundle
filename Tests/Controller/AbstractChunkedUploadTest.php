@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Oneup\UploaderBundle\Tests\Controller\AbstractUploadTest;
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
+use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\UploadEvents;
 
 abstract class AbstractChunkedUploadTest extends AbstractUploadTest
@@ -21,6 +22,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         $me = $this;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
         $basename = '';
+        $validationCount = 0;
 
         for ($i = 0; $i < $this->total; $i ++) {
             $file = $this->getNextFile($i);
@@ -38,12 +40,18 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
                 $me->assertEquals($file->getBasename(), $basename);
             });
 
+            $dispatcher->addListener(UploadEvents::VALIDATION, function(ValidationEvent $event) use (&$validationCount) {
+                ++ $validationCount;
+            });
+
             $client->request('POST', $endpoint, $this->getNextRequestParameters($i), array($file));
             $response = $client->getResponse();
 
             $this->assertTrue($response->isSuccessful());
             $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
         }
+        
+        $this->assertEquals(1, $validationCount);
 
         foreach ($this->getUploadedFiles() as $file) {
             $this->assertTrue($file->isFile());
