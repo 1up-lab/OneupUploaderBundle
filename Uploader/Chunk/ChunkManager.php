@@ -48,7 +48,7 @@ class ChunkManager implements ChunkManagerInterface
         return $chunk->move($path, $name);
     }
 
-    public function assembleChunks(\IteratorAggregate $chunks, $removeChunk = true)
+    public function assembleChunks(\IteratorAggregate $chunks, $removeChunk = true, $renameChunk = false)
     {
         $iterator = $chunks->getIterator()->getInnerIterator();
 
@@ -71,9 +71,15 @@ class ChunkManager implements ChunkManagerInterface
             $iterator->next();
         }
 
+        $name = $base->getBasename();
+
+        if ($renameChunk) {
+            $name = preg_replace('/^(\d+)_/', '', $base->getBasename());
+        }
+
         // remove the prefix added by self::addChunk
         $assembled = new File($base->getRealPath());
-        $assembled = $assembled->move($base->getPath(), preg_replace('/^(.+?)_/', '', $base->getBasename()));
+        $assembled = $assembled->move($base->getPath(), $name);
 
         return $assembled;
     }
