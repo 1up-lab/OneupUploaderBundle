@@ -46,7 +46,10 @@ class OneupUploaderExtension extends Extension
 
         // handle mappings
         foreach ($config['mappings'] as $key => $mapping) {
-            $mapping['max_size']  = $this->getMaxUploadSize($mapping['max_size']);
+            $mapping['max_size'] = $mapping['max_size'] < 0 ?
+                $this->getMaxUploadSize($mapping['max_size']) :
+                $mapping['max_size']
+            ;
 
             // create the storage service according to the configuration
             $storageService = null;
