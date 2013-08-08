@@ -18,7 +18,7 @@ class CustomErrorHandler implements ErrorHandlerInterface
 {
     public function addException(ResponseInterface $response, UploadException $exception)
     {
-        $message = $exception->getErrorMessage();
+        $message = $exception->getMessage();
         $response['error'] = $message;
     }
 }
