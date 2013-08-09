@@ -108,7 +108,7 @@ class ChunkManager implements ChunkManagerInterface
 
         return $finder;
     }
-    
+
     public function getLoadDistribution()
     {
         return $this->configuration['load_distribution'];

@@ -25,7 +25,7 @@ abstract class AbstractChunkedController extends AbstractController
      *            chunk. Must be higher that in the previous request.
      *    - orig: The original file name.
      *
-     * @param Request $request - The request object
+     * @param  Request $request - The request object
      * @return array
      */
     abstract protected function parseChunkedRequest(Request $request);

@@ -88,7 +88,7 @@ abstract class AbstractController
 
             $files[] = $file;
         }
-        
+
         return $files;
     }
 

@@ -38,7 +38,7 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
      * This function will take a path of arrays and add a new element to it, creating the path if needed.
      *
      * @param mixed $value
-     * @param array $offsets 
+     * @param array $offsets
      *
      * @throws \InvalidArgumentException if the path contains non-array items.
      *
