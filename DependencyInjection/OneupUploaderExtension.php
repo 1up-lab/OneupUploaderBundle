@@ -121,7 +121,9 @@ class OneupUploaderExtension extends Extension
                     throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
 
-            $errorHandler = new Reference($mapping['error_handler']);
+            $errorHandler = is_null($mapping['error_handler']) ?
+                new Reference('oneup_uploader.error_handler.'.$mapping['frontend']) :
+                new Reference($mapping['error_handler']);
 
             // create controllers based on mapping
             $container
