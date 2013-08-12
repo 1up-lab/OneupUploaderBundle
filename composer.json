@@ -13,12 +13,12 @@
             "role": "Developer"
         }
     ],
-    
+
     "require": {
         "symfony/framework-bundle": "2.*",
-        "symfony/finder": ">=2.0.16,<2.4-dev"
+        "symfony/finder": ">=2.2.0,<2.4-dev"
     },
-    
+
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
         "knplabs/gaufrette": "0.2.*@dev",
@@ -33,11 +33,11 @@
         "symfony/browser-kit": "2.*",
         "phpunit/phpunit": "3.7.*"
     },
-    
+
     "suggest": {
         "knplabs/knp-gaufrette-bundle": "0.1.*"
     },
-    
+
     "autoload": {
         "psr-0": { "Oneup\\UploaderBundle": "" }
     },
