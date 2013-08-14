@@ -10,7 +10,7 @@ Download [FineUploader](http://fineuploader.com/) and include it in your templat
 $(document).ready(function()
 {
     var uploader = new qq.FineUploader({
-        element: $('#uploader'),
+        element: $('#uploader')[0],
         request: {
             endpoint: "{{ oneup_uploader_endpoint('gallery') }}"
         }
