@@ -34,7 +34,7 @@ Add OneupUploaderBundle to your composer.json using the following construct:
 ```js
 {
     "require": {
-        "oneup/uploader-bundle": "dev-master"
+        "oneup/uploader-bundle": "0.9.*@dev"
     }
 }
 ```
