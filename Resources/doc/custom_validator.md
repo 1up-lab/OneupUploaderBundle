@@ -3,6 +3,7 @@ Writing custom Validators
 
 File validations in the OneupUploaderBundle were made using the [EventDispatcher](http://symfony.com/doc/current/components/event_dispatcher/introduction.html) component.
 If you want to enhance file validations in your application, you can register your own `EventListener` like in the example below.
+To fail a validation, throw a `ValidationException`. This will be catched up by the `Controller`.
 
 ```php
 namespace Acme\DemoBundle\EventListener;
@@ -23,7 +24,6 @@ class AlwaysFalseValidationListener
 }
 ```
 
-If you want your validation to fail, throw a `ValidationException`. This will be catched up by the `Controller`.
 After that register your new `EventListener` in the `services.xml` of your application.
 
 ```xml
