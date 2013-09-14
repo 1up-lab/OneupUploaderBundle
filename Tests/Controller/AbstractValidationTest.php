@@ -73,9 +73,10 @@ abstract class AbstractValidationTest extends AbstractControllerTest
 
         // event data
         $validationCount = 0;
+        $me = $this;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function(ValidationEvent $event) use (&$validationCount) {
-            $this->assertInstanceOf('Symfony\Component\HttpFoundation\Request', $event->getRequest());
+        $dispatcher->addListener(UploadEvents::VALIDATION, function(ValidationEvent $event) use (&$validationCount, &$me) {
+            $me->assertInstanceOf('Symfony\Component\HttpFoundation\Request', $event->getRequest());
 
             // to be sure this listener is called
             ++ $validationCount;
