@@ -65,6 +65,27 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $this->assertEquals(1, $validationCount);
     }
 
+    public function testIfRequestIsAvailableInEvent()
+    {
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+        $dispatcher = $client->getContainer()->get('event_dispatcher');
+
+        // event data
+        $validationCount = 0;
+
+        $dispatcher->addListener(UploadEvents::VALIDATION, function(ValidationEvent $event) use (&$validationCount) {
+            $this->assertInstanceOf('Symfony\Component\HttpFoundation\Request', $event->getRequest());
+
+            // to be sure this listener is called
+            ++ $validationCount;
+        });
+
+        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getFileWithCorrectExtension()));
+
+        $this->assertEquals(1, $validationCount);
+    }
+
     public function testAgainstIncorrectExtension()
     {
         // assemble a request

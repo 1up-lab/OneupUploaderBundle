@@ -4,17 +4,21 @@ namespace Oneup\UploaderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class ValidationEvent extends Event
 {
     protected $file;
     protected $config;
+    protected $type;
+    protected $request;
 
-    public function __construct(UploadedFile $file, array $config, $type)
+    public function __construct(UploadedFile $file, array $config, $type, Request $request = null)
     {
         $this->file = $file;
         $this->config = $config;
         $this->type = $type;
+        $this->request = $request;
     }
 
     public function getFile()
@@ -30,5 +34,10 @@ class ValidationEvent extends Event
     public function getType()
     {
         return $this->type;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
     }
 }
