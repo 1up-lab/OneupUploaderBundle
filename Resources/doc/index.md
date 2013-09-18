@@ -106,7 +106,7 @@ So if you take the mapping described before, the generated route name would be `
 * [Use FancyUpload](frontend_fancyupload.md)
 * [Use MooUpload](frontend_mooupload.md)
 * [Use Plupload](frontend_plupload.md)
-* [Use Dropzone]|(frontend_dropzone.md)
+* [Use Dropzone](frontend_dropzone.md)
 
 ## Next steps
 
