@@ -17,6 +17,7 @@
                <service id="oneup_uploader.error_handler.fancyupload" class="%oneup_uploader.error_handler.noop.class%" public="false" />
                <service id="oneup_uploader.error_handler.mooupload" class="%oneup_uploader.error_handler.noop.class%" public="false" />
                <service id="oneup_uploader.error_handler.plupload" class="%oneup_uploader.error_handler.noop.class%" public="false" />
+               <service id="oneup_uploader.error_handler.dropzone" class="%oneup_uploader.error_handler.noop.class%" public="false" />
                <service id="oneup_uploader.error_handler.custom" class="%oneup_uploader.error_handler.noop.class%" public="false" />
            </services>
 

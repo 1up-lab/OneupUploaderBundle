@@ -96,7 +96,7 @@ $endpoint = $helper->endpoint('gallery');
 or in a Twig template you can use the `oneup_uploader_endpoint` function:
 
     {{ oneup_uploader_endpoint('gallery') }}
-    
+
 So if you take the mapping described before, the generated route name would be `_uploader_gallery`. Follow one of the listed guides to include your frontend:
 
 * [Use FineUploader](frontend_fineuploader.md)
@@ -106,6 +106,7 @@ So if you take the mapping described before, the generated route name would be `
 * [Use FancyUpload](frontend_fancyupload.md)
 * [Use MooUpload](frontend_mooupload.md)
 * [Use Plupload](frontend_plupload.md)
+* [Use Dropzone](frontend_dropzone.md)
 
 ## Next steps
 
