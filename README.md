@@ -10,6 +10,7 @@ The OneupUploaderBundle for Symfony2 adds support for handling file uploads usin
 * [FancyUpload](http://digitarald.de/project/fancyupload/)
 * [MooUpload](https://github.com/juanparati/MooUpload)
 * [Plupload](http://www.plupload.com/)
+* [Dropzone](http://www.dropzonejs.com/)
 
 Features included:
 
