@@ -41,6 +41,11 @@ class AcmeController extends Controller
     public function storeAction()
     {
         $manager = $this->get('oneup_uploader.orphanage_manager')->get('gallery');
+
+        // get files
+        $files = $manager->getFiles();
+
+        // upload all files to the configured storage
         $files = $manager->uploadFiles();
     }
 }

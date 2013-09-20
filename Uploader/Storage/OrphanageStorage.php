@@ -54,7 +54,7 @@ class OrphanageStorage extends FilesystemStorage implements OrphanageStorageInte
         }
     }
 
-    protected function getFiles()
+    public function getFiles()
     {
         $finder = new Finder();
         $finder->in($this->getFindPath())->files();

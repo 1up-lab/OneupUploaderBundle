@@ -108,6 +108,13 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $files);
     }
 
+    public function testIfGetFilesMethodIsAccessible()
+    {
+        // since ticket #48, getFiles has to be public
+        $method = new \ReflectionMethod($this->orphanage, 'getFiles');
+        $this->assertTrue($method->isPublic());
+    }
+
     public function tearDown()
     {
         $filesystem = new Filesystem();
