@@ -37,8 +37,8 @@ class MooUploadController extends AbstractChunkedController
 
             $response->setId($headers->get('x-file-id'));
             $response->setSize($headers->get('content-length'));
-            $response->setName($headers->get('x-file-name'));
-            $response->setUploadedName($uploadFileName);
+            $response->setName(utf8_encode($headers->get('x-file-name')));
+            $response->setUploadedName(utf8_encode($uploadFileName));
 
             $chunked ?
                 $this->handleChunkedUpload($file, $response, $request) :
