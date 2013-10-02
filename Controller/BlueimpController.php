@@ -30,7 +30,7 @@ class BlueimpController extends AbstractChunkedController
             }
         }
 
-        return new JsonResponse($response->assemble());
+        return $this->createSupportedJsonResponse($response->assemble());
     }
 
     public function progress()
@@ -51,7 +51,7 @@ class BlueimpController extends AbstractChunkedController
             'total' => $value['content_length']
         );
 
-        return new JsonResponse($progress);
+        return $this->createSupportedJsonResponse($progress);
     }
 
     protected function parseChunkedRequest(Request $request)
@@ -82,5 +82,27 @@ class BlueimpController extends AbstractChunkedController
         $orig  = $attachmentName;
 
         return array($last, $uuid, $index, $orig);
+    }
+
+    /**
+     * Creates and returns a JsonResponse with the given data.
+     *
+     * On top of that, if the client does not support the application/json type,
+     * then the content type of the response will be set to text/plain instead.
+     *
+     * @param mixed $data
+     *
+     * @return JsonResponse
+     */
+    private function createSupportedJsonResponse($data)
+    {
+        $request = $this->container->get('request');
+        $response = new JsonResponse($data);
+        $response->headers->set('Vary', 'Accept');
+        if (!in_array('application/json', $request->getAcceptableContentTypes())) {
+            $response->headers->set('Content-type', 'text/plain');
+        }
+
+        return $response;
     }
 }
