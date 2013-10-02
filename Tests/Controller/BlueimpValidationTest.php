@@ -15,7 +15,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getOversizedFile());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getOversizedFile(), array('HTTP_ACCEPT' => 'application/json'));
         $response = $client->getResponse();
 
         //$this->assertTrue($response->isNotSuccessful());
@@ -29,7 +29,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectExtension());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectExtension(), array('HTTP_ACCEPT' => 'application/json'));
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
@@ -67,7 +67,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectExtension());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectExtension(), array('HTTP_ACCEPT' => 'application/json'));
         $response = $client->getResponse();
 
         //$this->assertTrue($response->isNotSuccessful());
@@ -81,7 +81,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType(), array('HTTP_ACCEPT' => 'application/json'));
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
@@ -103,7 +103,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectMimeType());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectMimeType(), array('HTTP_ACCEPT' => 'application/json'));
         $response = $client->getResponse();
 
         //$this->assertTrue($response->isNotSuccessful());
