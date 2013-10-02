@@ -16,7 +16,7 @@ class BlueimpTest extends AbstractUploadTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getRequestFile());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getRequestFile(), array('HTTP_ACCEPT' => 'application/json'));
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
@@ -28,6 +28,20 @@ class BlueimpTest extends AbstractUploadTest
             $this->assertTrue($file->isReadable());
             $this->assertEquals(128, $file->getSize());
         }
+    }
+
+    public function testResponseForOldBrowsers()
+    {
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getRequestFile());
+        $response = $client->getResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response->headers->get('Content-Type'), 'text/plain; charset=UTF-8');
+        $this->assertCount(1, $this->getUploadedFiles());
+
     }
 
     public function testEvents()

@@ -63,7 +63,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint);
+        $client->request('POST', $endpoint, array(), array(), array('HTTP_ACCEPT' => 'application/json'));
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
