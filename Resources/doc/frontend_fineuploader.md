@@ -32,6 +32,4 @@ oneup_uploader:
             frontend: fineuploader
 ```
 
-> Actually, `fineuploader` is the default value, so you don't have to provide it manually.
-
 Be sure to check out the [official manual](https://github.com/Widen/fine-uploader/blob/master/readme.md) for details on the configuration.
