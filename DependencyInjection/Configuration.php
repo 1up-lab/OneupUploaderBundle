@@ -38,7 +38,6 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->enumNode('frontend')
                                 ->values(array('fineuploader', 'blueimp', 'uploadify', 'yui3', 'fancyupload', 'mooupload', 'plupload', 'dropzone', 'custom'))
-                                ->defaultValue('fineuploader')
                             ->end()
                             ->arrayNode('custom_frontend')
                                 ->addDefaultsIfNotSet()
