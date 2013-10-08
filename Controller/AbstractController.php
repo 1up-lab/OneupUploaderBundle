@@ -164,7 +164,7 @@ abstract class AbstractController
     protected function validate(UploadedFile $file)
     {
         $dispatcher = $this->container->get('event_dispatcher');
-        $event = new ValidationEvent($file, $this->config, $this->type, $this->container->get('request'));
+        $event = new ValidationEvent($file, $this->container->get('request'), $this->config, $this->type);
 
         $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
     }

@@ -13,7 +13,7 @@ class ValidationEvent extends Event
     protected $type;
     protected $request;
 
-    public function __construct(UploadedFile $file, array $config, $type, Request $request = null)
+    public function __construct(UploadedFile $file, Request $request, array $config, $type)
     {
         $this->file = $file;
         $this->config = $config;
