@@ -5,7 +5,6 @@ namespace Oneup\UploaderBundle\Uploader\Storage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Filesystem\Filesystem;
 
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
@@ -38,8 +37,6 @@ class OrphanageStorage extends FilesystemStorage implements OrphanageStorageInte
 
     public function uploadFiles()
     {
-        $filesystem = new Filesystem();
-
         try {
             $files = $this->getFiles();
             $return = array();

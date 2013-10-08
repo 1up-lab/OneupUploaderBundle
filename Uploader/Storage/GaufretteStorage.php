@@ -43,7 +43,7 @@ class GaufretteStorage implements StorageInterface
 
         while (!$src->eof()) {
             $data = $src->read($this->bufferSize);
-            $written = $dst->write($data);
+            $dst->write($data);
         }
 
         $dst->close();

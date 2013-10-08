@@ -17,9 +17,6 @@ class MooUploadController extends AbstractChunkedController
     public function upload()
     {
         $request = $this->container->get('request');
-        $dispatcher = $this->container->get('event_dispatcher');
-        $translator = $this->container->get('translator');
-
         $response = new MooUploadResponse();
         $headers = $request->headers;
 
