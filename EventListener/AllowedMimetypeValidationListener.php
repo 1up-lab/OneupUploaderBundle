@@ -16,8 +16,7 @@ class AllowedMimetypeValidationListener
             return;
         }
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimetype = finfo_file($finfo, $file->getRealpath());
+        $mimetype = $file->getMimeType();
 
         if (!in_array($mimetype, $config['allowed_mimetypes'])) {
             throw new ValidationException('error.whitelist');

@@ -26,6 +26,7 @@
                <!-- managers -->
                <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%">
                    <argument>%oneup_uploader.chunks%</argument>
+                   <argument type="service" id="oneup_uploader.storage.chunk" />
                </service>
 
                <service id="oneup_uploader.orphanage_manager" class="%oneup_uploader.orphanage.manager.class%">

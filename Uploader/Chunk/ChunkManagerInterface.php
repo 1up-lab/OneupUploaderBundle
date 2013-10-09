@@ -21,13 +21,13 @@ interface ChunkManagerInterface
     /**
      * Assembles the given chunks and return the resulting file.
      *
-     * @param \IteratorAggregate $chunks
+     * @param                    $chunks
      * @param bool               $removeChunk Remove the chunk file once its assembled.
      * @param bool               $renameChunk Rename the chunk file once its assembled.
      *
      * @return File
      */
-    public function assembleChunks(\IteratorAggregate $chunks, $removeChunk = true, $renameChunk = false);
+    public function assembleChunks($chunks, $removeChunk = true, $renameChunk = false);
 
     /**
      * Get chunks associated with the given uuid.
