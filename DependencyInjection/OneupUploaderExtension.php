@@ -42,7 +42,7 @@ class OneupUploaderExtension extends Extension
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
-            $this->processMapping($key, $mapping);
+            $controllers[$key] = $this->processMapping($key, $mapping);
         }
 
         $container->setParameter('oneup_uploader.controllers', $controllers);
@@ -62,15 +62,26 @@ class OneupUploaderExtension extends Extension
             $this->getMaxUploadSize($mapping['max_size']) :
             $mapping['max_size']
         ;
+        $controllerName = $this->createController($key, $mapping);
 
+        $this->verifyPhpVersion($mapping);
+
+        return array($controllerName, array(
+            'enable_progress' => $mapping['enable_progress'],
+            'enable_cancelation' => $mapping['enable_cancelation']
+        ));
+    }
+
+    protected function createController($key, $config)
+    {
         // create the storage service according to the configuration
-        $storageService = $this->createStorageService($mapping['storage'], $key, isset($mapping['orphanage']) ? :null);
+        $storageService = $this->createStorageService($config['storage'], $key, isset($config['orphanage']) ? :null);
 
-        if ($mapping['frontend'] != 'custom') {
+        if ($config['frontend'] != 'custom') {
             $controllerName = sprintf('oneup_uploader.controller.%s', $key);
-            $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $mapping['frontend']);
+            $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $config['frontend']);
         } else {
-            $customFrontend = $mapping['custom_frontend'];
+            $customFrontend = $config['custom_frontend'];
 
             $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
             $controllerType = $customFrontend['class'];
@@ -79,9 +90,7 @@ class OneupUploaderExtension extends Extension
                 throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
         }
 
-        $errorHandler = is_null($mapping['error_handler']) ?
-            new Reference('oneup_uploader.error_handler.'.$mapping['frontend']) :
-            new Reference($mapping['error_handler']);
+        $errorHandler = $this->createErrorHandler($config);
 
         // create controllers based on mapping
         $this->container
@@ -90,23 +99,30 @@ class OneupUploaderExtension extends Extension
             ->addArgument(new Reference('service_container'))
             ->addArgument($storageService)
             ->addArgument($errorHandler)
-            ->addArgument($mapping)
+            ->addArgument($config)
             ->addArgument($key)
 
             ->addTag('oneup_uploader.routable', array('type' => $key))
             ->setScope('request')
         ;
 
-        if ($mapping['enable_progress'] || $mapping['enable_cancelation']) {
+        return $controllerName;
+    }
+
+    protected function createErrorHandler($config)
+    {
+        return is_null($config['error_handler']) ?
+            new Reference('oneup_uploader.error_handler.'.$config['frontend']) :
+            new Reference($config['error_handler']);
+    }
+
+    protected function verifyPhpVersion($config)
+    {
+        if ($config['enable_progress'] || $config['enable_cancelation']) {
             if (strnatcmp(phpversion(), '5.4.0') < 0) {
                 throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
             }
         }
-
-        $controllers[$key] = array($controllerName, array(
-            'enable_progress' => $mapping['enable_progress'],
-            'enable_cancelation' => $mapping['enable_cancelation']
-        ));
     }
 
     protected function createChunkStorageService()
