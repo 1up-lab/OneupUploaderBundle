@@ -116,7 +116,13 @@ class OneupUploaderExtension extends Extension
                 ->addArgument($config['directory'])
             ;
         } else {
-            $this->registerGaufretteStorage('oneup_uploader.chunks_storage', $storageClass, $config['filesystem'], $config['sync_buffer_size'], $config['prefix']);
+            $this->registerGaufretteStorage(
+                'oneup_uploader.chunks_storage',
+                $storageClass, $config['filesystem'],
+                $config['sync_buffer_size'],
+                $config['stream_wrapper'],
+                $config['prefix']
+            );
 
             // enforce load distribution when using gaufrette as chunk
             // torage to avoid moving files forth-and-back
@@ -150,7 +156,13 @@ class OneupUploaderExtension extends Extension
             }
 
             if ($config['type'] == 'gaufrette') {
-                $this->registerGaufretteStorage($storageName, $storageClass, $config['filesystem'], $config['sync_buffer_size']);
+                $this->registerGaufretteStorage(
+                    $storageName,
+                    $storageClass,
+                    $config['filesystem'],
+                    $config['sync_buffer_size'],
+                    $config['stream_wrapper']
+                );
             }
 
             $storageService = new Reference($storageName);
@@ -176,7 +188,7 @@ class OneupUploaderExtension extends Extension
         return $storageService;
     }
 
-    protected function registerGaufretteStorage($key, $class, $filesystem, $buffer, $prefix = '')
+    protected function registerGaufretteStorage($key, $class, $filesystem, $buffer, $streamWrapper = null, $prefix = '')
     {
         if(!class_exists('Gaufrette\\Filesystem'))
             throw new InvalidArgumentException('You have to install Gaufrette in order to use it as a chunk storage service.');
@@ -188,6 +200,7 @@ class OneupUploaderExtension extends Extension
             ->register($key, $class)
             ->addArgument(new Reference($filesystem))
             ->addArgument($this->getValueInBytes($buffer))
+            ->addArgument($streamWrapper)
             ->addArgument($prefix)
         ;
     }

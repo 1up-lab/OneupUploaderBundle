@@ -14,8 +14,9 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
 {
     protected $unhandledChunk;
     protected $prefix;
+    protected $streamWrapperPrefix;
 
-    public function __construct(Filesystem $filesystem, $bufferSize, $prefix)
+    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
         if (!($filesystem->getAdapter() instanceof StreamFactory)) {
             throw new \InvalidArgumentException('The filesystem used as chunk storage must implement StreamFactory');
@@ -23,6 +24,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         $this->filesystem = $filesystem;
         $this->bufferSize = $bufferSize;
         $this->prefix = $prefix;
+        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
     public function clear($maxAge)
@@ -128,7 +130,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             return $uploaded;
         }
 
-        return new GaufretteFile($uploaded, $this->filesystem);
+        return new GaufretteFile($uploaded, $this->filesystem, $this->streamWrapperPrefix);
     }
 
     public function cleanup($path)

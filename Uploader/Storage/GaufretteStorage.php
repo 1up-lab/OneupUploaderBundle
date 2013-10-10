@@ -10,11 +10,13 @@ use Oneup\UploaderBundle\Uploader\Gaufrette\StreamManager;
 
 class GaufretteStorage extends StreamManager implements StorageInterface
 {
+    protected $streamWrapperPrefix;
 
-    public function __construct(Filesystem $filesystem, $bufferSize)
+    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix)
     {
         $this->filesystem = $filesystem;
         $this->bufferSize = $bufferSize;
+        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
     public function upload(FileInterface $file, $name, $path = null)
@@ -29,7 +31,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
             if ($file->getFilesystem() == $this->filesystem) {
                 $file->getFilesystem()->rename($file->getKey(), $path);
 
-                return $this->filesystem->get($path);
+                return new GaufretteFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
             }
         }
 
@@ -40,7 +42,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
 
         $this->stream($file, $dst);
 
-        return $this->filesystem->get($path);
+        return new GaufretteFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
     }
 
 }
