@@ -3,6 +3,7 @@
 namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -100,12 +101,18 @@ abstract class AbstractController
      *
      *  Note: The return value differs when
      *
-     *  @param UploadedFile The file to upload
+     *  @param The file to upload
      *  @param response A response object.
      *  @param request The request object.
      */
-    protected function handleUpload(FileInterface $file, ResponseInterface $response, Request $request)
+    protected function handleUpload($file, ResponseInterface $response, Request $request)
     {
+        // wrap the file if it is not done yet which can only happen
+        // if it wasn't a chunked upload, in which case it is definitely
+        // on the local filesystem.
+        if (!($file instanceof FileInterface)) {
+            $file = new FilesystemFile($file);
+        }
         $this->validate($file);
 
         $this->dispatchPreUploadEvent($file, $response, $request);

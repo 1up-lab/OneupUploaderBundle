@@ -73,7 +73,6 @@ abstract class AbstractChunkedController extends AbstractController
 
             $path = $assembled->getPath();
 
-            // create a temporary uploaded file to meet the interface restrictions
             $this->handleUpload($assembled, $response, $request);
 
             $chunkManager->cleanup($path);

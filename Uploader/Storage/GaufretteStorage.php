@@ -35,7 +35,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
             }
         }
 
-        $this->ensureRemotePathExists($path.$name);
+        $this->ensureRemotePathExists($path);
         $dst = $this->filesystem->createStream($path);
 
         $this->openStream($dst, 'w');
