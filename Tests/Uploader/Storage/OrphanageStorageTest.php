@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -39,7 +40,7 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 
-            $this->payloads[] = new UploadedFile($file, $i . 'grumpycat.jpeg', null, null, null, true);
+            $this->payloads[] = new FilesystemFile(new UploadedFile($file, $i . 'grumpycat.jpeg', null, null, null, true));
         }
 
         // create underlying storage

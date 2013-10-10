@@ -2,7 +2,7 @@
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 
 class FilesystemStorage implements StorageInterface
 {
@@ -13,7 +13,7 @@ class FilesystemStorage implements StorageInterface
         $this->directory = $directory;
     }
 
-    public function upload($file, $name, $path = null)
+    public function upload(FileInterface $file, $name, $path = null)
     {
         $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
         $path = sprintf('%s/%s', $this->directory, $path);

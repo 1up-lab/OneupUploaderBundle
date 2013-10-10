@@ -12,14 +12,14 @@ class GaufretteStorage extends StreamManager implements StorageInterface
 {
     protected $streamWrapperPrefix;
 
-    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix)
+    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix = null)
     {
         $this->filesystem = $filesystem;
         $this->bufferSize = $bufferSize;
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function upload($file, $name, $path = null)
+    public function upload(FileInterface $file, $name, $path = null)
     {
         $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
 

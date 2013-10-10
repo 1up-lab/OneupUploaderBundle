@@ -1,13 +1,12 @@
 <?php
 
-namespace Oneup\UploaderBundle\Tests\Uploader\Chunk;
+namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage;
 
-use Oneup\UploaderBundle\Uploader\Chunk\ChunkManager;
-
-class ChunkManagerTest extends \PHPUnit_Framework_TestCase
+class FilesystemStorageTest extends \PHPUnit_Framework_TestCase
 {
     protected $tmpDir;
 
@@ -49,7 +48,7 @@ class ChunkManagerTest extends \PHPUnit_Framework_TestCase
     {
         // get a manager configured with a max-age of 5 minutes
         $maxage  = 5 * 60;
-        $manager = $this->getManager($maxage);
+        $manager = $this->getStorage();
         $numberOfFiles = 10;
 
         $finder = new Finder();
@@ -58,7 +57,7 @@ class ChunkManagerTest extends \PHPUnit_Framework_TestCase
         $this->fillDirectory($numberOfFiles);
         $this->assertCount(10, $finder);
 
-        $manager->clear();
+        $manager->clear($maxage);
 
         $this->assertTrue(is_dir($this->tmpDir));
         $this->assertTrue(is_writeable($this->tmpDir));
@@ -75,18 +74,17 @@ class ChunkManagerTest extends \PHPUnit_Framework_TestCase
         $filesystem = new Filesystem();
         $filesystem->remove($this->tmpDir);
 
-        $manager = $this->getManager(10);
-        $manager->clear();
+        $manager = $this->getStorage();
+        $manager->clear(10);
 
         // yey, no exception
         $this->assertTrue(true);
     }
 
-    protected function getManager($maxage)
+    protected function getStorage()
     {
-        return new ChunkManager(array(
-            'directory' => $this->tmpDir,
-            'maxage' => $maxage
+        return new FilesystemStorage(array(
+            'directory' => $this->tmpDir
         ));
     }
 

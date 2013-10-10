@@ -29,7 +29,7 @@ class OrphanageStorage extends FilesystemStorage implements OrphanageStorageInte
         $this->type = $type;
     }
 
-    public function upload($file, $name, $path = null)
+    public function upload(FileInterface $file, $name, $path = null)
     {
         if(!$this->session->isStarted())
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
@@ -44,7 +44,7 @@ class OrphanageStorage extends FilesystemStorage implements OrphanageStorageInte
             $return = array();
 
             foreach ($files as $file) {
-                $return[] = $this->storage->upload(new File($file->getPathname()), str_replace($this->getFindPath(), '', $file));
+                $return[] = $this->storage->upload(new FilesystemFile(new File($file->getPathname())), str_replace($this->getFindPath(), '', $file));
             }
 
             return $return;
