@@ -9,9 +9,9 @@ interface StorageInterface
     /**
      * Uploads a File instance to the configured storage.
      *
-     * @param FileInterface $file
+     * @param               $file
      * @param string        $name
      * @param string        $path
      */
-    public function upload(FileInterface $file, $name, $path = null);
+    public function upload($file, $name, $path = null);
 }

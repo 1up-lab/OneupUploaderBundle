@@ -3,6 +3,7 @@
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Finder\Finder;
@@ -28,7 +29,7 @@ class OrphanageStorage extends FilesystemStorage implements OrphanageStorageInte
         $this->type = $type;
     }
 
-    public function upload(FileInterface $file, $name, $path = null)
+    public function upload($file, $name, $path = null)
     {
         if(!$this->session->isStarted())
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');

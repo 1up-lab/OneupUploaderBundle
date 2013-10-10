@@ -19,7 +19,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function upload(FileInterface $file, $name, $path = null)
+    public function upload($file, $name, $path = null)
     {
         $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
 
