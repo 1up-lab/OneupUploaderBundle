@@ -42,6 +42,8 @@ class GaufretteFile extends File implements FileInterface
                     // Fail gracefully if there was a problem with opening the file and
                     // let gaufrette load the file into memory allowing it to throw exceptions
                     // if that doesn't work either.
+                    // Not empty to make the scrutiziner happy.
+                    return parent::getSize();
                 }
             }
         }

@@ -57,7 +57,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             try {
                 $this->filesystem->delete($key);
             } catch (\Exception $e) {
-                //do nothing
+                continue;
             }
         }
     }
@@ -81,8 +81,6 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             'chunk' => $chunk,
             'original' => $original
         );
-
-        return;
     }
 
     public function assembleChunks($chunks, $removeChunk, $renameChunk)
