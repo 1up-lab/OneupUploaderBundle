@@ -9,7 +9,8 @@ class GaufretteFile extends File implements FileInterface
 {
     protected $filesystem;
 
-    public function __construct(File $file, Filesystem $filesystem) {
+    public function __construct(File $file, Filesystem $filesystem)
+    {
         parent::__construct($file->getKey(), $filesystem);
         $this->filesystem = $filesystem;
     }
@@ -30,12 +31,17 @@ class GaufretteFile extends File implements FileInterface
         return parent::getSize();
     }
 
+    public function getPathname()
+    {
+        return $this->getKey();
+    }
+
     public function getPath()
     {
         return pathinfo($this->getKey(), PATHINFO_DIRNAME);
     }
 
-    public function getName()
+    public function getBasename()
     {
         return pathinfo($this->getKey(), PATHINFO_BASENAME);
     }
@@ -46,6 +52,7 @@ class GaufretteFile extends File implements FileInterface
     public function getMimeType()
     {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
         return finfo_file($finfo, $this->getKey());
     }
 
@@ -59,4 +66,4 @@ class GaufretteFile extends File implements FileInterface
         return $this->filesystem;
     }
 
-} 
+}

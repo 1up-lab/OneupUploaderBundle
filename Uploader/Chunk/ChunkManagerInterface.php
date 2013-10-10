@@ -21,9 +21,9 @@ interface ChunkManagerInterface
     /**
      * Assembles the given chunks and return the resulting file.
      *
-     * @param                    $chunks
-     * @param bool               $removeChunk Remove the chunk file once its assembled.
-     * @param bool               $renameChunk Rename the chunk file once its assembled.
+     * @param      $chunks
+     * @param bool $removeChunk Remove the chunk file once its assembled.
+     * @param bool $renameChunk Rename the chunk file once its assembled.
      *
      * @return File
      */

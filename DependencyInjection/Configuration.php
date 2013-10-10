@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('filesystem')->defaultNull()->end()
                                 ->scalarNode('directory')->defaultNull()->end()
                                 ->scalarNode('sync_buffer_size')->defaultValue('100K')->end()
+                                ->scalarNode('prefix')->defaultValue('chunks')->end()
                                 ->end()
                         ->end()
                         ->booleanNode('load_distribution')->defaultTrue()->end()

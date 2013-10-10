@@ -2,7 +2,6 @@
 
 namespace Oneup\UploaderBundle\Uploader\Naming;
 
-
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 
 class UniqidNamer implements NamerInterface

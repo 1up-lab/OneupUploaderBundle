@@ -32,17 +32,7 @@ class OneupUploaderExtension extends Extension
             $loader->load('twig.xml');
         }
 
-        if ($this->config['chunks']['storage']['type'] === 'filesystem' &&
-            !isset($this->config['chunks']['storage']['directory'])) {
-            $this->config['chunks']['storage']['directory'] = sprintf('%s/uploader/chunks', $container->getParameter('kernel.cache_dir'));
-        } elseif ($this->config['chunks']['storage']['type'] === 'gaufrette' ) {
-            // Force load distribution when using gaufrette chunk storage
-            $this->config['chunks']['load_distribution'] = true;
-        }
-
-        // register the service for the chunk storage
-        $this->createStorageService($this->config['chunks']['storage'], 'chunk');
-
+        $this->createChunkStorageService();
 
         $this->config['orphanage']['directory'] = is_null($this->config['orphanage']['directory']) ?
             sprintf('%s/uploader/orphanage', $container->getParameter('kernel.cache_dir')) :
@@ -56,10 +46,6 @@ class OneupUploaderExtension extends Extension
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
-            if ($key === 'chunk') {
-                throw new InvalidArgumentException('"chunk" is a protected mapping name, please use a different one.');
-            }
-
             $mapping['max_size'] = $mapping['max_size'] < 0 ?
                 $this->getMaxUploadSize($mapping['max_size']) :
                 $mapping['max_size']
@@ -114,42 +100,57 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.controllers', $controllers);
     }
 
-    protected function createStorageService($storage, $key, $orphanage = null)
+    protected function createChunkStorageService()
+    {
+        $config = &$this->config['chunks']['storage'];
+
+        $storageClass = sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']);
+        if ($config['type'] === 'filesystem') {
+            $config['directory'] = is_null($config['directory']) ?
+                 sprintf('%s/uploader/chunks', $this->container->getParameter('kernel.cache_dir')) :
+                 $this->normalizePath($config['directory'])
+            ;
+
+            $this->container
+                ->register('oneup_uploader.chunks_storage', sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']))
+                ->addArgument($config['directory'])
+            ;
+        } else {
+            $this->registerGaufretteStorage('oneup_uploader.chunks_storage', $storageClass, $config['filesystem'], $config['sync_buffer_size'], $config['prefix']);
+
+            // enforce load distribution when using gaufrette as chunk
+            // torage to avoid moving files forth-and-back
+            $this->config['chunks']['load_distribution'] = true;
+        }
+    }
+
+    protected function createStorageService($config, $key, $orphanage = null)
     {
         $storageService = null;
 
         // if a service is given, return a reference to this service
         // this allows a user to overwrite the storage layer if needed
-        if (isset($storage['service']) && !is_null($storage['service'])) {
-            $storageService = new Reference($storage['storage']['service']);
+        if (!is_null($config['service'])) {
+            $storageService = new Reference($config['storage']['service']);
         } else {
             // no service was given, so we create one
             $storageName = sprintf('oneup_uploader.storage.%s', $key);
+            $storageClass = sprintf('%%oneup_uploader.storage.%s.class%%', $config['type']);
 
-            if ($storage['type'] == 'filesystem') {
-                $storage['directory'] = is_null($storage['directory']) ?
+            if ($config['type'] == 'filesystem') {
+                $config['directory'] = is_null($config['directory']) ?
                     sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $key) :
-                    $this->normalizePath($storage['directory'])
+                    $this->normalizePath($config['directory'])
                 ;
 
                 $this->container
-                    ->register($storageName, sprintf('%%oneup_uploader.storage.%s.class%%', $storage['type']))
-                    ->addArgument($storage['directory'])
+                    ->register($storageName, $storageClass)
+                    ->addArgument($config['directory'])
                 ;
             }
 
-            if ($storage['type'] == 'gaufrette') {
-                if(!class_exists('Gaufrette\\Filesystem'))
-                    throw new InvalidArgumentException('You have to install Gaufrette in order to use it as a storage service.');
-
-                if(strlen($storage['filesystem']) <= 0)
-                    throw new ServiceNotFoundException('Empty service name');
-
-                $this->container
-                    ->register($storageName, sprintf('%%oneup_uploader.storage.%s.class%%', $storage['type']))
-                    ->addArgument(new Reference($storage['filesystem']))
-                    ->addArgument($this->getValueInBytes($storage['sync_buffer_size']))
-                ;
+            if ($config['type'] == 'gaufrette') {
+                $this->registerGaufretteStorage($storageName, $storageClass, $config['filesystem'], $config['sync_buffer_size']);
             }
 
             $storageService = new Reference($storageName);
@@ -175,6 +176,21 @@ class OneupUploaderExtension extends Extension
         return $storageService;
     }
 
+    protected function registerGaufretteStorage($key, $class, $filesystem, $buffer, $prefix = '')
+    {
+        if(!class_exists('Gaufrette\\Filesystem'))
+            throw new InvalidArgumentException('You have to install Gaufrette in order to use it as a chunk storage service.');
+
+        if(strlen($filesystem) <= 0)
+            throw new ServiceNotFoundException('Empty service name');
+
+        $this->container
+            ->register($key, $class)
+            ->addArgument(new Reference($filesystem))
+            ->addArgument($this->getValueInBytes($buffer))
+            ->addArgument($prefix)
+        ;
+    }
 
     protected function getMaxUploadSize($input)
     {

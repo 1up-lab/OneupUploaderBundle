@@ -1,7 +1,6 @@
 <?php
 
-namespace Oneup\UploaderBundle\Uploader\Storage;
-
+namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -16,4 +15,4 @@ interface ChunkStorageInterface
     public function cleanup($path);
 
     public function getChunks($uuid);
-} 
+}

@@ -2,11 +2,8 @@
 
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
-use Oneup\UploaderBundle\Uploader\Storage\ChunkStorageInterface;
-use Symfony\Component\HttpFoundation\File\File;
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Filesystem\Filesystem;
 
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
 

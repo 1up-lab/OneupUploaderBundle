@@ -21,9 +21,16 @@ interface FileInterface
     public function getSize();
 
     /**
-     * Returns the directory of the file without the filename
+     * Returns the path of the file
      *
      * @return string
+     */
+    public function getPathname();
+
+    /**
+     * Return the path of the file without the filename
+     *
+     * @return mixed
      */
     public function getPath();
 
@@ -35,11 +42,11 @@ interface FileInterface
     public function getMimeType();
 
     /**
-     * Returns the filename of the file
+     * Returns the basename of the file
      *
      * @return string
      */
-    public function getName();
+    public function getBasename();
 
     /**
      * Returns the guessed extension of the file
@@ -47,4 +54,4 @@ interface FileInterface
      * @return mixed
      */
     public function getExtension();
-} 
+}
