@@ -31,10 +31,47 @@ You can configure the `ChunkManager` by using the following configuration parame
 oneup_uploader:
     chunks:
         maxage: 86400
-        directory: %kernel.cache_dir%/uploader/chunks
+        storage:
+            directory: %kernel.cache_dir%/uploader/chunks
 ```
 
 You can choose a custom directory to save the chunks temporarily while uploading by changing the parameter `directory`.
+
+Since version 1.0 you can also use a Gaufrette filesystem as the chunk storage. To do this you must first
+set up [Gaufrette](gaufrette_storage.md).There are however some additional things to keep in mind.
+The configuration for the Gaufrette chunk storage should look as the following:
+```
+oneup_uploader:
+    chunks:
+        maxage: 86400
+        storage:
+            type: gaufrette
+            filesystem: gaufrette.gallery_filesystem 
+            prefix: 'chunks'
+            stream_wrapper: 'gaufrette://gallery/'
+```
+
+> Setting the stream_wrapper is heavily recommended for better performance, see the reasons in the [gaufrette configuration](gaufrette_storage.md#configure-your-mappings)
+
+As you can see there are is a new option, ```prefix```. It represents the directory 
+ *relative* to the filesystem's directory which the chunks are stored in.
+Gaufrette won't allow it to be outside of the filesystem.
+
+> You can only use stream capable filesystems for the chunk storage, at the time of this writing
+only the Local filesystem is capable of streaming directly.
+
+This will give you a better structured directory,
+as the chunk's folders and the uploaded files won't mix with each other. 
+> You can set it to an empty string (```''```), if you don't need it. Otherwise it defaults to ```chunks```.
+
+The chunks will be read directly from the tmp and appended to the already existing part on the given filesystem,
+resulting in only 1 read and 1 write operation.
+
+You can achieve the biggest improvement if you use the same filesystem as your storage, as if you do so, the assembled
+file only has to be moved out of the chunk directory, which on the same filesystem takes almost not time.
+
+> The ```load distribution``` is forcefully turned on, if you use gaufrette as the chunk storage.
+
 
 ## Clean up
 
