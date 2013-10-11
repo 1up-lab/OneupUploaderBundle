@@ -55,7 +55,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
                 try {
                     $return[] = $this->storage->upload($file, str_replace($this->getPath(), '', $key));
                 } catch (\Exception $e) {
-                    // don't delete the file, if the upload failed beaces
+                    // don't delete the file, if the upload failed because
                     // 1, it may not exist and deleting would throw another exception;
                     // 2, don't lose it on network related errors
                     continue;
