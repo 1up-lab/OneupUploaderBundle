@@ -147,7 +147,9 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
 
     public function getChunks($uuid)
     {
-        return $this->filesystem->listKeys($this->prefix.'/'.$uuid)['keys'];
+        $results = $this->filesystem->listKeys($this->prefix.'/'.$uuid);
+
+        return $results['keys'];
     }
 
     public function getFilesystem()

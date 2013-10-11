@@ -4,7 +4,6 @@ namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 abstract class OrphanageTest extends \PHPUnit_Framework_Testcase
 {
