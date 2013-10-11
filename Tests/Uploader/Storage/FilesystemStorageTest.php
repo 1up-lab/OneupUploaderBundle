@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -26,7 +27,7 @@ class FilesystemStorageTest extends \PHPUnit_Framework_TestCase
 
     public function testUpload()
     {
-        $payload = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true);
+        $payload = new FilesystemFile(new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true));
         $storage = new FilesystemStorage($this->directory);
         $storage->upload($payload, 'notsogrumpyanymore.jpeg');
 

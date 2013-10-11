@@ -48,9 +48,6 @@ abstract class AbstractChunkedController extends AbstractController
         $request = $this->container->get('request');
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
 
-        // reset uploaded to always have a return value
-        $uploaded = null;
-
         // get information about this chunked request
         list($last, $uuid, $index, $orig) = $this->parseChunkedRequest($request);
 
@@ -73,9 +70,7 @@ abstract class AbstractChunkedController extends AbstractController
 
             $path = $assembled->getPath();
 
-            // create a temporary uploaded file to meet the interface restrictions
-            $uploadedFile = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, $assembled->getSize(), null, true);
-            $uploaded = $this->handleUpload($uploadedFile, $response, $request);
+            $this->handleUpload($assembled, $response, $request);
 
             $chunkManager->cleanup($path);
         }
