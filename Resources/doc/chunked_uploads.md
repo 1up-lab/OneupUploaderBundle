@@ -51,8 +51,10 @@ oneup_uploader:
             stream_wrapper: 'gaufrette://gallery/'
 ```
 
+> Setting the stream_wrapper is heavily recommended for better performance, see the reasons in the [gaufrette configuration](gaufrette_storage.md#configure-your-mappings)
+
 As you can see there are is a new option, ```prefix```. It represents the directory 
-in *relative* to the filesystem's directory which the chunks are stored in.
+ *relative* to the filesystem's directory which the chunks are stored in.
 Gaufrette won't allow it to be outside of the filesystem.
 
 > You can only use stream capable filesystems for the chunk storage, at the time of this writing
@@ -68,7 +70,7 @@ resulting in only 1 read and 1 write operation.
 You can achieve the biggest improvement if you use the same filesystem as your storage, as if you do so, the assembled
 file only has to be moved out of the chunk directory, which on the same filesystem takes almost not time.
 
-> The load_distribution is forcefully turned on, if you use gaufrette as the chunk storage.
+> The ```load distribution``` is forcefully turned on, if you use gaufrette as the chunk storage.
 
 
 ## Clean up
