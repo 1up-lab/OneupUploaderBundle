@@ -38,7 +38,7 @@ oneup_uploader:
 You can choose a custom directory to save the chunks temporarily while uploading by changing the parameter `directory`.
 
 Since version 1.0 you can also use a Gaufrette filesystem as the chunk storage. To do this you must first
-set up [Gaufrette](gaufrette_storage.md).There are however some additional things to keep in mind.
+set up [Gaufrette](gaufrette_storage.md). There are however some additional things to keep in mind.
 The configuration for the Gaufrette chunk storage should look as the following:
 ```
 oneup_uploader:
@@ -46,14 +46,14 @@ oneup_uploader:
         maxage: 86400
         storage:
             type: gaufrette
-            filesystem: gaufrette.gallery_filesystem 
+            filesystem: gaufrette.gallery_filesystem
             prefix: 'chunks'
             stream_wrapper: 'gaufrette://gallery/'
 ```
 
-> Setting the stream_wrapper is heavily recommended for better performance, see the reasons in the [gaufrette configuration](gaufrette_storage.md#configure-your-mappings)
+> Setting the `stream_wrapper` is heavily recommended for better performance, see the reasons in the [gaufrette configuration](gaufrette_storage.md#configure-your-mappings)
 
-As you can see there are is a new option, ```prefix```. It represents the directory 
+As you can see there are is a new option, `prefix`. It represents the directory
  *relative* to the filesystem's directory which the chunks are stored in.
 Gaufrette won't allow it to be outside of the filesystem.
 
@@ -61,16 +61,16 @@ Gaufrette won't allow it to be outside of the filesystem.
 only the Local filesystem is capable of streaming directly.
 
 This will give you a better structured directory,
-as the chunk's folders and the uploaded files won't mix with each other. 
-> You can set it to an empty string (```''```), if you don't need it. Otherwise it defaults to ```chunks```.
+as the chunk's folders and the uploaded files won't mix with each other.
+> You can set it to an empty string (`''`), if you don't need it. Otherwise it defaults to `chunks`.
 
-The chunks will be read directly from the tmp and appended to the already existing part on the given filesystem,
+The chunks will be read directly from the temporary directory and appended to the already existing part on the given filesystem,
 resulting in only 1 read and 1 write operation.
 
-You can achieve the biggest improvement if you use the same filesystem as your storage, as if you do so, the assembled
-file only has to be moved out of the chunk directory, which on the same filesystem takes almost not time.
+You can achieve the biggest improvement if you use the same filesystem as your storage. If you do so, the assembled
+file only has to be moved out of the chunk directory, which takes no time on a local filesystem.
 
-> The ```load distribution``` is forcefully turned on, if you use gaufrette as the chunk storage.
+> The load distribution is forcefully turned on, if you use Gaufrette as the chunk storage.
 
 
 ## Clean up
