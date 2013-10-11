@@ -27,8 +27,6 @@ oneup_uploader:
                 filesystem:           ~
                 directory:            ~
                 sync_buffer_size:     100K
-            allowed_extensions:    []
-            disallowed_extensions: []
             allowed_mimetypes:     []
             disallowed_mimetypes:  []
             error_handler:        oneup_uploader.error_handler.noop

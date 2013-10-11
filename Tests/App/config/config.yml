@@ -23,8 +23,7 @@ oneup_uploader:
             max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-            allowed_extensions: [ "ok" ]
-            disallowed_extensions: [ "fail" ]
+
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
 
@@ -38,8 +37,7 @@ oneup_uploader:
             max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-            allowed_extensions: [ "ok" ]
-            disallowed_extensions: [ "fail" ]
+
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
 
@@ -53,8 +51,7 @@ oneup_uploader:
             max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-            allowed_extensions: [ "ok" ]
-            disallowed_extensions: [ "fail" ]
+
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
 
@@ -68,8 +65,7 @@ oneup_uploader:
             max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-            allowed_extensions: [ "ok" ]
-            disallowed_extensions: [ "fail" ]
+
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
 
@@ -83,8 +79,7 @@ oneup_uploader:
             max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-            allowed_extensions: [ "ok" ]
-            disallowed_extensions: [ "fail" ]
+
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
 
@@ -98,8 +93,7 @@ oneup_uploader:
             max_size: 256
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
-            allowed_extensions: [ "ok" ]
-            disallowed_extensions: [ "fail" ]
+
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
 
@@ -115,8 +109,7 @@ oneup_uploader:
             storage:
                 directory: %kernel.root_dir%/cache/%kernel.environment%/upload
             error_handler: oneup_uploader.error_handler.blueimp
-            allowed_extensions: [ "ok" ]
-            disallowed_extensions: [ "fail" ]
+
             allowed_mimetypes: [ "image/jpg", "text/plain" ]
             disallowed_mimetypes: [ "image/gif" ]
 
