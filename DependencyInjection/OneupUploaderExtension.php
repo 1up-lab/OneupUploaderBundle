@@ -50,8 +50,13 @@ class OneupUploaderExtension extends Extension
 
     protected function processOrphanageConfig()
     {
-        $this->config['orphanage']['directory'] = is_null($this->config['orphanage']['directory']) ?
-            sprintf('%s/uploader/orphanage', $this->container->getParameter('kernel.cache_dir')) :
+        if ($this->config['chunks']['storage']['type'] === 'filesystem') {
+            $defaultDir = sprintf('%s/uploader/orphanage', $this->container->getParameter('kernel.cache_dir'));
+        } else {
+            $defaultDir = 'orphanage';
+        }
+
+        $this->config['orphanage']['directory'] = is_null($this->config['orphanage']['directory']) ? $defaultDir:
             $this->normalizePath($this->config['orphanage']['directory'])
         ;
     }
@@ -75,7 +80,7 @@ class OneupUploaderExtension extends Extension
     protected function createController($key, $config)
     {
         // create the storage service according to the configuration
-        $storageService = $this->createStorageService($config['storage'], $key, isset($config['orphanage']) ? :null);
+        $storageService = $this->createStorageService($config['storage'], $key, $config['use_orphanage']);
 
         if ($config['frontend'] != 'custom') {
             $controllerName = sprintf('oneup_uploader.controller.%s', $key);
@@ -149,13 +154,15 @@ class OneupUploaderExtension extends Extension
                 $config['prefix']
             );
 
+            $this->container->setParameter('oneup_uploader.orphanage.class', 'Oneup\UploaderBundle\Uploader\Storage\GaufretteOrphanageStorage');
+
             // enforce load distribution when using gaufrette as chunk
             // torage to avoid moving files forth-and-back
             $this->config['chunks']['load_distribution'] = true;
         }
     }
 
-    protected function createStorageService(&$config, $key, $orphanage = null)
+    protected function createStorageService(&$config, $key, $orphanage = false)
     {
         $storageService = null;
 
@@ -201,6 +208,7 @@ class OneupUploaderExtension extends Extension
                     ->register($orphanageName, '%oneup_uploader.orphanage.class%')
                     ->addArgument($storageService)
                     ->addArgument(new Reference('session'))
+                    ->addArgument(new Reference('oneup_uploader.chunks_storage'))
                     ->addArgument($this->config['orphanage'])
                     ->addArgument($key)
                 ;

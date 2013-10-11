@@ -27,9 +27,18 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function clear($maxAge)
+    /**
+     * Clears files and folders older than $maxAge in $prefix
+     * $prefix must be passable so it can clean the orphanage too
+     * as it is forced to be the same filesystem.
+     *
+     * @param      $maxAge
+     * @param null $prefix
+     */
+    public function clear($maxAge, $prefix = null)
     {
-        $matches = $this->filesystem->listKeys($this->prefix);
+        $prefix = $prefix ? :$this->prefix;
+        $matches = $this->filesystem->listKeys($prefix);
 
         $limit = time()+$maxAge;
         $toDelete = array();
@@ -139,5 +148,10 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
     public function getChunks($uuid)
     {
         return $this->filesystem->listKeys($this->prefix.'/'.$uuid)['keys'];
+    }
+
+    public function getFilesystem()
+    {
+        return $this->filesystem;
     }
 }

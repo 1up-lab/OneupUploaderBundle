@@ -3,16 +3,17 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
+use Oneup\UploaderBundle\Uploader\Storage\FilesystemOrphanageStorage;
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage as FilesystemChunkStorage;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-use Oneup\UploaderBundle\Uploader\Storage\OrphanageStorage;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
 
-class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
+class FilesystemOrphanageStorageTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempDirectory;
     protected $realDirectory;
@@ -45,6 +46,8 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
 
         // create underlying storage
         $this->storage = new FilesystemStorage($this->realDirectory);
+        // is ignored anyways
+        $chunkStorage = new FilesystemChunkStorage('/tmp/');
 
         // create orphanage
         $session = new Session(new MockArraySessionStorage());
@@ -52,7 +55,7 @@ class OrphanageStorageTest extends \PHPUnit_Framework_TestCase
 
         $config = array('directory' => $this->tempDirectory);
 
-        $this->orphanage = new OrphanageStorage($this->storage, $session, $config, 'cat');
+        $this->orphanage = new FilesystemOrphanageStorage($this->storage, $session, $chunkStorage, $config, 'cat');
     }
 
     public function testUpload()

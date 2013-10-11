@@ -10,7 +10,7 @@ use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 class StreamManager
 {
     protected $filesystem;
-    protected $buffersize;
+    public $buffersize;
 
     protected function createSourceStream(FileInterface $file)
     {
