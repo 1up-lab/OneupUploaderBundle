@@ -53,7 +53,7 @@ knp_gaufrette:
             local:
                 directory: %kernel.root_dir%/../web/uploads
                 create: true
-    
+
     filesystems:
         gallery:
             adapter: gallery
@@ -71,7 +71,7 @@ oneup_uploader:
         gallery:
             storage:
                 type: gaufrette
-                filesystem: gaufrette.gallery_filesystem 
+                filesystem: gaufrette.gallery_filesystem
 ```
 
 You can specify the buffer size used for syncing files from your filesystem to the gaufrette storage by changing the property `sync_buffer_size`.
@@ -84,7 +84,7 @@ oneup_uploader:
         gallery:
             storage:
                 type: gaufrette
-                filesystem: gaufrette.gallery_filesystem 
+                filesystem: gaufrette.gallery_filesystem
                 sync_buffer_size: 1M
 ```
 
@@ -97,18 +97,18 @@ oneup_uploader:
         gallery:
             storage:
                 type: gaufrette
-                filesystem: gaufrette.gallery_filesystem 
+                filesystem: gaufrette.gallery_filesystem
                 stream_wrapper: gaufrette://gallery/
 ```
 
-> This is only useful if you are using a stream capable adapter, at the time of this writing only
+> This is only useful if you are using a stream-capable adapter. At the time of this writing, only
 the local adapter is capable of streaming directly.
 
-The first part (```gaufrette```) in the example above ```MUST``` be the same as ```knp_gaufrette.stream_wrapper.protocol```,
-the second part (```gallery```) in the example, ```MUST``` be the key of the filesytem (```knp_gaufette.filesystems.key```).
-It also must end with a slash (```/```).
+The first part (`gaufrette`) in the example above `MUST` be the same as `knp_gaufrette.stream_wrapper.protocol`,
+the second part (`gallery`) in the example, `MUST` be the key of the filesytem (`knp_gaufette.filesystems.key`).
+It also must end with a slash (`/`).
 
 This is particularly useful if you want to get exact informations about your files. Gaufrette offers you every functionality
 to do this without relying on the stream wrapper, however it will have to download the file and load it into memory
-to operate on it. If ```stream_wrapper``` is specified the bundle will try to open the file as streams when such operation
-is requested.(e.g. getting the size of the file, the mime-type based on content)
+to operate on it. If `stream_wrapper` is specified, the bundle will try to open the file as streams when such operation
+is requested. (e.g. getting the size of the file, the mime-type based on content)
