@@ -40,7 +40,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         $prefix = $prefix ? :$this->prefix;
         $matches = $this->filesystem->listKeys($prefix);
 
-        $limit = time()+$maxAge;
+        $now = time();
         $toDelete = array();
 
         // Collect the directories that are old,
@@ -48,14 +48,14 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         // but after the files are deleted the dirs
         // would remain
         foreach ($matches['dirs'] as $key) {
-            if ($limit < $this->filesystem->mtime($key)) {
+            if ($maxAge <= $now-$this->filesystem->mtime($key)) {
                 $toDelete[] = $key;
             }
         }
         // The same directory is returned for every file it contains
         array_unique($toDelete);
         foreach ($matches['keys'] as $key) {
-            if ($limit < $this->filesystem->mtime($key)) {
+            if ($maxAge <= $now-$this->filesystem->mtime($key)) {
                 $this->filesystem->delete($key);
             }
         }
