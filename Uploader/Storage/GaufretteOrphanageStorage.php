@@ -68,7 +68,8 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
 
     public function getFiles()
     {
-        $keys = $this->chunkStorage->getFilesystem()->listKeys($this->getPath())['keys'];
+        $keys = $this->chunkStorage->getFilesystem()->listKeys($this->getPath());
+        $keys = $keys['keys'];
         $files = array();
 
         foreach ($keys as $key) {
