@@ -69,7 +69,7 @@ only the Local filesystem is capable of streaming directly.
 The chunks will be read directly from the temporary directory and appended to the already existing part on the given filesystem,
 resulting in only one single read and one single write operation.
 
-> :exclamation: Do not use a Gaufrette filesystem for the chunk storage and a local filesystem for the mapping. This is not possible to check during container setup and will throw unexpected errors at runtime!
+> :exclamation: If you use a gaufrette filesystem as chunk storage, you may only use gaufrette filesystems in your mappings too!
 
 You can achieve the biggest improvement if you use the same filesystem as your storage. If you do so, the assembled
 file only has to be moved out of the chunk directory, which takes no time on a local filesystem.
