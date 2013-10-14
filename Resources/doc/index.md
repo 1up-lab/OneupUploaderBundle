@@ -124,6 +124,7 @@ some more advanced features.
 * [Validate your uploads](custom_validator.md)
 * [General/Generic Events](events.md)
 * [Enable Session upload progress / upload cancelation](progress.md)
+* [Use Chunked Uploads behind Load Balancers](load_balancers.md)
 * [Configuration Reference](configuration_reference.md)
 * [Testing this bundle](testing.md)
 

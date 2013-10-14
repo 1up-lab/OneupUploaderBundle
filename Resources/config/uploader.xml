@@ -5,11 +5,13 @@
 
            <parameters>
                <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunk\ChunkManager</parameter>
+               <parameter key="oneup_uploader.chunks_storage.gaufrette.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage</parameter>
+               <parameter key="oneup_uploader.chunks_storage.filesystem.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage</parameter>
                <parameter key="oneup_uploader.namer.uniqid.class">Oneup\UploaderBundle\Uploader\Naming\UniqidNamer</parameter>
                <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
                <parameter key="oneup_uploader.storage.gaufrette.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
                <parameter key="oneup_uploader.storage.filesystem.class">Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage</parameter>
-               <parameter key="oneup_uploader.orphanage.class">Oneup\UploaderBundle\Uploader\Storage\OrphanageStorage</parameter>
+               <parameter key="oneup_uploader.orphanage.class">Oneup\UploaderBundle\Uploader\Storage\FilesystemOrphanageStorage</parameter>
                <parameter key="oneup_uploader.orphanage.manager.class">Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager</parameter>
                <parameter key="oneup_uploader.controller.fineuploader.class">Oneup\UploaderBundle\Controller\FineUploaderController</parameter>
                <parameter key="oneup_uploader.controller.blueimp.class">Oneup\UploaderBundle\Controller\BlueimpController</parameter>
@@ -26,6 +28,7 @@
                <!-- managers -->
                <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%">
                    <argument>%oneup_uploader.chunks%</argument>
+                   <argument type="service" id="oneup_uploader.chunks_storage" />
                </service>
 
                <service id="oneup_uploader.orphanage_manager" class="%oneup_uploader.orphanage.manager.class%">

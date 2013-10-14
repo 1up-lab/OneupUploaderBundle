@@ -2,9 +2,10 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\FileBag;
 
@@ -99,12 +100,18 @@ abstract class AbstractController
      *
      *  Note: The return value differs when
      *
-     *  @param UploadedFile The file to upload
+     *  @param The file to upload
      *  @param response A response object.
      *  @param request The request object.
      */
-    protected function handleUpload(UploadedFile $file, ResponseInterface $response, Request $request)
+    protected function handleUpload($file, ResponseInterface $response, Request $request)
     {
+        // wrap the file if it is not done yet which can only happen
+        // if it wasn't a chunked upload, in which case it is definitely
+        // on the local filesystem.
+        if (!($file instanceof FileInterface)) {
+            $file = new FilesystemFile($file);
+        }
         $this->validate($file);
 
         $this->dispatchPreUploadEvent($file, $response, $request);
@@ -126,7 +133,7 @@ abstract class AbstractController
      *  @param response A response object.
      *  @param request The request object.
      */
-    protected function dispatchPreUploadEvent(UploadedFile $uploaded, ResponseInterface $response, Request $request)
+    protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request)
     {
         $dispatcher = $this->container->get('event_dispatcher');
 
@@ -161,7 +168,7 @@ abstract class AbstractController
         }
     }
 
-    protected function validate(UploadedFile $file)
+    protected function validate(FileInterface $file)
     {
         $dispatcher = $this->container->get('event_dispatcher');
         $event = new ValidationEvent($file, $this->container->get('request'), $this->config, $this->type);

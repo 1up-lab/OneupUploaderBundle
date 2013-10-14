@@ -4,7 +4,6 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Oneup\UploaderBundle\Tests\Controller\AbstractValidationTest;
-use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\UploadEvents;
 
 class BlueimpValidationTest extends AbstractValidationTest
@@ -32,7 +31,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function(ValidationEvent $event) use (&$validationCount) {
+        $dispatcher->addListener(UploadEvents::VALIDATION, function() use (&$validationCount) {
             ++ $validationCount;
         });
 

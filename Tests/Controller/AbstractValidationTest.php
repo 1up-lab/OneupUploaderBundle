@@ -34,7 +34,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function(ValidationEvent $event) use (&$validationCount) {
+        $dispatcher->addListener(UploadEvents::VALIDATION, function() use (&$validationCount) {
             ++ $validationCount;
         });
 

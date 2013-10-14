@@ -2,13 +2,12 @@
 
 namespace Oneup\UploaderBundle\Uploader\Naming;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 
 class UniqidNamer implements NamerInterface
 {
-    public function name(UploadedFile $file)
+    public function name(FileInterface $file)
     {
-        return sprintf('%s.%s', uniqid(), $file->guessExtension());
+        return sprintf('%s.%s', uniqid(), $file->getExtension());
     }
 }
