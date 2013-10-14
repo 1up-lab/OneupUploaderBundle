@@ -28,6 +28,10 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         $this->tempDirectory = $this->realDirectory . '/' . $this->orphanageKey;
         $this->payloads = array();
 
+        if (!$this->checkIfTempnameMatchesAfterCreation()) {
+            $this->markTestSkipped('Temporary directories do not match');
+        }
+
         $filesystem = new \Symfony\Component\Filesystem\Filesystem();
         $filesystem->mkdir($this->realDirectory);
         $filesystem->mkdir($this->chunkDirectory);
@@ -107,4 +111,8 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         $this->assertCount($this->numberOfPayloads, $finder);
     }
 
+    public function checkIfTempnameMatchesAfterCreation()
+    {
+        return strpos(tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory) === 0;
+    }
 }
