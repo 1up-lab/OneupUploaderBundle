@@ -229,6 +229,8 @@ class OneupUploaderExtension extends Extension
         if(strlen($filesystem) <= 0)
             throw new ServiceNotFoundException('Empty service name');
 
+        $streamWrapper = $this->normalizeStreamWrapper($streamWrapper);
+
         $this->container
             ->register($key, $class)
             ->addArgument(new Reference($filesystem))
@@ -265,5 +267,14 @@ class OneupUploaderExtension extends Extension
     protected function normalizePath($input)
     {
         return rtrim($input, '/');
+    }
+
+    protected function normalizeStreamWrapper($input)
+    {
+        if (is_null($input)) {
+            return null;
+        }
+
+        return rtrim($input, '/') . '/';
     }
 }

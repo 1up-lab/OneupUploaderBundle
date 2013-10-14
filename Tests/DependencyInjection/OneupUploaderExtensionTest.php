@@ -28,6 +28,28 @@ class OneupUploaderExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2147483648, $method->invoke($mock, '2G'));
     }
 
+    public function testNormalizationOfStreamWrapper()
+    {
+        $mock = $this->getMockBuilder('Oneup\UploaderBundle\DependencyInjection\OneupUploaderExtension')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $method = new \ReflectionMethod(
+            'Oneup\UploaderBundle\DependencyInjection\OneupUploaderExtension',
+            'normalizeStreamWrapper'
+        );
+        $method->setAccessible(true);
+
+        $output1 = $method->invoke($mock, 'gaufrette://gallery');
+        $output2 = $method->invoke($mock, 'gaufrette://gallery/');
+        $output3 = $method->invoke($mock, null);
+
+        $this->assertEquals('gaufrette://gallery/', $output1);
+        $this->assertEquals('gaufrette://gallery/', $output2);
+        $this->assertNull($output3);
+    }
+
     public function testGetMaxUploadSize()
     {
         $mock = $this->getMockBuilder('Oneup\UploaderBundle\DependencyInjection\OneupUploaderExtension')
