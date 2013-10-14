@@ -63,12 +63,6 @@ class OneupUploaderExtension extends Extension
 
     protected function processMapping($key, &$mapping)
     {
-        if ($this->config['chunks']['storage']['type'] === 'gaufrette') {
-            if ($mapping['storage']['type'] !== 'gaufrette') {
-                throw new \InvalidArgumentException('If you use a gaufrette based chunk storage, you may only use gaufrette based storages too.');
-            }
-        }
-
         $mapping['max_size'] = $mapping['max_size'] < 0 ?
             $this->getMaxUploadSize($mapping['max_size']) :
             $mapping['max_size']
