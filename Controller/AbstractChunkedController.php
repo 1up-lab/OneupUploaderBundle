@@ -60,7 +60,8 @@ abstract class AbstractChunkedController extends AbstractController
         if ($chunkManager->getLoadDistribution()) {
             $chunks = $chunkManager->getChunks($uuid);
             $assembled = $chunkManager->assembleChunks($chunks, true, $last);
-            if (!$chunk) {
+
+            if (is_null($chunk)) {
                 $this->dispatchChunkEvents($assembled, $response, $request, $last);
             }
         }
