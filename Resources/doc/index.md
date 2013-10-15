@@ -84,6 +84,10 @@ oneup_uploader:
     type: uploader
 ```
 
+The default directory that is used to upload files to is `web/uploads/{mapping_name}`.
+
+> It was reported that in some cases this directory was not created automatically. Please double check its existance if the upload does not work for you.
+
 ### Step 4: Prepare your frontend
 
 No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
