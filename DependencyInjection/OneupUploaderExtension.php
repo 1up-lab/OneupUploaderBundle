@@ -169,7 +169,7 @@ class OneupUploaderExtension extends Extension
         // if a service is given, return a reference to this service
         // this allows a user to overwrite the storage layer if needed
         if (!is_null($config['service'])) {
-            $storageService = new Reference($config['storage']['service']);
+            $storageService = new Reference($config['service']);
         } else {
             // no service was given, so we create one
             $storageName = sprintf('oneup_uploader.storage.%s', $key);
