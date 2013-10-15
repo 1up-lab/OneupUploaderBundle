@@ -13,10 +13,12 @@ class PostUploadEvent extends Event
     protected $type;
     protected $response;
     protected $config;
+    protected $generatedFileName;
 
-    public function __construct($file, ResponseInterface $response, Request $request, $type, array $config)
+    public function __construct($file, $generatedFileName, ResponseInterface $response, Request $request, $type, array $config)
     {
         $this->file = $file;
+        $this->generatedFileName = $generatedFileName;
         $this->request = $request;
         $this->response = $response;
         $this->type = $type;
@@ -47,4 +49,15 @@ class PostUploadEvent extends Event
     {
         return $this->config;
     }
+
+	public function getGeneratedFileName() {
+		return $this->generatedFileName;
+	}
+	
+	public function setGeneratedFileName($generatedFileName) {
+		$this->generatedFileName = $generatedFileName;
+		return $this;
+	}
+	
+    
 }

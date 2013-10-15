@@ -116,7 +116,7 @@ abstract class AbstractController
         // perform the real upload
         $uploaded = $this->storage->upload($file, $name);
 
-        $this->dispatchPostEvents($uploaded, $response, $request);
+        $this->dispatchPostEvents($uploaded, $name, $response, $request);
     }
 
     /**
@@ -144,12 +144,12 @@ abstract class AbstractController
      *  @param response A response object.
      *  @param request The request object.
      */
-    protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request)
+    protected function dispatchPostEvents($uploaded, $generatedFileName, ResponseInterface $response, Request $request)
     {
         $dispatcher = $this->container->get('event_dispatcher');
 
         // dispatch post upload event (both the specific and the general)
-        $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
+        $postUploadEvent = new PostUploadEvent($uploaded, $generatedFileName, $response, $request, $this->type, $this->config);
         $dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
         $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_UPLOAD, $this->type), $postUploadEvent);
 
