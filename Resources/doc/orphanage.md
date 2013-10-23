@@ -67,6 +67,12 @@ oneup_uploader:
 
 You can choose a custom directory to save the orphans temporarily while uploading by changing the parameter `directory`.
 
+If you are using a gaufrette filesystem as the chunk storage, the ```directory``` specified above should be
+relative to the filesystem's root directory. It will detect if you are using a gaufrette chunk storage
+and default to ```orphanage```.
+
+> The orphanage and the chunk storage are forced to be on the same filesystem.
+
 ## Clean up
 The `OrphanageManager` can be forced to clean up orphans by using the command provided by the OneupUploaderBundle.
 

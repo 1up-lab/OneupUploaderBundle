@@ -16,8 +16,7 @@ class DisallowedMimetypeValidationListener
             return;
         }
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimetype = finfo_file($finfo, $file->getRealpath());
+        $mimetype = $file->getExtension();
 
         if (in_array($mimetype, $config['disallowed_mimetypes'])) {
             throw new ValidationException('error.blacklist');

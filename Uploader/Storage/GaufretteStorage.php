@@ -2,26 +2,25 @@
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Gaufrette\Stream\Local as LocalStream;
-use Gaufrette\StreamMode;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Gaufrette\Filesystem;
+use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
 use Gaufrette\Adapter\MetadataSupporter;
+use Oneup\UploaderBundle\Uploader\Gaufrette\StreamManager;
 
-use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-
-class GaufretteStorage implements StorageInterface
+class GaufretteStorage extends StreamManager implements StorageInterface
 {
-    protected $filesystem;
-    protected $bufferSize;
+    protected $streamWrapperPrefix;
 
-    public function __construct(Filesystem $filesystem, $bufferSize)
+    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix = null)
     {
         $this->filesystem = $filesystem;
         $this->bufferSize = $bufferSize;
+        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function upload(File $file, $name, $path = null)
+    public function upload(FileInterface $file, $name, $path = null)
     {
         $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
 
@@ -29,26 +28,28 @@ class GaufretteStorage implements StorageInterface
             $this->filesystem->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
         }
 
-        $src = new LocalStream($file->getPathname());
-        $dst = $this->filesystem->createStream($path);
+        if ($file instanceof GaufretteFile) {
+            if ($file->getFilesystem() == $this->filesystem) {
+                $file->getFilesystem()->rename($file->getKey(), $path);
 
-        // this is a somehow ugly workaround introduced
-        // because the stream-mode is not able to create
-        // subdirectories.
-        if(!$this->filesystem->has($path))
-            $this->filesystem->write($path, '', true);
-
-        $src->open(new StreamMode('rb+'));
-        $dst->open(new StreamMode('wb+'));
-
-        while (!$src->eof()) {
-            $data = $src->read($this->bufferSize);
-            $written = $dst->write($data);
+                return new GaufretteFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
+            }
         }
 
-        $dst->close();
-        $src->close();
+        $this->ensureRemotePathExists($path);
+        $dst = $this->filesystem->createStream($path);
 
-        return $this->filesystem->get($path);
+        $this->openStream($dst, 'w');
+        $this->stream($file, $dst);
+
+        if ($file instanceof GaufretteFile) {
+            $file->delete();
+        } else {
+            $filesystem = new LocalFilesystem();
+            $filesystem->remove($file->getPathname());
+        }
+
+        return new GaufretteFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
     }
+
 }

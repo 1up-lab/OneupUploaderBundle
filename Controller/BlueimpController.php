@@ -61,7 +61,7 @@ class BlueimpController extends AbstractChunkedController
         $attachmentName = rawurldecode(preg_replace('/(^[^"]+")|("$)/', '', $request->headers->get('content-disposition')));
 
         // split the header string to the appropriate parts
-        list($tmp, $startByte, $endByte, $totalBytes) = preg_split('/[^0-9]+/', $headerRange);
+        list(, $startByte, $endByte, $totalBytes) = preg_split('/[^0-9]+/', $headerRange);
 
         // getting information about chunks
         // note: We don't have a chance to get the last $total
@@ -73,7 +73,6 @@ class BlueimpController extends AbstractChunkedController
         $size  = ($endByte + 1 - $startByte);
         $last  = ($endByte + 1) == $totalBytes;
         $index = $last ? \PHP_INT_MAX : floor($startByte / $size);
-        $total = ceil($totalBytes / $size);
 
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session

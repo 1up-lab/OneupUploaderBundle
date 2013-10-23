@@ -18,7 +18,7 @@ class YUI3Controller extends AbstractController
 
         foreach ($files as $file) {
             try {
-                $uploaded = $this->handleUpload($file, $response, $request);
+                $this->handleUpload($file, $response, $request);
             } catch (UploadException $e) {
                 $this->errorHandler->addException($response, $e);
             }

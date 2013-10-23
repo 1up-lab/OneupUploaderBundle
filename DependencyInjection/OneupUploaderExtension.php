@@ -13,11 +13,14 @@ use Symfony\Component\DependencyInjection\Loader;
 class OneupUploaderExtension extends Extension
 {
     protected $storageServices = array();
+    protected $container;
+    protected $config;
 
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $this->config = $this->processConfiguration($configuration, $configs);
+        $this->container = $container;
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('uploader.xml');
@@ -25,133 +28,216 @@ class OneupUploaderExtension extends Extension
         $loader->load('validators.xml');
         $loader->load('errorhandler.xml');
 
-        if ($config['twig']) {
+        if ($this->config['twig']) {
             $loader->load('twig.xml');
         }
 
-        $config['chunks']['directory'] = is_null($config['chunks']['directory']) ?
-            sprintf('%s/uploader/chunks', $container->getParameter('kernel.cache_dir')) :
-            $this->normalizePath($config['chunks']['directory'])
-        ;
+        $this->createChunkStorageService();
+        $this->processOrphanageConfig();
 
-        $config['orphanage']['directory'] = is_null($config['orphanage']['directory']) ?
-            sprintf('%s/uploader/orphanage', $container->getParameter('kernel.cache_dir')) :
-            $this->normalizePath($config['orphanage']['directory'])
-        ;
-
-        $container->setParameter('oneup_uploader.chunks', $config['chunks']);
-        $container->setParameter('oneup_uploader.orphanage', $config['orphanage']);
+        $container->setParameter('oneup_uploader.chunks', $this->config['chunks']);
+        $container->setParameter('oneup_uploader.orphanage', $this->config['orphanage']);
 
         $controllers = array();
 
         // handle mappings
-        foreach ($config['mappings'] as $key => $mapping) {
-            $mapping['max_size'] = $mapping['max_size'] < 0 ?
-                $this->getMaxUploadSize($mapping['max_size']) :
-                $mapping['max_size']
-            ;
-
-            // create the storage service according to the configuration
-            $storageService = null;
-
-            // if a service is given, return a reference to this service
-            // this allows a user to overwrite the storage layer if needed
-            if (!is_null($mapping['storage']['service'])) {
-                $storageService = new Reference($mapping['storage']['service']);
-            } else {
-                // no service was given, so we create one
-                $storageName = sprintf('oneup_uploader.storage.%s', $key);
-
-                if ($mapping['storage']['type'] == 'filesystem') {
-                    $mapping['storage']['directory'] = is_null($mapping['storage']['directory']) ?
-                        sprintf('%s/../web/uploads/%s', $container->getParameter('kernel.root_dir'), $key) :
-                        $this->normalizePath($mapping['storage']['directory'])
-                    ;
-
-                    $container
-                        ->register($storageName, sprintf('%%oneup_uploader.storage.%s.class%%', $mapping['storage']['type']))
-                        ->addArgument($mapping['storage']['directory'])
-                    ;
-                }
-
-                if ($mapping['storage']['type'] == 'gaufrette') {
-                    if(!class_exists('Gaufrette\\Filesystem'))
-                        throw new InvalidArgumentException('You have to install Gaufrette in order to use it as a storage service.');
-
-                    if(strlen($mapping['storage']['filesystem']) <= 0)
-                        throw new ServiceNotFoundException('Empty service name');
-
-                    $container
-                        ->register($storageName, sprintf('%%oneup_uploader.storage.%s.class%%', $mapping['storage']['type']))
-                        ->addArgument(new Reference($mapping['storage']['filesystem']))
-                        ->addArgument($this->getValueInBytes($mapping['storage']['sync_buffer_size']))
-                    ;
-                }
-
-                $storageService = new Reference($storageName);
-
-                if ($mapping['use_orphanage']) {
-                    $orphanageName = sprintf('oneup_uploader.orphanage.%s', $key);
-
-                    // this mapping wants to use the orphanage, so create
-                    // a masked filesystem for the controller
-                    $container
-                        ->register($orphanageName, '%oneup_uploader.orphanage.class%')
-                        ->addArgument($storageService)
-                        ->addArgument(new Reference('session'))
-                        ->addArgument($config['orphanage'])
-                        ->addArgument($key)
-                    ;
-
-                    // switch storage of mapping to orphanage
-                    $storageService = new Reference($orphanageName);
-                }
-            }
-
-            if ($mapping['frontend'] != 'custom') {
-                $controllerName = sprintf('oneup_uploader.controller.%s', $key);
-                $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $mapping['frontend']);
-            } else {
-                $customFrontend = $mapping['custom_frontend'];
-
-                $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
-                $controllerType = $customFrontend['class'];
-
-                if(empty($controllerName) || empty($controllerType))
-                    throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
-            }
-
-            $errorHandler = is_null($mapping['error_handler']) ?
-                new Reference('oneup_uploader.error_handler.'.$mapping['frontend']) :
-                new Reference($mapping['error_handler']);
-
-            // create controllers based on mapping
-            $container
-                ->register($controllerName, $controllerType)
-
-                ->addArgument(new Reference('service_container'))
-                ->addArgument($storageService)
-                ->addArgument($errorHandler)
-                ->addArgument($mapping)
-                ->addArgument($key)
-
-                ->addTag('oneup_uploader.routable', array('type' => $key))
-                ->setScope('request')
-            ;
-
-            if ($mapping['enable_progress'] || $mapping['enable_cancelation']) {
-                if (strnatcmp(phpversion(), '5.4.0') < 0) {
-                    throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
-                }
-            }
-
-            $controllers[$key] = array($controllerName, array(
-                'enable_progress' => $mapping['enable_progress'],
-                'enable_cancelation' => $mapping['enable_cancelation']
-            ));
+        foreach ($this->config['mappings'] as $key => $mapping) {
+            $controllers[$key] = $this->processMapping($key, $mapping);
         }
 
         $container->setParameter('oneup_uploader.controllers', $controllers);
+    }
+
+    protected function processOrphanageConfig()
+    {
+        if ($this->config['chunks']['storage']['type'] === 'filesystem') {
+            $defaultDir = sprintf('%s/uploader/orphanage', $this->container->getParameter('kernel.cache_dir'));
+        } else {
+            $defaultDir = 'orphanage';
+        }
+
+        $this->config['orphanage']['directory'] = is_null($this->config['orphanage']['directory']) ? $defaultDir:
+            $this->normalizePath($this->config['orphanage']['directory'])
+        ;
+    }
+
+    protected function processMapping($key, &$mapping)
+    {
+        $mapping['max_size'] = $mapping['max_size'] < 0 ?
+            $this->getMaxUploadSize($mapping['max_size']) :
+            $mapping['max_size']
+        ;
+        $controllerName = $this->createController($key, $mapping);
+
+        $this->verifyPhpVersion($mapping);
+
+        return array($controllerName, array(
+            'enable_progress' => $mapping['enable_progress'],
+            'enable_cancelation' => $mapping['enable_cancelation']
+        ));
+    }
+
+    protected function createController($key, $config)
+    {
+        // create the storage service according to the configuration
+        $storageService = $this->createStorageService($config['storage'], $key, $config['use_orphanage']);
+
+        if ($config['frontend'] != 'custom') {
+            $controllerName = sprintf('oneup_uploader.controller.%s', $key);
+            $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $config['frontend']);
+        } else {
+            $customFrontend = $config['custom_frontend'];
+
+            $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
+            $controllerType = $customFrontend['class'];
+
+            if(empty($controllerName) || empty($controllerType))
+                throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
+        }
+
+        $errorHandler = $this->createErrorHandler($config);
+
+        // create controllers based on mapping
+        $this->container
+            ->register($controllerName, $controllerType)
+
+            ->addArgument(new Reference('service_container'))
+            ->addArgument($storageService)
+            ->addArgument($errorHandler)
+            ->addArgument($config)
+            ->addArgument($key)
+
+            ->addTag('oneup_uploader.routable', array('type' => $key))
+            ->setScope('request')
+        ;
+
+        return $controllerName;
+    }
+
+    protected function createErrorHandler($config)
+    {
+        return is_null($config['error_handler']) ?
+            new Reference('oneup_uploader.error_handler.'.$config['frontend']) :
+            new Reference($config['error_handler']);
+    }
+
+    protected function verifyPhpVersion($config)
+    {
+        if ($config['enable_progress'] || $config['enable_cancelation']) {
+            if (strnatcmp(phpversion(), '5.4.0') < 0) {
+                throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
+            }
+        }
+    }
+
+    protected function createChunkStorageService()
+    {
+        $config = &$this->config['chunks']['storage'];
+
+        $storageClass = sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']);
+        if ($config['type'] === 'filesystem') {
+            $config['directory'] = is_null($config['directory']) ?
+                 sprintf('%s/uploader/chunks', $this->container->getParameter('kernel.cache_dir')) :
+                 $this->normalizePath($config['directory'])
+            ;
+
+            $this->container
+                ->register('oneup_uploader.chunks_storage', sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']))
+                ->addArgument($config['directory'])
+            ;
+        } else {
+            $this->registerGaufretteStorage(
+                'oneup_uploader.chunks_storage',
+                $storageClass, $config['filesystem'],
+                $config['sync_buffer_size'],
+                $config['stream_wrapper'],
+                $config['prefix']
+            );
+
+            $this->container->setParameter('oneup_uploader.orphanage.class', 'Oneup\UploaderBundle\Uploader\Storage\GaufretteOrphanageStorage');
+
+            // enforce load distribution when using gaufrette as chunk
+            // torage to avoid moving files forth-and-back
+            $this->config['chunks']['load_distribution'] = true;
+        }
+    }
+
+    protected function createStorageService(&$config, $key, $orphanage = false)
+    {
+        $storageService = null;
+
+        // if a service is given, return a reference to this service
+        // this allows a user to overwrite the storage layer if needed
+        if (!is_null($config['service'])) {
+            $storageService = new Reference($config['service']);
+        } else {
+            // no service was given, so we create one
+            $storageName = sprintf('oneup_uploader.storage.%s', $key);
+            $storageClass = sprintf('%%oneup_uploader.storage.%s.class%%', $config['type']);
+
+            if ($config['type'] == 'filesystem') {
+                $config['directory'] = is_null($config['directory']) ?
+                    sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $key) :
+                    $this->normalizePath($config['directory'])
+                ;
+
+                $this->container
+                    ->register($storageName, $storageClass)
+                    ->addArgument($config['directory'])
+                ;
+            }
+
+            if ($config['type'] == 'gaufrette') {
+                $this->registerGaufretteStorage(
+                    $storageName,
+                    $storageClass,
+                    $config['filesystem'],
+                    $config['sync_buffer_size'],
+                    $config['stream_wrapper']
+                );
+            }
+
+            $storageService = new Reference($storageName);
+
+            if ($orphanage) {
+                $orphanageName = sprintf('oneup_uploader.orphanage.%s', $key);
+
+                // this mapping wants to use the orphanage, so create
+                // a masked filesystem for the controller
+                $this->container
+                    ->register($orphanageName, '%oneup_uploader.orphanage.class%')
+                    ->addArgument($storageService)
+                    ->addArgument(new Reference('session'))
+                    ->addArgument(new Reference('oneup_uploader.chunks_storage'))
+                    ->addArgument($this->config['orphanage'])
+                    ->addArgument($key)
+                ;
+
+                // switch storage of mapping to orphanage
+                $storageService = new Reference($orphanageName);
+            }
+        }
+
+        return $storageService;
+    }
+
+    protected function registerGaufretteStorage($key, $class, $filesystem, $buffer, $streamWrapper = null, $prefix = '')
+    {
+        if(!class_exists('Gaufrette\\Filesystem'))
+            throw new InvalidArgumentException('You have to install Gaufrette in order to use it as a chunk storage service.');
+
+        if(strlen($filesystem) <= 0)
+            throw new ServiceNotFoundException('Empty service name');
+
+        $streamWrapper = $this->normalizeStreamWrapper($streamWrapper);
+
+        $this->container
+            ->register($key, $class)
+            ->addArgument(new Reference($filesystem))
+            ->addArgument($this->getValueInBytes($buffer))
+            ->addArgument($streamWrapper)
+            ->addArgument($prefix)
+        ;
     }
 
     protected function getMaxUploadSize($input)
@@ -181,5 +267,14 @@ class OneupUploaderExtension extends Extension
     protected function normalizePath($input)
     {
         return rtrim($input, '/');
+    }
+
+    protected function normalizeStreamWrapper($input)
+    {
+        if (is_null($input)) {
+            return null;
+        }
+
+        return rtrim($input, '/') . '/';
     }
 }

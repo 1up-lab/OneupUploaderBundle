@@ -8,14 +8,14 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
 {
     public function testNamerReturnsName()
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+        $file = $this->getMockBuilder('Oneup\UploaderBundle\Uploader\File\FilesystemFile')
             ->disableOriginalConstructor()
             ->getMock()
         ;
 
         $file
             ->expects($this->any())
-            ->method('guessExtension')
+            ->method('getExtension')
             ->will($this->returnValue('jpeg'))
         ;
 
@@ -25,14 +25,14 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
 
     public function testNamerReturnsUniqueName()
     {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+        $file = $this->getMockBuilder('Oneup\UploaderBundle\Uploader\File\FilesystemFile')
             ->disableOriginalConstructor()
             ->getMock()
         ;
 
         $file
             ->expects($this->any())
-            ->method('guessExtension')
+            ->method('getExtension')
             ->will($this->returnValue('jpeg'))
         ;
 

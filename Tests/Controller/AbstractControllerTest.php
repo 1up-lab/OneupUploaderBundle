@@ -18,7 +18,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->helper = $this->container->get('oneup_uploader.templating.uploader_helper');
         $this->createdFiles = array();
 
-        $routes = $this->container->get('router')->getRouteCollection()->all();
+        $this->container->get('router')->getRouteCollection()->all();
     }
 
     abstract protected function getConfigKey();

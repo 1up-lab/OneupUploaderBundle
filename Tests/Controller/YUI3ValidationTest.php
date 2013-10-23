@@ -27,26 +27,6 @@ class YUI3ValidationTest extends AbstractValidationTest
         );
     }
 
-    protected function getFileWithCorrectExtension()
-    {
-        return new UploadedFile(
-            $this->createTempFile(128),
-            'cat.ok',
-            'text/plain',
-            128
-        );
-    }
-
-    protected function getFileWithIncorrectExtension()
-    {
-        return new UploadedFile(
-            $this->createTempFile(128),
-            'cat.fail',
-            'text/plain',
-            128
-        );
-    }
-
     protected function getFileWithCorrectMimeType()
     {
         return new UploadedFile(

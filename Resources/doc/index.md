@@ -34,7 +34,7 @@ Add OneupUploaderBundle to your composer.json using the following construct:
 ```js
 {
     "require": {
-        "oneup/uploader-bundle": "0.9.*@dev"
+        "oneup/uploader-bundle": "1.0.*@dev"
     }
 }
 ```
@@ -71,7 +71,8 @@ This bundle was designed to just work out of the box. The only thing you have to
 
 oneup_uploader:
     mappings:
-        gallery: ~
+        gallery:
+            frontend: blueimp # or any uploader you use in the frontend
 ```
 
 To enable the dynamic routes, add the following to your routing configuration file.
@@ -128,6 +129,7 @@ some more advanced features.
 * [Validate your uploads](custom_validator.md)
 * [General/Generic Events](events.md)
 * [Enable Session upload progress / upload cancelation](progress.md)
+* [Use Chunked Uploads behind Load Balancers](load_balancers.md)
 * [Configuration Reference](configuration_reference.md)
 * [Testing this bundle](testing.md)
 

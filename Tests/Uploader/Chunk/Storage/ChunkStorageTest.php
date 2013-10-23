@@ -1,32 +1,14 @@
 <?php
 
-namespace Oneup\UploaderBundle\Tests\Uploader\Chunk;
+namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
-use Oneup\UploaderBundle\Uploader\Chunk\ChunkManager;
-
-class ChunkManagerTest extends \PHPUnit_Framework_TestCase
+abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
 {
     protected $tmpDir;
-
-    public function setUp()
-    {
-        // create a cache dir
-        $tmpDir = sprintf('/tmp/%s', uniqid());
-
-        $system = new Filesystem();
-        $system->mkdir($tmpDir);
-
-        $this->tmpDir = $tmpDir;
-    }
-
-    public function tearDown()
-    {
-        $system = new Filesystem();
-        $system->remove($this->tmpDir);
-    }
+    protected $storage;
 
     public function testExistanceOfTmpDir()
     {
@@ -49,16 +31,15 @@ class ChunkManagerTest extends \PHPUnit_Framework_TestCase
     {
         // get a manager configured with a max-age of 5 minutes
         $maxage  = 5 * 60;
-        $manager = $this->getManager($maxage);
         $numberOfFiles = 10;
 
         $finder = new Finder();
         $finder->in($this->tmpDir);
 
         $this->fillDirectory($numberOfFiles);
-        $this->assertCount(10, $finder);
+        $this->assertCount($numberOfFiles, $finder);
 
-        $manager->clear();
+        $this->storage->clear($maxage);
 
         $this->assertTrue(is_dir($this->tmpDir));
         $this->assertTrue(is_writeable($this->tmpDir));
@@ -75,19 +56,10 @@ class ChunkManagerTest extends \PHPUnit_Framework_TestCase
         $filesystem = new Filesystem();
         $filesystem->remove($this->tmpDir);
 
-        $manager = $this->getManager(10);
-        $manager->clear();
+        $this->storage->clear(10);
 
         // yey, no exception
         $this->assertTrue(true);
-    }
-
-    protected function getManager($maxage)
-    {
-        return new ChunkManager(array(
-            'directory' => $this->tmpDir,
-            'maxage' => $maxage
-        ));
     }
 
     protected function fillDirectory($number)

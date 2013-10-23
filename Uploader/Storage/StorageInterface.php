@@ -2,16 +2,16 @@
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 
 interface StorageInterface
 {
     /**
      * Uploads a File instance to the configured storage.
      *
-     * @param File   $file
+     * @param        $file
      * @param string $name
      * @param string $path
      */
-    public function upload(File $file, $name, $path = null);
+    public function upload(FileInterface $file, $name, $path = null);
 }

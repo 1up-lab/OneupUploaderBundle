@@ -7,7 +7,13 @@ All available configuration options along with their default values are listed b
 oneup_uploader:
     chunks:
         maxage:               604800
-        directory:            ~
+        storage:
+            type:               filesystem
+            directory:          ~
+            filesystem:         ~
+            sync_buffer_size:   100K
+            stream_wrapper:     ~
+            prefix:             'chunks'
         load_distribution:    true
     orphanage:
         maxage:               604800
@@ -26,9 +32,8 @@ oneup_uploader:
                 type:                 filesystem
                 filesystem:           ~
                 directory:            ~
+                stream_wrapper:       ~
                 sync_buffer_size:     100K
-            allowed_extensions:    []
-            disallowed_extensions: []
             allowed_mimetypes:     []
             disallowed_mimetypes:  []
             error_handler:        oneup_uploader.error_handler.noop

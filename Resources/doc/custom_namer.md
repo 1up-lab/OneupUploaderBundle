@@ -12,19 +12,19 @@ First, create a custom namer which implements ```Oneup\UploaderBundle\Uploader\N
 
 namespace Acme\DemoBundle;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 
 class CatNamer implements NamerInterface
 {
-    public function name(UploadedFile $file)
+    public function name(FileInterface $file)
     {
         return 'grumpycat.jpg';
     }
 }
 ```
 
-To match the `NamerInterface` you have to implement the function `name()` which expects an `UploadedFile` and should return a string representing the name of the given file. The example above would name every file _grumpycat.jpg_ and is therefore not very useful.
+To match the `NamerInterface` you have to implement the function `name()` which expects an `FileInterface` and should return a string representing the name of the given file. The example above would name every file _grumpycat.jpg_ and is therefore not very useful.
 
 Next, register your created namer as a service in your `services.xml`
 
