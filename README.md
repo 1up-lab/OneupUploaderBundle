@@ -34,7 +34,6 @@ The entry point of the documentation can be found in the file `Resources/docs/in
 
 Upgrade Notes
 -------------
-* Version **v1.0.0** introduced some backward compatibility breaks. For a full list of changes, head to the [dedicated pull request](https://github.com/1up-lab/OneupUploaderBundle/pull/57).
 * If you're using chunked uploads consider upgrading from **v0.9.6** to **v0.9.7**. A critical issue was reported regarding the assembly of chunks. More information in ticket [#21](https://github.com/1up-lab/OneupUploaderBundle/issues/21#issuecomment-21560320).
 * Error management [changed](https://github.com/1up-lab/OneupUploaderBundle/pull/25) in Version **0.9.6**. You can now register an `ErrorHandler` per configured frontend. This comes bundled with some adjustments to the `blueimp` controller. More information is available in [the documentation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_error_handler.md).
 * Event dispatching [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/a408548b241f47af3539b2137c1817a21a51fde9) in Version **0.9.5**. The dispatching is now handled in the `upload*` functions. So if you have created your own implementation, be sure to remove the call to the `dispatchEvents` function, otherwise it will be called twice. Furthermore no `POST_UPLOAD` event will be fired anymore after uploading a chunk. You can get more information on this topic in the [documentation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_logic.md#using-chunked-uploads).
