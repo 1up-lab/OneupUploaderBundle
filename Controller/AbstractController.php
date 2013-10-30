@@ -175,4 +175,27 @@ abstract class AbstractController
 
         $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
     }
+
+    /**
+     * Creates and returns a JsonResponse with the given data.
+     *
+     * On top of that, if the client does not support the application/json type,
+     * then the content type of the response will be set to text/plain instead.
+     *
+     * @param mixed $data
+     *
+     * @return JsonResponse
+     */
+    protected function createSupportedJsonResponse($data)
+    {
+        $request = $this->container->get('request');
+        $response = new JsonResponse($data);
+        $response->headers->set('Vary', 'Accept');
+
+        if (!in_array('application/json', $request->getAcceptableContentTypes())) {
+            $response->headers->set('Content-type', 'text/plain');
+        }
+
+        return $response;
+    }
 }

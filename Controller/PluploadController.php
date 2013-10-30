@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oneup\UploaderBundle\Controller\AbstractChunkedController;
@@ -30,7 +29,7 @@ class PluploadController extends AbstractChunkedController
             }
         }
 
-        return new JsonResponse($response->assemble());
+        return $this->createSupportedJsonResponse($response->assemble());
     }
 
     protected function parseChunkedRequest(Request $request)

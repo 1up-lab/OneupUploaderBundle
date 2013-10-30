@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oneup\UploaderBundle\Controller\AbstractChunkedController;
@@ -81,27 +80,5 @@ class BlueimpController extends AbstractChunkedController
         $orig  = $attachmentName;
 
         return array($last, $uuid, $index, $orig);
-    }
-
-    /**
-     * Creates and returns a JsonResponse with the given data.
-     *
-     * On top of that, if the client does not support the application/json type,
-     * then the content type of the response will be set to text/plain instead.
-     *
-     * @param mixed $data
-     *
-     * @return JsonResponse
-     */
-    private function createSupportedJsonResponse($data)
-    {
-        $request = $this->container->get('request');
-        $response = new JsonResponse($data);
-        $response->headers->set('Vary', 'Accept');
-        if (!in_array('application/json', $request->getAcceptableContentTypes())) {
-            $response->headers->set('Content-type', 'text/plain');
-        }
-
-        return $response;
     }
 }

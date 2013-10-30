@@ -14,7 +14,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getOversizedFile(), array('HTTP_ACCEPT' => 'application/json'));
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getOversizedFile(), $this->requestHeaders);
         $response = $client->getResponse();
 
         //$this->assertTrue($response->isNotSuccessful());
@@ -35,7 +35,7 @@ class BlueimpValidationTest extends AbstractValidationTest
             ++ $validationCount;
         });
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType());
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType(), $this->requestHeaders);
 
         $this->assertEquals(1, $validationCount);
     }
@@ -46,7 +46,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType(), array('HTTP_ACCEPT' => 'application/json'));
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType(), $this->requestHeaders);
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
@@ -68,7 +68,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectMimeType(), array('HTTP_ACCEPT' => 'application/json'));
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectMimeType(), $this->requestHeaders);
         $response = $client->getResponse();
 
         //$this->assertTrue($response->isNotSuccessful());

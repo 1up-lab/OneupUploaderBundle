@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oneup\UploaderBundle\Controller\AbstractChunkedController;
@@ -34,11 +33,11 @@ class FineUploaderController extends AbstractChunkedController
                 $this->errorHandler->addException($response, $e);
 
                 // an error happended, return this error message.
-                return new JsonResponse($response->assemble());
+                return $this->createSupportedJsonResponse($response->assemble());
             }
         }
 
-        return new JsonResponse($response->assemble());
+        return $this->createSupportedJsonResponse($response->assemble());
     }
 
     protected function parseChunkedRequest(Request $request)

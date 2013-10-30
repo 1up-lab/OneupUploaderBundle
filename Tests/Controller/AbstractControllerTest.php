@@ -10,6 +10,7 @@ abstract class AbstractControllerTest extends WebTestCase
     protected $createdFiles;
     protected $client;
     protected $container;
+    protected $requestHeaders;
 
     public function setUp()
     {
@@ -17,6 +18,9 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->container = $this->client->getContainer();
         $this->helper = $this->container->get('oneup_uploader.templating.uploader_helper');
         $this->createdFiles = array();
+        $this->requestHeaders = array(
+            'HTTP_ACCEPT' => 'application/json'
+        );
 
         $this->container->get('router')->getRouteCollection()->all();
     }
@@ -63,11 +67,24 @@ abstract class AbstractControllerTest extends WebTestCase
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, array(), array(), array('HTTP_ACCEPT' => 'application/json'));
+        $client->request('POST', $endpoint, array(), array(), $this->requestHeaders);
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+    }
+
+    public function testEmptyHttpAcceptHeader()
+    {
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+
+        // empty HTTP_ACCEPT header
+        $client->request('POST', $endpoint, array(), array(), array());
+        $response = $client->getResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response->headers->get('Content-Type'), 'text/plain; charset=UTF-8');
     }
 
     protected function createTempFile($size = 128)

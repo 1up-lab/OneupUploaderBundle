@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Oneup\UploaderBundle\Controller\AbstractController;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
@@ -24,6 +23,6 @@ class YUI3Controller extends AbstractController
             }
         }
 
-        return new JsonResponse($response->assemble());
+        return $this->createSupportedJsonResponse($response->assemble());
     }
 }

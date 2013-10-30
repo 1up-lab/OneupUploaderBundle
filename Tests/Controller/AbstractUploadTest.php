@@ -25,7 +25,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getRequestFile()));
+        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getRequestFile()), $this->requestHeaders);
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
