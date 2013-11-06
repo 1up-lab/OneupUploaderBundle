@@ -10,13 +10,13 @@ To create your own error handler, implement the `ErrorHandlerInterface` and add 
 
 namespace Acme\DemoBundle\ErrorHandler;
 
-use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Exception;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
-use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 
 class CustomErrorHandler implements ErrorHandlerInterface
 {
-    public function addException(ResponseInterface $response, UploadException $exception)
+    public function addException(AbstractResponse $response, Exception $exception)
     {
         $message = $exception->getMessage();
         $response['error'] = $message;
