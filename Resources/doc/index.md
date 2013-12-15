@@ -130,6 +130,7 @@ some more advanced features.
 * [General/Generic Events](events.md)
 * [Enable Session upload progress / upload cancelation](progress.md)
 * [Use Chunked Uploads behind Load Balancers](load_balancers.md)
+* [Template helpers Reference](templating.md)
 * [Configuration Reference](configuration_reference.md)
 * [Testing this bundle](testing.md)
 
