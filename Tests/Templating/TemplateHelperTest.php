@@ -16,4 +16,17 @@ class TemplateHelperTest extends WebTestCase
         // this is for code coverage
         $this->assertEquals($helper->getName(), 'oneup_uploader');
     }
+
+    public function testNonExistentMappingForMaxSize()
+    {
+        $this->setExpectedException('\InvalidArgumentException');
+
+        $client = static::createClient();
+        $container = $client->getContainer();
+
+        $helper = $container->get('oneup_uploader.templating.uploader_helper');
+        $helper->maxSize(uniqid());
+
+        $this->fail('No exception has been raised');
+    }
 }

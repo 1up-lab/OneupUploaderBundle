@@ -39,13 +39,16 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.orphanage', $this->config['orphanage']);
 
         $controllers = array();
+        $maxsize = array();
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
             $controllers[$key] = $this->processMapping($key, $mapping);
+            $maxsize[$key] = $this->getMaxUploadSize($mapping['max_size']);
         }
 
         $container->setParameter('oneup_uploader.controllers', $controllers);
+        $container->setParameter('oneup_uploader.maxsize', $maxsize);
     }
 
     protected function processOrphanageConfig()
