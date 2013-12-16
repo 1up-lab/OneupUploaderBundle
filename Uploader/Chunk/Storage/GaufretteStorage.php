@@ -120,7 +120,6 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             $this->openStream($dst, 'a');
         }
 
-
         // Meet the interface requirements
         $uploadedFile = new FilesystemFile($this->unhandledChunk['chunk']);
 
@@ -128,6 +127,16 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
 
         if ($renameChunk) {
             $name = preg_replace('/^(\d+)_/', '', $target);
+            /* The name can only match if the same user in the same session is
+             * trying to upload a file under the same name AND the previous upload failed,
+             * somewhere between this function, and the cleanup call. If that happened
+             * the previous file is unaccessible by the user, but if it is not removed
+             * it will block the user from trying to re-upload it.
+             */
+            if ($this->filesystem->has($path.$name)) {
+                $this->filesystem->delete($path.$name);
+            }
+
             $this->filesystem->rename($path.$target, $path.$name);
             $target = $name;
         }
@@ -149,7 +158,11 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
     {
         $results = $this->filesystem->listKeys($this->prefix.'/'.$uuid);
 
-        return $results['keys'];
+        /* exclude files without an index, so if there is a completed file which
+         * failed to upload it will not get mixed together with new one's chunks.
+         */
+
+        return preg_grep('/^.+\/(\d+)_/', $results['keys']);
     }
 
     public function getFilesystem()
