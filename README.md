@@ -22,7 +22,6 @@ Features included:
 * Fully unit tested
 
 [![Build Status](https://travis-ci.org/1up-lab/OneupUploaderBundle.png?branch=master)](https://travis-ci.org/1up-lab/OneupUploaderBundle)
-[![Dependencies Status](https://depending.in/1up-lab/OneupUploaderBundle.png)](http://depending.in/1up-lab/OneupUploaderBundle)
 [![Total Downloads](https://poser.pugx.org/oneup/uploader-bundle/d/total.png)](https://packagist.org/packages/oneup/uploader-bundle)
 
 Documentation
