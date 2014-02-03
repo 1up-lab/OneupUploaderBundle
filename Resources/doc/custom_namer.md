@@ -1,7 +1,26 @@
 Custom Namer
 ============
 
-The purpose of a namer service is to name an uploaded file before it is stored to the storage layer. Currently the OneupUploaderBundle only provides a single namer service called `UniqidNamer`, which will return a system wide unique filename using the `uniqid()` function.
+The purpose of a namer service is to name an uploaded file before it is stored to the storage layer.
+
+## UniqidNamer (default)
+
+Returns a system wide unique filename using the `uniqid()` function.
+
+## GaufretteNamer
+
+Decorates a namer and calls it until the filename is unique on the provided Gaufrette file system.
+
+Example: Decorating the `UniqidNamer`:
+
+```xml
+<services>
+    <service id="acme_demo.gaufrette_namer" class="Oneup\UploaderBundle\Uploader\Naming\GaufretteNamer">
+        <argument type="service" id="gaufrette.gallery_filesystem"/>
+        <argument type="service" id="oneup_uploader.namer.uniqid"/>
+    </service>
+</services>
+```
 
 ## Use a custom namer
 
