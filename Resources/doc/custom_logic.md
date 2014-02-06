@@ -33,7 +33,7 @@ And register it in your `services.xml`.
 
 ```xml
 <services>
-    <service id="acme_hello.upload_listener" class="Acme\HelloBundle\EventListener">
+    <service id="acme_hello.upload_listener" class="Acme\HelloBundle\EventListener\UploadListener">
         <argument type="service" id="doctrine" />
         <tag name="kernel.event_listener" event="oneup_uploader.post_persist" method="onUpload" />
     </service>
