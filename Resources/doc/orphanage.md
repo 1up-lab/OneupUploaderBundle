@@ -76,7 +76,7 @@ and default to ```orphanage```.
 ## Clean up
 The `OrphanageManager` can be forced to clean up orphans by using the command provided by the OneupUploaderBundle.
 
-    $> php app/console oneup:uploader:clean-orphans
+    $> php app/console oneup:uploader:clear-orphans
 
 This parameter will clean all orphaned files older than the `maxage` value in your configuration.
 
