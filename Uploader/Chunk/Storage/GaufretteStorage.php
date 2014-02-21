@@ -169,4 +169,9 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
     {
         return $this->filesystem;
     }
+
+    public function getStreamWrapperPrefix()
+    {
+        return $this->streamWrapperPrefix;
+    }
 }
