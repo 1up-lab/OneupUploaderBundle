@@ -26,9 +26,11 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
      */
     public function __construct(StorageInterface $storage, SessionInterface $session, GaufretteChunkStorage $chunkStorage, $config, $type)
     {
-        // initiate the storage on the chunk storage's filesystem
-        // the prefix and stream wrapper are unnecessary.
-        parent::__construct($chunkStorage->getFilesystem(), $chunkStorage->bufferSize, null, null);
+        /*
+         * initiate the storage on the chunk storage's filesystem
+         * the stream wrapper is useful for metadata.
+         */
+        parent::__construct($chunkStorage->getFilesystem(), $chunkStorage->bufferSize, $chunkStorage->getStreamWrapperPrefix());
 
         $this->storage = $storage;
         $this->chunkStorage = $chunkStorage;
