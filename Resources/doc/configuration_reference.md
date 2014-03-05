@@ -34,6 +34,7 @@ oneup_uploader:
                 directory:            ~
                 stream_wrapper:       ~
                 sync_buffer_size:     100K
+            route_prefix:
             allowed_mimetypes:     []
             disallowed_mimetypes:  []
             error_handler:        oneup_uploader.error_handler.noop
