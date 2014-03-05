@@ -14,11 +14,13 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         $routeLoader = new RouteLoader(array(
             'cat' => array($cat, array(
                 'enable_progress' => false,
-                'enable_cancelation' => false
+                'enable_cancelation' => false,
+                'route_prefix' => ''
             )),
             'dog' => array($dog, array(
                 'enable_progress' => true,
-                'enable_cancelation' => true
+                'enable_cancelation' => true,
+                'route_prefix' => ''
             )),
         ));
 
@@ -33,6 +35,30 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
             $this->assertEquals($route->getDefault('_format'), 'json');
             $this->assertEquals($route->getRequirement('_method'), 'POST');
+        }
+    }
+
+    public function testPrefixedRoutes()
+    {
+        $prefix = '/admin';
+        $cat = 'GrumpyCatController';
+
+        $routeLoader = new RouteLoader(array(
+            'cat' => array($cat, array(
+                'enable_progress' => false,
+                'enable_cancelation' => false,
+                'route_prefix' => $prefix
+            ))
+        ));
+
+        $routes = $routeLoader->load(null);
+
+        foreach ($routes as $route) {
+            $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
+            $this->assertEquals($route->getDefault('_format'), 'json');
+            $this->assertEquals($route->getRequirement('_method'), 'POST');
+
+            $this->assertEquals(0, strpos($route->getPath(), $prefix));
         }
     }
 }

@@ -76,7 +76,8 @@ class OneupUploaderExtension extends Extension
 
         return array($controllerName, array(
             'enable_progress' => $mapping['enable_progress'],
-            'enable_cancelation' => $mapping['enable_cancelation']
+            'enable_cancelation' => $mapping['enable_cancelation'],
+            'route_prefix' => $mapping['route_prefix']
         ));
     }
 

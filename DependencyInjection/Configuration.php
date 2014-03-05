@@ -74,6 +74,7 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('sync_buffer_size')->defaultValue('100K')->end()
                                 ->end()
                             ->end()
+                            ->scalarNode('route_prefix')->defaultValue('')->end()
                             ->arrayNode('allowed_mimetypes')
                                 ->prototype('scalar')->end()
                             ->end()
