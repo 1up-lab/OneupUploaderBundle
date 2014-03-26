@@ -188,11 +188,6 @@ class OneupUploaderExtension extends Extension
             $storageClass = sprintf('%%oneup_uploader.storage.%s.class%%', $config['type']);
 
             if ($config['type'] == 'filesystem') {
-                /*$config['directory'] = is_null($config['directory']) ?
-                    sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $key) :
-                    $this->normalizePath($config['directory'])
-                ;*/
-
                 $this->container
                     ->register($storageName, $storageClass)
                     ->addArgument($config['directory'])
