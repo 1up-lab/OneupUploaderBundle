@@ -83,7 +83,7 @@ abstract class AbstractController
         $fileIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fileBag), \RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($fileIterator as $file) {
-            if (is_array($file)) {
+            if (is_array($file) || null === $file) {
                 continue;
             }
 
