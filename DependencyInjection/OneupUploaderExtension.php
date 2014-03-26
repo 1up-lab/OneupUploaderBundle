@@ -43,6 +43,14 @@ class OneupUploaderExtension extends Extension
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
+            if ($mapping['storage']['type'] == 'filesystem') {
+                $mapping['storage']['directory'] = is_null($mapping['storage']['directory']) ?
+                    sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $key) :
+                    $this->normalizePath($mapping['storage']['directory'])
+                ;
+            }
+            $container->setParameter('oneup_uploader.config.' . $key, $mapping);
+
             $controllers[$key] = $this->processMapping($key, $mapping);
             $maxsize[$key] = $this->getMaxUploadSize($mapping['max_size']);
 
@@ -183,11 +191,6 @@ class OneupUploaderExtension extends Extension
             $storageClass = sprintf('%%oneup_uploader.storage.%s.class%%', $config['type']);
 
             if ($config['type'] == 'filesystem') {
-                $config['directory'] = is_null($config['directory']) ?
-                    sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $key) :
-                    $this->normalizePath($config['directory'])
-                ;
-
                 $this->container
                     ->register($storageName, $storageClass)
                     ->addArgument($config['directory'])

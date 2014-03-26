@@ -79,6 +79,11 @@ class GaufretteFile extends File implements FileInterface
                 $this->mimeType = finfo_file($finfo, $this->streamWrapperPrefix.$this->getKey());
                 finfo_close($finfo);
             }
+        } elseif ($this->filesystem->getAdapter() instanceof \Gaufrette\Adapter\AwsS3 && !$this->mimeType) {
+            $metadata = $this->filesystem->getAdapter()->getMetadata($this->getBasename());
+            if (isset($metadata['ContentType'])) {
+                $this->mimeType = $metadata['ContentType'];
+            }
         }
 
         return $this->mimeType;
