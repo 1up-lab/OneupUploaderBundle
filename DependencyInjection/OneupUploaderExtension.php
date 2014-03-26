@@ -45,8 +45,11 @@ class OneupUploaderExtension extends Extension
         foreach ($this->config['mappings'] as $key => $mapping) {
             $controllers[$key] = $this->processMapping($key, $mapping);
             $maxsize[$key] = $this->getMaxUploadSize($mapping['max_size']);
+
+            $container->setParameter(sprintf('oneup_uploader.config.%s', $key), $mapping);
         }
 
+        $container->setParameter('oneup_uploader.config', $this->config);
         $container->setParameter('oneup_uploader.controllers', $controllers);
         $container->setParameter('oneup_uploader.maxsize', $maxsize);
     }
