@@ -5,6 +5,7 @@ namespace Oneup\UploaderBundle\Uploader\File;
 use Gaufrette\Adapter\StreamFactory;
 use Gaufrette\File;
 use Gaufrette\Filesystem;
+use \Gaufrette\Adapter\AwsS3;
 
 class GaufretteFile extends File implements FileInterface
 {
@@ -78,6 +79,11 @@ class GaufretteFile extends File implements FileInterface
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $this->mimeType = finfo_file($finfo, $this->streamWrapperPrefix.$this->getKey());
                 finfo_close($finfo);
+            }
+        } elseif ($this->filesystem->getAdapter() instanceof AwsS3 && !$this->mimeType) {
+            $metadata = $this->filesystem->getAdapter()->getMetadata($this->getBasename());
+            if (isset($metadata['ContentType'])) {
+                $this->mimeType = $metadata['ContentType'];
             }
         }
 
