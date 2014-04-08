@@ -5,7 +5,7 @@ namespace Oneup\UploaderBundle\Uploader\File;
 use Gaufrette\Adapter\StreamFactory;
 use Gaufrette\File;
 use Gaufrette\Filesystem;
-use \Gaufrette\Adapter\AwsS3;
+use Gaufrette\Adapter\AwsS3;
 
 class GaufretteFile extends File implements FileInterface
 {
