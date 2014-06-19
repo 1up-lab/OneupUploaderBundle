@@ -58,7 +58,15 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
     public function getFiles()
     {
         $finder = new Finder();
-        $finder->in($this->getFindPath())->files();
+        try {
+            $finder->in($this->getFindPath())->files();
+        } catch (\InvalidArgumentException $e) {
+            //catch non-existing directory exception.
+            //This can happen if getFiles is called and no file has yet been uploaded
+
+            //push empty array into the finder so we can emulate no files found
+            $finder->append(array());
+        }
 
         return $finder;
     }
