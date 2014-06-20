@@ -4,3 +4,5 @@ vendor
 log
 Tests/App/cache
 Tests/App/logs
+
+.idea
