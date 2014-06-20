@@ -53,7 +53,7 @@ class AcmeController extends Controller
 
 You will get an array containing the moved files.
 
-> If you are using Gaufrette, these files are instances of `Gaufrette\File`, otherwise `Symfony\Component\HttpFoundation\File\File`.
+> If you are using Gaufrette, these files are instances of `Gaufrette\File`, otherwise `SplFileInfo`.
 
 ## Configure the Orphanage
 You can configure the `Orphanage` by using the following configuration parameters.
