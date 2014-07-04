@@ -39,10 +39,12 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         return parent::upload($file, $name, $this->getPath());
     }
 
-    public function uploadFiles()
+    public function uploadFiles(array $files = null)
     {
         try {
-            $files = $this->getFiles();
+            if (null === $files) {
+                $files = $this->getFiles();
+            }
             $return = array();
 
             foreach ($files as $file) {
