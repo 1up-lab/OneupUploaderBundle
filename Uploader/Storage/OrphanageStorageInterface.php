@@ -6,5 +6,5 @@ use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 
 interface OrphanageStorageInterface extends StorageInterface
 {
-    public function uploadFiles();
+    public function uploadFiles(array $files = null);
 }
