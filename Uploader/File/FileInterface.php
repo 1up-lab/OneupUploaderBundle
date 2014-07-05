@@ -49,6 +49,13 @@ interface FileInterface
     public function getBasename();
 
     /**
+     * Returns the original file name.
+     *
+     * @return string
+     */
+    public function getClientOriginalName();
+
+    /**
      * Returns the guessed extension of the file
      *
      * @return mixed
