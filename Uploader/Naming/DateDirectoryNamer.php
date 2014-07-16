@@ -16,7 +16,7 @@ class DateDirectoryNamer implements NamerInterface
      */
     public $fileNamer = null;
     
-    public function __construct($directoryPathDateFormat = null, $fileNamer = null) {
+    public function __construct($directoryPathDateFormat = null, NamerInterface $fileNamer = null) {
         if(null !== $directoryPathDateFormat)
             $this->directoryPathDateFormat = $directoryPathDateFormat;
         
