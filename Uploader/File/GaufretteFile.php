@@ -9,14 +9,12 @@ use Gaufrette\Adapter\AwsS3;
 
 class GaufretteFile extends File implements FileInterface
 {
-    protected $filesystem;
     protected $streamWrapperPrefix;
     protected $mimeType;
 
     public function __construct(File $file, Filesystem $filesystem, $streamWrapperPrefix = null)
     {
         parent::__construct($file->getKey(), $filesystem);
-        $this->filesystem = $filesystem;
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
