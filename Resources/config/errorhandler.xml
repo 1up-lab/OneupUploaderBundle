@@ -11,7 +11,9 @@
            <services>
                <service id="oneup_uploader.error_handler.noop" class="%oneup_uploader.error_handler.noop.class%" public="false" />
                <service id="oneup_uploader.error_handler.fineuploader" class="%oneup_uploader.error_handler.noop.class%" public="false" />
-               <service id="oneup_uploader.error_handler.blueimp" class="%oneup_uploader.error_handler.blueimp.class%" public="false" />
+               <service id="oneup_uploader.error_handler.blueimp" class="%oneup_uploader.error_handler.blueimp.class%" public="false">
+                   <argument type="service" id="translator"/>
+               </service>
                <service id="oneup_uploader.error_handler.uploadify" class="%oneup_uploader.error_handler.noop.class%" public="false" />
                <service id="oneup_uploader.error_handler.yui3" class="%oneup_uploader.error_handler.noop.class%" public="false" />
                <service id="oneup_uploader.error_handler.fancyupload" class="%oneup_uploader.error_handler.noop.class%" public="false" />
