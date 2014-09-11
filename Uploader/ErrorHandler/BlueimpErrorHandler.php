@@ -10,11 +10,12 @@ class BlueimpErrorHandler implements ErrorHandlerInterface
 {
     private $translator;
     
-    public function __construct(TranslatorInterface $translator) {
+    public function __construct(TranslatorInterface $translator) 
+    {
     	$this->translator = $translator;
     }
 	
-	public function addException(AbstractResponse $response, Exception $exception)
+    public function addException(AbstractResponse $response, Exception $exception)
     {
         $message = $exception->getMessage();
         $message = $this->translator->trans($message);
