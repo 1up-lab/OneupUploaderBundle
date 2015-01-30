@@ -69,7 +69,7 @@ class OneupUploaderExtension extends Extension
 
     protected function processMapping($key, &$mapping)
     {
-        $mapping['max_size'] = $mapping['max_size'] < 0 ?
+        $mapping['max_size'] = $mapping['max_size'] < 0 || is_string($mapping['max_size']) ?
             $this->getMaxUploadSize($mapping['max_size']) :
             $mapping['max_size']
         ;
