@@ -20,6 +20,11 @@ class DropzoneController extends AbstractController
                 $this->handleUpload($file, $response, $request);
             } catch (UploadException $e) {
                 $this->errorHandler->addException($response, $e);
+                $translator = $this->container->get('translator');
+                $message = $translator->trans($e->getMessage(), array(), 'OneupUploaderBundle');
+                $response = $this->createSupportedJsonResponse(array('error'=>$message ));
+                $response->setStatusCode(400);
+                return $response;                
             }
         }
 
