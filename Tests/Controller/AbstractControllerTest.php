@@ -40,8 +40,7 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     public function testCallByGet()
     {
-        $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $this->client->request('GET', $endpoint);
+        $this->implTestCallBy('GET');
     }
 
     /**
@@ -49,8 +48,12 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     public function testCallByDelete()
     {
-        $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $this->client->request('DELETE', $endpoint);
+        $this->implTestCallBy('DELETE');
+    }
+
+    public function testCallByPost()
+    {
+        $this->implTestCallBy('POST');
     }
 
     /**
@@ -58,16 +61,15 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     public function testCallByPut()
     {
-        $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $this->client->request('PUT', $endpoint);
+        $this->implTestCallBy('PUT');
     }
 
-    public function testCallByPost()
+    protected function implTestCallBy($method)
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, array(), array(), $this->requestHeaders);
+        $client->request($method, $endpoint, array(), array(), $this->requestHeaders);
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
