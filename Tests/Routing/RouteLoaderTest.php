@@ -34,7 +34,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         foreach ($routes as $route) {
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
             $this->assertEquals('json', $route->getDefault('_format'));
-            $this->assertEquals(array('POST'), $route->getMethods());
+            $this->assertContains('POST', $route->getMethods());
         }
     }
 
@@ -56,7 +56,7 @@ class RouteLoaderTest extends \PHPUnit_Framework_TestCase
         foreach ($routes as $route) {
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
             $this->assertEquals('json', $route->getDefault('_format'));
-            $this->assertEquals(array('POST'), $route->getMethods());
+            $this->assertContains('POST', $route->getMethods());
 
             $this->assertEquals(0, strpos($route->getPath(), $prefix));
         }

@@ -51,14 +51,16 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->implTestCallBy('DELETE');
     }
 
+    public function testCallByPatch()
+    {
+        $this->implTestCallBy('PATCH');
+    }
+
     public function testCallByPost()
     {
         $this->implTestCallBy('POST');
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
-     */
     public function testCallByPut()
     {
         $this->implTestCallBy('PUT');
