@@ -53,6 +53,18 @@ class AcmeController extends Controller
 
 You will get an array containing the moved files.
 
+Note that you can move only one or a set of defined files out of the orphanage by passing an array to $manager->getFiles().
+For instance, you can use this to move a specific file:
+```php
+        // get files
+        $files = $manager->getFiles();
+        
+        // reduce the scope of the Finder object to what you want
+        $files->files()->name($filename);
+        $manager->uploadFiles(iterator_to_array($files));
+```
+In this example, $filename is the name of the file you want to move out of the orphanage.
+
 > If you are using Gaufrette, these files are instances of `Gaufrette\File`, otherwise `SplFileInfo`.
 
 ## Configure the Orphanage
