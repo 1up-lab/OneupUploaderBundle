@@ -40,8 +40,7 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     public function testCallByGet()
     {
-        $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $this->client->request('GET', $endpoint);
+        $this->implTestCallBy('GET');
     }
 
     /**
@@ -49,25 +48,30 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     public function testCallByDelete()
     {
-        $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $this->client->request('DELETE', $endpoint);
+        $this->implTestCallBy('DELETE');
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
-     */
-    public function testCallByPut()
+    public function testCallByPatch()
     {
-        $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $this->client->request('PUT', $endpoint);
+        $this->implTestCallBy('PATCH');
     }
 
     public function testCallByPost()
     {
+        $this->implTestCallBy('POST');
+    }
+
+    public function testCallByPut()
+    {
+        $this->implTestCallBy('PUT');
+    }
+
+    protected function implTestCallBy($method)
+    {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, array(), array(), $this->requestHeaders);
+        $client->request($method, $endpoint, array(), array(), $this->requestHeaders);
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
