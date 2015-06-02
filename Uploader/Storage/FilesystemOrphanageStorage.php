@@ -58,13 +58,15 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         }
     }
 
-    public function clear()
+    public function clear($force = false)
     {
         $system = new Filesystem();
         $finder = new Finder();
 
+        $maxage = $force ? 0 : $this->config['maxage'];
+
         try {
-            $finder->in($this->getFindPath())->date('<=' . -1 * (int) $this->config['maxage'] . 'seconds')->files();
+            $finder->in($this->getFindPath())->date('<=' . -1 * (int) $maxage . 'seconds')->files();
         } catch (\InvalidArgumentException $e) {
             // the finder will throw an exception of type InvalidArgumentException
             // if the directory he should search in does not exist
