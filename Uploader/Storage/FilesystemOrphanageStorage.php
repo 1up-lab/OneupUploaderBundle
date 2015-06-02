@@ -7,6 +7,7 @@ use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
@@ -54,6 +55,25 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             return $return;
         } catch (\Exception $e) {
             return array();
+        }
+    }
+
+    public function clear()
+    {
+        $system = new Filesystem();
+        $finder = new Finder();
+
+        try {
+            $finder->in($this->getFindPath())->date('<=' . -1 * (int) $this->config['maxage'] . 'seconds')->files();
+        } catch (\InvalidArgumentException $e) {
+            // the finder will throw an exception of type InvalidArgumentException
+            // if the directory he should search in does not exist
+            // in that case we don't have anything to clean
+            return;
+        }
+
+        foreach ($finder as $file) {
+            $system->remove($file);
         }
     }
 
