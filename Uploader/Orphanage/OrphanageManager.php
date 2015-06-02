@@ -17,6 +17,11 @@ class OrphanageManager
         $this->config = $config;
     }
 
+    public function has($key)
+    {
+        return $this->container->has(sprintf('oneup_uploader.orphanage.%s', $key));
+    }
+
     public function get($key)
     {
         return $this->container->get(sprintf('oneup_uploader.orphanage.%s', $key));
