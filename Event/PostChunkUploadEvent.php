@@ -8,7 +8,7 @@ use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 
 class PostChunkUploadEvent extends Event
 {
-    protected $file;
+    protected $chunk;
     protected $request;
     protected $type;
     protected $response;
