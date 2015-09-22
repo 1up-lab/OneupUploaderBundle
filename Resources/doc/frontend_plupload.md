@@ -1,7 +1,7 @@
 Use Plupload in your Symfony2 application
 =========================================
 
-Download [Plupload](http://http://www.plupload.com/) and include it in your template. Connect the `url` property to the dynamic route `_uploader_{mapping_name}`.
+Download [Plupload](http://www.plupload.com/) and include it in your template. Connect the `url` property to the dynamic route `_uploader_{mapping_name}`.
 
 ```html
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
