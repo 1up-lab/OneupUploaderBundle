@@ -53,4 +53,25 @@ class OrphanageManager
             $system->remove($file);
         }
     }
+
+    /**
+     * @return int
+     */
+    public function incrementId()
+    {
+        $session = $this->container->get('session');
+
+        $id = $session->get('oneup_uploader.orphanage.id', 0);
+        $session->set('oneup_uploader.orphanage.id', ++$id);
+
+        return (int)$id;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId()
+    {
+        return $this->container->get('session')->get('oneup_uploader.orphanage.id');
+    }
 }

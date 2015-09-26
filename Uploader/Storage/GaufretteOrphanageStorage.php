@@ -86,6 +86,11 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
 
     protected function getPath()
     {
+        $id = $this->session->get('oneup_uploader.orphanage.id');
+        if (null !== $id) {
+            return sprintf('%s/%s/%d/%s', $this->config['directory'], $this->session->getId(), $id, $this->type);
+        }
+
         // the storage is initiated in the root of the filesystem, from where the orphanage directory
         // should be relative.
         return sprintf('%s/%s/%s', $this->config['directory'], $this->session->getId(), $this->type);
