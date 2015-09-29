@@ -56,7 +56,7 @@ class FilesystemStorage implements ChunkStorageInterface
             throw new \InvalidArgumentException('The first argument must implement \IteratorAggregate interface.');
         }
 
-        $iterator = $chunks->getIterator()->getInnerIterator();
+        $iterator = $chunks->getIterator();
 
         $base = $iterator->current();
         $iterator->next();
