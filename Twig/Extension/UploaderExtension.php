@@ -21,11 +21,11 @@ class UploaderExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'oneup_uploader_endpoint'   => new \Twig_SimpleFunction('endpoint', array($this, 'endpoint')),
-            'oneup_uploader_progress'   => new \Twig_SimpleFunction('progress', array($this, 'progress')),
-            'oneup_uploader_cancel'     => new \Twig_SimpleFunction('cancel', array($this, 'cancel')),
-            'oneup_uploader_upload_key' => new \Twig_SimpleFunction('uploadKey', array($this, 'uploadKey')),
-            'oneup_uploader_maxsize'    => new \Twig_SimpleFunction('maxSize', array($this, 'maxSize')),
+            new \Twig_SimpleFunction('oneup_uploader_endpoint', array($this, 'endpoint')),
+            new \Twig_SimpleFunction('oneup_uploader_progress', array($this, 'progress')),
+            new \Twig_SimpleFunction('oneup_uploader_cancel', array($this, 'cancel')),
+            new \Twig_SimpleFunction('oneup_uploader_upload_key', array($this, 'uploadKey')),
+            new \Twig_SimpleFunction('oneup_uploader_maxsize', array($this, 'maxSize')),
         );
     }
 
