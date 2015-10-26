@@ -72,7 +72,7 @@ This bundle was designed to just work out of the box. The only thing you have to
 oneup_uploader:
     mappings:
         gallery:
-            frontend: blueimp # or any uploader you use in the frontend
+            frontend: dropzone # or any uploader you use in the frontend
 ```
 
 To enable the dynamic routes, add the following to your routing configuration file.
@@ -85,13 +85,19 @@ oneup_uploader:
     type: uploader
 ```
 
-The default directory that is used to upload files to is `web/uploads/{mapping_name}`.
+The default directory that is used to upload files to is `web/uploads/{mapping_name}`, where `{mapping_name}` is the value for `mappings` in your `config.yml` (namely `gallery` in the above example).
 
-> It was reported that in some cases this directory was not created automatically. Please double check its existance if the upload does not work for you.
+### Step 4: Check if the bundle is working correctly
 
-### Step 4: Prepare your frontend
+No matter which JavaScript library you are going to use ultimately, we recommend to test the bundle with Dropzone first, since this one features the easiest setup process:
 
-No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
+1. [Install Dropzone](frontend_dropzone.md)
+1. Drag a file onto the dashed rectangle. The upload should start immediately. However, you won't get any visual feedback yet.
+1. Check your `web/uploads/gallery` directory: If you see the file there, the OneupUploaderBundle is working correctly. If you don't have that folder, create it manually and try again.
+
+### Step 5: Prepare your real frontend
+
+Now it's up to you to decide for a JavaScript library or write your own. Be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
 
 ```php
 $helper = $this->container->get('oneup_uploader.templating.uploader_helper');
