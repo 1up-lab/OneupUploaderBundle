@@ -24,5 +24,6 @@ matrix:
 
 before_script:
   - composer selfupdate
+  - composer require symfony/http-kernel:${SYMFONY_VERSION} --prefer-source
   - composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
   - composer install --dev --prefer-source
