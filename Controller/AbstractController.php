@@ -17,6 +17,7 @@ use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 abstract class AbstractController
 {
@@ -206,6 +207,10 @@ abstract class AbstractController
      */
     protected function getRequest()
     {
+        if (version_compare(Kernel::VERSION, '2.4') === -1) {
+            return $this->container->get('request');
+        }
+
         return $this->container->get('request_stack')->getMasterRequest();
     }
 
