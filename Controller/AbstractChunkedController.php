@@ -45,7 +45,7 @@ abstract class AbstractChunkedController extends AbstractController
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
         // get basic container stuff
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getMasterRequest();
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
 
         // get information about this chunked request

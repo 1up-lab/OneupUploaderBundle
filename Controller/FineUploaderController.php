@@ -5,14 +5,13 @@ namespace Oneup\UploaderBundle\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Request;
 
-use Oneup\UploaderBundle\Controller\AbstractChunkedController;
 use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
 
 class FineUploaderController extends AbstractChunkedController
 {
     public function upload()
     {
-        $request = $this->container->get('request');
+        $request = $this->getRequest();
         $translator = $this->container->get('translator');
 
         $response = new FineUploaderResponse();

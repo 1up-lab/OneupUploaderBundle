@@ -38,7 +38,7 @@ abstract class AbstractController
 
     public function progress()
     {
-        $request = $this->container->get('request');
+        $request = $this->getRequest();
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
@@ -54,7 +54,7 @@ abstract class AbstractController
 
     public function cancel()
     {
-        $request = $this->container->get('request');
+        $request = $this->getRequest();
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
@@ -73,8 +73,8 @@ abstract class AbstractController
     /**
      *  Flattens a given filebag to extract all files.
      *
-     *  @param bag The filebag to use
-     *  @return array An array of files
+     * @param FileBag $bag The filebag to use
+     * @return array An array of files
      */
     protected function getFiles(FileBag $bag)
     {
@@ -100,9 +100,9 @@ abstract class AbstractController
      *
      *  Note: The return value differs when
      *
-     *  @param The file to upload
-     *  @param response A response object.
-     *  @param request The request object.
+     *  @param mixed $file The file to upload
+     *  @param ResponseInterface $response A response object.
+     *  @param Request $request The request object.
      */
     protected function handleUpload($file, ResponseInterface $response, Request $request)
     {
@@ -129,9 +129,9 @@ abstract class AbstractController
     /**
      *  This function is a helper function which dispatches pre upload event
      *
-     *  @param uploaded The uploaded file.
-     *  @param response A response object.
-     *  @param request The request object.
+     *  @param FileInterface $uploaded The uploaded file.
+     *  @param ResponseInterface $response A response object.
+     *  @param Request $request The request object.
      */
     protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request)
     {
@@ -147,9 +147,9 @@ abstract class AbstractController
      *  This function is a helper function which dispatches post upload
      *  and post persist events.
      *
-     *  @param uploaded The uploaded file.
-     *  @param response A response object.
-     *  @param request The request object.
+     *  @param mixed $uploaded The uploaded file.
+     *  @param ResponseInterface $response A response object.
+     *  @param Request $request The request object.
      */
     protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request)
     {
@@ -171,7 +171,7 @@ abstract class AbstractController
     protected function validate(FileInterface $file)
     {
         $dispatcher = $this->container->get('event_dispatcher');
-        $event = new ValidationEvent($file, $this->container->get('request'), $this->config, $this->type);
+        $event = new ValidationEvent($file, $this->getRequest(), $this->config, $this->type);
 
         $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
     }
@@ -188,7 +188,7 @@ abstract class AbstractController
      */
     protected function createSupportedJsonResponse($data)
     {
-        $request = $this->container->get('request');
+        $request = $this->getRequest();
         $response = new JsonResponse($data);
         $response->headers->set('Vary', 'Accept');
 
@@ -198,4 +198,15 @@ abstract class AbstractController
 
         return $response;
     }
+
+    /**
+     * Get the master request
+     *
+     * @return Request
+     */
+    protected function getRequest()
+    {
+        return $this->container->get('request_stack')->getMasterRequest();
+    }
+
 }

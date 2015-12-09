@@ -40,7 +40,7 @@ class CustomUploader extends UploaderController
     public function upload()
     {
         // get some basic stuff together
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getMasterRequest();
         $response = new EmptyResponse();
         
         // get file from request (your own logic)
