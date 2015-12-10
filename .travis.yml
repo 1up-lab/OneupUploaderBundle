@@ -5,22 +5,29 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
 
 env:
-  - SYMFONY_VERSION=2.3.*
+  - SYMFONY_VERSION=2.7.*
 
 matrix:
-  allow_failures:
-    - env: SYMFONY_VERSION=dev-master
-    - php: hhvm
   include:
-    - php: 5.5
-      env: SYMFONY_VERSION=2.4.*
-    - php: 5.5
-      env: SYMFONY_VERSION=2.5.*
-    - php: 5.5
-      env: SYMFONY_VERSION=dev-master
+    - php: 5.6
+      env: SYMFONY_VERSION=2.3.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.6.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.7.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.*@dev
+    - php: 5.6
+      env: SYMFONY_VERSION="3.0.x-dev as 2.8"
+  allow_failures:
+    - php: 7.0
+    - php: hhvm
+    - env: SYMFONY_VERSION=2.8.*@dev
+    - env: SYMFONY_VERSION="3.0.x-dev as 2.8"
 
 before_script:
   - composer selfupdate
