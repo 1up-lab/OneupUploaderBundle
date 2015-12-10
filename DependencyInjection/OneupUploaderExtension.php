@@ -115,7 +115,6 @@ class OneupUploaderExtension extends Extension
             ->addArgument($key)
 
             ->addTag('oneup_uploader.routable', array('type' => $key))
-            ->setScope('request')
         ;
 
         return $controllerName;
