@@ -16,7 +16,6 @@
 
     "require": {
         "symfony/framework-bundle": "^2.4.0|~3.0",
-        "symfony/http-kernel": "^2.4.0|~3.0",
         "symfony/finder": "^2.4.0|~3.0"
     },
 
