@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
-use Oneup\UploaderBundle\Controller\AbstractController;
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 
 abstract class AbstractChunkedController extends AbstractController
@@ -45,7 +44,6 @@ abstract class AbstractChunkedController extends AbstractController
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
         // get basic container stuff
-        $request = $this->container->get('request');
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
 
         // get information about this chunked request

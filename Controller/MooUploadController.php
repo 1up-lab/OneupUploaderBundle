@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Request;
 
-use Oneup\UploaderBundle\Controller\AbstractChunkedController;
 use Oneup\UploaderBundle\Uploader\Response\MooUploadResponse;
 
 class MooUploadController extends AbstractChunkedController
@@ -15,7 +14,7 @@ class MooUploadController extends AbstractChunkedController
 
     public function upload()
     {
-        $request = $this->container->get('request');
+        $request = $this->getRequest();
         $response = new MooUploadResponse();
         $headers = $request->headers;
 
