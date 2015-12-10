@@ -14,11 +14,12 @@ class DropzoneController extends AbstractController
         $request = $this->container->get('request');
         $response = new EmptyResponse();
         $files = $this->getFiles($request->files);
-
+        $statusCode = 200;
         foreach ($files as $file) {
             try {
                 $this->handleUpload($file, $response, $request);
             } catch (UploadException $e) {
+                $statusCode = 500; //Dropzone displays error if HTTP response is 40x or 50x
                 $this->errorHandler->addException($response, $e);
                 $translator = $this->container->get('translator');
                 $message = $translator->trans($e->getMessage(), array(), 'OneupUploaderBundle');
@@ -28,6 +29,6 @@ class DropzoneController extends AbstractController
             }
         }
 
-        return $this->createSupportedJsonResponse($response->assemble());
+        return $this->createSupportedJsonResponse($response->assemble(), $statusCode);
     }
 }
