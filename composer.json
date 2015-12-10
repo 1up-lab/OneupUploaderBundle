@@ -15,9 +15,9 @@
     ],
 
     "require": {
-        "symfony/framework-bundle": "^2.3.0",
-        "symfony/http-kernel": "^2.3.0",
-        "symfony/finder": ">=2.2.0"
+        "symfony/framework-bundle": "^2.3.0|~3.0",
+        "symfony/http-kernel": "^2.3.0|~3.0",
+        "symfony/finder": ">=2.2.0|~3.0"
     },
 
     "require-dev": {
@@ -27,7 +27,7 @@
         "symfony/security-bundle": "2.*",
         "sensio/framework-extra-bundle": "2.*",
         "symfony/browser-kit": "2.*",
-        "phpunit/phpunit": "~4.1"
+        "phpunit/phpunit": "~4.4"
     },
 
     "suggest": {
