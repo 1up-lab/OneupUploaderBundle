@@ -42,4 +42,9 @@ oneup_uploader:
             error_handler: acme_demo.custom_error_handler
 ```
 
-**Note**: As of [9dbd905](https://github.com/1up-lab/OneupUploaderBundle/commit/9dbd9056dfe403ce6f1273d2d75fe814d517731a) only the `BlueimpErrorHandler` is implemented. If you know how to implement the error handlers for the other supported frontends, please create a pull request or drop me a note.
+**Note**:
+
+* As of [9dbd905](https://github.com/1up-lab/OneupUploaderBundle/commit/9dbd9056dfe403ce6f1273d2d75fe814d517731a) `BlueimpErrorHandler` is implemented.
+* As of [f420fff](https://github.com/1up-lab/OneupUploaderBundle/commit/f420fff5bc3ec910e925ceae15bc513b419693f2) `DropZoneErrorHandler` is implemented.
+
+If you know how to implement the error handlers for the other supported frontends, please create a pull request or drop me a note.
