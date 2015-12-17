@@ -34,13 +34,19 @@ Next, register your created namer as a service in your `services.xml`
 </services>
 ```
 
+```yml
+acme_demo.custom_namer:
+    class: Acme\DemoBundle\CatNamer
+```
+
 Now you can use your custom service by adding it to your configuration:
 
 ```yml
-oneup_uploader:
-    mappings:
-        gallery:
-            namer: acme_demo.custom_namer
+services:
+    oneup_uploader:
+        mappings:
+            gallery:
+                namer: acme_demo.custom_namer
 ```
 
 Every file uploaded through the `Controller` of this mapping will be named with your custom namer.

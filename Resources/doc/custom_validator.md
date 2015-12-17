@@ -45,3 +45,11 @@ After that register your new `EventListener` in the `services.xml` of your appli
     </services>
 </container>
 ```
+
+```yml
+services:
+    acme_demo.always_false_listener:
+        class: Acme\DemoBundle\EventListener\AlwaysFalseValidationListener
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.validation, method: onValidate }
+```
