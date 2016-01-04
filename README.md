@@ -29,7 +29,7 @@ Documentation
 
 The entry point of the documentation can be found in the file `Resources/docs/index.md`
 
-[Read the documentation for master](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/index.md)
+[Read the documentation for 1.3.x](https://github.com/1up-lab/OneupUploaderBundle/blob/release-1.3.x/Resources/doc/index.md)
 
 Upgrade Notes
 -------------
