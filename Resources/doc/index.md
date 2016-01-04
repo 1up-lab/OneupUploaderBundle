@@ -1,11 +1,12 @@
 Getting started
 ===============
 
-The OneupUploaderBundle is a Symfony2 bundle developed and tested for versions 2.1+. This bundle does only provide a solid backend for the supported types of Javascript libraries. It does however not provide the assets itself. So in order to use any uploader, you first have to download and integrate it by yourself.
+The OneupUploaderBundle is a Symfony2 bundle developed and tested for versions 2.4+. This bundle does only provide a solid backend for the supported types of Javascript libraries. It does however not provide the assets itself. So in order to use any uploader, you first have to download and integrate it by yourself.
 
 ## Prerequisites
 
-This bundle is tested using Symfony2 versions 2.4+.
+This bundle is tested using Symfony 2.4+.  
+If you want to use the bundle with Symfony 2.3, head over to the documentation for [1.3.x](https://github.com/1up-lab/OneupUploaderBundle/blob/release-1.3.x/Resources/doc/index.md).
 
 ### Translations
 If you wish to use the default texts provided with this bundle, you have to make sure that you have translator
