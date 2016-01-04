@@ -5,7 +5,7 @@ The OneupUploaderBundle is a Symfony2 bundle developed and tested for versions 2
 
 ## Prerequisites
 
-This bundle is tested using Symfony2 versions 2.1+.
+This bundle is tested using Symfony2 versions 2.4+.
 
 ### Translations
 If you wish to use the default texts provided with this bundle, you have to make sure that you have translator
@@ -34,7 +34,7 @@ Add OneupUploaderBundle to your composer.json using the following construct:
 ```js
 {
     "require": {
-        "oneup/uploader-bundle": "~1.3"
+        "oneup/uploader-bundle": "~1.4"
     }
 }
 ```
