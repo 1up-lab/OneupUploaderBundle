@@ -34,6 +34,12 @@ Next, register your created namer as a service in your `services.xml`
 </services>
 ```
 
+```yml
+services:
+    acme_demo.custom_namer:
+        class: Acme\DemoBundle\CatNamer
+```
+
 Now you can use your custom service by adding it to your configuration:
 
 ```yml

@@ -40,6 +40,15 @@ And register it in your `services.xml`.
 </services>
 ```
 
+```yml
+services:
+    acme_hello.upload_listener:
+        class: Acme\HelloBundle\EventListener\UploadListener
+        argument: ["@doctrine"]
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+```
+
 You can now implement you custom logic in the `onUpload` method of your EventListener.
 
 ## Use custom input data

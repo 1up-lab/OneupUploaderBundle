@@ -33,6 +33,12 @@ Define a service for your class.
 </services>
 ```
 
+```yml
+services:
+    acme_demo.custom_error_handler:
+        class: Acme\DemoBundle\ErrorHandler\CustomErrorHandler
+```
+
 And configure the mapping to use your shiny new service.
 
 ```yml
