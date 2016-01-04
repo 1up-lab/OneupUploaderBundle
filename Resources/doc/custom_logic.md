@@ -99,3 +99,21 @@ If you are using chunked uploads and hook into the `oneup_uploader.post_chunk_up
 * `getType`: Get the name of the mapping of the current upload. Useful if you have multiple mappings and EventListeners.
 * `getConfig`: Get the config of the mapping.
 * `isLast`: Returns `true` if this is the last chunk to be uploaded, `false` otherwise.
+
+## Returning a error
+You can return a upload error by throwing a ```Symfony\Component\HttpFoundation\File\Exception\UploadException``` exception
+
+But remember in the PostPersistEvent the file is already uploaded, so its up to you to remove the file before throwing the exception.
+
+You should use the [validation event](custom_validator.md) if possible, so the file does not touch your system.
+
+```php
+
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+
+public function onUpload(PostPersistEvent $event)
+{
+    // Remember to remove the already uploaded file
+    throw new UploadException('Nope, I dont do files');
+}
+```
