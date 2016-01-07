@@ -90,6 +90,7 @@ class Configuration implements ConfigurationInterface
                             ->booleanNode('enable_progress')->defaultFalse()->end()
                             ->booleanNode('enable_cancelation')->defaultFalse()->end()
                             ->scalarNode('namer')->defaultValue('oneup_uploader.namer.uniqid')->end()
+                            ->booleanNode('root_folder')->defaultFalse()->end()
                         ->end()
                     ->end()
                 ->end()
