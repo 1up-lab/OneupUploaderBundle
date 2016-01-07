@@ -175,6 +175,7 @@ abstract class AbstractController
         $event = new ValidationEvent($file, $this->getRequest(), $this->config, $this->type);
 
         $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
+        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::VALIDATION, $this->type), $event);
     }
 
     /**
