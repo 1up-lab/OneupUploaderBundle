@@ -25,11 +25,9 @@ class StreamManager
 
     protected function ensureRemotePathExists($path)
     {
-        // this is a somehow ugly workaround introduced
-        // because the stream-mode is not able to create
-        // subdirectories.
-        if(!$this->filesystem->has($path))
+        if(!$this->filesystem->has($path)) {
             $this->filesystem->write($path, '', true);
+        }
     }
 
     protected function openStream(Stream $stream, $mode)
