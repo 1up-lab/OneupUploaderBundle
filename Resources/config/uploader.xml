@@ -6,10 +6,12 @@
            <parameters>
                <parameter key="oneup_uploader.chunks.manager.class">Oneup\UploaderBundle\Uploader\Chunk\ChunkManager</parameter>
                <parameter key="oneup_uploader.chunks_storage.gaufrette.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage</parameter>
+               <parameter key="oneup_uploader.chunks_storage.flysystem.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage</parameter>
                <parameter key="oneup_uploader.chunks_storage.filesystem.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage</parameter>
                <parameter key="oneup_uploader.namer.uniqid.class">Oneup\UploaderBundle\Uploader\Naming\UniqidNamer</parameter>
                <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
                <parameter key="oneup_uploader.storage.gaufrette.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
+               <parameter key="oneup_uploader.storage.flysystem.class">Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage</parameter>
                <parameter key="oneup_uploader.storage.filesystem.class">Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage</parameter>
                <parameter key="oneup_uploader.orphanage.class">Oneup\UploaderBundle\Uploader\Storage\FilesystemOrphanageStorage</parameter>
                <parameter key="oneup_uploader.orphanage.manager.class">Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager</parameter>
