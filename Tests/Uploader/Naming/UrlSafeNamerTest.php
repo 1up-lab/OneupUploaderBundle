@@ -34,23 +34,11 @@ class UrlSafeNamerTest extends FileTest
 
     public function test_two_file_names_not_equal()
     {
-        $file = $this->getMockBuilder('Oneup\UploaderBundle\Uploader\File\FilesystemFile')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $file
-            ->expects($this->any())
-            ->method('getExtension')
-            ->will($this->returnValue('jpeg'))
-        ;
-
-        /** @var \Oneup\UploaderBundle\Uploader\File\FileInterface $file */
         $namer = new UrlSafeNamer();
         // Trying 200 times just to be sure
         for($i = 0; $i < 200; $i++) {
-            $name1 = $namer->name($file);
-            $name2 = $namer->name($file);
+            $name1 = $namer->name($this->file);
+            $name2 = $namer->name($this->file);
             $this->assertNotEquals($name1, $name2);
         }
 
