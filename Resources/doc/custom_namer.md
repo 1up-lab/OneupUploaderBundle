@@ -1,7 +1,24 @@
 Custom Namer
 ============
 
-The purpose of a namer service is to name an uploaded file before it is stored to the storage layer. Currently the OneupUploaderBundle only provides a single namer service called `UniqidNamer`, which will return a system wide unique filename using the `uniqid()` function.
+The purpose of a namer service is to name an uploaded file before it is stored to the storage layer.
+
+Currently the OneupUploaderBundle provides two namer methods.
+- Default used is a namer called `UniqidNamer`, which will return a system wide unique filename using the `uniqid()` function.
+- The other method called `UrlSafeNamer` using `random_bytes` function, see [Using UrlSafeNamer](#urlsafenamer) how to use it
+
+## UrlSafeNamer
+
+To enable UrlSafeNamer you will need to change your namer in your mappings to `oneup_uploader.namer.urlsafe`
+
+Example
+
+```yml
+oneup_uploader:
+    mappings:
+        gallery:
+            namer: oneup_uploader.namer.urlsafe
+```
 
 ## Use a custom namer
 
