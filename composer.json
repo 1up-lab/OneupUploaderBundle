@@ -26,11 +26,13 @@
         "symfony/security-bundle": "2.*|~3.0",
         "sensio/framework-extra-bundle": "2.*|~3.0",
         "symfony/browser-kit": "2.*|~3.0",
-        "phpunit/phpunit": "~4.4"
+        "phpunit/phpunit": "~4.4",
+        "oneup/flysystem-bundle": "^1.2"
     },
 
     "suggest": {
-        "knplabs/knp-gaufrette-bundle": "0.1.*"
+        "knplabs/knp-gaufrette-bundle": "0.1.*",
+        "oneup/flysystem-bundle": "^1.2"
     },
 
     "autoload": {
