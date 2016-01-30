@@ -10,7 +10,7 @@ First, create a custom namer which implements ```Oneup\UploaderBundle\Uploader\N
 ```php
 <?php
 
-namespace Acme\DemoBundle;
+namespace AppBundle\Uploader\Naming;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
@@ -36,8 +36,8 @@ Next, register your created namer as a service in your `services.xml`
 
 ```yml
 services:
-    acme_demo.custom_namer:
-        class: Acme\DemoBundle\CatNamer
+    app.cat_namer:
+        class: AppBundle\Uploader\Naming\CatNamer
 ```
 
 Now you can use your custom service by adding it to your configuration:
@@ -46,7 +46,7 @@ Now you can use your custom service by adding it to your configuration:
 oneup_uploader:
     mappings:
         gallery:
-            namer: acme_demo.custom_namer
+            namer: app.cat_namer
 ```
 
 Every file uploaded through the `Controller` of this mapping will be named with your custom namer.
