@@ -11,15 +11,21 @@ In almost every use case you need to further process uploaded files. For example
 To listen to one of these events you need to create an `EventListener`.
 
 ```php
-namespace Acme\HelloBundle\EventListener;
+namespace AppBundle\EventListener;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 
 class UploadListener
 {
-    public function __construct($doctrine)
+    /**
+     * @var ObjectManager
+     */
+    private $om;
+
+    public function __construct(ObjectManager $om)
     {
-        $this->doctrine = $doctrine;
+        $this->om = $om;
     }
     
     public function onUpload(PostPersistEvent $event)
@@ -33,7 +39,7 @@ And register it in your `services.xml`.
 
 ```xml
 <services>
-    <service id="acme_hello.upload_listener" class="Acme\HelloBundle\EventListener\UploadListener">
+    <service id="app.upload_listener" class="AppBundle\EventListener\UploadListener">
         <argument type="service" id="doctrine" />
         <tag name="kernel.event_listener" event="oneup_uploader.post_persist" method="onUpload" />
     </service>
@@ -43,8 +49,8 @@ And register it in your `services.xml`.
 ```yml
 services:
     acme_hello.upload_listener:
-        class: Acme\HelloBundle\EventListener\UploadListener
-        argument: ["@doctrine"]
+        class: AppBundle\EventListener\UploadListener
+        argument: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
 ```
@@ -114,6 +120,6 @@ use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 public function onUpload(PostPersistEvent $event)
 {
     // Remember to remove the already uploaded file
-    throw new UploadException('Nope, I dont do files');
+    throw new UploadException('Nope, I don\'t do files.');
 }
 ```
