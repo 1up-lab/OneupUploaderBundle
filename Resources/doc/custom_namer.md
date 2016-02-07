@@ -24,7 +24,7 @@ class CatNamer implements NamerInterface
 }
 ```
 
-To match the `NamerInterface` you have to implement the function `name()` which expects an `FileInterface` and should return a string representing the name of the given file. The example above would name every file _grumpycat.jpg_ and is therefore not very useful.
+To match the `NamerInterface` you have to implement the function `name()` which expects an `FileInterface` and should return a string representing the name of the given file. The example above would name every file _grumpycat.jpg_ and is therefore not very useful. The namer should return an unique name to avoid issues if the file already exists.
 
 Next, register your created namer as a service in your `services.xml`
 
