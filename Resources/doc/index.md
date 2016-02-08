@@ -34,19 +34,9 @@ Perform the following steps to install and use the basic functionality of the On
 
 Add OneupUploaderBundle to your composer.json using the following construct:
 
-```js
-{
-    "require": {
-        "oneup/uploader-bundle": "~1.4"
-    }
-}
-```
+    $ composer require oneup/uploader-bundle "~1.4"
 
-Now tell composer to download the bundle by running the following command:
-
-    $> php composer.phar update oneup/uploader-bundle
-
-Composer will now fetch and install this bundle in the vendor directory ```vendor/oneup```
+Composer will install the bundle to your project's ``vendor/oneup/uploader-bundle`` directory.
 
 ### Step 2: Enable the bundle
 
