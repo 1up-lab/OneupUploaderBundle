@@ -53,3 +53,5 @@ services:
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.validation, method: onValidate }
 ```
+
+Since version 1.6 you can listen to an event thrown for every uploader specifically. The name for the event is `oneup_uploader.validation.{type}` where `{type}` represents the config key of the uploader you want to target.
