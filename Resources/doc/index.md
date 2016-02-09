@@ -88,9 +88,19 @@ oneup_uploader:
     type: uploader
 ```
 
-The default directory that is used to upload files to is `web/uploads/{mapping_name}`.
+The default directory that is used to upload files to is `web/uploads/{mapping_name}`. In case you want to avoid a separated mapping folder, you can set `root_folder: true` and the default directory will be `web/uploads`.
+
+```yaml
+# app/config/config.yml
+
+oneup_uploader:
+    mappings:
+        gallery:
+            root_folder: true
+```
 
 > It was reported that in some cases this directory was not created automatically. Please double check its existance if the upload does not work for you.
+> You can improve the directory structure checking the "[Change the directory structure](custom_namer.md#change_the_directory_structure)".
 
 ### Step 4: Prepare your frontend
 
