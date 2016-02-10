@@ -100,7 +100,7 @@ oneup_uploader:
 ```
 
 > It was reported that in some cases this directory was not created automatically. Please double check its existance if the upload does not work for you.
-> You can improve the directory structure checking the "[Change the directory structure](custom_namer.md#change_the_directory_structure)".
+> You can improve the directory structure checking the "[Change the directory structure](custom_namer.md#change-the-directory-structure)".
 
 ### Step 4: Prepare your frontend
 
