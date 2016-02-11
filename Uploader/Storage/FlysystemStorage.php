@@ -44,7 +44,11 @@ class FlysystemStorage implements StorageInterface
             }
         }
 
-        $this->filesystem->put($name, file_get_contents($file));
+        $stream = fopen($file->getPathname(), 'r+');
+        $this->filesystem->putStream($name, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
 
         if ($file instanceof FlysystemFile) {
             $file->delete();
