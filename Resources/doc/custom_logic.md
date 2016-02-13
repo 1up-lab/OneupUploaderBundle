@@ -50,7 +50,7 @@ And register it in your `services.xml`.
 services:
     acme_hello.upload_listener:
         class: AppBundle\EventListener\UploadListener
-        argument: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
 ```
