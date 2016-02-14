@@ -8,6 +8,8 @@ class UniqidNamer implements NamerInterface
 {
     public function name(FileInterface $file, $request)
     {
-        return sprintf('%s.%s', uniqid(), $file->getExtension());
+        $subfolder = '';
+        if ($subfolder = $request->get('subfolder')) $subfolder .= '/';
+        return sprintf('%s.%s', $subfolder.uniqid(), $file->getExtension());
     }
 }
