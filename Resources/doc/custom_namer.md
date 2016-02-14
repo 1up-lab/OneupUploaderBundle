@@ -12,12 +12,14 @@ First, create a custom namer which implements ```Oneup\UploaderBundle\Uploader\N
 
 namespace AppBundle\Uploader\Naming;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 
 class CatNamer implements NamerInterface
 {
-    public function name(FileInterface $file)
+    public function name(FileInterface $file, Request $request)
     {
         return 'grumpycat.jpg';
     }
@@ -50,3 +52,23 @@ oneup_uploader:
 ```
 
 Every file uploaded through the `Controller` of this mapping will be named with your custom namer.
+
+## Add custom data in your file name
+
+As you can see, the namer can access to the Request Object, so you can easily send any custom data and use it to name your files.
+
+To send custom data, follow instructions as described in the [Custom Logic Documentation](custom_logic.md).
+
+You can access to your custom data in the same way :
+
+```php
+<?php
+
+class CustomNamer implements NamerInterface
+{
+    public function name(FileInterface $file, Request $request)
+    {
+        return $request->get('my_custom_data') . $file->getExtension();
+    }
+}
+```
