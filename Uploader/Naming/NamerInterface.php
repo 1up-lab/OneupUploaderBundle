@@ -12,5 +12,5 @@ interface NamerInterface
      * @param  FileInterface $file
      * @return string
      */
-    public function name(FileInterface $file);
+    public function name(FileInterface $file, $request);
 }
