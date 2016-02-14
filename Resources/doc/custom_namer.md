@@ -62,8 +62,6 @@ To send custom data, follow instructions as described in the [Custom Logic Docum
 You can access to your custom data in the same way :
 
 ```php
-<?php
-
 class CustomNamer implements NamerInterface
 {
     public function name(FileInterface $file, Request $request)
