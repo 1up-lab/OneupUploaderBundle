@@ -1,16 +1,17 @@
 OneupUploaderBundle
 ===================
 
-The OneupUploaderBundle for Symfony2 adds support for handling file uploads using one of the following Javascript libraries, or [your own implementation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_uploader.md).
+The OneupUploaderBundle for Symfony2 adds support for handling file uploads using one of the following JavaScript libraries, or [your own implementation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_uploader.md).
 
-* [FineUploader](http://fineuploader.com/)
-* [jQuery File Uploader](http://blueimp.github.io/jQuery-File-Upload/)
-* [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/)
-* [Uploadify](http://www.uploadify.com/)
-* [FancyUpload](http://digitarald.de/project/fancyupload/)
-* [MooUpload](https://github.com/juanparati/MooUpload)
-* [Plupload](http://www.plupload.com/)
+* [jQuery File Upload](http://blueimp.github.io/jQuery-File-Upload/)
 * [Dropzone](http://www.dropzonejs.com/)
+* [Plupload](http://www.plupload.com/)
+* [FineUploader](http://fineuploader.com/)
+* [FancyUpload](http://digitarald.de/project/fancyupload/) (based on MooTools)
+* [MooUpload](https://github.com/juanparati/MooUpload) (based on MooTools)
+* [YUI3 Uploader](http://yuilibrary.com/yui/docs/uploader/) (the YUI library is no longer maintained)
+* [UploadiFive](http://www.uploadify.com/) ($ 5.00)
+
 
 Features included:
 
