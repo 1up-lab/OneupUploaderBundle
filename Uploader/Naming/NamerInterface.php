@@ -12,6 +12,8 @@ interface NamerInterface
      * Name a given file and return the name
      *
      * @param  FileInterface $file
+     * @param Request $request The request object.
+     * 
      * @return string
      */
     public function name(FileInterface $file, Request $request);
