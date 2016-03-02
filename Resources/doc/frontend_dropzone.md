@@ -4,7 +4,7 @@ Use Dropzone in your Symfony2 application
 Download [Dropzone](http://www.dropzonejs.com/) and include it in your template. Connect the `action` property of the form to the dynamic route `_uploader_{mapping_name}`.
 
 ```html
-<script type="text/javascript" src="https://rawgithub.com/enyo/dropzone/master/downloads/dropzone.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/enyo/dropzone/master/dist/dropzone.js"></script>
 
 <form action="{{ oneup_uploader_endpoint('gallery') }}" class="dropzone">
 </form>
