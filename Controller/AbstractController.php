@@ -119,7 +119,7 @@ abstract class AbstractController
 
         // no error happend, proceed
         $namer = $this->container->get($this->config['namer']);
-        $name  = $namer->name($file);
+        $name  = $namer->name($file, $request);
 
         // perform the real upload
         $uploaded = $this->storage->upload($file, $name);
