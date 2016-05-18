@@ -25,7 +25,7 @@ framework:
 
 Perform the following steps to install and use the basic functionality of the OneupUploaderBundle:
 
-* Download OnueupUploaderBundle using Composer
+* Download OneupUploaderBundle using Composer
 * Enable the bundle
 * Configure the bundle
 * Prepare your frontend
