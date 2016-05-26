@@ -71,13 +71,19 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
 
     public function getFiles()
     {
-        $keys = $this->chunkStorage->getFilesystem()->listFiles($this->getPath());
-        $keys = $keys['keys'];
+        $fileList = $this->chunkStorage
+            ->getFilesystem()
+            ->listContents($this->getPath());
         $files = array();
 
-        foreach ($keys as $key) {
-            // gotta pass the filesystem to both as you can't get it out from one..
-            $files[$key] = new FlysystemFile(new File($this->chunkStorage->getFilesystem(), $key), $this->chunkStorage->getFilesystem());
+        foreach ($fileList as $fileDetail) {
+            $key = $fileDetail['path'];
+            if ($fileDetail['type'] == 'file') {
+                $files[$key] = new FlysystemFile(
+                    new File($this->chunkStorage->getFilesystem(), $key),
+                    $this->chunkStorage->getFilesystem()
+                );
+            }
         }
 
         return $files;
