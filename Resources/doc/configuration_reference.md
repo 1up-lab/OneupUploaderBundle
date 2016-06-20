@@ -38,6 +38,7 @@ oneup_uploader:
             allowed_mimetypes:     []
             disallowed_mimetypes:  []
             error_handler:        oneup_uploader.error_handler.noop
+            root_folder:          false
 
             # Set max_size to -1 for gracefully downgrade this number to the systems max upload size.
             max_size:             9223372036854775807

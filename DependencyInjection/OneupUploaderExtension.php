@@ -200,8 +200,11 @@ class OneupUploaderExtension extends Extension
 
             switch ($config['type']) {
                 case 'filesystem':
+                    // root_folder is true, remove the mapping name folder from path
+                    $folder = $this->config['mappings'][$key]['root_folder'] ? '' : $key;
+
                     $config['directory'] = is_null($config['directory']) ?
-                        sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $key) :
+                        sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $folder) :
                         $this->normalizePath($config['directory'])
                     ;
 
