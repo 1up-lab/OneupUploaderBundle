@@ -50,3 +50,57 @@ oneup_uploader:
 ```
 
 Every file uploaded through the `Controller` of this mapping will be named with your custom namer.
+
+## Change the directory structure
+
+With the `NameInterface` you can change the directory structure to provide a better files organization or to use your own existing structure. For example, you need to separate the uploaded files by users with a `user_id` folder.
+
+You need to inject the `security.token_storage` service to your namer.
+
+```xml
+<services>
+    <service id="acme_demo.custom_namer" class="Acme\DemoBundle\CatNamer">
+        <argument type="service" id="security.token_storage"/>
+    </service>
+</services>
+```
+
+Now you can use the service to get the logged user id and return the custom directory like below:
+
+```php
+<?php
+
+namespace Acme\DemoBundle;
+
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+
+class CatNamer implements NamerInterface
+{
+    private $tokenStorage;
+    
+    public function __construct(TokenStorage $tokenStorage){
+        $this->tokenStorage = $tokenStorage;
+    }
+    
+    /**
+     * Creates a user directory name for the file being uploaded.
+     *
+     * @param FileInterface $file
+     * @return string The directory name.
+     */
+    public function name(FileInterface $file)
+    {
+        $userId = $tokenStorage->getToken()->getUser()->getId();
+        
+        return sprintf('%s/%s.%s',
+            $userId,
+            uniqid(),
+            $file->getExtension()
+        );
+    }
+}
+```
+
+Every file uploaded through the `Controller` of this mapping will be named with your new directory structure.
