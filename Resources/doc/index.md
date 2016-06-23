@@ -100,7 +100,6 @@ If you want to use your own path, for example /data/uploads :
 oneup_uploader:
     mappings:
         gallery:
-            frontend: dropzone
             storage:
                 directory: "%kernel.root_dir%/../data/uploads/"
 ```
