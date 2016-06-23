@@ -92,6 +92,18 @@ oneup_uploader:
 > It was reported that in some cases this directory was not created automatically. Please double check its existance if the upload does not work for you.
 > You can improve the directory structure checking the "[Change the directory structure](custom_namer.md#change-the-directory-structure)".
 
+If you want to use your own path, for example /data/uploads :
+
+```yaml
+# app/config/config.yml
+
+oneup_uploader:
+    mappings:
+        gallery:
+            storage:
+                directory: "%kernel.root_dir%/../data/uploads/"
+```
+
 ### Step 4: Prepare your frontend
 
 No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
