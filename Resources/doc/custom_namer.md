@@ -65,6 +65,13 @@ You need to inject the `security.token_storage` service to your namer.
 </services>
 ```
 
+```yml
+services:
+    acme_demo.custom_namer:
+        class: Acme\DemoBundle\CatNamer
+        arguments: ["@security.token_storage"]
+```
+
 Now you can use the service to get the logged user id and return the custom directory like below:
 
 ```php
@@ -92,7 +99,7 @@ class CatNamer implements NamerInterface
      */
     public function name(FileInterface $file)
     {
-        $userId = $tokenStorage->getToken()->getUser()->getId();
+        $userId = $this->tokenStorage->getToken()->getUser()->getId();
         
         return sprintf('%s/%s.%s',
             $userId,
