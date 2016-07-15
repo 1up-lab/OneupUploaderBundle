@@ -48,7 +48,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             $return = array();
 
             foreach ($files as $file) {
-                $return[] = $this->storage->upload(new FilesystemFile(new File($file->getPathname())), str_replace($this->getFindPath(), '', $file));
+                $return[] = $this->storage->upload(new FilesystemFile(new File($file->getPathname())), ltrim(str_replace($this->getFindPath(), '', $file), "/"));
             }
 
             return $return;
