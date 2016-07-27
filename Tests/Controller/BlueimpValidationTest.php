@@ -100,10 +100,20 @@ class BlueimpValidationTest extends AbstractValidationTest
     {
         return array('files' => array(new UploadedFile(
             $this->createTempFile(128),
-            'cat.ok',
-            'image/jpg',
+            'cat.txt',
+            'text/plain',
             128
         )));
+    }
+
+    protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
+    {
+        return new UploadedFile(
+            $this->createTempFile(128),
+            'cat.txxt',
+            'text/plain',
+            128
+        );
     }
 
     protected function getFileWithIncorrectMimeType()
