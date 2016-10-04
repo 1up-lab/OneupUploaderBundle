@@ -137,6 +137,7 @@ some more advanced features.
 * [Return custom data to frontend](response.md)
 * [Enable chunked uploads](chunked_uploads.md)
 * [Using the Orphanage](orphanage.md)
+* [Use Flysystem as storage layer](flysystem_storage.md)
 * [Use Gaufrette as storage layer](gaufrette_storage.md)
 * [Include your own Namer](custom_namer.md)
 * [Use custom error handlers](custom_error_handler.md)
