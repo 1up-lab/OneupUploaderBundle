@@ -6,7 +6,7 @@ use Oneup\UploaderBundle\Uploader\Storage\FlysystemOrphanageStorage;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class OrphanageTest extends \PHPUnit_Framework_Testcase
+abstract class OrphanageTest extends \PHPUnit_Framework_TestCase
 {
     protected $tempDirectory;
     protected $realDirectory;
