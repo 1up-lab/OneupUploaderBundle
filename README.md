@@ -16,7 +16,7 @@ Features included:
 
 * Multiple file uploads handled by your chosen frontend library
 * Chunked uploads
-* Supports [Gaufrette](https://github.com/KnpLabs/Gaufrette) and/or local filesystem
+* Support for: [Gaufrette](https://github.com/KnpLabs/Gaufrette) / [Flysystem](https://github.com/thephpleague/flysystem) / local filesystem
 * Provides an orphanage for cleaning up orphaned files
 * Supports [Session upload progress & cancelation of uploads](http://php.net/manual/en/session.upload-progress.php) as of PHP 5.4
 * Fully unit tested
