@@ -294,11 +294,14 @@ class OneupUploaderExtension extends Extension
         // see: http://www.php.net/manual/en/function.ini-get.php
         $input = trim($input);
         $last  = strtolower($input[strlen($input) - 1]);
+        $numericInput = substr($input, 0, -1);
 
         switch ($last) {
-            case 'g': $input *= 1024;
-            case 'm': $input *= 1024;
-            case 'k': $input *= 1024;
+            case 'g': $numericInput *= 1024;
+            case 'm': $numericInput *= 1024;
+            case 'k': $numericInput *= 1024;
+
+            return $numericInput;
         }
 
         return $input;
