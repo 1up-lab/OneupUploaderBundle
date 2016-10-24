@@ -57,6 +57,7 @@ class FilesystemStorage implements ChunkStorageInterface
         }
 
         $iterator = $chunks->getIterator();
+        $iterator->rewind();
 
         $base = $iterator->current();
         $iterator->next();
