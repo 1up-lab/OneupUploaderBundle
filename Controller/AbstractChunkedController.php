@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
+use Oneup\UploaderBundle\Event\ChunkValidationEvent;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 
 abstract class AbstractChunkedController extends AbstractController
 {
@@ -43,6 +45,8 @@ abstract class AbstractChunkedController extends AbstractController
      */
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
+        $this->validateChunk($file);
+
         // get basic container stuff
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
 
@@ -54,6 +58,8 @@ abstract class AbstractChunkedController extends AbstractController
         if (null !== $chunk) {
             $this->dispatchChunkEvents($chunk, $response, $request, $last);
         }
+
+        /** @var FileInterface $assembled  */
 
         if ($chunkManager->getLoadDistribution()) {
             $chunks = $chunkManager->getChunks($uuid);
@@ -96,5 +102,16 @@ abstract class AbstractChunkedController extends AbstractController
         $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);
         $dispatcher->dispatch(UploadEvents::POST_CHUNK_UPLOAD, $postUploadEvent);
         $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_CHUNK_UPLOAD, $this->type), $postUploadEvent);
+    }
+
+    protected function validateChunk(UploadedFile $file)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
+        $max_size   = $this->container->getParameter('chunks.max_size');
+
+        $event = new ChunkValidationEvent($file, $this->getRequest(), $this->config, $this->type, $max_size);
+
+        $dispatcher->dispatch(UploadEvents::CHUNK_VALIDATION, $event);
+        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::CHUNK_VALIDATION, $this->type), $event);
     }
 }

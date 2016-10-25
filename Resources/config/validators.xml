@@ -15,6 +15,10 @@
         <service id="oneup_uploader.validation_listener.disallowed_mimetype" class="Oneup\UploaderBundle\EventListener\DisallowedMimetypeValidationListener">
             <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
+
+        <service id="oneup_uploader.validation_listener.max_chunk_size" class="Oneup\UploderBundle\Eventlistener\MaxChunkSizeValidationListener">
+            <tag  name="kernel.event_listener" event="oneup_uploader.chunk_validation" method="onValidate" />
+        </service>
     </services>
 
 </container>
