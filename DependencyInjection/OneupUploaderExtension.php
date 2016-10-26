@@ -42,13 +42,15 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.chunks', $this->config['chunks']);
         $container->setParameter('oneup_uploader.orphanage', $this->config['orphanage']);
 
-        $controllers = array();
-        $maxsize = array();
+        $controllers  = array();
+        $maxsize      = array();
+        $maxchunksize = array();
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
             $controllers[$key] = $this->processMapping($key, $mapping);
             $maxsize[$key] = $this->getMaxUploadSize($mapping['max_size']);
+            $maxchunksize[$key] = $this->getMaxUploadSize($mapping['max_chunk_size']);
 
             $container->setParameter(sprintf('oneup_uploader.config.%s', $key), $mapping);
         }
@@ -56,6 +58,7 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.config', $this->config);
         $container->setParameter('oneup_uploader.controllers', $controllers);
         $container->setParameter('oneup_uploader.maxsize', $maxsize);
+        $container->setParameter('oneup_uploader.maxchunksize', $maxchunksize);
     }
 
     protected function processOrphanageConfig()
