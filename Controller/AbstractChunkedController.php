@@ -107,9 +107,8 @@ abstract class AbstractChunkedController extends AbstractController
     protected function validateChunk(UploadedFile $file)
     {
         $dispatcher = $this->container->get('event_dispatcher');
-        $max_size   = $this->container->getParameter('chunks.max_size');
 
-        $event = new ChunkValidationEvent($file, $this->getRequest(), $this->config, $this->type, $max_size);
+        $event = new ChunkValidationEvent($file, $this->getRequest(), $this->config, $this->type);
 
         $dispatcher->dispatch(UploadEvents::CHUNK_VALIDATION, $event);
         $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::CHUNK_VALIDATION, $this->type), $event);

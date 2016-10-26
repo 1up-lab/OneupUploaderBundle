@@ -12,9 +12,8 @@ class ChunkValidationEvent extends Event
     protected $config;
     protected $type;
     protected $request;
-    protected $maxSize;
 
-    public function __construct(UploadedFile $file, Request $request, array $config, $type, $max_size)
+    public function __construct(UploadedFile $file, Request $request, array $config, $type)
     {
         $this->file    = $file;
         $this->config  = $config;
@@ -40,10 +39,5 @@ class ChunkValidationEvent extends Event
     public function getRequest()
     {
         return $this->request;
-    }
-
-    public function getChunkMaxSize()
-    {
-        return $this->maxSize;
     }
 }

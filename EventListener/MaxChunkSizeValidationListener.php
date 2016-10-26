@@ -12,7 +12,7 @@ class MaxChunkSizeValidationListener
         $config = $event->getConfig();
         $file   = $event->getFile();
 
-        if ($file->getSize() > $event->getChunkMaxSize()) {
+        if ($file->getSize() > $config['chunk_max_size']) {
             throw new ValidationException('error.maxchunksize');
         }
     }
