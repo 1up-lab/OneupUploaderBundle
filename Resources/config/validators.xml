@@ -16,7 +16,7 @@
             <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
 
-        <service id="oneup_uploader.validation_listener.max_chunk_size" class="Oneup\UploderBundle\Eventlistener\MaxChunkSizeValidationListener">
+        <service id="oneup_uploader.validation_listener.max_chunk_size" class="Oneup\UploaderBundle\EventListener\MaxChunkSizeValidationListener">
             <tag  name="kernel.event_listener" event="oneup_uploader.chunk_validation" method="onValidate" />
         </service>
     </services>
