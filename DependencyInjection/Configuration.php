@@ -88,7 +88,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->scalarNode('max_chunk_size')
                                 ->defaultValue(\PHP_INT_MAX)
-                                ->info('Set max_size to -1 for gracefully downgrade this number to the systems max upload size.')
+                                ->info('Set max_chunk_size to -1 for gracefully downgrade this number to the systems max upload size.')
                             ->end()
                             ->booleanNode('use_orphanage')->defaultFalse()->end()
                             ->booleanNode('enable_progress')->defaultFalse()->end()

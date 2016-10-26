@@ -9,11 +9,13 @@ class UploaderHelper extends Helper
 {
     protected $router;
     protected $maxsize;
+    protected $maxchunksize;
 
-    public function __construct(RouterInterface $router, array $maxsize)
+    public function __construct(RouterInterface $router, array $maxsize, array $maxchunksize)
     {
-        $this->router  = $router;
-        $this->maxsize = $maxsize;
+        $this->router       = $router;
+        $this->maxsize      = $maxsize;
+        $this->maxchunksize = $maxchunksize;
     }
 
     public function getName()
@@ -47,6 +49,15 @@ class UploaderHelper extends Helper
             throw new \InvalidArgumentException('No such mapping found to get maxsize for.');
         }
 
-        return $this->maxsize[$key];
+        return $this->maxsize[ $key ];
+    }
+
+    public function maxChunkSize($key)
+    {
+        if (!array_key_exists($key, $this->maxchunksize)) {
+            throw new \InvalidArgumentException('No such mapping found to get maxchunksize for.');
+        }
+
+        return $this->maxchunksize[ $key ];
     }
 }
