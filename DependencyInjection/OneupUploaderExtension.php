@@ -61,7 +61,7 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.controllers', $controllers);
         $container->setParameter('oneup_uploader.maxsize', $maxsize);
         $container->setParameter('oneup_uploader.maxchunksize', $maxchunksize);
-        $container->setParameter('enable_concurrent_chunking', $concurrent);
+        $container->setParameter('oneup_uploader.enable_concurrent_chunking', $concurrent);
     }
 
     protected function processOrphanageConfig()
@@ -88,9 +88,10 @@ class OneupUploaderExtension extends Extension
         $this->verifyPhpVersion($mapping);
 
         return array($controllerName, array(
-            'enable_progress' => $mapping['enable_progress'],
+            'enable_progress'    => $mapping['enable_progress'],
             'enable_cancelation' => $mapping['enable_cancelation'],
-            'route_prefix' => $mapping['route_prefix']
+            'route_prefix'       => $mapping['route_prefix'],
+            'frontend'           => $mapping['frontend']
         ));
     }
 
