@@ -13,7 +13,7 @@ $(document).ready(function()
         },
         chunking: {
             enabled: true,
-            partSize: 10000000
+            partSize: {{ oneup_uploader_maxchunksize('gallery') }}
         }
     });
 });
@@ -34,6 +34,33 @@ oneup_uploader:
         storage:
             directory: %kernel.cache_dir%/uploader/chunks
 ```
+
+If using Fine Uploader you can enable concurrent chunking by setting the `chunking.concurrent.enabled` to true.
+`You also have to specify the chunking.success.endpoint`. This will assemble the chunks when all are uploaded.
+
+```js
+$(document).ready(function()
+{
+    var uploader = new qq.FineUploader({
+        element: document.getElementById('uploader'),
+        request: {
+            endpoint: "{{ oneup_uploader_endpoint('gallery') }}"
+        },
+        chunking: {
+            enabled: true,
+            partSize: {{ oneup_uploader_maxchunksize('gallery') }},
+            concurrent: {
+                enabled: true
+            },
+            success: {
+                endpoint : "{{ oneup_uploader_chunking_success('gallery') }}"
+            }
+        }
+    });
+});
+```
+
+> **Note**: If you are using the `oneup_uploader_maxchunksize` template helper, **do not** put it in quotes. 
 
 You can choose a custom directory to save the chunks temporarily while uploading by changing the parameter `directory`.
 

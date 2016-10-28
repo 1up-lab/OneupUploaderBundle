@@ -8,11 +8,13 @@ class FineUploaderResponse extends AbstractResponse
 {
     protected $success;
     protected $error;
+    protected $preventRetry;
 
     public function __construct()
     {
-        $this->success = true;
-        $this->error = null;
+        $this->success      = true;
+        $this->error        = null;
+        $this->preventRetry = false;
 
         parent::__construct();
     }
@@ -20,7 +22,7 @@ class FineUploaderResponse extends AbstractResponse
     public function assemble()
     {
         // explicitly overwrite success and error key
-        // as these keys are used internaly by the
+        // as these keys are used internally by the
         // frontend uploader
         $data = $this->data;
         $data['success'] = $this->success;
@@ -28,8 +30,14 @@ class FineUploaderResponse extends AbstractResponse
         if($this->success)
             unset($data['error']);
 
-        if(!$this->success)
+        if(!$this->success) {
             $data['error'] = $this->error;
+
+            //setting this will disable the retry on the frontend
+            if ($this->preventRetry) {
+                $data['preventRetry'] = true;
+            }
+        }
 
         return $data;
     }
@@ -46,9 +54,10 @@ class FineUploaderResponse extends AbstractResponse
         return $this->success;
     }
 
-    public function setError($msg)
+    public function setError($msg, $preventRetry = false)
     {
-        $this->error = $msg;
+        $this->error        = $msg;
+        $this->preventRetry = !empty($preventRetry);
 
         return $this;
     }
