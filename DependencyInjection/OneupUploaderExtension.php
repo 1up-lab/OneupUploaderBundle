@@ -88,10 +88,11 @@ class OneupUploaderExtension extends Extension
         $this->verifyPhpVersion($mapping);
 
         return array($controllerName, array(
-            'enable_progress'    => $mapping['enable_progress'],
-            'enable_cancelation' => $mapping['enable_cancelation'],
-            'route_prefix'       => $mapping['route_prefix'],
-            'frontend'           => $mapping['frontend']
+            'enable_progress'            => $mapping['enable_progress'],
+            'enable_cancelation'         => $mapping['enable_cancelation'],
+            'route_prefix'               => $mapping['route_prefix'],
+            'frontend'                   => $mapping['frontend'],
+            'enable_concurrent_chunking' => $mapping['enable_concurrent_chunking']
         ));
     }
 
