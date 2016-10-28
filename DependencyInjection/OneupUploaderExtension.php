@@ -45,12 +45,14 @@ class OneupUploaderExtension extends Extension
         $controllers  = array();
         $maxsize      = array();
         $maxchunksize = array();
+        $concurrent   = array();
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
-            $controllers[$key] = $this->processMapping($key, $mapping);
-            $maxsize[$key] = $this->getMaxUploadSize($mapping['max_size']);
+            $controllers[$key]  = $this->processMapping($key, $mapping);
+            $maxsize[$key]      = $this->getMaxUploadSize($mapping['max_size']);
             $maxchunksize[$key] = $this->getMaxUploadSize($mapping['max_chunk_size']);
+            $concurrent[$key]   = !empty($mapping['enable_concurrent_chunking']);
 
             $container->setParameter(sprintf('oneup_uploader.config.%s', $key), $mapping);
         }
@@ -59,6 +61,7 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.controllers', $controllers);
         $container->setParameter('oneup_uploader.maxsize', $maxsize);
         $container->setParameter('oneup_uploader.maxchunksize', $maxchunksize);
+        $container->setParameter('enable_concurrent_chunking', $concurrent);
     }
 
     protected function processOrphanageConfig()

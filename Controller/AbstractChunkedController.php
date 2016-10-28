@@ -45,6 +45,7 @@ abstract class AbstractChunkedController extends AbstractController
      */
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
     {
+        $config = $this->container->getParameter('oneup_uploader.config');
         $this->validateChunk($file);
 
         // get basic container stuff
@@ -61,28 +62,30 @@ abstract class AbstractChunkedController extends AbstractController
 
         /** @var FileInterface $assembled  */
 
-        if ($chunkManager->getLoadDistribution()) {
-            $chunks = $chunkManager->getChunks($uuid);
-            $assembled = $chunkManager->assembleChunks($chunks, true, $last);
+        if ( !empty($config['enable_concurrent_chunking']) ) {
+            if ($chunkManager->getLoadDistribution()) {
+                $chunks    = $chunkManager->getChunks($uuid);
+                $assembled = $chunkManager->assembleChunks($chunks, true, $last);
 
-            if (null === $chunk) {
-                $this->dispatchChunkEvents($assembled, $response, $request, $last);
-            }
-        }
-
-        // if all chunks collected and stored, proceed
-        // with reassembling the parts
-        if ($last) {
-            if (!$chunkManager->getLoadDistribution()) {
-                $chunks = $chunkManager->getChunks($uuid);
-                $assembled = $chunkManager->assembleChunks($chunks, true, true);
+                if (null === $chunk) {
+                    $this->dispatchChunkEvents($assembled, $response, $request, $last);
+                }
             }
 
-            $path = $assembled->getPath();
+            // if all chunks collected and stored, proceed
+            // with reassembling the parts
+            if ($last) {
+                if (!$chunkManager->getLoadDistribution()) {
+                    $chunks    = $chunkManager->getChunks($uuid);
+                    $assembled = $chunkManager->assembleChunks($chunks, true, true);
+                }
 
-            $this->handleUpload($assembled, $response, $request);
+                $path = $assembled->getPath();
 
-            $chunkManager->cleanup($path);
+                $this->handleUpload($assembled, $response, $request);
+
+                $chunkManager->cleanup($path);
+            }
         }
     }
 

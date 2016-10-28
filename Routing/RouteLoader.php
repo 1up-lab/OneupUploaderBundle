@@ -54,7 +54,7 @@ class RouteLoader extends Loader
             }
 
             if ($options['enable_cancelation'] === true) {
-                $progress = new Route(
+                $cancel = new Route(
                     sprintf('%s/_uploader/%s/cancel', $options['route_prefix'], $type),
                     array('_controller' => $service . ':cancel', '_format' => 'json'),
                     array(),
@@ -64,7 +64,21 @@ class RouteLoader extends Loader
                     array('POST')
                 );
 
-                $routes->add(sprintf('_uploader_cancel_%s', $type), $progress);
+                $routes->add(sprintf('_uploader_cancel_%s', $type), $cancel);
+            }
+
+            if ( $options['frontend'] === 'fineuploader' && $options['enable_concurrent_chunking'] === true ) {
+                $chunkingSuccess = new Route(
+                    sprintf('%s/_uploader/%s/chunking_success', $options['route_prefix'], $type),
+                    array('_controller' => $service . ':chunkingSuccess', '_format' => 'json'),
+                    array(),
+                    array(),
+                    '',
+                    array(),
+                    array('POST')
+                );
+
+                $routes->add(sprintf('_uploader_chunking_success_%s', $type), $chunkingSuccess);
             }
 
             $routes->add(sprintf('_uploader_upload_%s', $type), $upload);

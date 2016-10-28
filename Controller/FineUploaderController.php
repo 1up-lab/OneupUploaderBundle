@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 
 class FineUploaderController extends AbstractChunkedController
 {
@@ -48,6 +49,45 @@ class FineUploaderController extends AbstractChunkedController
                 // an error happened, return this error message.
                 return $this->createSupportedJsonResponse($response->assemble());
             }
+        }
+
+        return $this->createSupportedJsonResponse($response->assemble());
+    }
+
+    /**
+     * POST 200-204
+     */
+    public function chunkingSuccess()
+    {
+        $request    = $this->getRequest();
+        $translator = $this->container->get('translator');
+        $response   = new FineUploaderResponse();
+
+        // get basic container stuff
+        $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
+
+        try {
+            // get information about this chunked request
+            list($last, $uuid, $index, $orig) = $this->parseChunkedRequest($request);
+
+            /** @var FileInterface $assembled  */
+
+            if (!$chunkManager->getLoadDistribution()) {
+                $chunks = $chunkManager->getChunks($uuid);
+                $assembled = $chunkManager->assembleChunks($chunks, true, true);
+            }
+
+            $path = $assembled->getPath();
+
+            $this->handleUpload($assembled, $response, $request);
+
+            $chunkManager->cleanup($path);
+        }
+        catch(UploadException $e) {
+            $response->setSuccess(false);
+            $response->setError($translator->trans($e->getMessage(), array(), 'OneupUploaderBundle'));
+
+            $this->errorHandler->addException($response, $e);
         }
 
         return $this->createSupportedJsonResponse($response->assemble());

@@ -60,4 +60,9 @@ class UploaderHelper extends Helper
 
         return $this->maxchunksize[ $key ];
     }
+
+    public function chunkingSuccess($key)
+    {
+        return $this->router->generate(sprintf('_uploader_chunking_success_%s', $key));
+    }
 }
