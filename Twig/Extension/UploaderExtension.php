@@ -27,7 +27,7 @@ class UploaderExtension extends \Twig_Extension
             new \Twig_SimpleFunction('oneup_uploader_upload_key', array($this, 'uploadKey')),
             new \Twig_SimpleFunction('oneup_uploader_maxsize', array($this, 'maxSize')),
             new \Twig_SimpleFunction('oneup_uploader_maxchunksize', array($this, 'maxChunkSize')),
-            new \Twig_SimpleFunction('oneup_uploader_chunking_success', array($this, 'maxChunkSize')),
+            new \Twig_SimpleFunction('oneup_uploader_chunking_success', array($this, 'chunkingSuccess')),
         );
     }
 

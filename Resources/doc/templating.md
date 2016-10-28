@@ -8,6 +8,8 @@ The following template helpers are available.
 * `oneup_uploader_cancel` Returns the route where you can cancel an upload if configured.
 * `oneup_uploader_upload_key` Returns the php.ini variable `session.upload_progress.name`. You may need this for getting progress configured.
 * `oneup_uploader_maxsize` Returns the configured max size value in bytes for a given mapping.
+* `oneup_uploader_maxchunksize` Returns the configured max chunk size in  bytes for a given mapping.
+* `oneup_uploader_chunking_success` Returns the endpoint route to which the uploaded should signal to start assembling the chunks.
 
 Use these helpers in your templates like this:
 
