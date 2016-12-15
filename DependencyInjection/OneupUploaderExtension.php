@@ -292,7 +292,7 @@ class OneupUploaderExtension extends Extension
     protected function getValueInBytes($input)
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
-        $input = (float) trim($input);
+        $input = trim($input);
         $last  = strtolower($input[strlen($input) - 1]);
         $numericInput = substr($input, 0, -1);
 
