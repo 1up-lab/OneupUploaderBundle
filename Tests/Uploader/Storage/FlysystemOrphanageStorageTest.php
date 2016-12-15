@@ -114,6 +114,6 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
 
     public function checkIfTempnameMatchesAfterCreation()
     {
-        return strpos(tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory) === 0;
+        return strpos(@tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory) === 0;
     }
 }
