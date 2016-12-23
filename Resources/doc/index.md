@@ -65,7 +65,7 @@ This bundle was designed to just work out of the box. The only thing you have to
 oneup_uploader:
     mappings:
         gallery:
-            frontend: blueimp # or any uploader you use in the frontend
+            frontend: dropzone # or any uploader you use in the frontend
 ```
 
 To enable the dynamic routes, add the following to your routing configuration file.
@@ -104,9 +104,17 @@ oneup_uploader:
                 directory: "%kernel.root_dir%/../data/uploads/"
 ```
 
-### Step 4: Prepare your frontend
+### Step 4: Check if the bundle is working correctly
 
-No matter what library you choose, be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
+No matter which JavaScript library you are going to use ultimately, we recommend to test the bundle with Dropzone first, since this one features the easiest setup process:
+
+1. [Install Dropzone](frontend_dropzone.md)
+1. Drag a file onto the dashed rectangle. The upload should start immediately. However, you won't get any visual feedback yet.
+1. Check your `web/uploads/gallery` directory: If you see the file there, the OneupUploaderBundle is working correctly. If you don't have that folder, create it manually and try again.
+
+### Step 5: Prepare your real frontend
+
+Now it's up to you to decide for a JavaScript library or write your own. Be sure to connect the corresponding endpoint property to the dynamic route created from your mapping. To get a url for a specific mapping you can use the `oneup_uploader.templating.uploader_helper` service as follows:
 
 ```php
 $helper = $this->container->get('oneup_uploader.templating.uploader_helper');
@@ -119,14 +127,14 @@ or in a Twig template you can use the `oneup_uploader_endpoint` function:
 
 So if you take the mapping described before, the generated route name would be `_uploader_gallery`. Follow one of the listed guides to include your frontend:
 
-* [Use FineUploader](frontend_fineuploader.md)
+* [Use Dropzone](frontend_dropzone.md)
 * [Use jQuery File Upload](frontend_blueimp.md)
-* [Use YUI3 Uploader](frontend_yui3.md)
-* [Use Uploadify](frontend_uploadify.md)
+* [Use Plupload](frontend_plupload.md)
+* [Use FineUploader](frontend_fineuploader.md)
 * [Use FancyUpload](frontend_fancyupload.md)
 * [Use MooUpload](frontend_mooupload.md)
-* [Use Plupload](frontend_plupload.md)
-* [Use Dropzone](frontend_dropzone.md)
+* [Use YUI3 Uploader](frontend_yui3.md)
+* [Use Uploadify](frontend_uploadify.md)
 
 ## Next steps
 
