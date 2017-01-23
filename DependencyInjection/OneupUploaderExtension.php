@@ -294,7 +294,7 @@ class OneupUploaderExtension extends Extension
         // see: http://www.php.net/manual/en/function.ini-get.php
         $input = trim($input);
         $last  = strtolower($input[strlen($input) - 1]);
-        $numericInput = substr($input, 0, -1);
+        $numericInput = (float) substr($input, 0, -1);
 
         switch ($last) {
             case 'g': $numericInput *= 1024;
