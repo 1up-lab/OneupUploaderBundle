@@ -31,6 +31,11 @@ class UploadListener
     public function onUpload(PostPersistEvent $event)
     {
         //...
+        
+        //if everything went fine
+        $response = $event->getResponse();
+        $response['success'] = true;
+        return $response;
     }
 }
 ```
