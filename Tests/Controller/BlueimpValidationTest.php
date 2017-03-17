@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Oneup\UploaderBundle\Tests\Controller\AbstractValidationTest;
 use Oneup\UploaderBundle\UploadEvents;
@@ -11,6 +12,7 @@ class BlueimpValidationTest extends AbstractValidationTest
     public function testAgainstMaxSize()
     {
         // assemble a request
+        /** @var Client $client */
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
@@ -20,6 +22,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         //$this->assertTrue($response->isNotSuccessful());
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
+        $this->assertFalse(strpos($response->getContent(), 'error.maxsize'), "Failed to translate error id into lang");
     }
 
     public function testEvents()
