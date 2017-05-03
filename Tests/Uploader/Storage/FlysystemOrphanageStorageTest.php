@@ -29,14 +29,14 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $this->tempDirectory = $this->realDirectory . '/' . $this->orphanageKey;
         $this->payloads = array();
 
-        if (!$this->checkIfTempnameMatchesAfterCreation()) {
-            $this->markTestSkipped('Temporary directories do not match');
-        }
-
         $filesystem = new Filesystem();
         $filesystem->mkdir($this->realDirectory);
         $filesystem->mkdir($this->chunkDirectory);
         $filesystem->mkdir($this->tempDirectory);
+
+        if (!$this->checkIfTempnameMatchesAfterCreation()) {
+            $this->markTestSkipped('Temporary directories do not match');
+        }
 
         $adapter = new Adapter($this->realDirectory, true);
         $filesystem = new FSAdapter($adapter);
@@ -61,7 +61,7 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 
-            //gaufrette needs the key relative to it's root
+            //file key needs to be relative to the root of the flysystem filesystem
             $fileKey = str_replace($this->realDirectory, '', $file);
 
             $this->payloads[] = new FlysystemFile(new File($filesystem, $fileKey), $filesystem);
@@ -95,7 +95,9 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $this->assertCount($this->numberOfPayloads, $finder);
 
         $finder = new Finder();
-        $finder->in($this->realDirectory)->exclude(array($this->orphanageKey, $this->chunksKey))->files();
+        $finder->in($this->realDirectory)
+            ->exclude(array($this->orphanageKey, $this->chunksKey))
+            ->files();
         $this->assertCount(0, $finder);
 
         $files = $this->orphanage->uploadFiles();
@@ -114,6 +116,10 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
 
     public function checkIfTempnameMatchesAfterCreation()
     {
-        return strpos(@tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory) === 0;
+        $testName = tempnam($this->chunkDirectory, 'uploader');
+        $result = strpos($testName, $this->chunkDirectory) === 0;
+        unlink($testName);
+
+        return $result;
     }
 }
