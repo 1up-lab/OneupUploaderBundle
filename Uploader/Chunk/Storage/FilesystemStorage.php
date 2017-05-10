@@ -50,13 +50,22 @@ class FilesystemStorage implements ChunkStorageInterface
         return $chunk->move($path, $name);
     }
 
+    /**
+     * @param FilesystemFile[]|File[] $chunks
+     * @param boolean $removeChunk
+     * @param boolean $renameChunk
+     *
+     * @return FilesystemFile|File
+     */
     public function assembleChunks($chunks, $removeChunk, $renameChunk)
     {
         if (!($chunks instanceof \IteratorAggregate)) {
             throw new \InvalidArgumentException('The first argument must implement \IteratorAggregate interface.');
         }
 
+        /** @var \ArrayIterator $iterator */
         $iterator = $chunks->getIterator();
+        $iterator->rewind();
 
         $base = $iterator->current();
         $iterator->next();
@@ -90,7 +99,16 @@ class FilesystemStorage implements ChunkStorageInterface
         // the file is only renamed before it is uploaded
         if ($renameChunk) {
             // create an file to meet interface restrictions
-            $assembled = new FilesystemFile(new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, $assembled->getSize(), null, true));
+            $assembled = new FilesystemFile(
+                new UploadedFile(
+                    $assembled->getPathname(),
+                    $assembled->getBasename(),
+                    null,
+                    $assembled->getSize(),
+                    null,
+                    true
+                )
+            );
         }
 
         return $assembled;

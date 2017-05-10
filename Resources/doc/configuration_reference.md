@@ -41,10 +41,13 @@ oneup_uploader:
             root_folder:          false
 
             # Set max_size to -1 for gracefully downgrade this number to the systems max upload size.
-            max_size:             9223372036854775807
-            use_orphanage:        false
-            enable_progress:      false
-            enable_cancelation:   false
-            namer:                oneup_uploader.namer.uniqid
+            max_size:                   9223372036854775807
+            # Set max_chunk_size to -1 for gracefully downgrade this number to the systems max upload size.
+            max_chunk_size:             9223372036854775807
+            use_orphanage:              false
+            enable_progress:            false
+            enable_cancelation:         false
+            enable_concurrent_chunking: false
+            namer:                      oneup_uploader.namer.uniqid
 
 ```

@@ -42,13 +42,17 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.chunks', $this->config['chunks']);
         $container->setParameter('oneup_uploader.orphanage', $this->config['orphanage']);
 
-        $controllers = array();
-        $maxsize = array();
+        $controllers  = array();
+        $maxsize      = array();
+        $maxchunksize = array();
+        $concurrent   = array();
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
-            $controllers[$key] = $this->processMapping($key, $mapping);
-            $maxsize[$key] = $this->getMaxUploadSize($mapping['max_size']);
+            $controllers[$key]  = $this->processMapping($key, $mapping);
+            $maxsize[$key]      = $this->getMaxUploadSize($mapping['max_size']);
+            $maxchunksize[$key] = $this->getMaxUploadSize($mapping['max_chunk_size']);
+            $concurrent[$key]   = !empty($mapping['enable_concurrent_chunking']);
 
             $container->setParameter(sprintf('oneup_uploader.config.%s', $key), $mapping);
         }
@@ -56,6 +60,8 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.config', $this->config);
         $container->setParameter('oneup_uploader.controllers', $controllers);
         $container->setParameter('oneup_uploader.maxsize', $maxsize);
+        $container->setParameter('oneup_uploader.maxchunksize', $maxchunksize);
+        $container->setParameter('oneup_uploader.enable_concurrent_chunking', $concurrent);
     }
 
     protected function processOrphanageConfig()
@@ -82,9 +88,11 @@ class OneupUploaderExtension extends Extension
         $this->verifyPhpVersion($mapping);
 
         return array($controllerName, array(
-            'enable_progress' => $mapping['enable_progress'],
-            'enable_cancelation' => $mapping['enable_cancelation'],
-            'route_prefix' => $mapping['route_prefix']
+            'enable_progress'            => $mapping['enable_progress'],
+            'enable_cancelation'         => $mapping['enable_cancelation'],
+            'route_prefix'               => $mapping['route_prefix'],
+            'frontend'                   => $mapping['frontend'],
+            'enable_concurrent_chunking' => $mapping['enable_concurrent_chunking']
         ));
     }
 

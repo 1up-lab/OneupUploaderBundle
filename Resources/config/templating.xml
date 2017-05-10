@@ -9,6 +9,7 @@
         <service id="oneup_uploader.templating.uploader_helper" class="Oneup\UploaderBundle\Templating\Helper\UploaderHelper">
             <argument type="service" id="router" />
             <argument>%oneup_uploader.maxsize%</argument>
+            <argument>%oneup_uploader.maxchunksize%</argument>
             <tag name="templating.helper" alias="oneup_uploader" />
         </service>
 
