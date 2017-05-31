@@ -9,6 +9,7 @@
                <parameter key="oneup_uploader.chunks_storage.flysystem.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage</parameter>
                <parameter key="oneup_uploader.chunks_storage.filesystem.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage</parameter>
                <parameter key="oneup_uploader.namer.uniqid.class">Oneup\UploaderBundle\Uploader\Naming\UniqidNamer</parameter>
+               <parameter key="oneup_uploader.namer.dateDirectory.class">Oneup\UploaderBundle\Uploader\Naming\DateDirectoryNamer</parameter>
                <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
                <parameter key="oneup_uploader.storage.gaufrette.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
                <parameter key="oneup_uploader.storage.flysystem.class">Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage</parameter>
@@ -40,7 +41,11 @@
 
                <!-- namer -->
                <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" />
-
+               <service id="oneup_uploader.namer.dateDirectory" class="%oneup_uploader.namer.dateDirectory.class%">
+                   <argument>Y/m/d</argument>
+                   <argument>@oneup_uploader.namer.uniqid</argument>
+               </service>
+               
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
                    <argument>%oneup_uploader.controllers%</argument>
