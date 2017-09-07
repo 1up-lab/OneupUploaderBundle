@@ -24,7 +24,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      */
     public function __construct($filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
-        $base = class_exists('Gaufrette\FilesystemInterface')
+        $base = interface_exists('Gaufrette\FilesystemInterface')
             ? 'Gaufrette\FilesystemInterface'
             : 'Gaufrette\Filesystem';
 

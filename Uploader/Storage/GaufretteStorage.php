@@ -21,7 +21,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
      */
     public function __construct($filesystem, $bufferSize, $streamWrapperPrefix = null)
     {
-        $base = class_exists('Gaufrette\FilesystemInterface')
+        $base = interface_exists('Gaufrette\FilesystemInterface')
             ? 'Gaufrette\FilesystemInterface'
             : 'Gaufrette\Filesystem';
 

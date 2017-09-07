@@ -20,7 +20,7 @@ class GaufretteFile extends File implements FileInterface
      */
     public function __construct(File $file, $filesystem, $streamWrapperPrefix = null)
     {
-        $base = class_exists('Gaufrette\FilesystemInterface')
+        $base = interface_exists('Gaufrette\FilesystemInterface')
             ? 'Gaufrette\FilesystemInterface'
             : 'Gaufrette\Filesystem';
 
