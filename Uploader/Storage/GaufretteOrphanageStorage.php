@@ -4,7 +4,6 @@ namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Gaufrette\File;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage as GaufretteChunkStorage;
-use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -30,7 +29,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
          * initiate the storage on the chunk storage's filesystem
          * the stream wrapper is useful for metadata.
          */
-        parent::__construct($chunkStorage->getFilesystem(), $chunkStorage->bufferSize, $chunkStorage->getStreamWrapperPrefix());
+        parent::__construct($chunkStorage->getFilesystem(), $chunkStorage->buffersize, $chunkStorage->getStreamWrapperPrefix());
 
         $this->storage = $storage;
         $this->chunkStorage = $chunkStorage;

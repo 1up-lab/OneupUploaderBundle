@@ -3,10 +3,10 @@
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Gaufrette\Adapter\StreamFactory;
+use Gaufrette\Filesystem;
+use Gaufrette\FilesystemInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
-use Gaufrette\Filesystem;
-
 use Oneup\UploaderBundle\Uploader\Gaufrette\StreamManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -16,13 +16,27 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
     protected $prefix;
     protected $streamWrapperPrefix;
 
-    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
+    /**
+     * @param FilesystemInterface|Filesystem $filesystem
+     * @param int $bufferSize
+     * @param string $streamWrapperPrefix
+     * @param string $prefix
+     */
+    public function __construct($filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
+        $base = class_exists('Gaufrette\FilesystemInterface')
+            ? 'Gaufrette\FilesystemInterface'
+            : 'Gaufrette\Filesystem';
+
+        if (!$filesystem instanceof $base) {
+            throw new \InvalidArgumentException(\sprintf('Expected an instance of "%s", got "%s".', $base, is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)));
+        }
+
         if (!($filesystem->getAdapter() instanceof StreamFactory)) {
             throw new \InvalidArgumentException('The filesystem used as chunk storage must implement StreamFactory');
         }
         $this->filesystem = $filesystem;
-        $this->bufferSize = $bufferSize;
+        $this->buffersize = $bufferSize;
         $this->prefix = $prefix;
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }

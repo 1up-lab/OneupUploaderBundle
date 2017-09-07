@@ -4,16 +4,30 @@ namespace Oneup\UploaderBundle\Uploader\File;
 
 use Gaufrette\Adapter\StreamFactory;
 use Gaufrette\File;
-use Gaufrette\Filesystem;
 use Gaufrette\Adapter\AwsS3;
+use Gaufrette\Filesystem;
+use Gaufrette\FilesystemInterface;
 
 class GaufretteFile extends File implements FileInterface
 {
     protected $streamWrapperPrefix;
     protected $mimeType;
 
-    public function __construct(File $file, Filesystem $filesystem, $streamWrapperPrefix = null)
+    /**
+     * @param File $file
+     * @param FilesystemInterface|Filesystem $filesystem
+     * @param string|null $streamWrapperPrefix
+     */
+    public function __construct(File $file, $filesystem, $streamWrapperPrefix = null)
     {
+        $base = class_exists('Gaufrette\FilesystemInterface')
+            ? 'Gaufrette\FilesystemInterface'
+            : 'Gaufrette\Filesystem';
+
+        if (!$filesystem instanceof $base) {
+            throw new \InvalidArgumentException(\sprintf('Expected an instance of "%s", got "%s".', $base, is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)));
+        }
+
         parent::__construct($file->getKey(), $filesystem);
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
