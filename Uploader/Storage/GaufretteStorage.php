@@ -26,7 +26,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
             : 'Gaufrette\Filesystem';
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(\sprintf('Expected an instance of "%s", got "%s".', $base, is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)));
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)));
         }
 
         $this->filesystem = $filesystem;
