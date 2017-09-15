@@ -8,6 +8,7 @@
                <parameter key="oneup_uploader.chunks_storage.gaufrette.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage</parameter>
                <parameter key="oneup_uploader.chunks_storage.flysystem.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage</parameter>
                <parameter key="oneup_uploader.chunks_storage.filesystem.class">Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage</parameter>
+               <parameter key="oneup_uploader.namer.urlsafename.class">Oneup\UploaderBundle\Uploader\Naming\UrlSafeNamer</parameter>
                <parameter key="oneup_uploader.namer.uniqid.class">Oneup\UploaderBundle\Uploader\Naming\UniqidNamer</parameter>
                <parameter key="oneup_uploader.routing.loader.class">Oneup\UploaderBundle\Routing\RouteLoader</parameter>
                <parameter key="oneup_uploader.storage.gaufrette.class">Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage</parameter>
@@ -40,6 +41,7 @@
 
                <!-- namer -->
                <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" />
+               <service id="oneup_uploader.namer.urlsafe" class="%oneup_uploader.namer.urlsafename.class%" />
 
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
