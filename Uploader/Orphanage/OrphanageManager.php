@@ -52,5 +52,21 @@ class OrphanageManager
         foreach ($finder as $file) {
             $system->remove($file);
         }
+
+        // Now that the files are cleaned, we check if we need to remove some directories as well
+        // We use a new instance of the Finder as it as a state
+        $finder = new Finder();
+        $finder->in($this->config['directory'])->directories();
+
+        $dirArray = iterator_to_array($finder, false);
+        $size = sizeof($dirArray);
+
+        // We crawl the array backward as the Finder returns the parent first
+        for ($i = $size-1; $i >= 0; $i--) {
+            $dir = $dirArray[$i];
+            if (!(new \FilesystemIterator($dir))->valid()) {
+                $system->remove($dir);
+            }
+        }
     }
 }
