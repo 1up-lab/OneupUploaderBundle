@@ -53,6 +53,22 @@ class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testUploadWithPath()
+    {
+        $payload = new FilesystemFile(new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true));
+        $this->storage->upload($payload, 'notsogrumpyanymore.jpeg', 'cat');
+
+        $finder = new Finder();
+        $finder->in($this->directory)->files();
+
+        $this->assertCount(1, $finder);
+
+        foreach ($finder as $file) {
+            $this->assertEquals($file->getFilename(), 'notsogrumpyanymore.jpeg');
+            $this->assertEquals($file->getSize(), 1024);
+        }
+    }
+
     public function tearDown()
     {
         $filesystem = new Filesystem();
