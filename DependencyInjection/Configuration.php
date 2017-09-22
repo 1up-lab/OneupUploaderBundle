@@ -76,6 +76,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->scalarNode('route_prefix')->defaultValue('')->end()
                             ->arrayNode('allowed_mimetypes')
+                                ->normalizeKeys(false)
                                 ->useAttributeAsKey('type')
                                 ->prototype('array')
                                     ->prototype('scalar')
