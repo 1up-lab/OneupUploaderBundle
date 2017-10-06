@@ -40,8 +40,9 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
 
     public function upload(FileInterface $file, $name, $path = null)
     {
-        if(!$this->session->isStarted())
+        if (!$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
+        }
 
         return parent::upload($file, $name, $this->getPath());
     }

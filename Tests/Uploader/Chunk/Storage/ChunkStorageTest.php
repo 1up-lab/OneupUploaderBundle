@@ -2,18 +2,22 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
 {
     protected $tmpDir;
+    /**
+     * @var ChunkStorageInterface
+     */
     protected $storage;
 
     public function testExistanceOfTmpDir()
     {
         $this->assertTrue(is_dir($this->tmpDir));
-        $this->assertTrue(is_writeable($this->tmpDir));
+        $this->assertTrue(is_writable($this->tmpDir));
     }
 
     public function testFillOfTmpDir()
@@ -30,7 +34,7 @@ abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
     public function testChunkCleanup()
     {
         // get a manager configured with a max-age of 5 minutes
-        $maxage  = 5 * 60;
+        $maxage = 5 * 60;
         $numberOfFiles = 10;
 
         $finder = new Finder();
@@ -42,7 +46,7 @@ abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
         $this->storage->clear($maxage);
 
         $this->assertTrue(is_dir($this->tmpDir));
-        $this->assertTrue(is_writeable($this->tmpDir));
+        $this->assertTrue(is_writable($this->tmpDir));
 
         $this->assertCount(5, $finder);
 
@@ -66,8 +70,8 @@ abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
     {
         $system = new Filesystem();
 
-        for ($i = 0; $i < $number; $i ++) {
-            $system->touch(sprintf('%s/%s', $this->tmpDir, uniqid()), time() - $i * 60);
+        for ($i = 0; $i < $number; ++$i) {
+            $system->touch(sprintf('%s/%s', $this->tmpDir, uniqid('', true)), time() - $i * 60);
         }
     }
 }
