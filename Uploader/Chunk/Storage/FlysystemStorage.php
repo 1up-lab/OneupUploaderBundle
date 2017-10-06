@@ -22,14 +22,6 @@ class FlysystemStorage implements ChunkStorageInterface
 
     public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
-        if (
-            !method_exists($filesystem, 'readStream')
-            ||
-            !method_exists($filesystem, 'putStream')
-        ) {
-            throw new \InvalidArgumentException('The filesystem used as chunk storage must streamable');
-        }
-
         if (null === $streamWrapperPrefix) {
             throw new \InvalidArgumentException('Stream wrapper must be configured.');
         }
