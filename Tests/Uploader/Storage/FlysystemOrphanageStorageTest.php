@@ -35,10 +35,6 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $filesystem->mkdir($this->chunkDirectory);
         $filesystem->mkdir($this->tempDirectory);
 
-        if (!$this->checkIfTempnameMatchesAfterCreation()) {
-            $this->markTestSkipped('Temporary directories do not match');
-        }
-
         $adapter = new Adapter($this->realDirectory);
         $filesystem = new FSAdapter($adapter);
 
@@ -120,14 +116,5 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $finder = new Finder();
         $finder->in($this->realDirectory)->files();
         $this->assertCount($this->numberOfPayloads, $finder);
-    }
-
-    public function checkIfTempnameMatchesAfterCreation()
-    {
-        $testName = tempnam($this->chunkDirectory, 'uploader');
-        $result = strpos($testName, $this->chunkDirectory) === 0;
-        unlink($testName);
-
-        return $result;
     }
 }
