@@ -1,13 +1,14 @@
 <?php
+
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
-use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FlysystemStorage implements ChunkStorageInterface
 {
-
     protected $unhandledChunk;
     protected $prefix;
     protected $streamWrapperPrefix;
@@ -21,12 +22,8 @@ class FlysystemStorage implements ChunkStorageInterface
 
     public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
-        if (
-            ! method_exists($filesystem, 'readStream')
-            ||
-            ! method_exists($filesystem, 'putStream')
-        ) {
-            throw new \InvalidArgumentException('The filesystem used as chunk storage must streamable');
+        if (null === $streamWrapperPrefix) {
+            throw new \InvalidArgumentException('Stream wrapper must be configured.');
         }
 
         $this->filesystem = $filesystem;
@@ -37,8 +34,8 @@ class FlysystemStorage implements ChunkStorageInterface
 
     public function clear($maxAge, $prefix = null)
     {
-        $prefix = $prefix ? :$this->prefix;
-        $matches = $this->filesystem->listFiles($prefix);
+        $prefix = $prefix ?: $this->prefix;
+        $matches = $this->filesystem->listContents($prefix, true);
 
         $now = time();
         $toDelete = array();
@@ -47,24 +44,20 @@ class FlysystemStorage implements ChunkStorageInterface
         // this also means the files inside are old
         // but after the files are deleted the dirs
         // would remain
-        foreach ($matches['dirs'] as $key) {
-            if ($maxAge <= $now-$this->filesystem->getTimestamp($key)) {
-                $toDelete[] = $key;
-            }
-        }
-        // The same directory is returned for every file it contains
-        array_unique($toDelete);
-        foreach ($matches['keys'] as $key) {
-            if ($maxAge <= $now-$this->filesystem->getTimestamp($key)) {
-                $this->filesystem->delete($key);
+        foreach ($matches as $key) {
+            $path = $key['path'];
+            $timestamp = isset($key['timestamp']) ? $key['timestamp'] : $this->filesystem->getTimestamp($path);
+
+            if ($maxAge <= $now - $timestamp) {
+                $toDelete[] = $path;
             }
         }
 
-        foreach ($toDelete as $key) {
+        foreach ($toDelete as $path) {
             // The filesystem will throw exceptions if
             // a directory is not empty
             try {
-                $this->filesystem->delete($key);
+                $this->filesystem->delete($path);
             } catch (\Exception $e) {
                 continue;
             }
@@ -77,7 +70,7 @@ class FlysystemStorage implements ChunkStorageInterface
             'uuid' => $uuid,
             'index' => $index,
             'chunk' => $chunk,
-            'original' => $original
+            'original' => $original,
         );
     }
 
@@ -91,21 +84,26 @@ class FlysystemStorage implements ChunkStorageInterface
             $target = $filename;
         } else {
             sort($chunks, SORT_STRING | SORT_FLAG_CASE);
-            $target = pathinfo($chunks[0], PATHINFO_BASENAME);
+            $target = pathinfo($chunks[0]['path'], PATHINFO_BASENAME);
         }
 
-
-        if ($this->unhandledChunk['index'] === 0) {
+        $mode = 'ab';
+        if (0 === $this->unhandledChunk['index']) {
             // if it's the first chunk overwrite the already existing part
             // to avoid appending to earlier failed uploads
-            $handle = fopen($path . '/' . $target, 'w');
-        } else {
-            $handle = fopen($path . '/' . $target, 'a');
+            $mode = 'wb';
         }
 
-        $this->filesystem->putStream($path . $target, $handle);
+        $file = fopen($this->unhandledChunk['chunk']->getPathname(), 'rb');
+        $dest = fopen($this->streamWrapperPrefix.'/'.$path.$target, $mode);
+
+        stream_copy_to_stream($file, $dest);
+
+        fclose($file);
+        fclose($dest);
+
         if ($renameChunk) {
-            $name = preg_replace('/^(\d+)_/', '', $target);
+            $name = $this->unhandledChunk['original'];
             /* The name can only match if the same user in the same session is
              * trying to upload a file under the same name AND the previous upload failed,
              * somewhere between this function, and the cleanup call. If that happened
@@ -130,13 +128,16 @@ class FlysystemStorage implements ChunkStorageInterface
 
     public function cleanup($path)
     {
-        $this->filesystem->delete($path);
+        try {
+            $this->filesystem->delete($path);
+        } catch (FileNotFoundException $e) {
+            // File already gone.
+        }
     }
 
     public function getChunks($uuid)
     {
-        $results = $this->filesystem->listFiles($this->prefix.'/'.$uuid);
-        return preg_grep('/^.+\/(\d+)_/', $results['keys']);
+        return $this->filesystem->listFiles($this->prefix.'/'.$uuid);
     }
 
     public function getFilesystem()
@@ -148,5 +149,4 @@ class FlysystemStorage implements ChunkStorageInterface
     {
         return $this->streamWrapperPrefix;
     }
-
 }

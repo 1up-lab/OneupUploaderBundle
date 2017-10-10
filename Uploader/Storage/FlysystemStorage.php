@@ -3,13 +3,14 @@
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
 
 class FlysystemStorage implements StorageInterface
 {
-
     /**
      * @var null|string
      */
@@ -34,32 +35,37 @@ class FlysystemStorage implements StorageInterface
 
     public function upload(FileInterface $file, $name, $path = null)
     {
-        $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
+        $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
-        if ($file instanceof FlysystemFile) {
-            if ($file->getFilesystem() == $this->filesystem) {
-                $file->getFilesystem()->rename($file->getPath(), $path);
+        if ($file instanceof FilesystemFile) {
+            $stream = fopen($file->getPathname(), 'rb+');
+            $this->filesystem->putStream($path, $stream, array(
+                'mimetype' => $file->getMimeType()
+            ));
 
-                return new FlysystemFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
+            if (is_resource($stream)) {
+                fclose($stream);
             }
-        }
 
-        $stream = fopen($file->getPathname(), 'r+');
-        $this->filesystem->putStream($path, $stream, array(
-            'mimetype' => $file->getMimeType()
-        ));
-        if (is_resource($stream)) {
-            fclose($stream);
-        }
-
-        if ($file instanceof FlysystemFile) {
-            $file->delete();
-        } else {
             $filesystem = new LocalFilesystem();
             $filesystem->remove($file->getPathname());
+
+            return new FlysystemFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
         }
+
+        if ($file instanceof FlysystemFile && $file->getFilesystem() === $this->filesystem) {
+            $file->getFilesystem()->rename($file->getPath(), $path);
+
+            return new FlysystemFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
+        }
+
+        $manager = new MountManager([
+            'chunks' => $file->getFilesystem(),
+            'dest' => $this->filesystem,
+        ]);
+
+        $manager->move(sprintf('chunks://%s', $file->getPathname()), sprintf('dest://%s', $path));
 
         return new FlysystemFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
     }
-
 }

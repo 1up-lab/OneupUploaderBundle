@@ -1,7 +1,7 @@
 OneupUploaderBundle
 ===================
 
-The OneupUploaderBundle for Symfony2 adds support for handling file uploads using one of the following JavaScript libraries, or [your own implementation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_uploader.md).
+The OneupUploaderBundle for Symfony adds support for handling file uploads using one of the following JavaScript libraries, or [your own implementation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_uploader.md).
 
 * [Dropzone](http://www.dropzonejs.com/)
 * [jQuery File Upload](http://blueimp.github.io/jQuery-File-Upload/)

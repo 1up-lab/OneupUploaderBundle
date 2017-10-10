@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use League\Flysystem\Adapter\Local as Adapter;
 use League\Flysystem\Filesystem as FSAdapter;
 use Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage as Storage;
+use Twistor\FlysystemStreamWrapper;
 
 class FlysystemOrphanageStorageTest extends OrphanageTest
 {
@@ -34,16 +35,14 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $filesystem->mkdir($this->chunkDirectory);
         $filesystem->mkdir($this->tempDirectory);
 
-        if (!$this->checkIfTempnameMatchesAfterCreation()) {
-            $this->markTestSkipped('Temporary directories do not match');
-        }
-
-        $adapter = new Adapter($this->realDirectory, true);
+        $adapter = new Adapter($this->realDirectory);
         $filesystem = new FSAdapter($adapter);
+
+        FlysystemStreamWrapper::register('tests', $filesystem);
 
         $this->storage = new Storage($filesystem, 100000);
 
-        $chunkStorage = new ChunkStorage($filesystem, 100000, null, 'chunks');
+        $chunkStorage = new ChunkStorage($filesystem, 100000, 'tests:/', 'chunks');
 
         // create orphanage
         $session = new Session(new MockArraySessionStorage());
@@ -66,6 +65,13 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
 
             $this->payloads[] = new FlysystemFile(new File($filesystem, $fileKey), $filesystem);
         }
+    }
+
+    public function tearDown()
+    {
+        (new Filesystem())->remove($this->realDirectory);
+
+        FlysystemStreamWrapper::unregister('tests');
     }
 
     public function testUpload()
@@ -95,9 +101,7 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $this->assertCount($this->numberOfPayloads, $finder);
 
         $finder = new Finder();
-        $finder->in($this->realDirectory)
-            ->exclude(array($this->orphanageKey, $this->chunksKey))
-            ->files();
+        $finder->in($this->realDirectory)->exclude(array($this->orphanageKey, $this->chunksKey))->files();
         $this->assertCount(0, $finder);
 
         $files = $this->orphanage->uploadFiles();
@@ -112,14 +116,5 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $finder = new Finder();
         $finder->in($this->realDirectory)->files();
         $this->assertCount($this->numberOfPayloads, $finder);
-    }
-
-    public function checkIfTempnameMatchesAfterCreation()
-    {
-        $testName = tempnam($this->chunkDirectory, 'uploader');
-        $result = strpos($testName, $this->chunkDirectory) === 0;
-        unlink($testName);
-
-        return $result;
     }
 }
