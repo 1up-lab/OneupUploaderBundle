@@ -53,7 +53,7 @@ And register it in your `services.xml`.
 
 ```yml
 services:
-    acme_hello.upload_listener:
+    app.upload_listener:
         class: AppBundle\EventListener\UploadListener
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
