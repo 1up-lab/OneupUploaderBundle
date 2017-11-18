@@ -23,12 +23,9 @@ matrix:
 
 before_install:
   - composer selfupdate
-
+  - if [ "$STABILITY" != "" ]; then composer config minimum-stablity $STABILITY; fi
 before_script:
   - travis_wait composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
   - travis_wait composer install --dev --prefer-source
-
-install:
-  - if [ $STABILITY != "" ]; then composer config minimum-stability $STABILITY; endif
 
 script: ./vendor/bin/phpunit
