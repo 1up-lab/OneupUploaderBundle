@@ -16,11 +16,11 @@
 
     "require": {
         "php":">=5.4",
-        "symfony/framework-bundle": "^2.4|^3.0",
-        "symfony/finder": "^2.4|^3.0",
-        "symfony/translation": "^2.4|^3.0",
-        "symfony/asset": "^2.4|^3.0",
-        "symfony/templating": "^2.4|^3.0",
+        "symfony/framework-bundle": "^2.4|^3.0|^4.0",
+        "symfony/finder": "^2.4|^3.0|^4.0",
+        "symfony/translation": "^2.4|^3.0|^4.0",
+        "symfony/asset": "^2.4|^3.0|^4.0",
+        "symfony/templating": "^2.4|^3.0|^4.0",
         "paragonie/random_compat": "^1.1|^2.0"
     },
 
@@ -30,9 +30,9 @@
         "oneup/flysystem-bundle": "^1.2",
         "phpunit/phpunit": "^4.4",
         "sensio/framework-extra-bundle": "2.*|^3.0",
-        "symfony/browser-kit": "2.*|^3.0",
-        "symfony/class-loader": "2.*|^3.0",
-        "symfony/security-bundle": "2.*|^3.0",
+        "symfony/browser-kit": "2.*|^3.0|^4.0",
+        "symfony/class-loader": "2.*|^3.0|^4.0",
+        "symfony/security-bundle": "2.*|^3.0|^4.0",
         "twistor/flysystem-stream-wrapper": "^1.0"
     },
 
