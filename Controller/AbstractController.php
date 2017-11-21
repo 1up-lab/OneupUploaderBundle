@@ -113,7 +113,7 @@ abstract class AbstractController
         if (!($file instanceof FileInterface)) {
             $file = new FilesystemFile($file);
         }
-        $this->validate($file);
+        $this->validate($file, $response, $request);
 
         $this->dispatchPreUploadEvent($file, $response, $request);
 
@@ -169,10 +169,10 @@ abstract class AbstractController
         }
     }
 
-    protected function validate(FileInterface $file)
+    protected function validate(FileInterface $file,ResponseInterface $response, Request $request)
     {
         $dispatcher = $this->container->get('event_dispatcher');
-        $event = new ValidationEvent($file, $this->getRequest(), $this->config, $this->type);
+        $event = new ValidationEvent($file, $response, $request, $this->config, $this->type);
 
         $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
         $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::VALIDATION, $this->type), $event);
