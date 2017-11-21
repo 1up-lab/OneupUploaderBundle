@@ -75,6 +75,27 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->scalarNode('route_prefix')->defaultValue('')->end()
+                            ->arrayNode('endpoints')
+                                ->beforeNormalization()
+                                    ->ifString()
+                                    ->then(function ($v) {
+                                        if (substr($v, -1) != '/') {
+                                            $v .= '/';
+                                        }
+                                        return [
+                                            'upload' => $v.'upload',
+                                            'progress' => $v.'progress',
+                                            'cancel' => $v.'cancel',
+                                        ];
+                                    })
+                                ->end()
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('upload')->defaultNull()->end()
+                                    ->scalarNode('progress')->defaultNull()->end()
+                                    ->scalarNode('cancel')->defaultNull()->end()
+                                ->end()
+                            ->end()
                             ->arrayNode('allowed_mimetypes')
                                 ->prototype('scalar')->end()
                             ->end()
