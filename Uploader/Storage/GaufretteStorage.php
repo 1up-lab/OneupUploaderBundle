@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
+use Gaufrette\FilesystemInterface;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Gaufrette\Filesystem;
@@ -13,10 +14,23 @@ class GaufretteStorage extends StreamManager implements StorageInterface
 {
     protected $streamWrapperPrefix;
 
-    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix = null)
+    /**
+     * @param FilesystemInterface|Filesystem $filesystem
+     * @param int $bufferSize
+     * @param string|null $streamWrapperPrefix
+     */
+    public function __construct($filesystem, $bufferSize, $streamWrapperPrefix = null)
     {
+        $base = interface_exists('Gaufrette\FilesystemInterface')
+            ? 'Gaufrette\FilesystemInterface'
+            : 'Gaufrette\Filesystem';
+
+        if (!$filesystem instanceof $base) {
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)));
+        }
+
         $this->filesystem = $filesystem;
-        $this->bufferSize = $bufferSize;
+        $this->buffersize = $bufferSize;
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 

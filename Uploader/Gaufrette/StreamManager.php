@@ -46,7 +46,7 @@ class StreamManager
         $this->openStream($src, 'r');
 
         while (!$src->eof()) {
-            $data = $src->read($this->bufferSize);
+            $data = $src->read($this->buffersize);
             $dst->write($data);
         }
 
