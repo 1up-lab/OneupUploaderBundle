@@ -15,7 +15,7 @@ class ValidationEvent extends Event
     protected $request;
     protected $response;
 
-    public function __construct(FileInterface $file, ResponseInterface $response, Request $request, array $config, $type)
+    public function __construct(FileInterface $file, Request $request, array $config, $type, ResponseInterface $response = null)
     {
         $this->file = $file;
         $this->config = $config;
