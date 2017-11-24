@@ -1,5 +1,11 @@
 <?php
 
+namespace Oneup\UploaderBundle\Tests\App;
+
+use Oneup\UploaderBundle\OneupUploaderBundle;
+use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -8,12 +14,12 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = array(
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new FrameworkBundle(),
+            new SecurityBundle(),
+            new SensioFrameworkExtraBundle(),
 
             // bundle to test
-            new Oneup\UploaderBundle\OneupUploaderBundle(),
+            new OneupUploaderBundle(),
         );
 
         return $bundles;
