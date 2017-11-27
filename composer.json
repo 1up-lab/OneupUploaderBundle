@@ -47,7 +47,5 @@
             "Oneup\\UploaderBundle\\": ""
         },
         "classmap": [ "Tests/App/AppKernel.php"]
-    },
-
-    "target-dir": "Oneup/UploaderBundle"
+    }
 }
