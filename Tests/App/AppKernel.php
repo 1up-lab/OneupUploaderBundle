@@ -1,7 +1,5 @@
 <?php
 
-namespace Oneup\UploaderBundle\Tests\App;
-
 use Oneup\UploaderBundle\OneupUploaderBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;

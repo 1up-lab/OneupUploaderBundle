@@ -2,8 +2,8 @@
 
 <phpunit bootstrap="./Tests/bootstrap.php" colors="true">
     <php>
-        <server name="KERNEL_CLASS" value="Oneup\UploaderBundle\Tests\App\AppKernel" />
         <server name="KERNEL_DIR" value="Tests/App" />
+        <server name="KERNEL_CLASS" value="AppKernel" />
     </php>
         
     <testsuites>
