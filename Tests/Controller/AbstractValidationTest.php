@@ -8,6 +8,7 @@ use Oneup\UploaderBundle\UploadEvents;
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
     abstract protected function getFileWithCorrectMimeType();
+    abstract protected function getFileWithCorrectMimeTypeAndIncorrectExtension();
     abstract protected function getFileWithIncorrectMimeType();
     abstract protected function getOversizedFile();
 
@@ -83,6 +84,19 @@ abstract class AbstractValidationTest extends AbstractControllerTest
             $this->assertTrue($file->isReadable());
             $this->assertEquals(128, $file->getSize());
         }
+    }
+
+    public function testAgainstCorrectMimeTypeAndIncorrectExtension()
+    {
+        // assemble a request
+        $client = $this->client;
+        $endpoint = $this->helper->endpoint($this->getConfigKey());
+
+        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getFileWithCorrectMimeTypeAndIncorrectExtension()), $this->requestHeaders);
+        $response = $client->getResponse();
+
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertCount(0, $this->getUploadedFiles());
     }
 
     public function testAgainstIncorrectMimeType()
