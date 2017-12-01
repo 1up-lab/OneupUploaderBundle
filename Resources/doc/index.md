@@ -5,10 +5,13 @@ The OneupUploaderBundle is a Symfony2 bundle developed and tested for versions 2
 
 ## Prerequisites
 
-This bundle is tested using Symfony 2.4+.
+This bundle is tested using Symfony 3.3+.
 
 **With Symfony 2.3**  
 If you want to use the bundle with Symfony 2.3, head over to the documentation for [1.3.x](https://github.com/1up-lab/OneupUploaderBundle/blob/release-1.3.x/Resources/doc/index.md).
+
+**With Symfony 2.4.x - 2.8.x**  
+If you want to use the bundle with Symfony 2.4.x - 2.8.x, head over to the documentation for [1.9.x](https://github.com/1up-lab/OneupUploaderBundle/blob/release/1.9.x/Resources/doc/index.md).
 
 ### Translations
 If you wish to use the default texts provided with this bundle, you have to make sure that you have translator

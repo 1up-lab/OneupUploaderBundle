@@ -34,6 +34,7 @@ The entry point of the documentation can be found in the file `Resources/docs/in
 
 Upgrade Notes
 -------------
+* Version **2.0.0** supports now Symfony 4! Symfony 2.x support was dropped. You can also configure now a file extension validation whitelist (PR [#289](https://github.com/1up-lab/OneupUploaderBundle/pull/289))
 * Version **1.5.0** supports now [Flysystem](https://github.com/1up-lab/OneupFlysystemBundle) (Thank you @[lsv](https://github.com/lsv)! PR [#213](https://github.com/1up-lab/OneupUploaderBundle/pull/213)) and is no longer compatible with PHP 5.3 (it's [EOL](http://php.net/eol.php) since August 2014 anyway).
 * Version **v1.0.0** introduced some backward compatibility breaks. For a full list of changes, head to the [dedicated pull request](https://github.com/1up-lab/OneupUploaderBundle/pull/57).
 * If you're using chunked uploads consider upgrading from **v0.9.6** to **v0.9.7**. A critical issue was reported regarding the assembly of chunks. More information in ticket [#21](https://github.com/1up-lab/OneupUploaderBundle/issues/21#issuecomment-21560320).
