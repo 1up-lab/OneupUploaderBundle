@@ -3,6 +3,7 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -10,7 +11,7 @@ use Gaufrette\Filesystem as GaufretteFilesystem;
 use Gaufrette\Adapter\Local as Adapter;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 
-class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
+class GaufretteStorageTest extends TestCase
 {
     protected $directory;
     protected $storage;

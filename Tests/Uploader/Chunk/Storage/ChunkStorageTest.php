@@ -3,10 +3,11 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
+abstract class ChunkStorageTest extends TestCase
 {
     protected $tmpDir;
     /**

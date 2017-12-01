@@ -6,11 +6,12 @@ use League\Flysystem\Adapter\Local as Adapter;
 use League\Flysystem\Filesystem as FSAdapter;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage as Storage;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class FlysystemStorageTest extends \PHPUnit_Framework_TestCase
+class FlysystemStorageTest extends TestCase
 {
     protected $directory;
 

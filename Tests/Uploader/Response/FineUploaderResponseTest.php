@@ -3,8 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
+use PHPUnit\Framework\TestCase;
 
-class TestFineUploaderResponse extends \PHPUnit_Framework_TestCase
+class TestFineUploaderResponse extends TestCase
 {
     public function testCreationOfResponse()
     {

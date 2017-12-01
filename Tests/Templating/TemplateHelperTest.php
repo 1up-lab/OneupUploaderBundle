@@ -19,7 +19,7 @@ class TemplateHelperTest extends WebTestCase
 
     public function testNonExistentMappingForMaxSize()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
 
         $client = static::createClient();
         $container = $client->getContainer();

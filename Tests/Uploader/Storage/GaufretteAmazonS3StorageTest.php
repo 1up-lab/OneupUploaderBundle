@@ -3,13 +3,14 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use \AmazonS3 as AmazonClient;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Gaufrette\Filesystem as GaufretteFilesystem;
 use Gaufrette\Adapter\AmazonS3 as S3Adapter;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 
-class GaufretteAmazonS3StorageTest extends \PHPUnit_Framework_TestCase
+class GaufretteAmazonS3StorageTest extends TestCase
 {
     protected $directory;
     protected $storage;

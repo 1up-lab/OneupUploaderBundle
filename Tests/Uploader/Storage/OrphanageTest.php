@@ -3,10 +3,11 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\Storage\FlysystemOrphanageStorage;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class OrphanageTest extends \PHPUnit_Framework_TestCase
+abstract class OrphanageTest extends TestCase
 {
     protected $tempDirectory;
     protected $realDirectory;

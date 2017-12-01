@@ -2,11 +2,12 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Orphanage;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager;
 
-class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
+class OrphanageManagerTest extends TestCase
 {
     protected $numberOfOrphans;
     protected $orphanagePath;
@@ -89,7 +90,7 @@ class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function getContainerMock()
     {
-        $mock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $mock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $mock
             ->expects($this->any())
             ->method('get')

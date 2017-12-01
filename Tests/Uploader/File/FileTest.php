@@ -1,7 +1,9 @@
 <?php
 namespace Oneup\UploaderBundle\Tests\Uploader\File;
 
-abstract class FileTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class FileTest extends TestCase
 {
     protected $file;
     protected $pathname;
