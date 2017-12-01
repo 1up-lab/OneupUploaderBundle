@@ -2,15 +2,26 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
+use Oneup\UploaderBundle\Templating\Helper\UploaderHelper;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\Finder\Finder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
     protected $createdFiles;
+
+    /**
+     * @var Client
+     */
     protected $client;
     protected $container;
     protected $requestHeaders;
+
+    /**
+     * @var UploaderHelper
+     */
+    protected $helper;
 
     public function setUp()
     {

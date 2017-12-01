@@ -29,22 +29,22 @@
            <services>
 
                <!-- managers -->
-               <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%">
+               <service id="oneup_uploader.chunk_manager" class="%oneup_uploader.chunks.manager.class%" public="true">
                    <argument>%oneup_uploader.chunks%</argument>
                    <argument type="service" id="oneup_uploader.chunks_storage" />
                </service>
 
-               <service id="oneup_uploader.orphanage_manager" class="%oneup_uploader.orphanage.manager.class%">
+               <service id="oneup_uploader.orphanage_manager" class="%oneup_uploader.orphanage.manager.class%" public="true">
                    <argument type="service" id="service_container" />
                    <argument>%oneup_uploader.orphanage%</argument>
                </service>
 
                <!-- namer -->
-               <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" />
+               <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" public="true"/>
                <service id="oneup_uploader.namer.urlsafe" class="%oneup_uploader.namer.urlsafename.class%" />
 
                <!-- routing -->
-               <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%">
+               <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%" public="true">
                    <argument>%oneup_uploader.controllers%</argument>
                    <tag name="routing.loader" />
                </service>
