@@ -62,7 +62,6 @@ class MooUploadResponseTest extends TestCase
 
     public function testAssemble()
     {
-
         $response = new MooUploadResponse();
         $response->setId(3);
         $response->setName('grumpy_cat.jpg');

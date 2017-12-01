@@ -51,5 +51,4 @@ class GaufretteStorage extends StreamManager implements StorageInterface
 
         return new GaufretteFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
     }
-
 }

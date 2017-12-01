@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UrlSafeNamerTest extends FileTest
 {
-
     public function setUp()
     {
         $this->path = sys_get_temp_dir(). '/oneup_namer_test';
@@ -36,12 +35,11 @@ class UrlSafeNamerTest extends FileTest
     {
         $namer = new UrlSafeNamer();
         // Trying 200 times just to be sure
-        for($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $name1 = $namer->name($this->file);
             $name2 = $namer->name($this->file);
             $this->assertNotEquals($name1, $name2);
         }
-
     }
 
     public function tearDown()
@@ -49,5 +47,4 @@ class UrlSafeNamerTest extends FileTest
         unlink($this->pathname);
         rmdir($this->path);
     }
-
 }

@@ -24,7 +24,7 @@ class DropzoneController extends AbstractController
                 $message = $translator->trans($e->getMessage(), array(), 'OneupUploaderBundle');
                 $response = $this->createSupportedJsonResponse(array('error'=>$message ));
                 $response->setStatusCode(400);
-                return $response;                
+                return $response;
             }
         }
 

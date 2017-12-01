@@ -17,7 +17,7 @@ class GaufretteAmazonS3StorageTest extends TestCase
 
     public function setUp()
     {
-        if(
+        if (
             "" == getenv('AWS_ACCESS_KEY_ID') ||
             "" == getenv('AWS_SECRET_ACCESS_KEY') ||
             "" == getenv('AWS_BUCKET')
@@ -59,12 +59,12 @@ class GaufretteAmazonS3StorageTest extends TestCase
         $this->assertCount(2, $files['keys']);
 
         foreach ($files['keys'] as $filename) {
-          if ($filename === $this->prefix) {
-            // ignore the prefix directory
-            continue;
-          }
-          $this->assertEquals($this->prefix. '/notsogrumpyanymore.jpeg', $filename);
-          $this->assertEquals(1024, strlen($this->filesystem->read($filename)));
+            if ($filename === $this->prefix) {
+                // ignore the prefix directory
+                continue;
+            }
+            $this->assertEquals($this->prefix. '/notsogrumpyanymore.jpeg', $filename);
+            $this->assertEquals(1024, strlen($this->filesystem->read($filename)));
         }
     }
 
@@ -72,9 +72,9 @@ class GaufretteAmazonS3StorageTest extends TestCase
     {
         $files = $this->filesystem->listKeys($this->prefix);
         foreach ($files['keys'] as $filename) {
-          if ($this->filesystem->has($filename)) {
-            $this->filesystem->delete($filename);
-          }
+            if ($this->filesystem->has($filename)) {
+                $this->filesystem->delete($filename);
+            }
         }
     }
 }

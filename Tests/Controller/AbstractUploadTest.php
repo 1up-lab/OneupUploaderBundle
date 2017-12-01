@@ -50,7 +50,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function(PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -62,7 +62,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
             $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $file);
         });
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function(PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
             ++ $uploadCount;
             $preValidation *= -1;
 

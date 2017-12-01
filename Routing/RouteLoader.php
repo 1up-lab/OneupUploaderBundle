@@ -25,7 +25,6 @@ class RouteLoader extends Loader
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $type => $controllerArray) {
-
             $service = $controllerArray[0];
             $options = $controllerArray[1];
 

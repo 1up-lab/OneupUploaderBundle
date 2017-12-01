@@ -104,5 +104,4 @@ class GaufretteFile extends File implements FileInterface
     {
         return $this->filesystem;
     }
-
 }

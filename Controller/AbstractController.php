@@ -209,12 +209,10 @@ abstract class AbstractController
      */
     protected function getRequest()
     {
-
         if (version_compare(Kernel::VERSION, '2.4', '<=')) {
             return $this->container->get('request');
         }
 
         return $this->container->get('request_stack')->getMasterRequest();
     }
-
 }

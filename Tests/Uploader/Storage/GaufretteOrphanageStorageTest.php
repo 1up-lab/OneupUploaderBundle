@@ -1,6 +1,7 @@
 <?php
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
+
 use Gaufrette\File;
 use Gaufrette\Filesystem as GaufretteFilesystem;
 
