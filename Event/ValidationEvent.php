@@ -48,5 +48,4 @@ class ValidationEvent extends Event
     {
         return $this->response;
     }
-
 }

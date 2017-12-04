@@ -103,7 +103,9 @@ class Configuration implements ConfigurationInterface
                                     ->prototype('scalar')
                                         ->beforeNormalization()
                                             ->ifString()
-                                            ->then(function ($v) { return strtolower($v); })
+                                            ->then(function ($v) {
+                                                return strtolower($v);
+                                            })
                                         ->end()
                                     ->end()
                                 ->end()
