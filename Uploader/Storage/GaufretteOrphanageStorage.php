@@ -40,8 +40,9 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
 
     public function upload(FileInterface $file, $name, $path = null)
     {
-        if(!$this->session->isStarted())
+        if (!$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
+        }
 
         return parent::upload($file, $name, $this->getPath());
     }
@@ -89,5 +90,4 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
         // should be relative.
         return sprintf('%s/%s/%s', $this->config['directory'], $this->session->getId(), $this->type);
     }
-
 }

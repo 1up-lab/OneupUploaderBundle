@@ -2,6 +2,7 @@
 
 namespace Oneup\UploaderBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -103,15 +104,16 @@ class OneupUploaderExtension extends Extension
             $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
             $controllerType = $customFrontend['class'];
 
-            if(empty($controllerName) || empty($controllerType))
+            if (empty($controllerName) || empty($controllerType)) {
                 throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
+            }
         }
 
         $errorHandler = $this->createErrorHandler($config);
 
         // create controllers based on mapping
         $this->container
-            ->register($controllerName, $controllerType)
+            ->setDefinition($controllerName, (new Definition($controllerType))->setPublic(true))
 
             ->addArgument(new Reference('service_container'))
             ->addArgument($storageService)
@@ -147,7 +149,7 @@ class OneupUploaderExtension extends Extension
 
         $storageClass = sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']);
 
-        switch($config['type']) {
+        switch ($config['type']) {
             case 'filesystem':
                 $config['directory'] = is_null($config['directory']) ?
                     sprintf('%s/uploader/chunks', $this->container->getParameter('kernel.cache_dir')) :
@@ -164,7 +166,8 @@ class OneupUploaderExtension extends Extension
                 $this->registerFilesystem(
                     $config['type'],
                     'oneup_uploader.chunks_storage',
-                    $storageClass, $config['filesystem'],
+                    $storageClass,
+                    $config['filesystem'],
                     $config['sync_buffer_size'],
                     $config['stream_wrapper'],
                     $config['prefix']
@@ -183,7 +186,6 @@ class OneupUploaderExtension extends Extension
                 throw new \InvalidArgumentException(sprintf('Filesystem "%s" is invalid', $config['type']));
                 break;
         }
-
     }
 
     protected function createStorageService(&$config, $key, $orphanage = false)
@@ -268,8 +270,9 @@ class OneupUploaderExtension extends Extension
                 break;
         }
 
-        if (strlen($filesystem) <= 0)
+        if (strlen($filesystem) <= 0) {
             throw new ServiceNotFoundException('Empty service name');
+        }
 
         $streamWrapper = $this->normalizeStreamWrapper($streamWrapper);
 
@@ -299,7 +302,9 @@ class OneupUploaderExtension extends Extension
 
         switch ($last) {
             case 'g': $numericInput *= 1024;
+            // no break
             case 'm': $numericInput *= 1024;
+            // no break
             case 'k': $numericInput *= 1024;
 
             return $numericInput;

@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractUploadTest;
 use Oneup\UploaderBundle\UploadEvents;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
@@ -54,7 +53,7 @@ class BlueimpTest extends AbstractUploadTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function(PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -66,7 +65,7 @@ class BlueimpTest extends AbstractUploadTest
             $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $file);
         });
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function(PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
             ++ $uploadCount;
             $preValidation *= -1;
 

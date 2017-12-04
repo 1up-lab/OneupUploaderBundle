@@ -3,8 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Naming;
 
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
+use PHPUnit\Framework\TestCase;
 
-class UniqidNamerTest extends \PHPUnit_Framework_TestCase
+class UniqidNamerTest extends TestCase
 {
     public function testNamerReturnsName()
     {

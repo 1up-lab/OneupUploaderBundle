@@ -3,20 +3,21 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use \AmazonS3 as AmazonClient;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Gaufrette\Filesystem as GaufretteFilesystem;
 use Gaufrette\Adapter\AmazonS3 as S3Adapter;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 
-class GaufretteAmazonS3StorageTest extends \PHPUnit_Framework_TestCase
+class GaufretteAmazonS3StorageTest extends TestCase
 {
     protected $directory;
     protected $storage;
 
     public function setUp()
     {
-        if(
+        if (
             "" == getenv('AWS_ACCESS_KEY_ID') ||
             "" == getenv('AWS_SECRET_ACCESS_KEY') ||
             "" == getenv('AWS_BUCKET')
@@ -58,12 +59,12 @@ class GaufretteAmazonS3StorageTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $files['keys']);
 
         foreach ($files['keys'] as $filename) {
-          if ($filename === $this->prefix) {
-            // ignore the prefix directory
-            continue;
-          }
-          $this->assertEquals($this->prefix. '/notsogrumpyanymore.jpeg', $filename);
-          $this->assertEquals(1024, strlen($this->filesystem->read($filename)));
+            if ($filename === $this->prefix) {
+                // ignore the prefix directory
+                continue;
+            }
+            $this->assertEquals($this->prefix. '/notsogrumpyanymore.jpeg', $filename);
+            $this->assertEquals(1024, strlen($this->filesystem->read($filename)));
         }
     }
 
@@ -71,9 +72,9 @@ class GaufretteAmazonS3StorageTest extends \PHPUnit_Framework_TestCase
     {
         $files = $this->filesystem->listKeys($this->prefix);
         foreach ($files['keys'] as $filename) {
-          if ($this->filesystem->has($filename)) {
-            $this->filesystem->delete($filename);
-          }
+            if ($this->filesystem->has($filename)) {
+                $this->filesystem->delete($filename);
+            }
         }
     }
 }

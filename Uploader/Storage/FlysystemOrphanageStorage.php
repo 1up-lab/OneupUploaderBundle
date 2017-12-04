@@ -96,5 +96,4 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
         // should be relative.
         return sprintf('%s/%s/%s', $this->config['directory'], $this->session->getId(), $this->type);
     }
-
 }

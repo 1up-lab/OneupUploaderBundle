@@ -3,8 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
+use PHPUnit\Framework\TestCase;
 
-class TestEmptyResponse extends \PHPUnit_Framework_TestCase
+class TestEmptyResponse extends TestCase
 {
     public function testEmpty()
     {

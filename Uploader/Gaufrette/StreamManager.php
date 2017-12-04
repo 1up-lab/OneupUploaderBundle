@@ -25,7 +25,7 @@ class StreamManager
 
     protected function ensureRemotePathExists($path)
     {
-        if(!$this->filesystem->has($path)) {
+        if (!$this->filesystem->has($path)) {
             $this->filesystem->write($path, '', true);
         }
     }
@@ -53,5 +53,4 @@ class StreamManager
         $dst->close();
         $src->close();
     }
-
 }

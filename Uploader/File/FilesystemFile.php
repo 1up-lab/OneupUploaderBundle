@@ -14,7 +14,6 @@ class FilesystemFile extends UploadedFile implements FileInterface
         } else {
             parent::__construct($file->getPathname(), $file->getBasename(), $file->getMimeType(), $file->getSize(), 0, true);
         }
-
     }
 
     public function getExtension()

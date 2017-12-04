@@ -25,11 +25,13 @@ class FineUploaderResponse extends AbstractResponse
         $data = $this->data;
         $data['success'] = $this->success;
 
-        if($this->success)
+        if ($this->success) {
             unset($data['error']);
+        }
 
-        if(!$this->success)
+        if (!$this->success) {
             $data['error'] = $this->error;
+        }
 
         return $data;
     }

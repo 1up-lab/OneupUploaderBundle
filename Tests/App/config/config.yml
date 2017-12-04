@@ -3,7 +3,7 @@ framework:
     secret:          secret
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: %kernel.debug%
+        strict_requirements: "%kernel.debug%"
     templating:
         engines: ['php']
     default_locale:  en
@@ -16,13 +16,13 @@ oneup_uploader:
         fineuploader:
             frontend: fineuploader
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
         fineuploader_validation:
             frontend: fineuploader
             max_size: 256
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
             allowed_mimetypes:
                 image/jpeg : ['jpg', 'jpeg', 'jpe']
@@ -33,13 +33,13 @@ oneup_uploader:
         fancyupload:
             frontend: fancyupload
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
         fancyupload_validation:
             frontend: fancyupload
             max_size: 256
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
             allowed_mimetypes:
                 image/jpeg : ['jpg', 'jpeg', 'jpe']
@@ -49,13 +49,13 @@ oneup_uploader:
         dropzone:
             frontend: dropzone
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
         dropzone_validation:
             frontend: dropzone
             max_size: 256
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
             allowed_mimetypes:
                 image/jpeg : ['jpg', 'jpeg', 'jpe']
@@ -65,13 +65,13 @@ oneup_uploader:
         yui3:
             frontend: yui3
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
         yui3_validation:
             frontend: yui3
             max_size: 256
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
             allowed_mimetypes:
                 image/jpeg : ['jpg', 'jpeg', 'jpe']
@@ -81,13 +81,13 @@ oneup_uploader:
         plupload:
             frontend: plupload
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
         plupload_validation:
             frontend: plupload
             max_size: 256
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
             allowed_mimetypes:
                 image/jpeg : ['jpg', 'jpeg', 'jpe']
@@ -97,13 +97,13 @@ oneup_uploader:
         uploadify:
             frontend: uploadify
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
         uploadify_validation:
             frontend: uploadify
             max_size: 256
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
 
             allowed_mimetypes:
                 image/jpeg : ['jpg', 'jpeg', 'jpe']
@@ -113,14 +113,14 @@ oneup_uploader:
         blueimp:
             frontend: blueimp
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
             error_handler: oneup_uploader.error_handler.blueimp
 
         blueimp_validation:
             frontend: blueimp
             max_size: 256
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"
             error_handler: oneup_uploader.error_handler.blueimp
 
             allowed_mimetypes:
@@ -131,4 +131,4 @@ oneup_uploader:
         mooupload:
             frontend: mooupload
             storage:
-                directory: %kernel.root_dir%/cache/%kernel.environment%/upload
+                directory: "%kernel.root_dir%/cache/%kernel.environment%/upload"

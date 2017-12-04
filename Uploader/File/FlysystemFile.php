@@ -6,7 +6,6 @@ use League\Flysystem\Filesystem;
 
 class FlysystemFile extends File implements FileInterface
 {
-
     protected $streamWrapperPrefix;
     protected $mimeType;
 

@@ -3,8 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Routing;
 
 use Oneup\UploaderBundle\Routing\RouteLoader;
+use PHPUnit\Framework\TestCase;
 
-class RouteLoaderTest extends \PHPUnit_Framework_TestCase
+class RouteLoaderTest extends TestCase
 {
     public function testRouteLoader()
     {

@@ -2,7 +2,9 @@
 
 namespace Oneup\UploaderBundle\Tests\DependencyInjection;
 
-class OneupUploaderExtensionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class OneupUploaderExtensionTest extends TestCase
 {
     public function testValueToByteTransformer()
     {

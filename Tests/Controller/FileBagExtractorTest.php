@@ -2,10 +2,11 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\FileBag;
 
-class FileBagExtractorText extends \PHPUnit_Framework_TestCase
+class FileBagExtractorText extends TestCase
 {
     protected $method;
     protected $mock;
