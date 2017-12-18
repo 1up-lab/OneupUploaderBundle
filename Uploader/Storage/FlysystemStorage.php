@@ -38,7 +38,7 @@ class FlysystemStorage implements StorageInterface
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
         if ($file instanceof FilesystemFile) {
-            $stream = fopen($file->getPathname(), 'rb+');
+            $stream = fopen($file->getPathname(), 'r+b');
             $this->filesystem->putStream($path, $stream, array(
                 'mimetype' => $file->getMimeType()
             ));
