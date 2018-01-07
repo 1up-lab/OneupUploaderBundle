@@ -79,6 +79,11 @@ class GaufretteFile extends File implements FileInterface
         return pathinfo($this->getKey(), PATHINFO_BASENAME);
     }
 
+    public function getClientOriginalName()
+    {
+        return $this->getBasename();
+    }
+
     /**
      * @return string
      */
