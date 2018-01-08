@@ -245,6 +245,7 @@ class OneupUploaderExtension extends Extension
                     ->addArgument(new Reference('oneup_uploader.chunks_storage'))
                     ->addArgument($this->config['orphanage'])
                     ->addArgument($key)
+                    ->setPublic(true)
                 ;
 
                 // switch storage of mapping to orphanage
