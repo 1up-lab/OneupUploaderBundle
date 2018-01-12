@@ -12,28 +12,28 @@ class RouteLoaderTest extends TestCase
         $cat = 'GrumpyCatController';
         $dog = 'HelloThisIsDogController';
 
-        $routeLoader = new RouteLoader(array(
-            'cat' => array($cat, array(
+        $routeLoader = new RouteLoader([
+            'cat' => [$cat, [
                 'enable_progress' => false,
                 'enable_cancelation' => false,
                 'route_prefix' => '',
-                'endpoints' => array(
+                'endpoints' => [
                     'upload' => null,
                     'progress' => null,
                     'cancel' => null,
-                ),
-            )),
-            'dog' => array($dog, array(
+                ],
+            ]],
+            'dog' => [$dog, [
                 'enable_progress' => true,
                 'enable_cancelation' => true,
                 'route_prefix' => '',
-                'endpoints' => array(
+                'endpoints' => [
                     'upload' => null,
                     'progress' => null,
                     'cancel' => null,
-                ),
-            )),
-        ));
+                ],
+            ]],
+        ]);
 
         $routes = $routeLoader->load(null);
 
@@ -44,7 +44,7 @@ class RouteLoaderTest extends TestCase
 
         foreach ($routes as $route) {
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
-            $this->assertEquals('json', $route->getDefault('_format'));
+            $this->assertSame('json', $route->getDefault('_format'));
             $this->assertContains('POST', $route->getMethods());
         }
     }
@@ -54,27 +54,27 @@ class RouteLoaderTest extends TestCase
         $prefix = '/admin';
         $cat = 'GrumpyCatController';
 
-        $routeLoader = new RouteLoader(array(
-            'cat' => array($cat, array(
+        $routeLoader = new RouteLoader([
+            'cat' => [$cat, [
                 'enable_progress' => false,
                 'enable_cancelation' => false,
                 'route_prefix' => $prefix,
-                'endpoints' => array(
+                'endpoints' => [
                     'upload' => null,
                     'progress' => null,
                     'cancel' => null,
-                ),
-            ))
-        ));
+                ],
+            ]],
+        ]);
 
         $routes = $routeLoader->load(null);
 
         foreach ($routes as $route) {
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
-            $this->assertEquals('json', $route->getDefault('_format'));
+            $this->assertSame('json', $route->getDefault('_format'));
             $this->assertContains('POST', $route->getMethods());
 
-            $this->assertEquals(0, strpos($route->getPath(), $prefix));
+            $this->assertSame(0, strpos($route->getPath(), $prefix));
         }
     }
 
@@ -83,27 +83,27 @@ class RouteLoaderTest extends TestCase
         $customEndpointUpload = '/grumpy/cats/upload';
         $cat = 'GrumpyCatController';
 
-        $routeLoader = new RouteLoader(array(
-            'cat' => array($cat, array(
+        $routeLoader = new RouteLoader([
+            'cat' => [$cat, [
                 'enable_progress' => false,
                 'enable_cancelation' => false,
                 'route_prefix' => '',
-                'endpoints' => array(
+                'endpoints' => [
                     'upload' => $customEndpointUpload,
                     'progress' => null,
                     'cancel' => null,
-                ),
-            ))
-        ));
+                ],
+            ]],
+        ]);
 
         $routes = $routeLoader->load(null);
 
         foreach ($routes as $route) {
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
-            $this->assertEquals('json', $route->getDefault('_format'));
+            $this->assertSame('json', $route->getDefault('_format'));
             $this->assertContains('POST', $route->getMethods());
 
-            $this->assertEquals($customEndpointUpload, $route->getPath());
+            $this->assertSame($customEndpointUpload, $route->getPath());
         }
     }
 }

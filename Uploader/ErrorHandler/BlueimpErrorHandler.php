@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
 use Exception;
-use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
 use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -21,7 +20,7 @@ class BlueimpErrorHandler implements ErrorHandlerInterface
 
     public function addException(AbstractResponse $response, Exception $exception)
     {
-        $message = $this->translator->trans($exception->getMessage(), array(), 'OneupUploaderBundle');
-        $response->addToOffset(array('error' => $message), array('files'));
+        $message = $this->translator->trans($exception->getMessage(), [], 'OneupUploaderBundle');
+        $response->addToOffset(['error' => $message], ['files']);
     }
 }

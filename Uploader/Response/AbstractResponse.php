@@ -2,20 +2,18 @@
 
 namespace Oneup\UploaderBundle\Uploader\Response;
 
-use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
-
 abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
 {
     protected $data;
 
     public function __construct()
     {
-        $this->data = array();
+        $this->data = [];
     }
 
     public function offsetSet($offset, $value)
     {
-        is_null($offset) ? $this->data[] = $value : $this->data[$offset] = $value;
+        null === $offset ? $this->data[] = $value : $this->data[$offset] = $value;
     }
 
     public function offsetExists($offset)
@@ -40,22 +38,21 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
      * @param mixed $value
      * @param array $offsets
      *
-     * @throws \InvalidArgumentException if the path contains non-array items.
-     *
+     * @throws \InvalidArgumentException if the path contains non-array items
      */
     public function addToOffset($value, array $offsets)
     {
-        $element =& $this->data;
+        $element = &$this->data;
         foreach ($offsets as $offset) {
             if (isset($element[$offset])) {
                 if (is_array($element[$offset])) {
-                    $element =& $element[$offset];
+                    $element = &$element[$offset];
                 } else {
-                    throw new \InvalidArgumentException("The specified offset is set but is not an array at" . $offset);
+                    throw new \InvalidArgumentException('The specified offset is set but is not an array at'.$offset);
                 }
             } else {
-                $element[$offset] = array();
-                $element =& $element[$offset];
+                $element[$offset] = [];
+                $element = &$element[$offset];
             }
         }
         $element[] = $value;

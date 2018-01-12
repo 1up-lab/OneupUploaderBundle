@@ -2,10 +2,10 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
-use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage;
-use Symfony\Component\Filesystem\Filesystem;
 use Gaufrette\Adapter\Local as Adapter;
 use Gaufrette\Filesystem as GaufretteFilesystem;
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage;
+use Symfony\Component\Filesystem\Filesystem;
 
 class GaufretteStorageTest extends ChunkStorageTest
 {

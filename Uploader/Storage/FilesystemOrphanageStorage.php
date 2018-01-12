@@ -5,13 +5,9 @@ namespace Oneup\UploaderBundle\Uploader\Storage;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Finder\Finder;
-
-use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
-use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\Uploader\Storage\OrphanageStorageInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageStorageInterface
 {
@@ -46,15 +42,15 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             if (null === $files) {
                 $files = $this->getFiles();
             }
-            $return = array();
+            $return = [];
 
             foreach ($files as $file) {
-                $return[] = $this->storage->upload(new FilesystemFile(new File($file->getPathname())), ltrim(str_replace($this->getFindPath(), '', $file), "/"));
+                $return[] = $this->storage->upload(new FilesystemFile(new File($file->getPathname())), ltrim(str_replace($this->getFindPath(), '', $file), '/'));
             }
 
             return $return;
         } catch (\Exception $e) {
-            return array();
+            return [];
         }
     }
 
@@ -68,7 +64,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             //This can happen if getFiles is called and no file has yet been uploaded
 
             //push empty array into the finder so we can emulate no files found
-            $finder->append(array());
+            $finder->append([]);
         }
 
         return $finder;

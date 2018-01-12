@@ -2,9 +2,8 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
-use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 
 class UploadifyController extends AbstractController
 {

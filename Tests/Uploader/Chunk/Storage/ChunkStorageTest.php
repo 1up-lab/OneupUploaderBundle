@@ -17,8 +17,8 @@ abstract class ChunkStorageTest extends TestCase
 
     public function testExistanceOfTmpDir()
     {
-        $this->assertTrue(is_dir($this->tmpDir));
-        $this->assertTrue(is_writable($this->tmpDir));
+        $this->assertDirectoryExists($this->tmpDir);
+        $this->assertIsWritable($this->tmpDir);
     }
 
     public function testFillOfTmpDir()
@@ -46,8 +46,8 @@ abstract class ChunkStorageTest extends TestCase
 
         $this->storage->clear($maxage);
 
-        $this->assertTrue(is_dir($this->tmpDir));
-        $this->assertTrue(is_writable($this->tmpDir));
+        $this->assertDirectoryExists($this->tmpDir);
+        $this->assertIsWritable($this->tmpDir);
 
         $this->assertCount(5, $finder);
 

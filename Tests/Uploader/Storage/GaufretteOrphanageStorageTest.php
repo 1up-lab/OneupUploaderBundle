@@ -2,12 +2,10 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+use Gaufrette\Adapter\Local as Adapter;
 use Gaufrette\File;
 use Gaufrette\Filesystem as GaufretteFilesystem;
-
-use Gaufrette\Adapter\Local as Adapter;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage as GaufretteChunkStorage;
-
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteOrphanageStorage;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
@@ -24,10 +22,10 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
     public function setUp()
     {
         $this->numberOfPayloads = 5;
-        $this->realDirectory = sys_get_temp_dir() . '/storage';
-        $this->chunkDirectory = $this->realDirectory .'/' . $this->chunksKey;
-        $this->tempDirectory = $this->realDirectory . '/' . $this->orphanageKey;
-        $this->payloads = array();
+        $this->realDirectory = sys_get_temp_dir().'/storage';
+        $this->chunkDirectory = $this->realDirectory.'/'.$this->chunksKey;
+        $this->tempDirectory = $this->realDirectory.'/'.$this->orphanageKey;
+        $this->payloads = [];
 
         if (!$this->checkIfTempnameMatchesAfterCreation()) {
             $this->markTestSkipped('Temporary directories do not match');
@@ -49,11 +47,11 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
-        $config = array('directory' => 'orphanage');
+        $config = ['directory' => 'orphanage'];
 
         $this->orphanage = new GaufretteOrphanageStorage($this->storage, $session, $chunkStorage, $config, 'cat');
 
-        for ($i = 0; $i < $this->numberOfPayloads; $i ++) {
+        for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
             // create temporary file as if it was reassembled by the chunk manager
             $file = tempnam($this->chunkDirectory, 'uploader');
 
@@ -70,8 +68,8 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
 
     public function testUpload()
     {
-        for ($i = 0; $i < $this->numberOfPayloads; $i ++) {
-            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
+        for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
+            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -80,14 +78,14 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
 
         $finder = new Finder();
         // exclude the orphanage and the chunks
-        $finder->in($this->realDirectory)->exclude(array($this->orphanageKey, $this->chunksKey))->files();
+        $finder->in($this->realDirectory)->exclude([$this->orphanageKey, $this->chunksKey])->files();
         $this->assertCount(0, $finder);
     }
 
     public function testUploadAndFetching()
     {
-        for ($i = 0; $i < $this->numberOfPayloads; $i ++) {
-            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
+        for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
+            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -95,12 +93,12 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         $this->assertCount($this->numberOfPayloads, $finder);
 
         $finder = new Finder();
-        $finder->in($this->realDirectory)->exclude(array($this->orphanageKey, $this->chunksKey))->files();
+        $finder->in($this->realDirectory)->exclude([$this->orphanageKey, $this->chunksKey])->files();
         $this->assertCount(0, $finder);
 
         $files = $this->orphanage->uploadFiles();
 
-        $this->assertTrue(is_array($files));
+        $this->assertInternalType('array', $files);
         $this->assertCount($this->numberOfPayloads, $files);
 
         $finder = new Finder();
@@ -114,6 +112,6 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
 
     public function checkIfTempnameMatchesAfterCreation()
     {
-        return strpos(@tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory) === 0;
+        return 0 === strpos(@tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Oneup\UploaderBundle\Tests\Uploader\File;
 
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
@@ -8,14 +9,14 @@ class FilesystemFileTest extends FileTest
 {
     public function setUp()
     {
-        $this->path = sys_get_temp_dir(). '/oneup_test_tmp';
+        $this->path = sys_get_temp_dir().'/oneup_test_tmp';
 
         if (!file_exists($this->path)) {
             mkdir($this->path);
         }
 
         $this->basename = 'test_file.txt';
-        $this->pathname = $this->path .'/'. $this->basename;
+        $this->pathname = $this->path.'/'.$this->basename;
         $this->extension = 'txt';
         $this->size = 9; //something = 9 bytes
         $this->mimeType = 'text/plain';

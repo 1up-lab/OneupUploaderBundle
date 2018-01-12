@@ -2,9 +2,9 @@
 
 namespace Oneup\UploaderBundle\Uploader\File;
 
+use Gaufrette\Adapter\AwsS3;
 use Gaufrette\Adapter\StreamFactory;
 use Gaufrette\File;
-use Gaufrette\Adapter\AwsS3;
 use Gaufrette\Filesystem;
 use Gaufrette\FilesystemInterface;
 
@@ -14,9 +14,9 @@ class GaufretteFile extends File implements FileInterface
     protected $mimeType;
 
     /**
-     * @param File $file
+     * @param File                           $file
      * @param FilesystemInterface|Filesystem $filesystem
-     * @param string|null $streamWrapperPrefix
+     * @param string|null                    $streamWrapperPrefix
      */
     public function __construct(File $file, $filesystem, $streamWrapperPrefix = null)
     {
@@ -33,7 +33,7 @@ class GaufretteFile extends File implements FileInterface
     }
 
     /**
-     * Returns the size of the file
+     * Returns the size of the file.
      *
      * !! WARNING !!
      * Calling this loads the entire file into memory,
@@ -41,7 +41,6 @@ class GaufretteFile extends File implements FileInterface
      * In case of bigger files this could throw exceptions,
      * and will have heavy performance footprint.
      * !! ------- !!
-     *
      */
     public function getSize()
     {
@@ -105,7 +104,7 @@ class GaufretteFile extends File implements FileInterface
     /**
      * Now that we may be able to get the mime-type the extension
      * COULD be guessed based on that, but it would be even less
-     * accurate as mime-types can have multiple extensions
+     * accurate as mime-types can have multiple extensions.
      *
      * @return mixed
      */

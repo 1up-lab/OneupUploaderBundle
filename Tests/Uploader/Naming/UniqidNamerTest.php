@@ -31,7 +31,7 @@ class UniqidNamerTest extends TestCase
     {
         // TODO Reenable this test.
         $this->markTestSkipped('Details: https://github.com/Ocramius/Instantiator/pull/8#issuecomment-47446963');
-        
+
         $file = $this->getMockBuilder('Oneup\UploaderBundle\Uploader\File\FilesystemFile')
             ->disableOriginalConstructor()
             ->getMock()
@@ -49,6 +49,6 @@ class UniqidNamerTest extends TestCase
         $name1 = $namer->name($file);
         $name2 = $namer->name($file);
 
-        $this->assertNotEquals($name1, $name2);
+        $this->assertNotSame($name1, $name2);
     }
 }

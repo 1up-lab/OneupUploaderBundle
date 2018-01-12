@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractValidationTest;
 
 class PluploadValidationTest extends AbstractValidationTest
 {
@@ -14,7 +13,7 @@ class PluploadValidationTest extends AbstractValidationTest
 
     protected function getRequestParameters()
     {
-        return array();
+        return [];
     }
 
     protected function getOversizedFile()

@@ -1,16 +1,17 @@
 <?php
+
 namespace Oneup\UploaderBundle\Uploader\Gaufrette;
 
 use Gaufrette\Stream;
+use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
-use Gaufrette\Stream\Local as LocalStream;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 
 class StreamManager
 {
-    protected $filesystem;
     public $buffersize;
+    protected $filesystem;
 
     protected function createSourceStream(FileInterface $file)
     {

@@ -14,7 +14,7 @@ class TemplateHelperTest extends WebTestCase
         $helper = $container->get('oneup_uploader.templating.uploader_helper');
 
         // this is for code coverage
-        $this->assertEquals($helper->getName(), 'oneup_uploader');
+        $this->assertSame($helper->getName(), 'oneup_uploader');
     }
 
     public function testNonExistentMappingForMaxSize()

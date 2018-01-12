@@ -24,7 +24,7 @@ class AllowedMimetypeAndExtensionValidationListener
         }
 
         if (empty($config['allowed_mimetypes'][$mimetype])
-            || in_array($extension, $config['allowed_mimetypes'][$mimetype])
+            || in_array($extension, $config['allowed_mimetypes'][$mimetype], true)
         ) {
             return;
         }
