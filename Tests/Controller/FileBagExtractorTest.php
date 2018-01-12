@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\FileBag;
 
-class FileBagExtractorText extends TestCase
+class FileBagExtractorTest extends TestCase
 {
     protected $method;
     protected $mock;
@@ -36,9 +36,9 @@ class FileBagExtractorText extends TestCase
 
     public function testWithNullArrayValue()
     {
-        $bag = new FileBag(array(
-            array(null)
-        ));
+        $bag = new FileBag([
+            [null],
+        ]);
 
         $result = $this->invoke($bag);
 
@@ -48,9 +48,9 @@ class FileBagExtractorText extends TestCase
 
     public function testWithSingleFile()
     {
-        $bag = new FileBag(array(
-            new UploadedFile(__FILE__, 'name')
-        ));
+        $bag = new FileBag([
+            new UploadedFile(__FILE__, 'name'),
+        ]);
 
         $result = $this->invoke($bag);
 
@@ -61,11 +61,11 @@ class FileBagExtractorText extends TestCase
 
     public function testWithMultipleFiles()
     {
-        $bag = new FileBag(array(
+        $bag = new FileBag([
             new UploadedFile(__FILE__, 'name1'),
             new UploadedFile(__FILE__, 'name2'),
-            new UploadedFile(__FILE__, 'name3')
-        ));
+            new UploadedFile(__FILE__, 'name3'),
+        ]);
 
         $result = $this->invoke($bag);
 
@@ -76,18 +76,18 @@ class FileBagExtractorText extends TestCase
 
     public function testWithMultipleFilesContainingNullValues()
     {
-        $bag = new FileBag(array(
+        $bag = new FileBag([
             // we need to inject an array,
             // otherwise the FileBag will type check against
             // UploadedFile resulting in an InvalidArgumentException.
-            array(
+            [
                 new UploadedFile(__FILE__, 'name1'),
                 null,
                 new UploadedFile(__FILE__, 'name2'),
                 null,
-                new UploadedFile(__FILE__, 'name3')
-            )
-        ));
+                new UploadedFile(__FILE__, 'name3'),
+            ],
+        ]);
 
         $result = $this->invoke($bag);
 

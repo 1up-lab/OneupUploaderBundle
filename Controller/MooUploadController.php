@@ -2,11 +2,10 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Symfony\Component\HttpFoundation\Request;
-
 use Oneup\UploaderBundle\Uploader\Response\MooUploadResponse;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class MooUploadController extends AbstractChunkedController
 {
@@ -60,10 +59,10 @@ class MooUploadController extends AbstractChunkedController
         $headers = $request->headers;
         $parameters = array_keys($request->query->all());
 
-        $uuid  = $headers->get('x-file-id');
+        $uuid = $headers->get('x-file-id');
         $index = $this->createIndex($parameters[0]);
-        $orig  = $headers->get('x-file-name');
-        $size  = 0;
+        $orig = $headers->get('x-file-name');
+        $size = 0;
 
         try {
             // loop through every file that has been uploaded before
@@ -77,12 +76,12 @@ class MooUploadController extends AbstractChunkedController
             // size is 0
         }
 
-        $last = $headers->get('x-file-size') == ($size + $headers->get('content-length'));
+        $last = $headers->get('x-file-size') === ($size + $headers->get('content-length'));
 
         // store also to response object
         $this->response->setFinish($last);
 
-        return array($last, $uuid, $index, $orig);
+        return [$last, $uuid, $index, $orig];
     }
 
     protected function createIndex($id)
@@ -114,6 +113,6 @@ class MooUploadController extends AbstractChunkedController
         // create an uploaded file to upload
         $file = new UploadedFile($tempFile, $uploadFileName, null, null, null, true);
 
-        return array($file, $uploadFileName);
+        return [$file, $uploadFileName];
     }
 }

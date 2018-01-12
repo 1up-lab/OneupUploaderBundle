@@ -22,7 +22,7 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->enumNode('type')
-                                    ->values(array('filesystem', 'gaufrette', 'flysystem'))
+                                    ->values(['filesystem', 'gaufrette', 'flysystem'])
                                     ->defaultValue('filesystem')
                                 ->end()
                                 ->scalarNode('filesystem')->defaultNull()->end()
@@ -50,7 +50,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->enumNode('frontend')
-                                ->values(array('fineuploader', 'blueimp', 'uploadify', 'yui3', 'fancyupload', 'mooupload', 'plupload', 'dropzone', 'custom'))
+                                ->values(['fineuploader', 'blueimp', 'uploadify', 'yui3', 'fancyupload', 'mooupload', 'plupload', 'dropzone', 'custom'])
                                 ->isRequired()
                             ->end()
                             ->arrayNode('custom_frontend')
@@ -65,7 +65,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('service')->defaultNull()->end()
                                     ->enumNode('type')
-                                        ->values(array('filesystem', 'gaufrette', 'flysystem'))
+                                        ->values(['filesystem', 'gaufrette', 'flysystem'])
                                         ->defaultValue('filesystem')
                                     ->end()
                                     ->scalarNode('filesystem')->defaultNull()->end()
@@ -79,9 +79,10 @@ class Configuration implements ConfigurationInterface
                                 ->beforeNormalization()
                                     ->ifString()
                                     ->then(function ($v) {
-                                        if (substr($v, -1) != '/') {
+                                        if ('/' !== substr($v, -1)) {
                                             $v .= '/';
                                         }
+
                                         return [
                                             'upload' => $v.'upload',
                                             'progress' => $v.'progress',

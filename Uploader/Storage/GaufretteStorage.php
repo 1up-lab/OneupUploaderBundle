@@ -2,13 +2,13 @@
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
+use Gaufrette\Adapter\MetadataSupporter;
+use Gaufrette\Filesystem;
 use Gaufrette\FilesystemInterface;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
-use Gaufrette\Filesystem;
-use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
-use Gaufrette\Adapter\MetadataSupporter;
 use Oneup\UploaderBundle\Uploader\Gaufrette\StreamManager;
+use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
 
 class GaufretteStorage extends StreamManager implements StorageInterface
 {
@@ -16,8 +16,8 @@ class GaufretteStorage extends StreamManager implements StorageInterface
 
     /**
      * @param FilesystemInterface|Filesystem $filesystem
-     * @param int $bufferSize
-     * @param string|null $streamWrapperPrefix
+     * @param int                            $bufferSize
+     * @param string|null                    $streamWrapperPrefix
      */
     public function __construct($filesystem, $bufferSize, $streamWrapperPrefix = null)
     {
@@ -36,14 +36,14 @@ class GaufretteStorage extends StreamManager implements StorageInterface
 
     public function upload(FileInterface $file, $name, $path = null)
     {
-        $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
+        $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
         if ($this->filesystem->getAdapter() instanceof MetadataSupporter) {
-            $this->filesystem->getAdapter()->setMetadata($name, array('contentType' => $file->getMimeType()));
+            $this->filesystem->getAdapter()->setMetadata($name, ['contentType' => $file->getMimeType()]);
         }
 
         if ($file instanceof GaufretteFile) {
-            if ($file->getFilesystem() == $this->filesystem) {
+            if ($file->getFilesystem() === $this->filesystem) {
                 $file->getFilesystem()->rename($file->getKey(), $path);
 
                 return new GaufretteFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);

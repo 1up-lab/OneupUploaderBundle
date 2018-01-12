@@ -2,10 +2,9 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Request;
-
-use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
 
 class FineUploaderController extends AbstractChunkedController
 {
@@ -27,7 +26,7 @@ class FineUploaderController extends AbstractChunkedController
                 ;
             } catch (UploadException $e) {
                 $response->setSuccess(false);
-                $response->setError($translator->trans($e->getMessage(), array(), 'OneupUploaderBundle'));
+                $response->setError($translator->trans($e->getMessage(), [], 'OneupUploaderBundle'));
 
                 $this->errorHandler->addException($response, $e);
 
@@ -43,10 +42,10 @@ class FineUploaderController extends AbstractChunkedController
     {
         $index = $request->get('qqpartindex');
         $total = $request->get('qqtotalparts');
-        $uuid  = $request->get('qquuid');
-        $orig  = $request->get('qqfilename');
-        $last  = ($total - 1) == $index;
+        $uuid = $request->get('qquuid');
+        $orig = $request->get('qqfilename');
+        $last = ($total - 1) === $index;
 
-        return array($last, $uuid, $index, $orig);
+        return [$last, $uuid, $index, $orig];
     }
 }

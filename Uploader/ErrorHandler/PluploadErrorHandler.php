@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
 use Exception;
-use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
 use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 
 class PluploadErrorHandler implements ErrorHandlerInterface

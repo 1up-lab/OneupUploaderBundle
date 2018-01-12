@@ -2,10 +2,10 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\UploadEvents;
-use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
+use Oneup\UploaderBundle\Event\PreUploadEvent;
+use Oneup\UploaderBundle\UploadEvents;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BlueimpTest extends AbstractUploadTest
 {
@@ -19,13 +19,13 @@ class BlueimpTest extends AbstractUploadTest
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(1, $this->getUploadedFiles());
 
         foreach ($this->getUploadedFiles() as $file) {
             $this->assertTrue($file->isFile());
             $this->assertTrue($file->isReadable());
-            $this->assertEquals(128, $file->getSize());
+            $this->assertSame(128, $file->getSize());
         }
     }
 
@@ -38,7 +38,7 @@ class BlueimpTest extends AbstractUploadTest
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals($response->headers->get('Content-Type'), 'text/plain; charset=UTF-8');
+        $this->assertSame($response->headers->get('Content-Type'), 'text/plain; charset=UTF-8');
         $this->assertCount(1, $this->getUploadedFiles());
     }
 
@@ -66,7 +66,7 @@ class BlueimpTest extends AbstractUploadTest
         });
 
         $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
-            ++ $uploadCount;
+            ++$uploadCount;
             $preValidation *= -1;
 
             $file = $event->getFile();
@@ -80,8 +80,8 @@ class BlueimpTest extends AbstractUploadTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getRequestFile(), $this->requestHeaders);
 
         $this->assertCount(1, $this->getUploadedFiles());
-        $this->assertEquals($uploadCount, count($this->getUploadedFiles()));
-        $this->assertEquals(1, $preValidation);
+        $this->assertSame($uploadCount, count($this->getUploadedFiles()));
+        $this->assertSame(1, $preValidation);
     }
 
     protected function getConfigKey()
@@ -91,16 +91,16 @@ class BlueimpTest extends AbstractUploadTest
 
     protected function getRequestParameters()
     {
-        return array();
+        return [];
     }
 
     protected function getRequestFile()
     {
-        return array('files' => array(new UploadedFile(
+        return ['files' => [new UploadedFile(
             $this->createTempFile(128),
             'cat.txt',
             'text/plain',
             128
-        )));
+        )]];
     }
 }

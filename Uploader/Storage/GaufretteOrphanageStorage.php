@@ -19,7 +19,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
     /**
      * @param StorageInterface      $storage
      * @param SessionInterface      $session
-     * @param GaufretteChunkStorage $chunkStorage This class is only used if the gaufrette chunk storage is used.
+     * @param GaufretteChunkStorage $chunkStorage this class is only used if the gaufrette chunk storage is used
      * @param                       $config
      * @param                       $type
      */
@@ -53,7 +53,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
             if (null === $files) {
                 $files = $this->getFiles();
             }
-            $return = array();
+            $return = [];
 
             foreach ($files as $key => $file) {
                 try {
@@ -66,7 +66,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
 
             return $return;
         } catch (\Exception $e) {
-            return array();
+            return [];
         }
     }
 
@@ -74,7 +74,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
     {
         $keys = $this->chunkStorage->getFilesystem()->listKeys($this->getPath());
         $keys = $keys['keys'];
-        $files = array();
+        $files = [];
 
         foreach ($keys as $key) {
             // gotta pass the filesystem to both as you can't get it out from one..

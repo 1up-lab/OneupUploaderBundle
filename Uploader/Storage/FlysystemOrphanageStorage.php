@@ -17,11 +17,11 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     protected $type;
 
     /**
-     * @param StorageInterface      $storage
-     * @param SessionInterface      $session
-     * @param ChunkStorage $chunkStorage This class is only used if the gaufrette chunk storage is used.
-     * @param                       $config
-     * @param                       $type
+     * @param StorageInterface $storage
+     * @param SessionInterface $session
+     * @param ChunkStorage     $chunkStorage this class is only used if the gaufrette chunk storage is used
+     * @param                  $config
+     * @param                  $type
      */
     public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorage $chunkStorage, $config, $type)
     {
@@ -53,7 +53,7 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
             if (null === $files) {
                 $files = $this->getFiles();
             }
-            $return = array();
+            $return = [];
 
             foreach ($files as $key => $file) {
                 try {
@@ -66,7 +66,7 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
 
             return $return;
         } catch (\Exception $e) {
-            return array();
+            return [];
         }
     }
 
@@ -75,11 +75,11 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
         $fileList = $this->chunkStorage
             ->getFilesystem()
             ->listContents($this->getPath());
-        $files = array();
+        $files = [];
 
         foreach ($fileList as $fileDetail) {
             $key = $fileDetail['path'];
-            if ($fileDetail['type'] == 'file') {
+            if ('file' === $fileDetail['type']) {
                 $files[$key] = new FlysystemFile(
                     new File($this->chunkStorage->getFilesystem(), $key),
                     $this->chunkStorage->getFilesystem()

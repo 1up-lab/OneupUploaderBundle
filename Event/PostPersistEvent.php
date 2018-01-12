@@ -2,9 +2,9 @@
 
 namespace Oneup\UploaderBundle\Event;
 
+use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
-use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 
 class PostPersistEvent extends Event
 {

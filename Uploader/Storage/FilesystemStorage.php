@@ -15,13 +15,13 @@ class FilesystemStorage implements StorageInterface
 
     public function upload(FileInterface $file, $name, $path = null)
     {
-        $path = is_null($path) ? $name : sprintf('%s/%s', $path, $name);
+        $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
         $path = sprintf('%s/%s', $this->directory, $path);
 
         // now that we have the correct path, compute the correct name
         // and target directory
         $targetName = basename($path);
-        $targetDir  = dirname($path);
+        $targetDir = dirname($path);
 
         $file = $file->move($targetDir, $targetName);
 

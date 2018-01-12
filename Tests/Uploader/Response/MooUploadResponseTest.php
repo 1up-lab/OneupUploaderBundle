@@ -12,7 +12,7 @@ class MooUploadResponseTest extends TestCase
         $response = new MooUploadResponse();
 
         $this->assertTrue($response->getFinish());
-        $this->assertEquals(0, $response->getError());
+        $this->assertSame(0, $response->getError());
     }
 
     public function testFunctionsOfResponse()
@@ -25,12 +25,12 @@ class MooUploadResponseTest extends TestCase
         $response->setFinish(true);
         $response->setUploadedName('b1/2d/b12d23.jpg');
 
-        $this->assertEquals(3, $response->getId());
-        $this->assertEquals('grumpy_cat.jpg', $response->getName());
-        $this->assertEquals(15093, $response->getSize());
-        $this->assertEquals(-1, $response->getError());
-        $this->assertEquals(true, $response->getFinish());
-        $this->assertEquals('b1/2d/b12d23.jpg', $response->getUploadedName());
+        $this->assertSame(3, $response->getId());
+        $this->assertSame('grumpy_cat.jpg', $response->getName());
+        $this->assertSame(15093, $response->getSize());
+        $this->assertSame(-1, $response->getError());
+        $this->assertTrue($response->getFinish());
+        $this->assertSame('b1/2d/b12d23.jpg', $response->getUploadedName());
     }
 
     public function testFunctionsAfterOverwrite()
@@ -51,13 +51,13 @@ class MooUploadResponseTest extends TestCase
         $response['uploadedName'] = null;
         $response['princess'] = !null;
 
-        $this->assertEquals(3, $response->getId());
-        $this->assertEquals('grumpy_cat.jpg', $response->getName());
-        $this->assertEquals(15093, $response->getSize());
-        $this->assertEquals(-1, $response->getError());
-        $this->assertEquals(true, $response->getFinish());
-        $this->assertEquals('b1/2d/b12d23.jpg', $response->getUploadedName());
-        $this->assertEquals(!null, $response['princess']);
+        $this->assertSame(3, $response->getId());
+        $this->assertSame('grumpy_cat.jpg', $response->getName());
+        $this->assertSame(15093, $response->getSize());
+        $this->assertSame(-1, $response->getError());
+        $this->assertTrue($response->getFinish());
+        $this->assertSame('b1/2d/b12d23.jpg', $response->getUploadedName());
+        $this->assertSame(!null, $response['princess']);
     }
 
     public function testAssemble()
@@ -81,12 +81,12 @@ class MooUploadResponseTest extends TestCase
 
         $data = $response->assemble();
 
-        $this->assertEquals(3, $data['id']);
-        $this->assertEquals('grumpy_cat.jpg', $data['name']);
-        $this->assertEquals(15093, $data['size']);
-        $this->assertEquals(-1, $data['error']);
-        $this->assertEquals(true, $data['finish']);
-        $this->assertEquals('b1/2d/b12d23.jpg', $data['upload_name']);
-        $this->assertEquals(!null, $data['princess']);
+        $this->assertSame(3, $data['id']);
+        $this->assertSame('grumpy_cat.jpg', $data['name']);
+        $this->assertSame(15093, $data['size']);
+        $this->assertSame(-1, $data['error']);
+        $this->assertTrue($data['finish']);
+        $this->assertSame('b1/2d/b12d23.jpg', $data['upload_name']);
+        $this->assertSame(!null, $data['princess']);
     }
 }

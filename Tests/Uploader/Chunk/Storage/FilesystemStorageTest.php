@@ -2,8 +2,8 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
-use Symfony\Component\Filesystem\Filesystem;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage;
+use Symfony\Component\Filesystem\Filesystem;
 
 class FilesystemStorageTest extends ChunkStorageTest
 {
@@ -18,9 +18,9 @@ class FilesystemStorageTest extends ChunkStorageTest
         $system->mkdir($tmpDir);
 
         $this->tmpDir = $tmpDir;
-        $this->storage = new FilesystemStorage(array(
-            'directory' => $this->tmpDir
-        ));
+        $this->storage = new FilesystemStorage([
+            'directory' => $this->tmpDir,
+        ]);
     }
 
     public function tearDown()

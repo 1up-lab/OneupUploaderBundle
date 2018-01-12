@@ -1,4 +1,5 @@
 <?php
+
 namespace Oneup\UploaderBundle\Tests\Uploader\File;
 
 use PHPUnit\Framework\TestCase;
@@ -15,31 +16,31 @@ abstract class FileTest extends TestCase
 
     public function testGetPathName()
     {
-        $this->assertEquals($this->pathname, $this->file->getPathname());
+        $this->assertSame($this->pathname, $this->file->getPathname());
     }
 
     public function testGetPath()
     {
-        $this->assertEquals($this->path, $this->file->getPath());
+        $this->assertSame($this->path, $this->file->getPath());
     }
 
     public function testGetBasename()
     {
-        $this->assertEquals($this->basename, $this->file->getBasename());
+        $this->assertSame($this->basename, $this->file->getBasename());
     }
 
     public function testGetExtension()
     {
-        $this->assertEquals($this->extension, $this->file->getExtension());
+        $this->assertSame($this->extension, $this->file->getExtension());
     }
 
     public function testGetSize()
     {
-        $this->assertEquals($this->size, $this->file->getSize());
+        $this->assertSame($this->size, $this->file->getSize());
     }
 
     public function testGetMimeType()
     {
-        $this->assertEquals($this->mimeType, $this->file->getMimeType());
+        $this->assertSame($this->mimeType, $this->file->getMimeType());
     }
 }

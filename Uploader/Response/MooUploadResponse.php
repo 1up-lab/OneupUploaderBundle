@@ -2,8 +2,6 @@
 
 namespace Oneup\UploaderBundle\Uploader\Response;
 
-use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
-
 class MooUploadResponse extends AbstractResponse
 {
     protected $id;
