@@ -1,7 +1,7 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('App/cache')
+    ->exclude('Tests/App/cache')
     ->in([__DIR__])
 ;
 
