@@ -9,7 +9,10 @@ class FilesystemFileTest extends FileTest
     public function setUp()
     {
         $this->path = sys_get_temp_dir(). '/oneup_test_tmp';
-        mkdir($this->path);
+
+        if (!file_exists($this->path)) {
+            mkdir($this->path);
+        }
 
         $this->basename = 'test_file.txt';
         $this->pathname = $this->path .'/'. $this->basename;
