@@ -58,7 +58,7 @@ class BlueimpController extends AbstractChunkedController
         $attachmentName = rawurldecode(preg_replace('/(^[^"]+")|("$)/', '', $request->headers->get('content-disposition')));
 
         // split the header string to the appropriate parts
-        [, $startByte, $endByte, $totalBytes] = preg_split('/[^0-9]+/', $headerRange);
+        list(, $startByte, $endByte, $totalBytes) = preg_split('/[^0-9]+/', $headerRange);
 
         // getting information about chunks
         // note: We don't have a chance to get the last $total

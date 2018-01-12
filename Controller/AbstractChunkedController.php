@@ -47,7 +47,7 @@ abstract class AbstractChunkedController extends AbstractController
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
 
         // get information about this chunked request
-        [$last, $uuid, $index, $orig] = $this->parseChunkedRequest($request);
+        list($last, $uuid, $index, $orig) = $this->parseChunkedRequest($request);
 
         $chunk = $chunkManager->addChunk($uuid, $index, $file, $orig);
 
