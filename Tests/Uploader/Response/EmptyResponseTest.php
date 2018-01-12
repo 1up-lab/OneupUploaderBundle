@@ -3,15 +3,16 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
+use PHPUnit\Framework\TestCase;
 
-class TestEmptyResponse extends \PHPUnit_Framework_TestCase
+class EmptyResponseTest extends TestCase
 {
     public function testEmpty()
     {
         $response = new EmptyResponse();
         $assembled = $response->assemble();
 
-        $this->assertTrue(is_array($assembled));
+        $this->assertInternalType('array', $assembled);
         $this->assertCount(0, $assembled);
     }
 
@@ -25,7 +26,7 @@ class TestEmptyResponse extends \PHPUnit_Framework_TestCase
 
         $assembled = $response->assemble();
 
-        $this->assertTrue(is_array($assembled));
+        $this->assertInternalType('array', $assembled);
         $this->assertCount(2, $assembled);
     }
 }

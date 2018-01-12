@@ -18,9 +18,9 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
 
     /**
      * @param FilesystemInterface|Filesystem $filesystem
-     * @param int $bufferSize
-     * @param string $streamWrapperPrefix
-     * @param string $prefix
+     * @param int                            $bufferSize
+     * @param string                         $streamWrapperPrefix
+     * @param string                         $prefix
      */
     public function __construct($filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
@@ -51,25 +51,25 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      */
     public function clear($maxAge, $prefix = null)
     {
-        $prefix = $prefix ? :$this->prefix;
+        $prefix = $prefix ?: $this->prefix;
         $matches = $this->filesystem->listKeys($prefix);
 
         $now = time();
-        $toDelete = array();
+        $toDelete = [];
 
         // Collect the directories that are old,
         // this also means the files inside are old
         // but after the files are deleted the dirs
         // would remain
         foreach ($matches['dirs'] as $key) {
-            if ($maxAge <= $now-$this->filesystem->mtime($key)) {
+            if ($maxAge <= $now - $this->filesystem->mtime($key)) {
                 $toDelete[] = $key;
             }
         }
         // The same directory is returned for every file it contains
         array_unique($toDelete);
         foreach ($matches['keys'] as $key) {
-            if ($maxAge <= $now-$this->filesystem->mtime($key)) {
+            if ($maxAge <= $now - $this->filesystem->mtime($key)) {
                 $this->filesystem->delete($key);
             }
         }
@@ -98,12 +98,12 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      */
     public function addChunk($uuid, $index, UploadedFile $chunk, $original)
     {
-        $this->unhandledChunk = array(
+        $this->unhandledChunk = [
             'uuid' => $uuid,
             'index' => $index,
             'chunk' => $chunk,
-            'original' => $original
-        );
+            'original' => $original,
+        ];
     }
 
     public function assembleChunks($chunks, $removeChunk, $renameChunk)
@@ -126,7 +126,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         }
 
         $dst = $this->filesystem->createStream($path.$target);
-        if ($this->unhandledChunk['index'] === 0) {
+        if (0 === $this->unhandledChunk['index']) {
             // if it's the first chunk overwrite the already existing part
             // to avoid appending to earlier failed uploads
             $this->openStream($dst, 'w');

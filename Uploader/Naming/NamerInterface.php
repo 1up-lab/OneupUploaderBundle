@@ -7,9 +7,10 @@ use Oneup\UploaderBundle\Uploader\File\FileInterface;
 interface NamerInterface
 {
     /**
-     * Name a given file and return the name
+     * Name a given file and return the name.
      *
-     * @param  FileInterface $file
+     * @param FileInterface $file
+     *
      * @return string
      */
     public function name(FileInterface $file);

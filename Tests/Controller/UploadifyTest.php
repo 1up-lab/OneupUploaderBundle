@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractUploadTest;
 
 class UploadifyTest extends AbstractUploadTest
 {
@@ -14,7 +13,7 @@ class UploadifyTest extends AbstractUploadTest
 
     protected function getRequestParameters()
     {
-        return array();
+        return [];
     }
 
     protected function getRequestFile()

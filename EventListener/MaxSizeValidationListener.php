@@ -10,7 +10,7 @@ class MaxSizeValidationListener
     public function onValidate(ValidationEvent $event)
     {
         $config = $event->getConfig();
-        $file   = $event->getFile();
+        $file = $event->getFile();
 
         if ($file->getSize() > $config['max_size']) {
             throw new ValidationException('error.maxsize');

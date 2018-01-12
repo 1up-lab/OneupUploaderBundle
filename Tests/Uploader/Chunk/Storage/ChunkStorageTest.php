@@ -3,10 +3,11 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
+abstract class ChunkStorageTest extends TestCase
 {
     protected $tmpDir;
     /**
@@ -16,8 +17,8 @@ abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
 
     public function testExistanceOfTmpDir()
     {
-        $this->assertTrue(is_dir($this->tmpDir));
-        $this->assertTrue(is_writable($this->tmpDir));
+        $this->assertDirectoryExists($this->tmpDir);
+        $this->assertIsWritable($this->tmpDir);
     }
 
     public function testFillOfTmpDir()
@@ -45,8 +46,8 @@ abstract class ChunkStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->storage->clear($maxage);
 
-        $this->assertTrue(is_dir($this->tmpDir));
-        $this->assertTrue(is_writable($this->tmpDir));
+        $this->assertDirectoryExists($this->tmpDir);
+        $this->assertIsWritable($this->tmpDir);
 
         $this->assertCount(5, $finder);
 

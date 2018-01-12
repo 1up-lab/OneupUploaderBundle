@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FlysystemStorage implements ChunkStorageInterface
 {
+    public $bufferSize;
     protected $unhandledChunk;
     protected $prefix;
     protected $streamWrapperPrefix;
@@ -17,8 +18,6 @@ class FlysystemStorage implements ChunkStorageInterface
      * @var Filesystem
      */
     private $filesystem;
-
-    public $bufferSize;
 
     public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
@@ -38,7 +37,7 @@ class FlysystemStorage implements ChunkStorageInterface
         $matches = $this->filesystem->listContents($prefix, true);
 
         $now = time();
-        $toDelete = array();
+        $toDelete = [];
 
         // Collect the directories that are old,
         // this also means the files inside are old
@@ -66,12 +65,12 @@ class FlysystemStorage implements ChunkStorageInterface
 
     public function addChunk($uuid, $index, UploadedFile $chunk, $original)
     {
-        $this->unhandledChunk = array(
+        $this->unhandledChunk = [
             'uuid' => $uuid,
             'index' => $index,
             'chunk' => $chunk,
             'original' => $original,
-        );
+        ];
     }
 
     public function assembleChunks($chunks, $removeChunk, $renameChunk)

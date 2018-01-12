@@ -1,11 +1,12 @@
 <?php
+
 namespace Oneup\UploaderBundle\Tests\Uploader\File;
 
+use Gaufrette\Adapter\Local as Adapter;
 use Gaufrette\File;
+use Gaufrette\Filesystem as GaufretteFileSystem;
 use Gaufrette\StreamWrapper;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
-use Gaufrette\Adapter\Local as Adapter;
-use Gaufrette\Filesystem as GaufretteFileSystem;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 
 class GaufretteFileTest extends FileTest
@@ -26,12 +27,12 @@ class GaufretteFileTest extends FileTest
         mkdir(sys_get_temp_dir().'/'.$this->path);
 
         $this->basename = 'test_file.txt';
-        $this->pathname = $this->path .'/'. $this->basename;
+        $this->pathname = $this->path.'/'.$this->basename;
         $this->extension = 'txt';
         $this->size = 9; //something = 9 bytes
         $this->mimeType = 'text/plain';
 
-        file_put_contents(sys_get_temp_dir() .'/' . $this->pathname, 'something');
+        file_put_contents(sys_get_temp_dir().'/'.$this->pathname, 'something');
 
         $this->file = new GaufretteFile(new File($this->pathname, $filesystem), $filesystem, 'gaufrette://oneup/');
     }

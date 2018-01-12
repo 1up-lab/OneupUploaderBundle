@@ -2,11 +2,12 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Orphanage;
 
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Filesystem\Filesystem;
 use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
-class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
+class OrphanageManagerTest extends TestCase
 {
     protected $numberOfOrphans;
     protected $orphanagePath;
@@ -16,22 +17,28 @@ class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->numberOfOrphans = 10;
-        $this->orphanagePath = sys_get_temp_dir() . '/orphanage';
+        $this->orphanagePath = sys_get_temp_dir().'/orphanage';
 
         $filesystem = new Filesystem();
         $filesystem->mkdir($this->orphanagePath);
 
         // create n orphans with a filemtime in the past
-        for ($i = 0; $i < $this->numberOfOrphans; $i ++) {
-            touch($this->orphanagePath . '/' . uniqid(), time() - 1000);
+        for ($i = 0; $i < $this->numberOfOrphans; ++$i) {
+            touch($this->orphanagePath.'/'.uniqid(), time() - 1000);
         }
 
-        $this->mockConfig = array(
+        $this->mockConfig = [
             'maxage' => 100,
-            'directory' => $this->orphanagePath
-        );
+            'directory' => $this->orphanagePath,
+        ];
 
         $this->mockContainer = $this->getContainerMock();
+    }
+
+    public function tearDown()
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->orphanagePath);
     }
 
     public function testGetSpecificService()
@@ -45,8 +52,8 @@ class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
     public function testClearAllInPast()
     {
         // create n orphans with a filemtime in the past
-        for ($i = 0; $i < $this->numberOfOrphans; $i ++) {
-            touch($this->orphanagePath . '/' . uniqid(), time() - 1000);
+        for ($i = 0; $i < $this->numberOfOrphans; ++$i) {
+            touch($this->orphanagePath.'/'.uniqid(), time() - 1000);
         }
 
         $manager = new OrphanageManager($this->mockContainer, $this->mockConfig);
@@ -62,8 +69,8 @@ class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
     {
         // create n orphans with half filetimes in the past and half in the future
         // relative to the given threshold
-        for ($i = 0; $i < $this->numberOfOrphans; $i ++) {
-            touch($this->orphanagePath . '/' . uniqid(), time() - $i * 20);
+        for ($i = 0; $i < $this->numberOfOrphans; ++$i) {
+            touch($this->orphanagePath.'/'.uniqid(), time() - $i * 20);
         }
 
         $manager = new OrphanageManager($this->mockContainer, $this->mockConfig);
@@ -89,7 +96,7 @@ class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function getContainerMock()
     {
-        $mock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $mock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $mock
             ->expects($this->any())
             ->method('get')
@@ -98,11 +105,5 @@ class OrphanageManagerTest extends \PHPUnit_Framework_TestCase
         ;
 
         return $mock;
-    }
-
-    public function tearDown()
-    {
-        $filesystem = new Filesystem();
-        $filesystem->remove($this->orphanagePath);
     }
 }

@@ -14,7 +14,7 @@ interface ChunkManagerInterface
      * @param UploadedFile $chunk
      * @param string       $original The file name of the original file
      *
-     * @return File The moved chunk file.
+     * @return File the moved chunk file
      */
     public function addChunk($uuid, $index, UploadedFile $chunk, $original);
 
@@ -22,8 +22,8 @@ interface ChunkManagerInterface
      * Assembles the given chunks and return the resulting file.
      *
      * @param      $chunks
-     * @param bool $removeChunk Remove the chunk file once its assembled.
-     * @param bool $renameChunk Rename the chunk file once its assembled.
+     * @param bool $removeChunk remove the chunk file once its assembled
+     * @param bool $renameChunk rename the chunk file once its assembled
      *
      * @return File
      */
@@ -41,15 +41,14 @@ interface ChunkManagerInterface
     /**
      * Clean a given path.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return bool
      */
     public function cleanup($path);
 
     /**
      * Clears the chunk manager directory. Remove all files older than the configured maxage.
-     *
-     * @return void
      */
     public function clear();
 }

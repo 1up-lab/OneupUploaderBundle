@@ -2,21 +2,17 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
-use Oneup\UploaderBundle\Tests\Controller\AbstractControllerTest;
-use Oneup\UploaderBundle\UploadEvents;
-use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
+use Oneup\UploaderBundle\Event\PreUploadEvent;
+use Oneup\UploaderBundle\UploadEvents;
 
 abstract class AbstractUploadTest extends AbstractControllerTest
 {
-    abstract protected function getRequestParameters();
-    abstract protected function getRequestFile();
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->createdFiles = array();
+        $this->createdFiles = [];
     }
 
     public function testSingleUpload()
@@ -25,17 +21,17 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getRequestFile()), $this->requestHeaders);
+        $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getRequestFile()], $this->requestHeaders);
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(1, $this->getUploadedFiles());
 
         foreach ($this->getUploadedFiles() as $file) {
             $this->assertTrue($file->isFile());
             $this->assertTrue($file->isReadable());
-            $this->assertEquals(128, $file->getSize());
+            $this->assertSame(128, $file->getSize());
         }
     }
 
@@ -50,7 +46,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function(PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -62,8 +58,8 @@ abstract class AbstractUploadTest extends AbstractControllerTest
             $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $file);
         });
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function(PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
-            ++ $uploadCount;
+        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+            ++$uploadCount;
             $preValidation *= -1;
 
             $file = $event->getFile();
@@ -74,10 +70,14 @@ abstract class AbstractUploadTest extends AbstractControllerTest
             $me->assertEquals('cat', $request->get('grumpy'));
         });
 
-        $client->request('POST', $endpoint, $this->getRequestParameters(), array($this->getRequestFile()));
+        $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getRequestFile()]);
 
         $this->assertCount(1, $this->getUploadedFiles());
-        $this->assertEquals($uploadCount, count($this->getUploadedFiles()));
-        $this->assertEquals(1, $preValidation);
+        $this->assertSame($uploadCount, count($this->getUploadedFiles()));
+        $this->assertSame(1, $preValidation);
     }
+
+    abstract protected function getRequestParameters();
+
+    abstract protected function getRequestFile();
 }

@@ -3,9 +3,9 @@
 namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 
 class DropzoneController extends AbstractChunkedController
 {
@@ -16,7 +16,7 @@ class DropzoneController extends AbstractChunkedController
         $files = $this->getFiles($request->files);
         $statusCode = 200;
 
-        $chunked = !is_null($request->request->get('dzchunkindex'));
+        $chunked = null !== $request->request->get('dzchunkindex');
 
         foreach ($files as $file) {
             try {
@@ -28,9 +28,10 @@ class DropzoneController extends AbstractChunkedController
                 $statusCode = 500; //Dropzone displays error if HTTP response is 40x or 50x
                 $this->errorHandler->addException($response, $e);
                 $translator = $this->container->get('translator');
-                $message = $translator->trans($e->getMessage(), array(), 'OneupUploaderBundle');
-                $response = $this->createSupportedJsonResponse(array('error'=>$message ));
+                $message = $translator->trans($e->getMessage(), [], 'OneupUploaderBundle');
+                $response = $this->createSupportedJsonResponse(['error' => $message]);
                 $response->setStatusCode(400);
+
                 return $response;
             }
         }
@@ -46,7 +47,7 @@ class DropzoneController extends AbstractChunkedController
         $uuid = $request->get('dzuuid');
 
         /**
-         * @var UploadedFile $file
+         * @var UploadedFile
          */
         $file = $request->files->get('file')->getClientOriginalName();
         $orig = $file;

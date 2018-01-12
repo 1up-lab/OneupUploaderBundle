@@ -11,40 +11,51 @@
             "email": "js@1up.io",
             "homepage": "http://1up.io",
             "role": "Developer"
+        },
+        {
+            "name": "David Greminger",
+            "email": "dg@1up.io",
+            "homepage": "http://1up.io",
+            "role": "Developer"
         }
     ],
 
     "require": {
-        "php":">=5.4",
-        "symfony/framework-bundle": "^2.4|^3.0",
-        "symfony/finder": "^2.4|^3.0",
-        "symfony/translation": "^2.4|^3.0",
-        "symfony/asset": "^2.4|^3.0",
-        "symfony/templating": "^2.4|^3.0",
-        "paragonie/random_compat": "^1.1|^2.0"
+        "php": "^7.0",
+        "paragonie/random_compat": "^1.1|^2.0",
+        "symfony/asset": "^3.0|^4.0",
+        "symfony/finder": "^3.0|^4.0",
+        "symfony/framework-bundle": "^3.0|^4.0",
+        "symfony/templating": "^3.0|^4.0",
+        "symfony/translation": "^3.0|^4.0",
+        "symfony/yaml": "^3.0|^4.0"
     },
 
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
         "knplabs/gaufrette": "0.2.*@dev",
-        "oneup/flysystem-bundle": "^1.2",
-        "phpunit/phpunit": "^4.4",
-        "sensio/framework-extra-bundle": "2.*|^3.0",
-        "symfony/browser-kit": "2.*|^3.0",
-        "symfony/class-loader": "2.*|^3.0",
-        "symfony/security-bundle": "2.*|^3.0",
+        "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
+        "phpunit/phpunit": "^6.5",
+        "sensio/framework-extra-bundle": "^5.0",
+        "symfony/browser-kit": "^3.0|^4.0",
+        "symfony/class-loader": "^3.0|^4.0",
+        "symfony/security-bundle": "^3.0|^4.0",
+        "symfony/var-dumper": "^3.0|^4.0",
         "twistor/flysystem-stream-wrapper": "^1.0"
     },
-
+    "config": {
+        "sort-packages": true
+    },
     "suggest": {
         "knplabs/knp-gaufrette-bundle": "0.1.*",
-        "oneup/flysystem-bundle": "^1.2",
+        "oneup/flysystem-bundle": "^3.0",
         "twistor/flysystem-stream-wrapper": "^1.0 (Required when using Flysystem)"
     },
 
     "autoload": {
-        "psr-0": { "Oneup\\UploaderBundle": "" }
-    },
-
-    "target-dir": "Oneup/UploaderBundle"
+        "psr-4": {
+            "Oneup\\UploaderBundle\\": ""
+        },
+        "classmap": [ "Tests/App/AppKernel.php"]
+    }
 }

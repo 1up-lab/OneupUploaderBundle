@@ -2,21 +2,20 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
-use Oneup\UploaderBundle\Uploader\File\FileInterface;
-use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\FileBag;
-
-use Oneup\UploaderBundle\UploadEvents;
-use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
+use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
-use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
+use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
+use Oneup\UploaderBundle\UploadEvents;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\FileBag;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 
 abstract class AbstractController
@@ -43,7 +42,7 @@ abstract class AbstractController
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
-        $name   = ini_get('session.upload_progress.name');
+        $name = ini_get('session.upload_progress.name');
 
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
@@ -59,7 +58,7 @@ abstract class AbstractController
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
-        $name   = ini_get('session.upload_progress.name');
+        $name = ini_get('session.upload_progress.name');
 
         $key = sprintf('%s.%s', $prefix, $request->get($name));
 
@@ -75,11 +74,12 @@ abstract class AbstractController
      *  Flattens a given filebag to extract all files.
      *
      * @param FileBag $bag The filebag to use
+     *
      * @return array An array of files
      */
     protected function getFiles(FileBag $bag)
     {
-        $files = array();
+        $files = [];
         $fileBag = $bag->all();
         $fileIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fileBag), \RecursiveIteratorIterator::SELF_FIRST);
 
@@ -102,8 +102,8 @@ abstract class AbstractController
      *  Note: The return value differs when
      *
      *  @param mixed $file The file to upload
-     *  @param ResponseInterface $response A response object.
-     *  @param Request $request The request object.
+     *  @param ResponseInterface $response a response object
+     *  @param Request $request the request object
      */
     protected function handleUpload($file, ResponseInterface $response, Request $request)
     {
@@ -119,7 +119,7 @@ abstract class AbstractController
 
         // no error happend, proceed
         $namer = $this->container->get($this->config['namer']);
-        $name  = $namer->name($file);
+        $name = $namer->name($file);
 
         // perform the real upload
         $uploaded = $this->storage->upload($file, $name);
@@ -128,11 +128,11 @@ abstract class AbstractController
     }
 
     /**
-     *  This function is a helper function which dispatches pre upload event
+     *  This function is a helper function which dispatches pre upload event.
      *
-     *  @param FileInterface $uploaded The uploaded file.
-     *  @param ResponseInterface $response A response object.
-     *  @param Request $request The request object.
+     *  @param FileInterface $uploaded the uploaded file
+     *  @param ResponseInterface $response a response object
+     *  @param Request $request the request object
      */
     protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request)
     {
@@ -148,9 +148,9 @@ abstract class AbstractController
      *  This function is a helper function which dispatches post upload
      *  and post persist events.
      *
-     *  @param mixed $uploaded The uploaded file.
-     *  @param ResponseInterface $response A response object.
-     *  @param Request $request The request object.
+     *  @param mixed $uploaded the uploaded file
+     *  @param ResponseInterface $response a response object
+     *  @param Request $request the request object
      */
     protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request)
     {
@@ -185,7 +185,7 @@ abstract class AbstractController
      * then the content type of the response will be set to text/plain instead.
      *
      * @param mixed $data
-     * @param int $statusCode
+     * @param int   $statusCode
      *
      * @return JsonResponse
      */
@@ -195,7 +195,7 @@ abstract class AbstractController
         $response = new JsonResponse($data, $statusCode);
         $response->headers->set('Vary', 'Accept');
 
-        if (!in_array('application/json', $request->getAcceptableContentTypes())) {
+        if (!in_array('application/json', $request->getAcceptableContentTypes(), true)) {
             $response->headers->set('Content-type', 'text/plain');
         }
 
@@ -203,18 +203,16 @@ abstract class AbstractController
     }
 
     /**
-     * Get the master request
+     * Get the master request.
      *
      * @return Request
      */
     protected function getRequest()
     {
-
         if (version_compare(Kernel::VERSION, '2.4', '<=')) {
             return $this->container->get('request');
         }
 
         return $this->container->get('request_stack')->getMasterRequest();
     }
-
 }

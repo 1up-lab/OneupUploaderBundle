@@ -12,7 +12,7 @@ class UploaderHelper extends Helper
 
     public function __construct(RouterInterface $router, array $maxsize)
     {
-        $this->router  = $router;
+        $this->router = $router;
         $this->maxsize = $maxsize;
     }
 

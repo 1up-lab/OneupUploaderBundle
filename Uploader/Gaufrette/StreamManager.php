@@ -1,16 +1,17 @@
 <?php
+
 namespace Oneup\UploaderBundle\Uploader\Gaufrette;
 
 use Gaufrette\Stream;
+use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
-use Gaufrette\Stream\Local as LocalStream;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 
 class StreamManager
 {
-    protected $filesystem;
     public $buffersize;
+    protected $filesystem;
 
     protected function createSourceStream(FileInterface $file)
     {
@@ -25,7 +26,7 @@ class StreamManager
 
     protected function ensureRemotePathExists($path)
     {
-        if(!$this->filesystem->has($path)) {
+        if (!$this->filesystem->has($path)) {
             $this->filesystem->write($path, '', true);
         }
     }
@@ -53,5 +54,4 @@ class StreamManager
         $dst->close();
         $src->close();
     }
-
 }

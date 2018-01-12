@@ -2,17 +2,18 @@
 
 namespace Oneup\UploaderBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class OneupUploaderExtension extends Extension
 {
-    protected $storageServices = array();
+    protected $storageServices = [];
 
     /**
      * @var ContainerBuilder
@@ -42,8 +43,8 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.chunks', $this->config['chunks']);
         $container->setParameter('oneup_uploader.orphanage', $this->config['orphanage']);
 
-        $controllers = array();
-        $maxsize = array();
+        $controllers = [];
+        $maxsize = [];
 
         // handle mappings
         foreach ($this->config['mappings'] as $key => $mapping) {
@@ -66,7 +67,7 @@ class OneupUploaderExtension extends Extension
             $defaultDir = 'orphanage';
         }
 
-        $this->config['orphanage']['directory'] = is_null($this->config['orphanage']['directory']) ? $defaultDir:
+        $this->config['orphanage']['directory'] = null === $this->config['orphanage']['directory'] ? $defaultDir :
             $this->normalizePath($this->config['orphanage']['directory'])
         ;
     }
@@ -81,12 +82,12 @@ class OneupUploaderExtension extends Extension
 
         $this->verifyPhpVersion($mapping);
 
-        return array($controllerName, array(
+        return [$controllerName, [
             'enable_progress' => $mapping['enable_progress'],
             'enable_cancelation' => $mapping['enable_cancelation'],
             'route_prefix' => $mapping['route_prefix'],
             'endpoints' => $mapping['endpoints'],
-        ));
+        ]];
     }
 
     protected function createController($key, $config)
@@ -94,7 +95,7 @@ class OneupUploaderExtension extends Extension
         // create the storage service according to the configuration
         $storageService = $this->createStorageService($config['storage'], $key, $config['use_orphanage']);
 
-        if ($config['frontend'] != 'custom') {
+        if ('custom' !== $config['frontend']) {
             $controllerName = sprintf('oneup_uploader.controller.%s', $key);
             $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $config['frontend']);
         } else {
@@ -103,15 +104,16 @@ class OneupUploaderExtension extends Extension
             $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
             $controllerType = $customFrontend['class'];
 
-            if(empty($controllerName) || empty($controllerType))
+            if (empty($controllerName) || empty($controllerType)) {
                 throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
+            }
         }
 
         $errorHandler = $this->createErrorHandler($config);
 
         // create controllers based on mapping
         $this->container
-            ->register($controllerName, $controllerType)
+            ->setDefinition($controllerName, (new Definition($controllerType))->setPublic(true))
 
             ->addArgument(new Reference('service_container'))
             ->addArgument($storageService)
@@ -119,7 +121,7 @@ class OneupUploaderExtension extends Extension
             ->addArgument($config)
             ->addArgument($key)
 
-            ->addTag('oneup_uploader.routable', array('type' => $key))
+            ->addTag('oneup_uploader.routable', ['type' => $key])
         ;
 
         return $controllerName;
@@ -127,7 +129,7 @@ class OneupUploaderExtension extends Extension
 
     protected function createErrorHandler($config)
     {
-        return is_null($config['error_handler']) ?
+        return null === $config['error_handler'] ?
             new Reference('oneup_uploader.error_handler.'.$config['frontend']) :
             new Reference($config['error_handler']);
     }
@@ -135,7 +137,7 @@ class OneupUploaderExtension extends Extension
     protected function verifyPhpVersion($config)
     {
         if ($config['enable_progress'] || $config['enable_cancelation']) {
-            if (strnatcmp(phpversion(), '5.4.0') < 0) {
+            if (strnatcmp(PHP_VERSION, '5.4.0') < 0) {
                 throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
             }
         }
@@ -147,9 +149,9 @@ class OneupUploaderExtension extends Extension
 
         $storageClass = sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']);
 
-        switch($config['type']) {
+        switch ($config['type']) {
             case 'filesystem':
-                $config['directory'] = is_null($config['directory']) ?
+                $config['directory'] = null === $config['directory'] ?
                     sprintf('%s/uploader/chunks', $this->container->getParameter('kernel.cache_dir')) :
                     $this->normalizePath($config['directory'])
                 ;
@@ -164,7 +166,8 @@ class OneupUploaderExtension extends Extension
                 $this->registerFilesystem(
                     $config['type'],
                     'oneup_uploader.chunks_storage',
-                    $storageClass, $config['filesystem'],
+                    $storageClass,
+                    $config['filesystem'],
                     $config['sync_buffer_size'],
                     $config['stream_wrapper'],
                     $config['prefix']
@@ -183,7 +186,6 @@ class OneupUploaderExtension extends Extension
                 throw new \InvalidArgumentException(sprintf('Filesystem "%s" is invalid', $config['type']));
                 break;
         }
-
     }
 
     protected function createStorageService(&$config, $key, $orphanage = false)
@@ -192,7 +194,7 @@ class OneupUploaderExtension extends Extension
 
         // if a service is given, return a reference to this service
         // this allows a user to overwrite the storage layer if needed
-        if (!is_null($config['service'])) {
+        if (null !== $config['service']) {
             $storageService = new Reference($config['service']);
         } else {
             // no service was given, so we create one
@@ -204,7 +206,7 @@ class OneupUploaderExtension extends Extension
                     // root_folder is true, remove the mapping name folder from path
                     $folder = $this->config['mappings'][$key]['root_folder'] ? '' : $key;
 
-                    $config['directory'] = is_null($config['directory']) ?
+                    $config['directory'] = null === $config['directory'] ?
                         sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $folder) :
                         $this->normalizePath($config['directory'])
                     ;
@@ -243,6 +245,7 @@ class OneupUploaderExtension extends Extension
                     ->addArgument(new Reference('oneup_uploader.chunks_storage'))
                     ->addArgument($this->config['orphanage'])
                     ->addArgument($key)
+                    ->setPublic(true)
                 ;
 
                 // switch storage of mapping to orphanage
@@ -268,8 +271,9 @@ class OneupUploaderExtension extends Extension
                 break;
         }
 
-        if (strlen($filesystem) <= 0)
+        if (strlen($filesystem) <= 0) {
             throw new ServiceNotFoundException('Empty service name');
+        }
 
         $streamWrapper = $this->normalizeStreamWrapper($streamWrapper);
 
@@ -283,7 +287,7 @@ class OneupUploaderExtension extends Extension
 
     protected function getMaxUploadSize($input)
     {
-        $input   = $this->getValueInBytes($input);
+        $input = $this->getValueInBytes($input);
         $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
         $maxFile = $this->getValueInBytes(ini_get('post_max_size'));
 
@@ -294,18 +298,20 @@ class OneupUploaderExtension extends Extension
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
         $input = trim($input);
-        $last  = strtolower($input[strlen($input) - 1]);
+        $last = strtolower($input[strlen($input) - 1]);
         $numericInput = (float) substr($input, 0, -1);
 
         switch ($last) {
             case 'g': $numericInput *= 1024;
+            // no break
             case 'm': $numericInput *= 1024;
+            // no break
             case 'k': $numericInput *= 1024;
 
-            return $numericInput;
+            return (int) $numericInput;
         }
 
-        return $input;
+        return (int) $input;
     }
 
     protected function normalizePath($input)
@@ -315,10 +321,10 @@ class OneupUploaderExtension extends Extension
 
     protected function normalizeStreamWrapper($input)
     {
-        if (is_null($input)) {
+        if (null === $input) {
             return null;
         }
 
-        return rtrim($input, '/') . '/';
+        return rtrim($input, '/').'/';
     }
 }

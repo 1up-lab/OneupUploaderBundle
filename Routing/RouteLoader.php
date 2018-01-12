@@ -17,7 +17,7 @@ class RouteLoader extends Loader
 
     public function supports($resource, $type = null)
     {
-        return $type === 'uploader';
+        return 'uploader' === $type;
     }
 
     public function load($resource, $type = null)
@@ -25,43 +25,42 @@ class RouteLoader extends Loader
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $type => $controllerArray) {
-
             $service = $controllerArray[0];
             $options = $controllerArray[1];
 
             $upload = new Route(
                 $options['endpoints']['upload'] ?: sprintf('%s/_uploader/%s/upload', $options['route_prefix'], $type),
-                array('_controller' => $service . ':upload', '_format' => 'json'),
-                array(),
-                array(),
+                ['_controller' => $service.':upload', '_format' => 'json'],
+                [],
+                [],
                 '',
-                array(),
-                array('POST', 'PUT', 'PATCH')
+                [],
+                ['POST', 'PUT', 'PATCH']
             );
 
-            if ($options['enable_progress'] === true) {
+            if (true === $options['enable_progress']) {
                 $progress = new Route(
                     $options['endpoints']['progress'] ?: sprintf('%s/_uploader/%s/progress', $options['route_prefix'], $type),
-                    array('_controller' => $service . ':progress', '_format' => 'json'),
-                    array(),
-                    array(),
+                    ['_controller' => $service.':progress', '_format' => 'json'],
+                    [],
+                    [],
                     '',
-                    array(),
-                    array('POST')
+                    [],
+                    ['POST']
                 );
 
                 $routes->add(sprintf('_uploader_progress_%s', $type), $progress);
             }
 
-            if ($options['enable_cancelation'] === true) {
+            if (true === $options['enable_cancelation']) {
                 $progress = new Route(
                     $options['endpoints']['cancel'] ?: sprintf('%s/_uploader/%s/cancel', $options['route_prefix'], $type),
-                    array('_controller' => $service . ':cancel', '_format' => 'json'),
-                    array(),
-                    array(),
+                    ['_controller' => $service.':cancel', '_format' => 'json'],
+                    [],
+                    [],
                     '',
-                    array(),
-                    array('POST')
+                    [],
+                    ['POST']
                 );
 
                 $routes->add(sprintf('_uploader_cancel_%s', $type), $progress);

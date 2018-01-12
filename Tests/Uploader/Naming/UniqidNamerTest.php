@@ -3,8 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Naming;
 
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
+use PHPUnit\Framework\TestCase;
 
-class UniqidNamerTest extends \PHPUnit_Framework_TestCase
+class UniqidNamerTest extends TestCase
 {
     public function testNamerReturnsName()
     {
@@ -30,7 +31,7 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
     {
         // TODO Reenable this test.
         $this->markTestSkipped('Details: https://github.com/Ocramius/Instantiator/pull/8#issuecomment-47446963');
-        
+
         $file = $this->getMockBuilder('Oneup\UploaderBundle\Uploader\File\FilesystemFile')
             ->disableOriginalConstructor()
             ->getMock()
@@ -48,6 +49,6 @@ class UniqidNamerTest extends \PHPUnit_Framework_TestCase
         $name1 = $namer->name($file);
         $name2 = $namer->name($file);
 
-        $this->assertNotEquals($name1, $name2);
+        $this->assertNotSame($name1, $name2);
     }
 }

@@ -2,22 +2,23 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
-use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Gaufrette\Filesystem as GaufretteFilesystem;
 use Gaufrette\Adapter\Local as Adapter;
+use Gaufrette\Filesystem as GaufretteFilesystem;
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
+class GaufretteStorageTest extends TestCase
 {
     protected $directory;
     protected $storage;
 
     public function setUp()
     {
-        $this->directory = sys_get_temp_dir() . '/storage';
+        $this->directory = sys_get_temp_dir().'/storage';
 
         // create temporary file
         $this->file = tempnam(sys_get_temp_dir(), 'uploader');
@@ -32,6 +33,12 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $this->storage = new GaufretteStorage($filesystem, 100000);
     }
 
+    public function tearDown()
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->directory);
+    }
+
     public function testUpload()
     {
         $payload = new FilesystemFile(new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true));
@@ -43,14 +50,8 @@ class GaufretteStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $finder);
 
         foreach ($finder as $file) {
-            $this->assertEquals($file->getFilename(), 'notsogrumpyanymore.jpeg');
-            $this->assertEquals($file->getSize(), 1024);
+            $this->assertSame($file->getFilename(), 'notsogrumpyanymore.jpeg');
+            $this->assertSame($file->getSize(), 1024);
         }
-    }
-
-    public function tearDown()
-    {
-        $filesystem = new Filesystem();
-        $filesystem->remove($this->directory);
     }
 }

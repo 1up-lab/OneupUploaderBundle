@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
 class FlysystemStorage implements StorageInterface
 {
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $streamWrapperPrefix;
 
@@ -39,6 +39,7 @@ class FlysystemStorage implements StorageInterface
 
         if ($file instanceof FilesystemFile) {
             $stream = fopen($file->getPathname(), 'r+b');
+
             $this->filesystem->putStream($path, $stream, array(
                 'mimetype' => $file->getMimeType()
             ));

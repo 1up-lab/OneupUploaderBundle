@@ -3,8 +3,9 @@
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
+use PHPUnit\Framework\TestCase;
 
-class TestFineUploaderResponse extends \PHPUnit_Framework_TestCase
+class FineUploaderResponseTest extends TestCase
 {
     public function testCreationOfResponse()
     {
@@ -29,17 +30,17 @@ class TestFineUploaderResponse extends \PHPUnit_Framework_TestCase
 
         // the next three lines are from code coverage
         $this->assertTrue(isset($response['cat']));
-        $this->assertEquals($response['cat'], $cat);
+        $this->assertSame($response['cat'], $cat);
 
         unset($response['del']);
 
         $assembled = $response->assemble();
 
-        $this->assertTrue(is_array($assembled));
+        $this->assertInternalType('array', $assembled);
         $this->assertArrayHasKey('cat', $assembled);
         $this->assertArrayHasKey('dog', $assembled);
-        $this->assertEquals($assembled['cat'], $cat);
-        $this->assertEquals($assembled['dog'], $dog);
+        $this->assertSame($assembled['cat'], $cat);
+        $this->assertSame($assembled['dog'], $dog);
         $this->assertFalse($response->getSuccess());
         $this->assertNull($response->getError());
     }
@@ -49,7 +50,7 @@ class TestFineUploaderResponse extends \PHPUnit_Framework_TestCase
         $response = new FineUploaderResponse();
         $response->setError('This response is grumpy');
 
-        $this->assertEquals($response->getError(), 'This response is grumpy');
+        $this->assertSame($response->getError(), 'This response is grumpy');
     }
 
     public function testOverwriteOfInternals()

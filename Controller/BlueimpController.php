@@ -2,10 +2,9 @@
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Request;
-
-use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 
 class BlueimpController extends AbstractChunkedController
 {
@@ -15,7 +14,7 @@ class BlueimpController extends AbstractChunkedController
         $response = new EmptyResponse();
         $files = $this->getFiles($request->files);
 
-        $chunked = !is_null($request->headers->get('content-range'));
+        $chunked = null !== $request->headers->get('content-range');
 
         foreach ((array) $files as $file) {
             try {
@@ -37,17 +36,17 @@ class BlueimpController extends AbstractChunkedController
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
-        $name   = ini_get('session.upload_progress.name');
+        $name = ini_get('session.upload_progress.name');
 
         // ref: https://github.com/blueimp/jQuery-File-Upload/wiki/PHP-Session-Upload-Progress
         $key = sprintf('%s.%s', $prefix, $request->get($name));
         $value = $session->get($key);
 
-        $progress = array(
+        $progress = [
             'lengthComputable' => true,
             'loaded' => $value['bytes_processed'],
-            'total' => $value['content_length']
-        );
+            'total' => $value['content_length'],
+        ];
 
         return $this->createSupportedJsonResponse($progress);
     }
@@ -68,16 +67,16 @@ class BlueimpController extends AbstractChunkedController
         // the one before, we just let that happen, if you have
         // any idea to fix this without fetching information about
         // previously saved files, let me know.
-        $size  = ($endByte + 1 - $startByte);
-        $last  = ($endByte + 1) == $totalBytes;
+        $size = ($endByte + 1 - $startByte);
+        $last = ($endByte + 1) === $totalBytes;
         $index = $last ? \PHP_INT_MAX : floor($startByte / $size);
 
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session
         // to the uuid otherwise we will get a mess
-        $uuid  = md5(sprintf('%s.%s', $attachmentName, $session->getId()));
-        $orig  = $attachmentName;
+        $uuid = md5(sprintf('%s.%s', $attachmentName, $session->getId()));
+        $orig = $attachmentName;
 
-        return array($last, $uuid, $index, $orig);
+        return [$last, $uuid, $index, $orig];
     }
 }

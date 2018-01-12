@@ -2,10 +2,9 @@
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
+use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractValidationTest;
-use Oneup\UploaderBundle\UploadEvents;
 
 class BlueimpValidationTest extends AbstractValidationTest
 {
@@ -20,9 +19,9 @@ class BlueimpValidationTest extends AbstractValidationTest
         $response = $client->getResponse();
 
         //$this->assertTrue($response->isNotSuccessful());
-        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
-        $this->assertFalse(strpos($response->getContent(), 'error.maxsize'), "Failed to translate error id into lang");
+        $this->assertFalse(strpos($response->getContent(), 'error.maxsize'), 'Failed to translate error id into lang');
     }
 
     public function testEvents()
@@ -34,13 +33,13 @@ class BlueimpValidationTest extends AbstractValidationTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function() use (&$validationCount) {
-            ++ $validationCount;
+        $dispatcher->addListener(UploadEvents::VALIDATION, function () use (&$validationCount) {
+            ++$validationCount;
         });
 
         $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType(), $this->requestHeaders);
 
-        $this->assertEquals(1, $validationCount);
+        $this->assertSame(1, $validationCount);
     }
 
     public function testAgainstCorrectMimeType()
@@ -53,13 +52,13 @@ class BlueimpValidationTest extends AbstractValidationTest
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(1, $this->getUploadedFiles());
 
         foreach ($this->getUploadedFiles() as $file) {
             $this->assertTrue($file->isFile());
             $this->assertTrue($file->isReadable());
-            $this->assertEquals(128, $file->getSize());
+            $this->assertSame(128, $file->getSize());
         }
     }
 
@@ -75,7 +74,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $response = $client->getResponse();
 
         //$this->assertTrue($response->isNotSuccessful());
-        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
@@ -86,36 +85,46 @@ class BlueimpValidationTest extends AbstractValidationTest
 
     protected function getRequestParameters()
     {
-        return array();
+        return [];
     }
 
     protected function getOversizedFile()
     {
-        return array('files' => array(new UploadedFile(
+        return ['files' => [new UploadedFile(
             $this->createTempFile(512),
             'cat.ok',
             'text/plain',
             512
-        )));
+        )]];
     }
 
     protected function getFileWithCorrectMimeType()
     {
-        return array('files' => array(new UploadedFile(
+        return ['files' => [new UploadedFile(
             $this->createTempFile(128),
-            'cat.ok',
-            'image/jpg',
+            'cat.txt',
+            'text/plain',
             128
-        )));
+        )]];
+    }
+
+    protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
+    {
+        return new UploadedFile(
+            $this->createTempFile(128),
+            'cat.txxt',
+            'text/plain',
+            128
+        );
     }
 
     protected function getFileWithIncorrectMimeType()
     {
-        return array(new UploadedFile(
+        return [new UploadedFile(
             $this->createTempFile(128),
             'cat.ok',
             'image/gif',
             128
-        ));
+        )];
     }
 }

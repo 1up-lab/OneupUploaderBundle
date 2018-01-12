@@ -3,7 +3,6 @@
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oneup\UploaderBundle\Tests\Controller\AbstractValidationTest;
 
 class FancyUploadValidationTest extends AbstractValidationTest
 {
@@ -14,7 +13,7 @@ class FancyUploadValidationTest extends AbstractValidationTest
 
     protected function getRequestParameters()
     {
-        return array();
+        return [];
     }
 
     protected function getOversizedFile()
@@ -31,8 +30,18 @@ class FancyUploadValidationTest extends AbstractValidationTest
     {
         return new UploadedFile(
             $this->createTempFile(128),
-            'cat.ok',
-            'image/jpg',
+            'cat.txt',
+            'text/plain',
+            128
+        );
+    }
+
+    protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
+    {
+        return new UploadedFile(
+            $this->createTempFile(128),
+            'cat.txxt',
+            'text/plain',
             128
         );
     }

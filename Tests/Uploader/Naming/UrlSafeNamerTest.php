@@ -1,4 +1,5 @@
 <?php
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Naming;
 
 use Oneup\UploaderBundle\Tests\Uploader\File\FileTest;
@@ -8,14 +9,16 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UrlSafeNamerTest extends FileTest
 {
-
     public function setUp()
     {
-        $this->path = sys_get_temp_dir(). '/oneup_namer_test';
-        mkdir($this->path);
+        $this->path = sys_get_temp_dir().'/oneup_namer_test';
+
+        if (!file_exists($this->path)) {
+            mkdir($this->path);
+        }
 
         $this->basename = 'test_file.txt';
-        $this->pathname = $this->path .'/'. $this->basename;
+        $this->pathname = $this->path.'/'.$this->basename;
         $this->extension = 'txt';
         $this->size = 9; //something = 9 bytes
         $this->mimeType = 'text/plain';
@@ -25,10 +28,16 @@ class UrlSafeNamerTest extends FileTest
         $this->file = new FilesystemFile(new UploadedFile($this->pathname, 'test_file.txt', null, null, null, true));
     }
 
+    public function tearDown()
+    {
+        unlink($this->pathname);
+        rmdir($this->path);
+    }
+
     public function testCanGetString()
     {
         $namer = new UrlSafeNamer();
-        $this->assertTrue(is_string($namer->name($this->file)));
+        $this->assertInternalType('string', $namer->name($this->file));
         $this->assertStringEndsWith($this->extension, $namer->name($this->file));
     }
 
@@ -36,18 +45,10 @@ class UrlSafeNamerTest extends FileTest
     {
         $namer = new UrlSafeNamer();
         // Trying 200 times just to be sure
-        for($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 200; ++$i) {
             $name1 = $namer->name($this->file);
             $name2 = $namer->name($this->file);
-            $this->assertNotEquals($name1, $name2);
+            $this->assertNotSame($name1, $name2);
         }
-
     }
-
-    public function tearDown()
-    {
-        unlink($this->pathname);
-        rmdir($this->path);
-    }
-
 }

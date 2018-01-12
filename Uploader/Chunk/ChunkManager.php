@@ -5,8 +5,6 @@ namespace Oneup\UploaderBundle\Uploader\Chunk;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
-
 class ChunkManager implements ChunkManagerInterface
 {
     protected $configuration;

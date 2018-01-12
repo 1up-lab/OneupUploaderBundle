@@ -2,18 +2,17 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+use League\Flysystem\Adapter\Local as Adapter;
 use League\Flysystem\File;
+use League\Flysystem\Filesystem as FSAdapter;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage as ChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Oneup\UploaderBundle\Uploader\Storage\FlysystemOrphanageStorage;
+use Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage as Storage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-
-use League\Flysystem\Adapter\Local as Adapter;
-use League\Flysystem\Filesystem as FSAdapter;
-use Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage as Storage;
 use Twistor\FlysystemStreamWrapper;
 
 class FlysystemOrphanageStorageTest extends OrphanageTest
@@ -25,10 +24,10 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
     public function setUp()
     {
         $this->numberOfPayloads = 5;
-        $this->realDirectory = sys_get_temp_dir() . '/storage';
-        $this->chunkDirectory = $this->realDirectory .'/' . $this->chunksKey;
-        $this->tempDirectory = $this->realDirectory . '/' . $this->orphanageKey;
-        $this->payloads = array();
+        $this->realDirectory = sys_get_temp_dir().'/storage';
+        $this->chunkDirectory = $this->realDirectory.'/'.$this->chunksKey;
+        $this->tempDirectory = $this->realDirectory.'/'.$this->orphanageKey;
+        $this->payloads = [];
 
         $filesystem = new Filesystem();
         $filesystem->mkdir($this->realDirectory);
@@ -48,11 +47,11 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
-        $config = array('directory' => 'orphanage');
+        $config = ['directory' => 'orphanage'];
 
         $this->orphanage = new FlysystemOrphanageStorage($this->storage, $session, $chunkStorage, $config, 'cat');
 
-        for ($i = 0; $i < $this->numberOfPayloads; $i ++) {
+        for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
             // create temporary file as if it was reassembled by the chunk manager
             $file = tempnam($this->chunkDirectory, 'uploader');
 
@@ -76,8 +75,8 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
 
     public function testUpload()
     {
-        for ($i = 0; $i < $this->numberOfPayloads; $i ++) {
-            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
+        for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
+            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -86,14 +85,14 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
 
         $finder = new Finder();
         // exclude the orphanage and the chunks
-        $finder->in($this->realDirectory)->exclude(array($this->orphanageKey, $this->chunksKey))->files();
+        $finder->in($this->realDirectory)->exclude([$this->orphanageKey, $this->chunksKey])->files();
         $this->assertCount(0, $finder);
     }
 
     public function testUploadAndFetching()
     {
-        for ($i = 0; $i < $this->numberOfPayloads; $i ++) {
-            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
+        for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
+            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -101,12 +100,12 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $this->assertCount($this->numberOfPayloads, $finder);
 
         $finder = new Finder();
-        $finder->in($this->realDirectory)->exclude(array($this->orphanageKey, $this->chunksKey))->files();
+        $finder->in($this->realDirectory)->exclude([$this->orphanageKey, $this->chunksKey])->files();
         $this->assertCount(0, $finder);
 
         $files = $this->orphanage->uploadFiles();
 
-        $this->assertTrue(is_array($files));
+        $this->assertInternalType('array', $files);
         $this->assertCount($this->numberOfPayloads, $files);
 
         $finder = new Finder();

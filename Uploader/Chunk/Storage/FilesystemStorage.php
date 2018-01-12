@@ -6,7 +6,6 @@ use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
-
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements ChunkStorageInterface
@@ -24,7 +23,7 @@ class FilesystemStorage implements ChunkStorageInterface
         $finder = new Finder();
 
         try {
-            $finder->in($this->directory)->date('<=' . -1 * (int) $maxAge . 'seconds')->files();
+            $finder->in($this->directory)->date('<='.-1 * (int) $maxAge.'seconds')->files();
         } catch (\InvalidArgumentException $e) {
             // the finder will throw an exception of type InvalidArgumentException
             // if the directory he should search in does not exist
@@ -44,8 +43,9 @@ class FilesystemStorage implements ChunkStorageInterface
         $name = sprintf('%s_%s', $index, $original);
 
         // create directory if it does not yet exist
-        if(!$filesystem->exists($path))
+        if (!$filesystem->exists($path)) {
             $filesystem->mkdir(sprintf('%s/%s', $this->directory, $uuid));
+        }
 
         return $chunk->move($path, $name);
     }
@@ -62,7 +62,6 @@ class FilesystemStorage implements ChunkStorageInterface
         $iterator->next();
 
         while ($iterator->valid()) {
-
             $file = $iterator->current();
 
             if (false === file_put_contents($base->getPathname(), file_get_contents($file->getPathname()), \FILE_APPEND | \LOCK_EX)) {
@@ -109,7 +108,7 @@ class FilesystemStorage implements ChunkStorageInterface
     {
         $finder = new Finder();
         $finder
-            ->in(sprintf('%s/%s', $this->directory, $uuid))->files()->sort(function(\SplFileInfo $a, \SplFileInfo $b) {
+            ->in(sprintf('%s/%s', $this->directory, $uuid))->files()->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
                 $t = explode('_', $a->getBasename());
                 $s = explode('_', $b->getBasename());
                 $t = (int) $t[0];

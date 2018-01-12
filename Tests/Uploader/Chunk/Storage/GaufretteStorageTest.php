@@ -2,10 +2,10 @@
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
-use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage;
-use Symfony\Component\Filesystem\Filesystem;
 use Gaufrette\Adapter\Local as Adapter;
 use Gaufrette\Filesystem as GaufretteFilesystem;
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage;
+use Symfony\Component\Filesystem\Filesystem;
 
 class GaufretteStorageTest extends ChunkStorageTest
 {
@@ -31,7 +31,6 @@ class GaufretteStorageTest extends ChunkStorageTest
         $this->tmpDir = $this->parentDir.'/'.$this->chunkKey;
 
         $system->mkdir($this->tmpDir);
-
     }
 
     public function tearDown()
@@ -39,5 +38,4 @@ class GaufretteStorageTest extends ChunkStorageTest
         $system = new Filesystem();
         $system->remove($this->parentDir);
     }
-
 }

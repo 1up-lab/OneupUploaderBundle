@@ -1,4 +1,5 @@
 <?php
+
 namespace Oneup\UploaderBundle\Uploader\File;
 
 use League\Flysystem\File;
@@ -6,7 +7,6 @@ use League\Flysystem\Filesystem;
 
 class FlysystemFile extends File implements FileInterface
 {
-
     protected $streamWrapperPrefix;
     protected $mimeType;
 
@@ -17,7 +17,7 @@ class FlysystemFile extends File implements FileInterface
     }
 
     /**
-     * Returns the path of the file
+     * Returns the path of the file.
      *
      * @return string
      */
@@ -27,7 +27,7 @@ class FlysystemFile extends File implements FileInterface
     }
 
     /**
-     * Returns the basename of the file
+     * Returns the basename of the file.
      *
      * @return string
      */
@@ -37,7 +37,7 @@ class FlysystemFile extends File implements FileInterface
     }
 
     /**
-     * Returns the guessed extension of the file
+     * Returns the guessed extension of the file.
      *
      * @return mixed
      */
