@@ -82,6 +82,6 @@ See the [Use Chunked Uploads behind Load Balancers](load_balancers.md) section i
 
 The ChunkManager can be forced to clean up old and orphanaged chunks by using the command provided by the OneupUploaderBundle.
 
-    $> php app/console oneup:uploader:clear-chunks
+    $> php bin/console oneup:uploader:clear-chunks
 
 This parameter will clean all chunk files older than the `maxage` value in your configuration.
