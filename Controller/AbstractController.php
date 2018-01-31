@@ -139,9 +139,9 @@ abstract class AbstractController
         $dispatcher = $this->container->get('event_dispatcher');
 
         // dispatch pre upload event (both the specific and the general)
-        $postUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
-        $dispatcher->dispatch(UploadEvents::PRE_UPLOAD, $postUploadEvent);
-        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::PRE_UPLOAD, $this->type), $postUploadEvent);
+        $preUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
+        $dispatcher->dispatch(UploadEvents::PRE_UPLOAD, $preUploadEvent);
+        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::PRE_UPLOAD, $this->type), $preUploadEvent);
     }
 
     /**
