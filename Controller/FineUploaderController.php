@@ -44,7 +44,7 @@ class FineUploaderController extends AbstractChunkedController
         $total = $request->get('qqtotalparts');
         $uuid = $request->get('qquuid');
         $orig = $request->get('qqfilename');
-        $last = ($total - 1) === $index;
+        $last = ((int) $total - 1) === (int) $index;
 
         return [$last, $uuid, $index, $orig];
     }

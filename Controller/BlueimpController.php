@@ -68,7 +68,7 @@ class BlueimpController extends AbstractChunkedController
         // any idea to fix this without fetching information about
         // previously saved files, let me know.
         $size = ($endByte + 1 - $startByte);
-        $last = ($endByte + 1) === $totalBytes;
+        $last = ((int) $endByte + 1) === (int) $totalBytes;
         $index = $last ? \PHP_INT_MAX : floor($startByte / $size);
 
         // it is possible, that two clients send a file with the

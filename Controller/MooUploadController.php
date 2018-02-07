@@ -76,7 +76,7 @@ class MooUploadController extends AbstractChunkedController
             // size is 0
         }
 
-        $last = $headers->get('x-file-size') === ($size + $headers->get('content-length'));
+        $last = (int) $headers->get('x-file-size') === ($size + (int) $headers->get('content-length'));
 
         // store also to response object
         $this->response->setFinish($last);

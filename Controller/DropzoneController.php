@@ -43,7 +43,7 @@ class DropzoneController extends AbstractChunkedController
     {
         $totalChunkCount = $request->get('dztotalchunkcount');
         $index = $request->get('dzchunkindex');
-        $last = ($index + 1) === (int) $totalChunkCount;
+        $last = ((int) $index + 1) === (int) $totalChunkCount;
         $uuid = $request->get('dzuuid');
 
         /**
