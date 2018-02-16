@@ -33,7 +33,7 @@ oneup_uploader:
             frontend: fineuploader
 ```
 
-Be sure to check out the [official manual](https://github.com/Widen/fine-uploader/blob/master/readme.md) for details on the configuration.
+Be sure to check out the [official manual](https://github.com/FineUploader/fine-uploader/blob/master/README.md) for details on the configuration.
 
 Next steps
 ----------
