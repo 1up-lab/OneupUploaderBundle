@@ -122,6 +122,7 @@ class OneupUploaderExtension extends Extension
             ->addArgument($key)
 
             ->addTag('oneup_uploader.routable', ['type' => $key])
+            ->addTag('oneup_uploader.controller')
         ;
 
         return $controllerName;
