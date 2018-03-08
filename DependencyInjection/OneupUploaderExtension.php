@@ -207,7 +207,7 @@ class OneupUploaderExtension extends Extension
                     $folder = $this->config['mappings'][$key]['root_folder'] ? '' : $key;
 
                     $config['directory'] = null === $config['directory'] ?
-                        sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $folder) :
+                        sprintf('%s/../public/uploads/%s', $this->container->getParameter('kernel.root_dir'), $folder) :
                         $this->normalizePath($config['directory'])
                     ;
 
