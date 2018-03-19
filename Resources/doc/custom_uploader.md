@@ -14,7 +14,7 @@ oneup_uploader:
             frontend: custom
             custom_frontend:
                 class: Acme\DemoBundle\Controller\CustomController
-                name: MyFancyCustomUploader
+                name: gallery
 ```
 
 This will automatically create everything you need later.
