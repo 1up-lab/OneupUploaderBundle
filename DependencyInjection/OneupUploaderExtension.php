@@ -19,6 +19,7 @@ class OneupUploaderExtension extends Extension
      * @var ContainerBuilder
      */
     protected $container;
+
     protected $config;
 
     public function load(array $configs, ContainerBuilder $container)
@@ -27,7 +28,7 @@ class OneupUploaderExtension extends Extension
         $this->config = $this->processConfiguration($configuration, $configs);
         $this->container = $container;
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('uploader.xml');
         $loader->load('templating.xml');
         $loader->load('validators.xml');
@@ -68,26 +69,26 @@ class OneupUploaderExtension extends Extension
         }
 
         $this->config['orphanage']['directory'] = null === $this->config['orphanage']['directory'] ? $defaultDir :
-            $this->normalizePath($this->config['orphanage']['directory'])
-        ;
+            $this->normalizePath($this->config['orphanage']['directory']);
     }
 
     protected function processMapping($key, &$mapping)
     {
         $mapping['max_size'] = $mapping['max_size'] < 0 || is_string($mapping['max_size']) ?
             $this->getMaxUploadSize($mapping['max_size']) :
-            $mapping['max_size']
-        ;
+            $mapping['max_size'];
         $controllerName = $this->createController($key, $mapping);
 
         $this->verifyPhpVersion($mapping);
 
-        return [$controllerName, [
-            'enable_progress' => $mapping['enable_progress'],
-            'enable_cancelation' => $mapping['enable_cancelation'],
-            'route_prefix' => $mapping['route_prefix'],
-            'endpoints' => $mapping['endpoints'],
-        ]];
+        return [
+            $controllerName, [
+                'enable_progress' => $mapping['enable_progress'],
+                'enable_cancelation' => $mapping['enable_cancelation'],
+                'route_prefix' => $mapping['route_prefix'],
+                'endpoints' => $mapping['endpoints'],
+            ],
+        ];
     }
 
     protected function createController($key, $config)
@@ -105,7 +106,9 @@ class OneupUploaderExtension extends Extension
             $controllerType = $customFrontend['class'];
 
             if (empty($controllerName) || empty($controllerType)) {
-                throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
+                throw new ServiceNotFoundException(
+                    'Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.'
+                );
             }
         }
 
@@ -114,13 +117,11 @@ class OneupUploaderExtension extends Extension
         // create controllers based on mapping
         $this->container
             ->setDefinition($controllerName, (new Definition($controllerType))->setPublic(true))
-
             ->addArgument(new Reference('service_container'))
             ->addArgument($storageService)
             ->addArgument($errorHandler)
             ->addArgument($config)
             ->addArgument($key)
-
             ->addTag('oneup_uploader.routable', ['type' => $key])
         ;
 
@@ -130,7 +131,7 @@ class OneupUploaderExtension extends Extension
     protected function createErrorHandler($config)
     {
         return null === $config['error_handler'] ?
-            new Reference('oneup_uploader.error_handler.'.$config['frontend']) :
+            new Reference('oneup_uploader.error_handler.' . $config['frontend']) :
             new Reference($config['error_handler']);
     }
 
@@ -138,7 +139,9 @@ class OneupUploaderExtension extends Extension
     {
         if ($config['enable_progress'] || $config['enable_cancelation']) {
             if (strnatcmp(PHP_VERSION, '5.4.0') < 0) {
-                throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
+                throw new InvalidArgumentException(
+                    'You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.'
+                );
             }
         }
     }
@@ -153,11 +156,13 @@ class OneupUploaderExtension extends Extension
             case 'filesystem':
                 $config['directory'] = null === $config['directory'] ?
                     sprintf('%s/uploader/chunks', $this->container->getParameter('kernel.cache_dir')) :
-                    $this->normalizePath($config['directory'])
-                ;
+                    $this->normalizePath($config['directory']);
 
                 $this->container
-                    ->register('oneup_uploader.chunks_storage', sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']))
+                    ->register(
+                        'oneup_uploader.chunks_storage',
+                        sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type'])
+                    )
                     ->addArgument($config['directory'])
                 ;
                 break;
@@ -208,8 +213,7 @@ class OneupUploaderExtension extends Extension
 
                     $config['directory'] = null === $config['directory'] ?
                         sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $folder) :
-                        $this->normalizePath($config['directory'])
-                    ;
+                        $this->normalizePath($config['directory']);
 
                     $this->container
                         ->register($storageName, $storageClass)
@@ -261,12 +265,16 @@ class OneupUploaderExtension extends Extension
         switch ($type) {
             case 'gaufrette':
                 if (!class_exists('Gaufrette\\Filesystem')) {
-                    throw new InvalidArgumentException('You have to install knplabs/knp-gaufrette-bundle in order to use it as a chunk storage service.');
+                    throw new InvalidArgumentException(
+                        'You have to install knplabs/knp-gaufrette-bundle in order to use it as a chunk storage service.'
+                    );
                 }
                 break;
             case 'flysystem':
                 if (!class_exists('League\\Flysystem\\Filesystem')) {
-                    throw new InvalidArgumentException('You have to install oneup/flysystem-bundle in order to use it as a chunk storage service.');
+                    throw new InvalidArgumentException(
+                        'You have to install oneup/flysystem-bundle in order to use it as a chunk storage service.'
+                    );
                 }
                 break;
         }
@@ -282,33 +290,41 @@ class OneupUploaderExtension extends Extension
             ->addArgument(new Reference($filesystem))
             ->addArgument($this->getValueInBytes($buffer))
             ->addArgument($streamWrapper)
-            ->addArgument($prefix);
+            ->addArgument($prefix)
+        ;
     }
 
     protected function getMaxUploadSize($input)
     {
         $input = $this->getValueInBytes($input);
+        // see: http://www.php.net/manual/en/function.ini-get.php
         $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
         $maxFile = $this->getValueInBytes(ini_get('post_max_size'));
+
+        if ($input < 0) {
+            return min($maxPost, $maxFile);
+        }
 
         return min(min($input, $maxPost), $maxFile);
     }
 
     protected function getValueInBytes($input)
     {
-        // see: http://www.php.net/manual/en/function.ini-get.php
         $input = trim($input);
         $last = strtolower($input[strlen($input) - 1]);
         $numericInput = (float) substr($input, 0, -1);
 
         switch ($last) {
-            case 'g': $numericInput *= 1024;
+            case 'g':
+                $numericInput *= 1024;
             // no break
-            case 'm': $numericInput *= 1024;
+            case 'm':
+                $numericInput *= 1024;
             // no break
-            case 'k': $numericInput *= 1024;
+            case 'k':
+                $numericInput *= 1024;
 
-            return (int) $numericInput;
+                return (int) $numericInput;
         }
 
         return (int) $input;
@@ -325,6 +341,6 @@ class OneupUploaderExtension extends Extension
             return null;
         }
 
-        return rtrim($input, '/').'/';
+        return rtrim($input, '/') . '/';
     }
 }
