@@ -59,16 +59,12 @@ abstract class AbstractControllerTest extends WebTestCase
 
     public function testCallByGet()
     {
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException::class);
-
-        $this->implTestCallBy('GET');
+        $this->implTestCallBy('GET', 405, 'text/html');
     }
 
     public function testCallByDelete()
     {
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException::class);
-
-        $this->implTestCallBy('DELETE');
+        $this->implTestCallBy('DELETE', 405, 'text/html');
     }
 
     public function testCallByPatch()
@@ -101,7 +97,7 @@ abstract class AbstractControllerTest extends WebTestCase
 
     abstract protected function getConfigKey();
 
-    protected function implTestCallBy($method)
+    protected function implTestCallBy($method, $expectedStatusCode = 200, $expectedContentType='application/json')
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -109,8 +105,8 @@ abstract class AbstractControllerTest extends WebTestCase
         $client->request($method, $endpoint, [], [], $this->requestHeaders);
         $response = $client->getResponse();
 
-        $this->assertTrue($response->isSuccessful());
-        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
+        $this->assertEquals($expectedStatusCode, $response->getStatusCode());
+        $this->assertContains($expectedContentType, $response->headers->get('Content-Type'));
     }
 
     protected function createTempFile($size = 128)
