@@ -8,10 +8,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ClearChunkCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'oneup:uploader:clear-chunks'; // Make command lazy load
+
     protected function configure()
     {
         $this
-            ->setName('oneup:uploader:clear-chunks')
+            ->setName(self::$defaultName) // BC with 2.7
             ->setDescription('Clear chunks according to the max-age you defined in your configuration.')
         ;
     }
