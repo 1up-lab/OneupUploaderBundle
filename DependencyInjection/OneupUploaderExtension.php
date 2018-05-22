@@ -206,8 +206,8 @@ class OneupUploaderExtension extends Extension
                     // root_folder is true, remove the mapping name folder from path
                     $folder = $this->config['mappings'][$key]['root_folder'] ? '' : $key;
 
-                    $config['directory'] = null === $config['directory'] ?
-                        sprintf('%s/../web/uploads/%s', $this->container->getParameter('kernel.root_dir'), $folder) :
+                    $config['directory'] = null === $config['directory'] ? 
+                        \sprintf('%s/uploads/%s', $this->getTargetDir(), $folder) :
                         $this->normalizePath($config['directory'])
                     ;
 
@@ -326,5 +326,19 @@ class OneupUploaderExtension extends Extension
         }
 
         return rtrim($input, '/').'/';
+    }
+    
+    protected function getTargetDir()
+    {
+        $projectDir = $this->container->hasParameter('kernel.project_dir') ?
+        $this->container->getParameter('kernel.project_dir') :
+        $this->container->getParameter('kernel.root_dir').'/..';
+        $publicDir = \sprintf('%s/public', $projectDir);
+
+        if (!is_dir($publicDir)) {
+            $publicDir = \sprintf('%s/web', $projectDir);
+        }
+
+        return $publicDir;
     }
 }
