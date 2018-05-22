@@ -335,6 +335,7 @@ class OneupUploaderExtension extends Extension
         $this->container->getParameter('kernel.root_dir').'/..';
 
         $publicDir = \sprintf('%s/public', $projectDir);
+
         if (!is_dir($publicDir)) {
             $publicDir = \sprintf('%s/web', $projectDir);
         }
