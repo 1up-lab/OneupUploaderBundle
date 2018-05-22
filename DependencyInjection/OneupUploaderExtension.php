@@ -333,7 +333,6 @@ class OneupUploaderExtension extends Extension
         $projectDir = $this->container->hasParameter('kernel.project_dir') ?
         $this->container->getParameter('kernel.project_dir') :
         $this->container->getParameter('kernel.root_dir').'/..';
-
         $publicDir = \sprintf('%s/public', $projectDir);
 
         if (!is_dir($publicDir)) {
