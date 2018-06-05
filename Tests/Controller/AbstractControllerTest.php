@@ -15,8 +15,8 @@ abstract class AbstractControllerTest extends WebTestCase
      * @var Client
      */
     protected $client;
-    protected $container;
     protected $requestHeaders;
+    protected static $container;
 
     /**
      * @var UploaderHelper
@@ -26,14 +26,14 @@ abstract class AbstractControllerTest extends WebTestCase
     public function setUp()
     {
         $this->client = static::createClient();
-        $this->container = $this->client->getContainer();
-        $this->helper = $this->container->get('oneup_uploader.templating.uploader_helper');
+        self::$container = $this->client->getContainer();
+        $this->helper = self::$container->get('oneup_uploader.templating.uploader_helper');
         $this->createdFiles = [];
         $this->requestHeaders = [
             'HTTP_ACCEPT' => 'application/json',
         ];
 
-        $this->container->get('router')->getRouteCollection()->all();
+        self::$container->get('router')->getRouteCollection()->all();
     }
 
     public function tearDown()
@@ -121,15 +121,14 @@ abstract class AbstractControllerTest extends WebTestCase
 
     protected function getUploadedFiles()
     {
-        $env = $this->container->getParameter('kernel.environment');
-        $root = $this->container->getParameter('kernel.root_dir');
+        $env = self::$container->getParameter('kernel.environment');
+        $root = self::$container->getParameter('kernel.root_dir');
 
         // assemble path
         $path = sprintf('%s/cache/%s/upload', $root, $env);
 
         $finder = new Finder();
-        $files = $finder->in($path);
 
-        return $files;
+        return $finder->in($path);
     }
 }
