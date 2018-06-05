@@ -291,6 +291,10 @@ class OneupUploaderExtension extends Extension
         $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
         $maxFile = $this->getValueInBytes(ini_get('post_max_size'));
 
+        if ($input < 0) {
+            return min($maxPost, $maxFile);
+        }
+
         return min(min($input, $maxPost), $maxFile);
     }
 
