@@ -31,7 +31,7 @@ $('#fileupload').bind('fileuploadsend', function (e, data) {
         
         data.formData.push(progressObj);
         data.context.data('interval', setInterval(function () {
-            $.get('{{ oneup_uploader_progress("gallery") }}', $.param([progressObj]), function (result) {
+            $.post('{{ oneup_uploader_progress("gallery") }}', $.param([progressObj]), function (result) {
                 e = $.Event( 'progress', {bubbles: false, cancelable: true});
                 $.extend(e, result);
                 ($('#fileupload').data('blueimp-fileupload') ||
