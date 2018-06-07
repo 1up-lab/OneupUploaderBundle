@@ -74,7 +74,7 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     {
         $fileList = $this->chunkStorage
             ->getFilesystem()
-            ->listContents($this->getPath());
+            ->listContents($this->getPath(),true);
         $files = [];
 
         foreach ($fileList as $fileDetail) {
@@ -95,5 +95,13 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
         // the storage is initiated in the root of the filesystem, from where the orphanage directory
         // should be relative.
         return sprintf('%s/%s/%s', $this->config['directory'], $this->session->getId(), $this->type);
+    }
+
+    /**
+     * @return string
+     * To allow the orphan path to be retrieved from external services
+     */
+    public function getOrphanagePath(){
+        return $this->getPath();
     }
 }
