@@ -6,6 +6,7 @@ use Oneup\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
@@ -101,6 +102,10 @@ abstract class AbstractControllerTest extends WebTestCase
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
+
+        if (405 === $expectedStatusCode) {
+            $this->expectException(MethodNotAllowedHttpException::class);
+        }
 
         $client->request($method, $endpoint, [], [], $this->requestHeaders);
         $response = $client->getResponse();
