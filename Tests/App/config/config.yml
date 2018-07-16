@@ -7,7 +7,9 @@ framework:
     templating:
         engines: ['php']
     default_locale:  en
-    session:         ~
+    session:
+        storage_id: session.storage.native
+        handler_id: ~
     test:            ~
 
 security:
