@@ -98,7 +98,7 @@ abstract class AbstractControllerTest extends WebTestCase
 
     abstract protected function getConfigKey();
 
-    protected function implTestCallBy($method, $expectedStatusCode = 200, $expectedContentType='application/json')
+    protected function implTestCallBy($method, $expectedStatusCode = 200, $expectedContentType = 'application/json')
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -110,7 +110,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $client->request($method, $endpoint, [], [], $this->requestHeaders);
         $response = $client->getResponse();
 
-        $this->assertEquals($expectedStatusCode, $response->getStatusCode());
+        $this->assertSame($expectedStatusCode, $response->getStatusCode());
         $this->assertContains($expectedContentType, $response->headers->get('Content-Type'));
     }
 

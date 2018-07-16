@@ -2,15 +2,15 @@
 
 namespace Oneup\UploaderBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Oneup\UploaderBundle\DependencyInjection\Compiler\ControllerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Oneup\UploaderBundle\DependencyInjection\Compiler\OneUpPass;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class OneupUploaderBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        $container->addCompilerPass(new OneUpPass());
+        $container->addCompilerPass(new ControllerPass());
     }
 }

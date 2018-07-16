@@ -40,9 +40,9 @@ class FlysystemStorage implements StorageInterface
         if ($file instanceof FilesystemFile) {
             $stream = fopen($file->getPathname(), 'r+b');
 
-            $this->filesystem->putStream($path, $stream, array(
-                'mimetype' => $file->getMimeType()
-            ));
+            $this->filesystem->putStream($path, $stream, [
+                'mimetype' => $file->getMimeType(),
+            ]);
 
             if (is_resource($stream)) {
                 fclose($stream);

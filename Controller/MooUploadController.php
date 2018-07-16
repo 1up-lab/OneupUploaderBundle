@@ -17,7 +17,7 @@ class MooUploadController extends AbstractChunkedController
         $response = new MooUploadResponse();
         $headers = $request->headers;
 
-        list($file, $uploadFileName) = $this->getUploadedFile($request);
+        [$file, $uploadFileName] = $this->getUploadedFile($request);
 
         // we have to get access to this object in another method
         $this->response = $response;
