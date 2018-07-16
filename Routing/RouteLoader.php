@@ -30,7 +30,7 @@ class RouteLoader extends Loader
 
             $upload = new Route(
                 $options['endpoints']['upload'] ?: sprintf('%s/_uploader/%s/upload', $options['route_prefix'], $type),
-                ['_controller' => $service.':upload', '_format' => 'json'],
+                ['_controller' => $service.'::upload', '_format' => 'json'],
                 [],
                 [],
                 '',
@@ -41,7 +41,7 @@ class RouteLoader extends Loader
             if (true === $options['enable_progress']) {
                 $progress = new Route(
                     $options['endpoints']['progress'] ?: sprintf('%s/_uploader/%s/progress', $options['route_prefix'], $type),
-                    ['_controller' => $service.':progress', '_format' => 'json'],
+                    ['_controller' => $service.'::progress', '_format' => 'json'],
                     [],
                     [],
                     '',
@@ -55,7 +55,7 @@ class RouteLoader extends Loader
             if (true === $options['enable_cancelation']) {
                 $progress = new Route(
                     $options['endpoints']['cancel'] ?: sprintf('%s/_uploader/%s/cancel', $options['route_prefix'], $type),
-                    ['_controller' => $service.':cancel', '_format' => 'json'],
+                    ['_controller' => $service.'::cancel', '_format' => 'json'],
                     [],
                     [],
                     '',
