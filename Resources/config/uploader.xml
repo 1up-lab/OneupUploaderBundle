@@ -24,6 +24,8 @@
                <parameter key="oneup_uploader.controller.mooupload.class">Oneup\UploaderBundle\Controller\MooUploadController</parameter>
                <parameter key="oneup_uploader.controller.plupload.class">Oneup\UploaderBundle\Controller\PluploadController</parameter>
                <parameter key="oneup_uploader.controller.dropzone.class">Oneup\UploaderBundle\Controller\DropzoneController</parameter>
+               <parameter key="oneup_uploader.command.clear_chunks.class">Oneup\UploaderBundle\Command\ClearChunkCommand</parameter>
+               <parameter key="oneup_uploader.command.clear_orphans.class">Oneup\UploaderBundle\Command\ClearOrphansCommand</parameter>
            </parameters>
 
            <services>
@@ -40,13 +42,21 @@
                </service>
 
                <!-- namer -->
-               <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" public="true"/>
+               <service id="oneup_uploader.namer.uniqid" class="%oneup_uploader.namer.uniqid.class%" public="true" />
                <service id="oneup_uploader.namer.urlsafe" class="%oneup_uploader.namer.urlsafename.class%" />
 
                <!-- routing -->
                <service id="oneup_uploader.routing.loader" class="%oneup_uploader.routing.loader.class%" public="true">
                    <argument>%oneup_uploader.controllers%</argument>
                    <tag name="routing.loader" />
+               </service>
+
+               <!-- commands -->
+               <service id="oneup_uploader.command.clear_chunks" class="%oneup_uploader.command.clear_chunks.class%">
+                   <tag name="console.command" command="oneup:uploader:clear-chunks" />
+               </service>
+               <service id="oneup_uploader.command.clear_orphans" class="%oneup_uploader.command.clear_orphans.class%">
+                   <tag name="console.command" command="oneup:uploader:clear-orphans" />
                </service>
 
            </services>

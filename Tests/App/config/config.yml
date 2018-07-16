@@ -7,8 +7,20 @@ framework:
     templating:
         engines: ['php']
     default_locale:  en
-    session:         ~
+    session:
+        storage_id: session.storage.native
+        handler_id: ~
     test:            ~
+
+security:
+    providers:
+        in_memory: { memory: ~ }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
 
 oneup_uploader:
     mappings:
