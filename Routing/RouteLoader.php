@@ -3,6 +3,7 @@
 namespace Oneup\UploaderBundle\Routing;
 
 use Symfony\Component\Config\Loader\Loader;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -23,6 +24,12 @@ class RouteLoader extends Loader
     public function load($resource, $type = null)
     {
         $routes = new RouteCollection();
+        $separator = ':';
+
+        // Double colon separators are used in Symfony >= 4.1 (see #340)
+        if (version_compare(Kernel::VERSION, '4.1', '>=')) {
+            $separator .= ':';
+        }
 
         foreach ($this->controllers as $type => $controllerArray) {
             $service = $controllerArray[0];
@@ -30,7 +37,7 @@ class RouteLoader extends Loader
 
             $upload = new Route(
                 $options['endpoints']['upload'] ?: sprintf('%s/_uploader/%s/upload', $options['route_prefix'], $type),
-                ['_controller' => $service.'::upload', '_format' => 'json'],
+                ['_controller' => $service.$separator.'upload', '_format' => 'json'],
                 [],
                 [],
                 '',
@@ -41,7 +48,7 @@ class RouteLoader extends Loader
             if (true === $options['enable_progress']) {
                 $progress = new Route(
                     $options['endpoints']['progress'] ?: sprintf('%s/_uploader/%s/progress', $options['route_prefix'], $type),
-                    ['_controller' => $service.'::progress', '_format' => 'json'],
+                    ['_controller' => $service.$separator.'progress', '_format' => 'json'],
                     [],
                     [],
                     '',
@@ -55,7 +62,7 @@ class RouteLoader extends Loader
             if (true === $options['enable_cancelation']) {
                 $progress = new Route(
                     $options['endpoints']['cancel'] ?: sprintf('%s/_uploader/%s/cancel', $options['route_prefix'], $type),
-                    ['_controller' => $service.'::cancel', '_format' => 'json'],
+                    ['_controller' => $service.$separator.'cancel', '_format' => 'json'],
                     [],
                     [],
                     '',
