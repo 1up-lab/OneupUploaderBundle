@@ -35,7 +35,7 @@ class RouteLoader extends Loader
                 [],
                 '',
                 [],
-                ['POST', 'PUT', 'PATCH']
+                $options['methods']
             );
 
             if (true === $options['enable_progress']) {

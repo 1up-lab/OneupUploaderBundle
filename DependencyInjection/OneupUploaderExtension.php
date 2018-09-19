@@ -82,12 +82,20 @@ class OneupUploaderExtension extends Extension
 
         $this->verifyPhpVersion($mapping);
 
-        return [$controllerName, [
+        $return = [$controllerName, [
             'enable_progress' => $mapping['enable_progress'],
             'enable_cancelation' => $mapping['enable_cancelation'],
             'route_prefix' => $mapping['route_prefix'],
-            'endpoints' => $mapping['endpoints'],
+            'endpoints' => $mapping['endpoints']
         ]];
+
+        // Handle custom methods for custom frontends (default is set by the bundle
+        // configuration builder to ['POST', 'PUT', 'PATCH']
+        if (array_key_exists('custom_frontend', $mapping)) {
+            $return[1]['methods'] = $mapping['custom_frontend']['methods'];
+        }
+
+        return $return;
     }
 
     protected function createController($key, $config)
