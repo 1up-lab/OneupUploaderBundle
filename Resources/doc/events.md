@@ -17,8 +17,17 @@ Moreover this bundles also dispatches some special kind of generic events you ca
 * `oneup_uploader.post_upload.{mapping}`
 * `oneup_uploader.post_persist.{mapping}`
 * `oneup_uploader.post_chunk_upload.{mapping}`
+* `oneup_uploader.validation.{mapping}`
 
 The `{mapping}` part is the key of your configured mapping. The examples in this documentation always uses the mapping key `gallery`. So the dispatched event would be called `oneup_uploader.post_upload.gallery`.
-Using these generic events can save you some time and coding lines, as you don't have to check for the correct type in the `EventListener`.
+Using these generic events can save you some time and coding lines, as you don't have to check for the correct type in the `EventListener`. The `UploadEvents` class provides some utility methods to generate these
+mapping-specific event names. For example:
+
+```php
+public static function getSubscribedEvents()
+{
+    return [UploadEvents::postUpload('gallery') => ['onPostUpload']];
+}
+```
 
 See the [custom logic section](custom_logic.md) of this documentation for specific examples on how to use these Events.
