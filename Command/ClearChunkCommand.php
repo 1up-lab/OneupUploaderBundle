@@ -2,13 +2,23 @@
 
 namespace Oneup\UploaderBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oneup\UploaderBundle\Uploader\Chunk\ChunkManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ClearChunkCommand extends ContainerAwareCommand
+class ClearChunkCommand extends Command
 {
     protected static $defaultName = 'oneup:uploader:clear-chunks'; // Make command lazy load
+
+    /** @var ChunkManager */
+    protected $manager;
+
+    public function __construct(ChunkManager $manager, ?string $name = null)
+    {
+        parent::__construct($name);
+        $this->manager = $manager;
+    }
 
     protected function configure()
     {
@@ -20,7 +30,6 @@ class ClearChunkCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->getContainer()->get('oneup_uploader.chunk_manager');
         $manager->clear();
     }
 }
