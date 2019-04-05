@@ -30,6 +30,6 @@ class ClearOrphansCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager->clear();
+        $this->manager->clear();
     }
 }

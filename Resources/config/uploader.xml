@@ -53,9 +53,11 @@
 
                <!-- commands -->
                <service id="oneup_uploader.command.clear_chunks" class="%oneup_uploader.command.clear_chunks.class%">
+                   <argument type="service" id="oneup_uploader.chunk_manager" />
                    <tag name="console.command" command="oneup:uploader:clear-chunks" />
                </service>
                <service id="oneup_uploader.command.clear_orphans" class="%oneup_uploader.command.clear_orphans.class%">
+                   <argument type="service" id="oneup_uploader.orphanage_manager" />
                    <tag name="console.command" command="oneup:uploader:clear-orphans" />
                </service>
 
