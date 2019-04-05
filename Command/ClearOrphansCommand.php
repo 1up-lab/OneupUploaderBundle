@@ -2,13 +2,23 @@
 
 namespace Oneup\UploaderBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ClearOrphansCommand extends ContainerAwareCommand
+class ClearOrphansCommand extends Command
 {
     protected static $defaultName = 'oneup:uploader:clear-orphans'; // Make command lazy load
+
+    /** @var OrphanageManager */
+    protected $manager;
+
+    public function __construct(OrphanageManager $manager, ?string $name = null)
+    {
+        parent::__construct($name);
+        $this->manager = $manager;
+    }
 
     protected function configure()
     {
@@ -20,7 +30,6 @@ class ClearOrphansCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->getContainer()->get('oneup_uploader.orphanage_manager');
         $manager->clear();
     }
 }
