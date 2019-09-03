@@ -90,11 +90,8 @@ abstract class AbstractChunkedController extends AbstractController
      */
     protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast)
     {
-        $dispatcher = $this->container->get('event_dispatcher');
-
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);
-        $dispatcher->dispatch(UploadEvents::POST_CHUNK_UPLOAD, $postUploadEvent);
-        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_CHUNK_UPLOAD, $this->type), $postUploadEvent);
+        $this->dispatchEvent($postUploadEvent, UploadEvents::POST_CHUNK_UPLOAD);
     }
 }

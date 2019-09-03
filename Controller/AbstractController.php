@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractController
 {
@@ -136,12 +137,9 @@ abstract class AbstractController
      */
     protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request)
     {
-        $dispatcher = $this->container->get('event_dispatcher');
-
         // dispatch pre upload event (both the specific and the general)
         $preUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
-        $dispatcher->dispatch(UploadEvents::PRE_UPLOAD, $preUploadEvent);
-        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::PRE_UPLOAD, $this->type), $preUploadEvent);
+        $this->dispatchEvent($preUploadEvent, UploadEvents::PRE_UPLOAD);
     }
 
     /**
@@ -154,28 +152,22 @@ abstract class AbstractController
      */
     protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request)
     {
-        $dispatcher = $this->container->get('event_dispatcher');
-
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
-        $dispatcher->dispatch(UploadEvents::POST_UPLOAD, $postUploadEvent);
-        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_UPLOAD, $this->type), $postUploadEvent);
+        $this->dispatchEvent($postUploadEvent, UploadEvents::POST_UPLOAD);
 
         if (!$this->config['use_orphanage']) {
             // dispatch post persist event (both the specific and the general)
             $postPersistEvent = new PostPersistEvent($uploaded, $response, $request, $this->type, $this->config);
-            $dispatcher->dispatch(UploadEvents::POST_PERSIST, $postPersistEvent);
-            $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::POST_PERSIST, $this->type), $postPersistEvent);
+            $this->dispatchEvent($postPersistEvent, UploadEvents::POST_PERSIST);
         }
     }
 
     protected function validate(FileInterface $file, Request $request, ResponseInterface $response = null)
     {
-        $dispatcher = $this->container->get('event_dispatcher');
         $event = new ValidationEvent($file, $request, $this->config, $this->type, $response);
 
-        $dispatcher->dispatch(UploadEvents::VALIDATION, $event);
-        $dispatcher->dispatch(sprintf('%s.%s', UploadEvents::VALIDATION, $this->type), $event);
+        $this->dispatchEvent($event, UploadEvents::VALIDATION);
     }
 
     /**
@@ -214,5 +206,24 @@ abstract class AbstractController
         }
 
         return $this->container->get('request_stack')->getMasterRequest();
+    }
+
+    /**
+     * Event dispatch proxy that avoids using deprecated interfaces.
+     *
+     * @param $event
+     * @param string $eventName
+     */
+    protected function dispatchEvent($event, string $eventName)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
+
+        if ($dispatcher instanceof EventDispatcherInterface) {
+            $dispatcher->dispatch($event, $eventName);
+            $dispatcher->dispatch($event, sprintf('%s.%s', $eventName, $this->type));
+        } else {
+            $dispatcher->dispatch($eventName, $event);
+            $dispatcher->dispatch(sprintf('%s.%s', $eventName, $this->type), $event);
+        }
     }
 }
