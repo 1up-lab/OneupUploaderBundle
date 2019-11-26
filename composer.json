@@ -27,7 +27,8 @@
         "symfony/framework-bundle": "^3.0|^4.0",
         "symfony/templating": "^3.0|^4.0",
         "symfony/translation": "^3.0|^4.0",
-        "symfony/yaml": "^3.0|^4.0"
+        "symfony/yaml": "^3.0|^4.0",
+        "twig/twig": "^1.41|^2.10|^3.0"
     },
 
     "require-dev": {
