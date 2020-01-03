@@ -7,6 +7,7 @@ use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpKernel\Kernel;
 
 abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 {
@@ -33,8 +34,16 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
             $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$me, $basename) {
                 $file = $event->getFile();
 
-                $me->assertNotNull($file->getClientSize());
-                $me->assertGreaterThan(0, $file->getClientSize());
+                // TODO at EOL of SF 3.4 this can be removed
+                if(Kernel::VERSION_ID < 40400) {
+                    $size = $file->getClientSize();
+                } else {
+                    $size = $file->getSize();
+                }
+
+                $me->assertNotNull($size);
+                $me->assertGreaterThan(0, $size);
+
                 $me->assertEquals($file->getBasename(), $basename);
             });
 

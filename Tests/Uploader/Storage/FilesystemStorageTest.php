@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Kernel;
 
 class FilesystemStorageTest extends TestCase
 {
@@ -34,7 +35,14 @@ class FilesystemStorageTest extends TestCase
 
     public function testUpload()
     {
-        $payload = new FilesystemFile(new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true));
+        // TODO at EOL of SF 3.4 this can be removed
+        if(Kernel::VERSION_ID < 40400) {
+            $uploadedFile = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true);
+        } else {
+            $uploadedFile = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, true);
+        }
+
+        $payload = new FilesystemFile($uploadedFile);
         $storage = new FilesystemStorage($this->directory);
         $storage->upload($payload, 'notsogrumpyanymore.jpeg');
 

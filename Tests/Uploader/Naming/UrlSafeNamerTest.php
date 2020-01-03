@@ -6,6 +6,7 @@ use Oneup\UploaderBundle\Tests\Uploader\File\FileTest;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Naming\UrlSafeNamer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Kernel;
 
 class UrlSafeNamerTest extends FileTest
 {
@@ -25,7 +26,13 @@ class UrlSafeNamerTest extends FileTest
 
         file_put_contents($this->pathname, 'something');
 
-        $this->file = new FilesystemFile(new UploadedFile($this->pathname, 'test_file.txt', null, null, null, true));
+        // TODO at EOL of SF 3.4 this can be removed
+        if(Kernel::VERSION_ID < 40400) {
+            $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, null, true);
+        } else {
+            $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, true);
+        }
+        $this->file = new FilesystemFile($file);
     }
 
     public function tearDown()
