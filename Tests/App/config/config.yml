@@ -10,7 +10,7 @@ framework:
     session:
         storage_id: session.storage.native
         handler_id: ~
-    test:            ~
+    test:           true
 
 security:
     providers:
