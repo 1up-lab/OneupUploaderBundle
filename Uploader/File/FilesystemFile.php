@@ -18,7 +18,12 @@ class FilesystemFile extends UploadedFile implements FileInterface
                 parent::__construct($file->getPathname(), $file->getClientOriginalName(), $file->getClientMimeType(), $file->getError(), true);
             }
         } else {
-            parent::__construct($file->getPathname(), $file->getBasename(), $file->getMimeType(), $file->getSize(), 0, true);
+            // TODO at EOL of SF 3.4 this can be removed
+            if(Kernel::VERSION_ID < 40400) {
+                parent::__construct($file->getPathname(), $file->getBasename(), $file->getMimeType(), $file->getSize(), 0, true);
+            } else {
+                parent::__construct($file->getPathname(), $file->getBasename(), $file->getMimeType(), 0, true);
+            }
         }
     }
 
