@@ -38,7 +38,7 @@ abstract class AbstractControllerTest extends WebTestCase
         self::$container->get('router')->getRouteCollection()->all();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         foreach ($this->createdFiles as $file) {
             @unlink($file);

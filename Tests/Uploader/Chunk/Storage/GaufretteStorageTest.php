@@ -33,7 +33,7 @@ class GaufretteStorageTest extends ChunkStorageTest
         $system->mkdir($this->tmpDir);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $system = new Filesystem();
         $system->remove($this->parentDir);

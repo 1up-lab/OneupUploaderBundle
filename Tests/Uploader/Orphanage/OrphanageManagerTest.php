@@ -35,7 +35,7 @@ class OrphanageManagerTest extends TestCase
         $this->mockContainer = $this->getContainerMock();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->orphanagePath);

@@ -34,7 +34,7 @@ class GaufretteStorageTest extends TestCase
         $this->storage = new GaufretteStorage($filesystem, 100000);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->directory);

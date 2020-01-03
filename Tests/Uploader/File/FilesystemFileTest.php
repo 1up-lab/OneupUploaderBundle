@@ -34,7 +34,7 @@ class FilesystemFileTest extends FileTest
         $this->file = new FilesystemFile($file);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink($this->pathname);
         rmdir($this->path);

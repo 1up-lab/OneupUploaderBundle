@@ -27,7 +27,7 @@ class FilesystemStorageTest extends TestCase
         fclose($pointer);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->directory);

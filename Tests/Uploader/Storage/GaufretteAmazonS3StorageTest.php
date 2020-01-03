@@ -49,7 +49,7 @@ class GaufretteAmazonS3StorageTest extends TestCase
         $this->storage = new GaufretteStorage($this->filesystem, 100000, null);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $files = $this->filesystem->listKeys($this->prefix);
         foreach ($files['keys'] as $filename) {
