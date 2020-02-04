@@ -66,6 +66,9 @@ class FlysystemStorage implements ChunkStorageInterface
 
     public function addChunk($uuid, $index, UploadedFile $chunk, $original)
     {
+        // Prevent path traversal attacks
+        $uuid = basename($uuid);
+
         $this->unhandledChunk = array(
             'uuid' => $uuid,
             'index' => $index,
@@ -137,6 +140,9 @@ class FlysystemStorage implements ChunkStorageInterface
 
     public function getChunks($uuid)
     {
+        // Prevent path traversal attacks
+        $uuid = basename($uuid);
+
         return $this->filesystem->listFiles($this->prefix.'/'.$uuid);
     }
 
