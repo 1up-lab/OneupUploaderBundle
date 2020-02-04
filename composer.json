@@ -25,6 +25,7 @@
         "symfony/asset": "^3.0|^4.0",
         "symfony/finder": "^3.0|^4.0",
         "symfony/framework-bundle": "^3.0|^4.0",
+        "symfony/http-foundation": "^3.0|^4.0",
         "symfony/templating": "^3.0|^4.0",
         "symfony/translation": "^3.0|^4.0",
         "symfony/yaml": "^3.0|^4.0"

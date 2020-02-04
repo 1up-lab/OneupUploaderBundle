@@ -26,7 +26,7 @@ before_install:
   - travis_retry composer selfupdate
 
 before_script:
-  - travis_wait composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
+  - travis_wait composer require symfony/framework-bundle:${SYMFONY_VERSION} symfony/http-foundation:${SYMFONY_VERSION} --prefer-source
   - travis_wait composer install --dev --prefer-source
 
 script: ./vendor/bin/phpunit
