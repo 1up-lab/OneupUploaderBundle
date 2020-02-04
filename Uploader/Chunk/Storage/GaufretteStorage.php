@@ -98,6 +98,9 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      */
     public function addChunk($uuid, $index, UploadedFile $chunk, $original)
     {
+        // Prevent path traversal attacks
+        $uuid = basename($uuid);
+
         $this->unhandledChunk = [
             'uuid' => $uuid,
             'index' => $index,
@@ -170,6 +173,9 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
 
     public function getChunks($uuid)
     {
+        // Prevent path traversal attacks
+        $uuid = basename($uuid);
+
         $results = $this->filesystem->listKeys($this->prefix.'/'.$uuid);
 
         /* exclude files without an index, so if there is a completed file which

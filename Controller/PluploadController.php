@@ -35,7 +35,7 @@ class PluploadController extends AbstractChunkedController
         $session = $this->container->get('session');
 
         $orig = $request->get('name');
-        $index = $request->get('chunk');
+        $index = (int) $request->get('chunk');
         $last = (int) $request->get('chunks') - 1 === (int) $request->get('chunk');
 
         // it is possible, that two clients send a file with the
