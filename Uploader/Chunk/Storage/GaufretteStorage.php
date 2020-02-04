@@ -3,6 +3,7 @@
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Gaufrette\Adapter\StreamFactory;
+use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Gaufrette\FilesystemInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
@@ -62,15 +63,24 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         // but after the files are deleted the dirs
         // would remain
         foreach ($matches['dirs'] as $key) {
-            if ($maxAge <= $now - $this->filesystem->mtime($key)) {
-                $toDelete[] = $key;
+            try {
+                if ($maxAge <= $now - $this->filesystem->mtime($key)) {
+                    $toDelete[] = $key;
+                }
+            } catch (FileNotFound $exception) {
+                // ignore
             }
         }
         // The same directory is returned for every file it contains
         array_unique($toDelete);
+
         foreach ($matches['keys'] as $key) {
-            if ($maxAge <= $now - $this->filesystem->mtime($key)) {
-                $this->filesystem->delete($key);
+            try {
+                if ($maxAge <= $now - $this->filesystem->mtime($key)) {
+                    $this->filesystem->delete($key);
+                }
+            } catch (FileNotFound $exception) {
+                // ignore
             }
         }
 

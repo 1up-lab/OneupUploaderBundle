@@ -33,7 +33,7 @@
 
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
-        "knplabs/gaufrette": "0.2.*@dev",
+        "knplabs/gaufrette": "^0.9",
         "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
         "phpunit/phpunit": "^7.5",
         "sensio/framework-extra-bundle": "^5.0",
