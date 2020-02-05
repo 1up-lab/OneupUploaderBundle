@@ -19,6 +19,7 @@ class OneupUploaderExtensionTest extends TestCase
             'Oneup\UploaderBundle\DependencyInjection\OneupUploaderExtension',
             'getValueInBytes'
         );
+
         $method->setAccessible(true);
 
         $this->assertSame(15, $method->invoke($mock, ' 15'));

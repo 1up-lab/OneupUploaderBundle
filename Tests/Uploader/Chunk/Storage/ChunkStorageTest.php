@@ -54,7 +54,7 @@ abstract class ChunkStorageTest extends TestCase
         $this->assertCount(5, $finder);
 
         foreach ($finder as $file) {
-            /** @var \SplFileInfo $file */
+            /* @var \SplFileInfo $file */
             $this->assertGreaterThanOrEqual(time() - $maxage, $file->getMTime());
         }
     }

@@ -48,7 +48,7 @@ abstract class AbstractControllerTest extends WebTestCase
         }
 
         foreach ($this->getUploadedFiles() as $file) {
-            /** @var \SplFileInfo $file */
+            /* @var \SplFileInfo $file */
             @unlink($file->getPathname());
         }
 

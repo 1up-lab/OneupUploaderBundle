@@ -47,4 +47,9 @@ class FlysystemFile extends File implements FileInterface
     {
         return pathinfo($this->getPath(), PATHINFO_EXTENSION);
     }
+
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
 }
