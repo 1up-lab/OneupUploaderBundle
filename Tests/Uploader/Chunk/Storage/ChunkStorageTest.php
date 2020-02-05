@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
@@ -15,13 +17,13 @@ abstract class ChunkStorageTest extends TestCase
      */
     protected $storage;
 
-    public function testExistanceOfTmpDir()
+    public function testExistanceOfTmpDir(): void
     {
         $this->assertDirectoryExists($this->tmpDir);
         $this->assertIsWritable($this->tmpDir);
     }
 
-    public function testFillOfTmpDir()
+    public function testFillOfTmpDir(): void
     {
         $finder = new Finder();
         $finder->in($this->tmpDir);
@@ -32,7 +34,7 @@ abstract class ChunkStorageTest extends TestCase
         $this->assertCount($numberOfFiles, $finder);
     }
 
-    public function testChunkCleanup()
+    public function testChunkCleanup(): void
     {
         // get a manager configured with a max-age of 5 minutes
         $maxage = 5 * 60;
@@ -52,11 +54,12 @@ abstract class ChunkStorageTest extends TestCase
         $this->assertCount(5, $finder);
 
         foreach ($finder as $file) {
-            $this->assertGreaterThanOrEqual(time() - $maxage, filemtime($file));
+            /** @var \SplFileInfo $file */
+            $this->assertGreaterThanOrEqual(time() - $maxage, $file->getMTime());
         }
     }
 
-    public function testClearIfDirectoryDoesNotExist()
+    public function testClearIfDirectoryDoesNotExist(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->tmpDir);
@@ -67,7 +70,7 @@ abstract class ChunkStorageTest extends TestCase
         $this->assertTrue(true);
     }
 
-    protected function fillDirectory($number)
+    protected function fillDirectory($number): void
     {
         $system = new Filesystem();
 

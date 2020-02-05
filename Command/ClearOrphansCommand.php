@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Command;
 
 use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager;
@@ -20,7 +22,7 @@ class ClearOrphansCommand extends Command
         $this->manager = $manager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName(self::$defaultName) // BC with 2.7
@@ -28,7 +30,7 @@ class ClearOrphansCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $this->manager->clear();
     }

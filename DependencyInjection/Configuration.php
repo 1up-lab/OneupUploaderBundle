@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -90,9 +92,9 @@ class Configuration implements ConfigurationInterface
                                         }
 
                                         return [
-                                            'upload' => $v.'upload',
-                                            'progress' => $v.'progress',
-                                            'cancel' => $v.'cancel',
+                                            'upload' => $v . 'upload',
+                                            'progress' => $v . 'progress',
+                                            'cancel' => $v . 'cancel',
                                         ];
                                     })
                                 ->end()

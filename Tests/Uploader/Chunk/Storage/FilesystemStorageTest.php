@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage;
@@ -9,7 +11,7 @@ class FilesystemStorageTest extends ChunkStorageTest
 {
     protected $tmpDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         // create a cache dir
         $tmpDir = sprintf('/tmp/%s', uniqid());
@@ -23,7 +25,7 @@ class FilesystemStorageTest extends ChunkStorageTest
         ]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $system = new Filesystem();
         $system->remove($this->tmpDir);

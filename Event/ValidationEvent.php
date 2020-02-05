@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Event;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;

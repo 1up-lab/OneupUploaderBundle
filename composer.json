@@ -34,6 +34,7 @@
 
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "knplabs/gaufrette": "^0.9",
         "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
         "phpunit/phpunit": "^7.5",

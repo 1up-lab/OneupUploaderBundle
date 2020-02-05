@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 
 class OneupUploaderExtensionTest extends TestCase
 {
-    public function testValueToByteTransformer()
+    public function testValueToByteTransformer(): void
     {
         $mock = $this->getMockBuilder('Oneup\UploaderBundle\DependencyInjection\OneupUploaderExtension')
             ->disableOriginalConstructor()
@@ -30,7 +32,7 @@ class OneupUploaderExtensionTest extends TestCase
         $this->assertSame(2147483648, $method->invoke($mock, '2G'));
     }
 
-    public function testNormalizationOfStreamWrapper()
+    public function testNormalizationOfStreamWrapper(): void
     {
         $mock = $this->getMockBuilder('Oneup\UploaderBundle\DependencyInjection\OneupUploaderExtension')
             ->disableOriginalConstructor()
@@ -52,7 +54,7 @@ class OneupUploaderExtensionTest extends TestCase
         $this->assertNull($output3);
     }
 
-    public function testGetMaxUploadSize()
+    public function testGetMaxUploadSize(): void
     {
         $mock = $this->getMockBuilder('Oneup\UploaderBundle\DependencyInjection\OneupUploaderExtension')
             ->disableOriginalConstructor()

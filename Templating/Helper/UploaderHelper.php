@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Templating\Helper;
 
 use Symfony\Component\Routing\RouterInterface;
@@ -43,7 +45,7 @@ class UploaderHelper extends Helper
 
     public function maxSize($key)
     {
-        if (!array_key_exists($key, $this->maxsize)) {
+        if (!\array_key_exists($key, $this->maxsize)) {
             throw new \InvalidArgumentException('No such mapping found to get maxsize for.');
         }
 

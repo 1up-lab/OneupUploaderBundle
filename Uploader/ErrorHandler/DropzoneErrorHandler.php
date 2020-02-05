@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
 use Exception;
@@ -7,7 +9,7 @@ use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 
 class DropzoneErrorHandler implements ErrorHandlerInterface
 {
-    public function addException(AbstractResponse $response, Exception $exception)
+    public function addException(AbstractResponse $response, Exception $exception): void
     {
         $errors[] = $exception;
         $message = $exception->getMessage();

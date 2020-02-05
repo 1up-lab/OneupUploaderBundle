@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
@@ -17,13 +19,13 @@ class FilesystemStorage implements ChunkStorageInterface
         $this->directory = $directory;
     }
 
-    public function clear($maxAge)
+    public function clear($maxAge): void
     {
         $system = new Filesystem();
         $finder = new Finder();
 
         try {
-            $finder->in($this->directory)->date('<='.-1 * (int) $maxAge.'seconds')->files();
+            $finder->in($this->directory)->date('<=' . -1 * (int) $maxAge . 'seconds')->files();
         } catch (\InvalidArgumentException $e) {
             // the finder will throw an exception of type InvalidArgumentException
             // if the directory he should search in does not exist

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests;
 
 use Oneup\UploaderBundle\UploadEvents;
@@ -7,38 +9,38 @@ use PHPUnit\Framework\TestCase;
 
 class UploadEventsTest extends TestCase
 {
-    public function testPreUploadCanBePassedAMapping()
+    public function testPreUploadCanBePassedAMapping(): void
     {
         $event = UploadEvents::preUpload('gallery');
 
-        $this->assertEquals(UploadEvents::PRE_UPLOAD . '.gallery', $event);
+        $this->assertSame(UploadEvents::PRE_UPLOAD . '.gallery', $event);
     }
 
-    public function testPostUploadCanBePassedAMapping()
+    public function testPostUploadCanBePassedAMapping(): void
     {
         $event = UploadEvents::postUpload('gallery');
 
-        $this->assertEquals(UploadEvents::POST_UPLOAD . '.gallery', $event);
+        $this->assertSame(UploadEvents::POST_UPLOAD . '.gallery', $event);
     }
 
-    public function testPostPersistCanBePassedAMapping()
+    public function testPostPersistCanBePassedAMapping(): void
     {
         $event = UploadEvents::postPersist('gallery');
 
-        $this->assertEquals(UploadEvents::POST_PERSIST . '.gallery', $event);
+        $this->assertSame(UploadEvents::POST_PERSIST . '.gallery', $event);
     }
 
-    public function testPostChunkUploadCanBePassedAMapping()
+    public function testPostChunkUploadCanBePassedAMapping(): void
     {
         $event = UploadEvents::postChunkUpload('gallery');
 
-        $this->assertEquals(UploadEvents::POST_CHUNK_UPLOAD . '.gallery', $event);
+        $this->assertSame(UploadEvents::POST_CHUNK_UPLOAD . '.gallery', $event);
     }
 
-    public function testValidationCanBePassedAMapping()
+    public function testValidationCanBePassedAMapping(): void
     {
         $event = UploadEvents::validation('gallery');
 
-        $this->assertEquals(UploadEvents::VALIDATION . '.gallery', $event);
+        $this->assertSame(UploadEvents::VALIDATION . '.gallery', $event);
     }
 }

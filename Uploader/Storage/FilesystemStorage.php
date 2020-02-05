@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
@@ -21,7 +23,7 @@ class FilesystemStorage implements StorageInterface
         // now that we have the correct path, compute the correct name
         // and target directory
         $targetName = basename($path);
-        $targetDir = dirname($path);
+        $targetDir = \dirname($path);
 
         $file = $file->move($targetDir, $targetName);
 

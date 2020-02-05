@@ -2,6 +2,7 @@ composer.lock
 phpunit.xml
 vendor
 log
+var
 Tests/App/cache
 Tests/App/logs
 

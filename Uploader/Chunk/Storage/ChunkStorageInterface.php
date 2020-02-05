@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;

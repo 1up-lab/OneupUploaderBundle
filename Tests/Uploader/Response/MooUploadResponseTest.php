@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\MooUploadResponse;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class MooUploadResponseTest extends TestCase
 {
-    public function testCreationOfResponse()
+    public function testCreationOfResponse(): void
     {
         $response = new MooUploadResponse();
 
@@ -15,7 +17,7 @@ class MooUploadResponseTest extends TestCase
         $this->assertSame(0, $response->getError());
     }
 
-    public function testFunctionsOfResponse()
+    public function testFunctionsOfResponse(): void
     {
         $response = new MooUploadResponse();
         $response->setId(3);
@@ -33,7 +35,7 @@ class MooUploadResponseTest extends TestCase
         $this->assertSame('b1/2d/b12d23.jpg', $response->getUploadedName());
     }
 
-    public function testFunctionsAfterOverwrite()
+    public function testFunctionsAfterOverwrite(): void
     {
         $response = new MooUploadResponse();
         $response->setId(3);
@@ -60,7 +62,7 @@ class MooUploadResponseTest extends TestCase
         $this->assertSame(!null, $response['princess']);
     }
 
-    public function testAssemble()
+    public function testAssemble(): void
     {
         $response = new MooUploadResponse();
         $response->setId(3);

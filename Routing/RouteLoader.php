@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Routing;
 
 use Symfony\Component\Config\Loader\Loader;
@@ -37,7 +39,7 @@ class RouteLoader extends Loader
 
             $upload = new Route(
                 $options['endpoints']['upload'] ?: sprintf('%s/_uploader/%s/upload', $options['route_prefix'], $type),
-                ['_controller' => $service.$separator.'upload', '_format' => 'json'],
+                ['_controller' => $service . $separator . 'upload', '_format' => 'json'],
                 [],
                 [],
                 '',
@@ -48,7 +50,7 @@ class RouteLoader extends Loader
             if (true === $options['enable_progress']) {
                 $progress = new Route(
                     $options['endpoints']['progress'] ?: sprintf('%s/_uploader/%s/progress', $options['route_prefix'], $type),
-                    ['_controller' => $service.$separator.'progress', '_format' => 'json'],
+                    ['_controller' => $service . $separator . 'progress', '_format' => 'json'],
                     [],
                     [],
                     '',
@@ -62,7 +64,7 @@ class RouteLoader extends Loader
             if (true === $options['enable_cancelation']) {
                 $progress = new Route(
                     $options['endpoints']['cancel'] ?: sprintf('%s/_uploader/%s/cancel', $options['route_prefix'], $type),
-                    ['_controller' => $service.$separator.'cancel', '_format' => 'json'],
+                    ['_controller' => $service . $separator . 'cancel', '_format' => 'json'],
                     [],
                     [],
                     '',

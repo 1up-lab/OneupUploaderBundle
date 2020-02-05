@@ -7,6 +7,8 @@ php:
   - 7.4
 
 env:
+  - COMPOSER_ALLOW_XDEBUG=0
+  - COMPOSER_MEMORY_LIMIT=-1
   - SYMFONY_VERSION=^3.4
   - SYMFONY_VERSION=^4.0
   - SYMFONY_VERSION=dev-master
@@ -18,11 +20,16 @@ cache:
 matrix:
   allow_failures:
     - env: SYMFONY_VERSION=dev-master
-  exclude:
-    - php: 7.0
-      env: SYMFONY_VERSION=^4.0
-    - php: 7.0
-      env: SYMFONY_VERSION=dev-master
+
+jobs:
+  include:
+    - stage: test
+      name: 'Test installing lowest dependencies'
+      php: 7.3
+      install:
+        - travis_wait composer update --prefer-lowest --prefer-stable --no-interaction --no-suggest
+      script:
+        ./vendor/bin/phpunit
 
 before_install:
   - travis_retry composer selfupdate

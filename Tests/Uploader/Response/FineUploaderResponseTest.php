@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class FineUploaderResponseTest extends TestCase
 {
-    public function testCreationOfResponse()
+    public function testCreationOfResponse(): void
     {
         $response = new FineUploaderResponse();
 
@@ -15,7 +17,7 @@ class FineUploaderResponseTest extends TestCase
         $this->assertNull($response->getError());
     }
 
-    public function testFillOfResponse()
+    public function testFillOfResponse(): void
     {
         $response = new FineUploaderResponse();
 
@@ -45,7 +47,7 @@ class FineUploaderResponseTest extends TestCase
         $this->assertNull($response->getError());
     }
 
-    public function testError()
+    public function testError(): void
     {
         $response = new FineUploaderResponse();
         $response->setError('This response is grumpy');
@@ -53,7 +55,7 @@ class FineUploaderResponseTest extends TestCase
         $this->assertSame($response->getError(), 'This response is grumpy');
     }
 
-    public function testOverwriteOfInternals()
+    public function testOverwriteOfInternals(): void
     {
         $response = new FineUploaderResponse();
         $response['success'] = false;

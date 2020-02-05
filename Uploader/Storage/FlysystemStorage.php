@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use League\Flysystem\Filesystem;
@@ -38,13 +40,13 @@ class FlysystemStorage implements StorageInterface
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
         if ($file instanceof FilesystemFile) {
-            $stream = fopen($file->getPathname(), 'r+b');
+            $stream = fopen($file->getPathname(), 'r+');
 
             $this->filesystem->putStream($path, $stream, [
                 'mimetype' => $file->getMimeType(),
             ]);
 
-            if (is_resource($stream)) {
+            if (\is_resource($stream)) {
                 fclose($stream);
             }
 

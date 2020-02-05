@@ -2,6 +2,8 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->exclude('Tests/App/cache')
+    ->exclude('vendor')
+    ->exclude('var')
     ->in([__DIR__])
 ;
 
@@ -9,11 +11,14 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        '@PHP71Migration' => false,
-        '@PHP71Migration:risky' => false,
+        '@PHP71Migration' => true,
+        '@PHP71Migration:risky' => true,
         '@PHPUnit60Migration:risky' => true,
         'align_multiline_comment' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
         'general_phpdoc_annotation_remove' => [
@@ -39,7 +44,7 @@ return PhpCsFixer\Config::create()
         ],
         'strict_comparison' => true,
         'strict_param' => true,
-        'void_return' => false,
+        'void_return' => true,
     ])
     ->setFinder($finder)
     ->setRiskyAllowed(true)

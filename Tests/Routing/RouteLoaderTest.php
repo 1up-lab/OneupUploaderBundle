@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Routing;
 
 use Oneup\UploaderBundle\Routing\RouteLoader;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class RouteLoaderTest extends TestCase
 {
-    public function testRouteLoader()
+    public function testRouteLoader(): void
     {
         $cat = 'GrumpyCatController';
         $dog = 'HelloThisIsDogController';
@@ -49,7 +51,7 @@ class RouteLoaderTest extends TestCase
         }
     }
 
-    public function testPrefixedRoutes()
+    public function testPrefixedRoutes(): void
     {
         $prefix = '/admin';
         $cat = 'GrumpyCatController';
@@ -78,7 +80,7 @@ class RouteLoaderTest extends TestCase
         }
     }
 
-    public function testCustomEndpointRoutes()
+    public function testCustomEndpointRoutes(): void
     {
         $customEndpointUpload = '/grumpy/cats/upload';
         $cat = 'GrumpyCatController';
