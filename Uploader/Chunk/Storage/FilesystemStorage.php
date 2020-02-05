@@ -38,6 +38,9 @@ class FilesystemStorage implements ChunkStorageInterface
 
     public function addChunk($uuid, $index, UploadedFile $chunk, $original)
     {
+        // Prevent path traversal attacks
+        $uuid = basename($uuid);
+
         $filesystem = new Filesystem();
         $path = sprintf('%s/%s', $this->directory, $uuid);
         $name = sprintf('%s_%s', $index, $original);
@@ -106,6 +109,9 @@ class FilesystemStorage implements ChunkStorageInterface
 
     public function getChunks($uuid)
     {
+        // Prevent path traversal attacks
+        $uuid = basename($uuid);
+
         $finder = new Finder();
         $finder
             ->in(sprintf('%s/%s', $this->directory, $uuid))->files()->sort(function (\SplFileInfo $a, \SplFileInfo $b) {

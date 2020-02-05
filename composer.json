@@ -25,6 +25,7 @@
         "symfony/asset": "^3.0|^4.0",
         "symfony/finder": "^3.0|^4.0",
         "symfony/framework-bundle": "^3.0|^4.0",
+        "symfony/http-foundation": "^3.0|^4.0",
         "symfony/templating": "^3.0|^4.0",
         "symfony/translation": "^3.0|^4.0",
         "symfony/yaml": "^3.0|^4.0",
@@ -33,12 +34,13 @@
 
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
-        "knplabs/gaufrette": "0.2.*@dev",
+        "knplabs/gaufrette": "^0.9",
         "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
-        "phpunit/phpunit": "^6.5",
+        "phpunit/phpunit": "^7.5",
         "sensio/framework-extra-bundle": "^5.0",
         "symfony/browser-kit": "^3.0|^4.0",
         "symfony/class-loader": "^3.0|^4.0",
+        "symfony/phpunit-bridge": "^5.0",
         "symfony/security-bundle": "^3.0|^4.0",
         "symfony/var-dumper": "^3.0|^4.0",
         "twistor/flysystem-stream-wrapper": "^1.0"
