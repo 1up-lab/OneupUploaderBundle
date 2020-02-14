@@ -8,7 +8,6 @@ use Oneup\UploaderBundle\Tests\Uploader\File\FileTest;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Naming\UrlSafeNamer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpKernel\Kernel;
 
 class UrlSafeNamerTest extends FileTest
 {

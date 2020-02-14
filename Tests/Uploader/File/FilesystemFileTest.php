@@ -6,7 +6,6 @@ namespace Oneup\UploaderBundle\Tests\Uploader\File;
 
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpKernel\Kernel;
 
 class FilesystemFileTest extends FileTest
 {

@@ -6,7 +6,6 @@ namespace Oneup\UploaderBundle\Uploader\File;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpKernel\Kernel;
 
 class FilesystemFile extends UploadedFile implements FileInterface
 {

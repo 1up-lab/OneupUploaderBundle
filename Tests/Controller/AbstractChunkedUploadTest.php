@@ -9,7 +9,6 @@ use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpKernel\Kernel;
 
 abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 {

@@ -8,7 +8,6 @@ use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpKernel\Kernel;
 
 class BlueimpTest extends AbstractUploadTest
 {
@@ -101,7 +100,7 @@ class BlueimpTest extends AbstractUploadTest
     protected function getRequestFile(): array
     {
         return ['files' => [
-            new UploadedFile($this->createTempFile(128), 'cat.txt', 'text/plain', null, true)
+            new UploadedFile($this->createTempFile(128), 'cat.txt', 'text/plain', null, true),
         ]];
     }
 }

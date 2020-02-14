@@ -7,7 +7,6 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpKernel\Kernel;
 
 class BlueimpValidationTest extends AbstractValidationTest
 {

@@ -8,7 +8,6 @@ use Oneup\UploaderBundle\Uploader\Response\MooUploadResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Kernel;
 
 class MooUploadController extends AbstractChunkedController
 {
