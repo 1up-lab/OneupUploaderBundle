@@ -6,6 +6,7 @@ use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Kernel;
 
 class BlueimpTest extends AbstractUploadTest
 {
@@ -96,11 +97,15 @@ class BlueimpTest extends AbstractUploadTest
 
     protected function getRequestFile()
     {
-        return ['files' => [new UploadedFile(
-            $this->createTempFile(128),
-            'cat.txt',
-            'text/plain',
-            128
-        )]];
+        // TODO at EOL of SF 3.4 this can be removed
+        if(Kernel::VERSION_ID < 40400) {
+            return ['files' => [
+                new UploadedFile($this->createTempFile(128), 'cat.txt', 'text/plain', 128, null, true)
+            ]];
+        }
+
+        return ['files' => [
+            new UploadedFile($this->createTempFile(128), 'cat.txt', 'text/plain', null, true)
+        ]];
     }
 }

@@ -23,7 +23,7 @@ class FilesystemStorageTest extends ChunkStorageTest
         ]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $system = new Filesystem();
         $system->remove($this->tmpDir);

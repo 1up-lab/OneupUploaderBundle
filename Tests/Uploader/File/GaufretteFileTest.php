@@ -37,7 +37,7 @@ class GaufretteFileTest extends FileTest
         $this->file = new GaufretteFile(new File($this->pathname, $filesystem), $filesystem, 'gaufrette://oneup/');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink(sys_get_temp_dir().'/'.$this->pathname);
         rmdir(sys_get_temp_dir().'/'.$this->path);

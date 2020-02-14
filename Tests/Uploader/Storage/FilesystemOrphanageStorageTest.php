@@ -10,6 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpKernel\Kernel;
 
 class FilesystemOrphanageStorageTest extends OrphanageTest
 {
@@ -32,7 +33,15 @@ class FilesystemOrphanageStorageTest extends OrphanageTest
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 
-            $this->payloads[] = new FilesystemFile(new UploadedFile($file, $i.'grumpycat.jpeg', null, null, null, true));
+            // create an uploaded file to upload
+            // TODO at EOL of SF 3.4 this can be removed
+            if(Kernel::VERSION_ID < 40400) {
+                $uploadedFile = new UploadedFile($file, $i.'grumpycat.jpeg', null, null, null, true);
+            } else {
+                $uploadedFile = new UploadedFile($file, $i.'grumpycat.jpeg', null, null, true);
+            }
+
+            $this->payloads[] = new FilesystemFile($uploadedFile);
         }
 
         // create underlying storage

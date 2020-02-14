@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Kernel;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
@@ -39,7 +40,7 @@ abstract class AbstractControllerTest extends WebTestCase
         self::$container->get('router')->getRouteCollection()->all();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         foreach ($this->createdFiles as $file) {
             @unlink($file);
@@ -105,7 +106,8 @@ abstract class AbstractControllerTest extends WebTestCase
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
-        if (405 === $expectedStatusCode) {
+        // Since SF 4.4 the exception is 'swallowed' and never gets as far as here!
+        if (405 === $expectedStatusCode && Kernel::VERSION_ID < 40400) {
             $this->expectException(MethodNotAllowedHttpException::class);
         }
 

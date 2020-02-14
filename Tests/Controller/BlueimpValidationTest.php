@@ -5,6 +5,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Kernel;
 
 class BlueimpValidationTest extends AbstractValidationTest
 {
@@ -90,41 +91,77 @@ class BlueimpValidationTest extends AbstractValidationTest
 
     protected function getOversizedFile()
     {
+        // TODO at EOL of SF 3.4 this can be removed
+        if(Kernel::VERSION_ID < 40400) {
+            return ['files' => [new UploadedFile(
+                $this->createTempFile(512),
+                'cat.ok',
+                'text/plain',
+                512
+            )]];
+        }
+
         return ['files' => [new UploadedFile(
             $this->createTempFile(512),
             'cat.ok',
-            'text/plain',
-            512
+            'text/plain'
         )]];
     }
 
     protected function getFileWithCorrectMimeType()
     {
+        // TODO at EOL of SF 3.4 this can be removed
+        if(Kernel::VERSION_ID < 40400) {
+            return ['files' => [new UploadedFile(
+                $this->createTempFile(128),
+                'cat.txt',
+                'text/plain',
+                128
+            )]];
+        }
+
         return ['files' => [new UploadedFile(
             $this->createTempFile(128),
             'cat.txt',
-            'text/plain',
-            128
+            'text/plain'
         )]];
     }
 
     protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
     {
-        return new UploadedFile(
+        // TODO at EOL of SF 3.4 this can be removed
+        if(Kernel::VERSION_ID < 40400) {
+            return ['files' => [new UploadedFile(
+                $this->createTempFile(128),
+                'cat.txxt',
+                'text/plain',
+                128
+            )]];
+        }
+
+        return ['files' => [new UploadedFile(
             $this->createTempFile(128),
             'cat.txxt',
-            'text/plain',
-            128
-        );
+            'text/plain'
+        )]];
     }
 
     protected function getFileWithIncorrectMimeType()
     {
+        // TODO at EOL of SF 3.4 this can be removed
+        if(Kernel::VERSION_ID < 40400) {
+            return [new UploadedFile(
+                $this->createTempFile(128),
+                'cat.ok',
+                'image/gif',
+                128
+            )];
+        }
+
         return [new UploadedFile(
             $this->createTempFile(128),
             'cat.ok',
-            'image/gif',
-            128
+            'image/gif'
         )];
     }
 }
