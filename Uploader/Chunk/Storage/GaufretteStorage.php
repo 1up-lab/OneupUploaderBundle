@@ -22,20 +22,20 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
     /**
      * @param FilesystemInterface|Filesystem $filesystem
      * @param int                            $bufferSize
-     * @param string                         $streamWrapperPrefix
+     * @param string|null                    $streamWrapperPrefix
      * @param string                         $prefix
      */
     public function __construct($filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
     {
-        $base = interface_exists('Gaufrette\FilesystemInterface')
-            ? 'Gaufrette\FilesystemInterface'
-            : 'Gaufrette\Filesystem';
+        $base = interface_exists(FilesystemInterface::class)
+            ? FilesystemInterface::class
+            : Filesystem::class;
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \is_object($filesystem) ? \get_class($filesystem) : \gettype($filesystem)));
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \get_class($filesystem)));
         }
 
-        if (!($filesystem->getAdapter() instanceof StreamFactory)) {
+        if ($filesystem instanceof Filesystem && !($filesystem->getAdapter() instanceof StreamFactory)) {
             throw new \InvalidArgumentException('The filesystem used as chunk storage must implement StreamFactory');
         }
         $this->filesystem = $filesystem;
@@ -48,11 +48,8 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * Clears files and folders older than $maxAge in $prefix
      * $prefix must be passable so it can clean the orphanage too
      * as it is forced to be the same filesystem.
-     *
-     * @param      $maxAge
-     * @param null $prefix
      */
-    public function clear($maxAge, $prefix = null): void
+    public function clear(int $maxAge, string $prefix = null): void
     {
         $prefix = $prefix ?: $this->prefix;
         $matches = $this->filesystem->listKeys($prefix);
@@ -74,7 +71,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             }
         }
         // The same directory is returned for every file it contains
-        array_unique($toDelete);
+        $toDelete = array_unique($toDelete);
 
         foreach ($matches['keys'] as $key) {
             try {
@@ -103,11 +100,9 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * for gaufrette based chunk storage therefore assembleChunks will
      * be called in the same request.
      *
-     * @param $uuid
-     * @param $index
-     * @param $original
+     * @param mixed $original
      */
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, $original): void
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);

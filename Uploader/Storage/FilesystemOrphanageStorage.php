@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Finder\Finder;
@@ -18,7 +17,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
     protected $config;
     protected $type;
 
-    public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorageInterface $chunkStorage, $config, $type)
+    public function __construct(StorageInterface $storage, SessionInterface $session, $config, $type)
     {
         parent::__construct($config['directory']);
 

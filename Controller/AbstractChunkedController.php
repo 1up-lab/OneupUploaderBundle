@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
+use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -46,6 +47,7 @@ abstract class AbstractChunkedController extends AbstractController
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request): void
     {
         // get basic container stuff
+        /** @var ChunkManagerInterface $chunkManager */
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
 
         // get information about this chunked request
@@ -68,12 +70,9 @@ abstract class AbstractChunkedController extends AbstractController
 
         // if all chunks collected and stored, proceed
         // with reassembling the parts
-        if ($last) {
-            if (!$chunkManager->getLoadDistribution()) {
-                $chunks = $chunkManager->getChunks($uuid);
-                $assembled = $chunkManager->assembleChunks($chunks, true, true);
-            }
-
+        if ($last && !$chunkManager->getLoadDistribution()) {
+            $chunks = $chunkManager->getChunks($uuid);
+            $assembled = $chunkManager->assembleChunks($chunks, true, true);
             $path = $assembled->getPath();
 
             $this->handleUpload($assembled, $response, $request);

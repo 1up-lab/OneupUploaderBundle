@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ChunkManagerInterface
@@ -15,16 +17,16 @@ interface ChunkManagerInterface
      * @param int    $index
      * @param string $original The file name of the original file
      *
-     * @return File the moved chunk file
+     * @return File|null the moved chunk file
      */
     public function addChunk($uuid, $index, UploadedFile $chunk, $original);
 
     /**
      * Assembles the given chunks and return the resulting file.
      *
-     * @param      $chunks
-     * @param bool $removeChunk remove the chunk file once its assembled
-     * @param bool $renameChunk rename the chunk file once its assembled
+     * @param mixed $chunks
+     * @param bool  $removeChunk remove the chunk file once its assembled
+     * @param bool  $renameChunk rename the chunk file once its assembled
      *
      * @return File
      */
@@ -52,4 +54,6 @@ interface ChunkManagerInterface
      * Clears the chunk manager directory. Remove all files older than the configured maxage.
      */
     public function clear();
+
+    public function getLoadDistribution();
 }

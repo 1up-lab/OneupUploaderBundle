@@ -18,12 +18,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
     protected $config;
     protected $type;
 
-    /**
-     * @param GaufretteChunkStorage $chunkStorage this class is only used if the gaufrette chunk storage is used
-     * @param                       $config
-     * @param                       $type
-     */
-    public function __construct(StorageInterface $storage, SessionInterface $session, GaufretteChunkStorage $chunkStorage, $config, $type)
+    public function __construct(StorageInterface $storage, SessionInterface $session, GaufretteChunkStorage $chunkStorage, array $config, string $type)
     {
         /*
          * initiate the storage on the chunk storage's filesystem

@@ -51,7 +51,7 @@ class MooUploadResponseTest extends TestCase
         $response['error'] = null;
         $response['finish'] = null;
         $response['uploadedName'] = null;
-        $response['princess'] = !null;
+        $response['princess'] = true;
 
         $this->assertSame(3, $response->getId());
         $this->assertSame('grumpy_cat.jpg', $response->getName());
@@ -59,7 +59,7 @@ class MooUploadResponseTest extends TestCase
         $this->assertSame(-1, $response->getError());
         $this->assertTrue($response->getFinish());
         $this->assertSame('b1/2d/b12d23.jpg', $response->getUploadedName());
-        $this->assertSame(!null, $response['princess']);
+        $this->assertTrue($response['princess']);
     }
 
     public function testAssemble(): void
@@ -79,7 +79,7 @@ class MooUploadResponseTest extends TestCase
         $response['finish'] = null;
         $response['uploadedName'] = null;
         $response['upload_name'] = null;
-        $response['princess'] = !null;
+        $response['princess'] = true;
 
         $data = $response->assemble();
 
@@ -89,6 +89,6 @@ class MooUploadResponseTest extends TestCase
         $this->assertSame(-1, $data['error']);
         $this->assertTrue($data['finish']);
         $this->assertSame('b1/2d/b12d23.jpg', $data['upload_name']);
-        $this->assertSame(!null, $data['princess']);
+        $this->assertTrue($data['princess']);
     }
 }

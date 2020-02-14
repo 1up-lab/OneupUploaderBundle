@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Templating\Helper\UploaderHelper;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -15,7 +15,7 @@ abstract class AbstractControllerTest extends WebTestCase
     protected $createdFiles;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $client;
     protected $requestHeaders;
@@ -28,7 +28,7 @@ abstract class AbstractControllerTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = static::createClient(['debug' => false]);
         $this->client->catchExceptions(false);
 
         self::$container = $this->client->getContainer();
@@ -53,6 +53,7 @@ abstract class AbstractControllerTest extends WebTestCase
         }
 
         unset($this->client, $this->controller);
+        static::$booted = false;
     }
 
     public function testRoute(): void
@@ -132,7 +133,7 @@ abstract class AbstractControllerTest extends WebTestCase
     protected function getUploadedFiles()
     {
         $env = self::$container->getParameter('kernel.environment');
-        $root = self::$container->getParameter('kernel.root_dir');
+        $root = self::$container->getParameter('kernel.project_dir');
 
         // assemble path
         $path = sprintf('%s/cache/%s/upload', $root, $env);

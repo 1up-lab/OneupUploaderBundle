@@ -18,17 +18,36 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractController
 {
+    /**
+     * @var ErrorHandlerInterface
+     */
+    protected $errorHandler;
+
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
+
+    /**
+     * @var StorageInterface
+     */
     protected $storage;
+
+    /**
+     * @var array
+     */
     protected $config;
+
+    /**
+     * @var string
+     */
     protected $type;
 
-    public function __construct(ContainerInterface $container, StorageInterface $storage, ErrorHandlerInterface $errorHandler, array $config, $type)
+    public function __construct(ContainerInterface $container, StorageInterface $storage, ErrorHandlerInterface $errorHandler, array $config, string $type)
     {
         $this->errorHandler = $errorHandler;
         $this->container = $container;
@@ -203,28 +222,20 @@ abstract class AbstractController
      */
     protected function getRequest()
     {
-        if (version_compare(Kernel::VERSION, '2.4', '<=')) {
-            return $this->container->get('request');
-        }
-
         return $this->container->get('request_stack')->getMasterRequest();
     }
 
     /**
      * Event dispatch proxy that avoids using deprecated interfaces.
      *
-     * @param $event
+     * @param object $event
      */
     protected function dispatchEvent($event, string $eventName): void
     {
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get('event_dispatcher');
 
-        if ($dispatcher instanceof EventDispatcherInterface) {
-            $dispatcher->dispatch($event, $eventName);
-            $dispatcher->dispatch($event, sprintf('%s.%s', $eventName, $this->type));
-        } else {
-            $dispatcher->dispatch($eventName, $event);
-            $dispatcher->dispatch(sprintf('%s.%s', $eventName, $this->type), $event);
-        }
+        $dispatcher->dispatch($event, $eventName);
+        $dispatcher->dispatch($event, sprintf('%s.%s', $eventName, $this->type));
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\UploadEvents;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BlueimpValidationTest extends AbstractValidationTest
@@ -13,7 +13,7 @@ class BlueimpValidationTest extends AbstractValidationTest
     public function testAgainstMaxSize(): void
     {
         // assemble a request
-        /** @var Client $client */
+        /** @var KernelBrowser $client */
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
+use League\Flysystem\File;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
@@ -53,13 +54,19 @@ class FlysystemStorage implements StorageInterface
             $filesystem = new LocalFilesystem();
             $filesystem->remove($file->getPathname());
 
-            return new FlysystemFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
+            /** @var File $file */
+            $file = $this->filesystem->get($path);
+
+            return new FlysystemFile($file, $this->filesystem, $this->streamWrapperPrefix);
         }
 
         if ($file instanceof FlysystemFile && $file->getFilesystem() === $this->filesystem) {
             $file->getFilesystem()->rename($file->getPath(), $path);
 
-            return new FlysystemFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
+            /** @var File $file */
+            $file = $this->filesystem->get($path);
+
+            return new FlysystemFile($file, $this->filesystem, $this->streamWrapperPrefix);
         }
 
         $manager = new MountManager([
@@ -69,6 +76,9 @@ class FlysystemStorage implements StorageInterface
 
         $manager->move(sprintf('chunks://%s', $file->getPathname()), sprintf('dest://%s', $path));
 
-        return new FlysystemFile($this->filesystem->get($path), $this->filesystem, $this->streamWrapperPrefix);
+        /** @var File $file */
+        $file = $this->filesystem->get($path);
+
+        return new FlysystemFile($file, $this->filesystem, $this->streamWrapperPrefix);
     }
 }

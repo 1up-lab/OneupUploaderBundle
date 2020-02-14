@@ -30,8 +30,10 @@ class ClearOrphansCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->manager->clear();
+
+        return 0;
     }
 }

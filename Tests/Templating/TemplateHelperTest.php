@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oneup\UploaderBundle\Tests\Uploader\Chunk;
+namespace Oneup\UploaderBundle\Tests\Templating;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

@@ -34,7 +34,7 @@ class FilesystemStorage implements ChunkStorageInterface
         }
 
         foreach ($finder as $file) {
-            $system->remove($file);
+            $system->remove($file->getRealPath());
         }
     }
 
@@ -61,6 +61,7 @@ class FilesystemStorage implements ChunkStorageInterface
             throw new \InvalidArgumentException('The first argument must implement \IteratorAggregate interface.');
         }
 
+        /** @var \Iterator $iterator */
         $iterator = $chunks->getIterator();
 
         $base = $iterator->current();

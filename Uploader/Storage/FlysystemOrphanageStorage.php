@@ -18,12 +18,7 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     protected $config;
     protected $type;
 
-    /**
-     * @param ChunkStorage $chunkStorage this class is only used if the gaufrette chunk storage is used
-     * @param              $config
-     * @param              $type
-     */
-    public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorage $chunkStorage, $config, $type)
+    public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorage $chunkStorage, array $config, string $type)
     {
         /*
          * initiate the storage on the chunk storage's filesystem

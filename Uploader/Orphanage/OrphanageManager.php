@@ -52,7 +52,7 @@ class OrphanageManager
         }
 
         foreach ($finder as $file) {
-            $system->remove($file);
+            $system->remove($file->getRealPath());
         }
 
         // Now that the files are cleaned, we check if we need to remove some directories as well
@@ -66,8 +66,8 @@ class OrphanageManager
         // We crawl the array backward as the Finder returns the parent first
         for ($i = $size - 1; $i >= 0; --$i) {
             $dir = $dirArray[$i];
-            if (!(new \FilesystemIterator($dir))->valid()) {
-                $system->remove($dir);
+            if (!(new \FilesystemIterator((string) $dir))->valid()) {
+                $system->remove((string) $dir);
             }
         }
     }

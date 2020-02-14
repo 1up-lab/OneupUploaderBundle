@@ -119,4 +119,6 @@ abstract class AbstractValidationTest extends AbstractControllerTest
     abstract protected function getFileWithIncorrectMimeType();
 
     abstract protected function getOversizedFile();
+
+    abstract protected function getRequestParameters();
 }

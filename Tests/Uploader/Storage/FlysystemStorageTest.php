@@ -34,7 +34,7 @@ class FlysystemStorageTest extends TestCase
         fwrite($pointer, str_repeat('A', 1024), 1024);
         fclose($pointer);
 
-        $adapter = new Adapter($this->directory, true);
+        $adapter = new Adapter($this->directory);
         $filesystem = new FSAdapter($adapter);
 
         $this->storage = new Storage($filesystem, 100000);

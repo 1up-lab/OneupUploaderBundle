@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements StorageInterface
 {
@@ -25,7 +26,9 @@ class FilesystemStorage implements StorageInterface
         $targetName = basename($path);
         $targetDir = \dirname($path);
 
-        $file = $file->move($targetDir, $targetName);
+        if ($file instanceof UploadedFile) {
+            $file = $file->move($targetDir, $targetName);
+        }
 
         return $file;
     }

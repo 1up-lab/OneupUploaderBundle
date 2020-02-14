@@ -21,12 +21,12 @@ class GaufretteFile extends File implements FileInterface
      */
     public function __construct(File $file, $filesystem, $streamWrapperPrefix = null)
     {
-        $base = interface_exists('Gaufrette\FilesystemInterface')
-            ? 'Gaufrette\FilesystemInterface'
-            : 'Gaufrette\Filesystem';
+        $base = interface_exists(FilesystemInterface::class)
+            ? FilesystemInterface::class
+            : Filesystem::class;
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \is_object($filesystem) ? \get_class($filesystem) : \gettype($filesystem)));
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \get_class($filesystem)));
         }
 
         parent::__construct($file->getKey(), $filesystem);

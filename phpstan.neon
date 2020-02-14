@@ -1,0 +1,24 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
+parameters:
+    bootstrap: %rootDir%/../../../vendor/autoload.php
+
+    symfony:
+        container_xml_path: %rootDir%/../../../Tests/App/var/cache/test/AppKernelTestDebugContainer.xml
+
+    excludes_analyse:
+        - DependencyInjection/Configuration.php
+        - Tests/App/cache
+        - Tests/App/logs
+        - Tests/App/var
+        - var
+        - vendor
+
+    checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
+
+    ignoreErrors:
+        -
+            message: '#Parameter \#1 \$parameters of class Symfony\\Component\\HttpFoundation\\FileBag constructor expects array<Symfony\\Component\\HttpFoundation\\File\\UploadedFile>, array<int, Symfony\\Component\\HttpFoundation\\File\\UploadedFile\|null> given\.#'
+            path: '%currentWorkingDirectory%/Tests/Controller/FileBagExtractorTest.php'

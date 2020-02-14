@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class FileTest extends TestCase
 {
+    protected $storage;
     protected $file;
     protected $pathname;
     protected $path;

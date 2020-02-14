@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
+use League\Flysystem\File;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
@@ -121,6 +122,8 @@ class FlysystemStorage implements ChunkStorageInterface
             $this->filesystem->rename($path . $target, $path . $name);
             $target = $name;
         }
+
+        /** @var File $uploaded */
         $uploaded = $this->filesystem->get($path . $target);
 
         if (!$renameChunk) {

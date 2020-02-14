@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ChunkStorageInterface
 {
-    public function clear($maxAge);
+    public function clear(int $maxAge);
 
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original);
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, $original);
 
     public function assembleChunks($chunks, $removeChunk, $renameChunk);
 

@@ -7,6 +7,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\UploadEvents;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BlueimpTest extends AbstractUploadTest
@@ -55,7 +56,7 @@ class BlueimpTest extends AbstractUploadTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
+        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, static function (PreUploadEvent $event) use (&$me, &$preValidation): void {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -64,17 +65,17 @@ class BlueimpTest extends AbstractUploadTest
             // add a new key to the attribute list
             $request->attributes->set('grumpy', 'cat');
 
-            $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $file);
+            $me->assertInstanceOf(UploadedFile::class, $file);
         });
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
+        $dispatcher->addListener(UploadEvents::POST_UPLOAD, static function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
             ++$uploadCount;
             $preValidation *= -1;
 
             $file = $event->getFile();
             $request = $event->getRequest();
 
-            $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\File', $file);
+            $me->assertInstanceOf(File::class, $file);
             $me->assertEquals(128, $file->getSize());
             $me->assertEquals('cat', $request->get('grumpy'));
         });

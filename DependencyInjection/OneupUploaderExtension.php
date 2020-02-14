@@ -187,7 +187,6 @@ class OneupUploaderExtension extends Extension
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Filesystem "%s" is invalid', $config['type']));
-                break;
         }
     }
 

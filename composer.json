@@ -3,46 +3,51 @@
     "type": "symfony-bundle",
     "description": "Handles multi file uploads in Symfony2. Features included: Chunked upload, Orphans management, Gaufrette support.",
     "keywords": ["fileupload", "upload", "FineUploader", "blueimp", "jQuery File Uploader", "YUI3 Uploader", "Uploadify", "FancyUpload", "MooUpload", "Plupload", "Dropzone"],
-    "homepage": "http://1up.io",
+    "homepage": "https://1up.io",
     "license": "MIT",
     "authors": [
         {
             "name": "Jim Schmid",
             "email": "js@1up.io",
-            "homepage": "http://1up.io",
+            "homepage": "https://1up.io",
             "role": "Developer"
         },
         {
             "name": "David Greminger",
             "email": "dg@1up.io",
-            "homepage": "http://1up.io",
+            "homepage": "https://1up.io",
             "role": "Developer"
         }
     ],
 
     "require": {
-        "php": "^7.1",
-        "symfony/asset": "^4.0|^5.0",
-        "symfony/finder": "^4.0|^5.0",
-        "symfony/framework-bundle": "^4.0|^5.0",
-        "symfony/templating": "^4.0|^5.0",
-        "symfony/translation": "^4.0|^5.0",
-        "symfony/yaml": "^4.0|^5.0",
+        "php": "^7.2.5",
+        "symfony/asset": "^4.4|^5.0",
+        "symfony/event-dispatcher-contracts": "^2.0",
+        "symfony/finder": "^4.4|^5.0",
+        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/templating": "^4.4|^5.0",
+        "symfony/translation": "^4.4|^5.0",
+        "symfony/translation-contracts": "^2.0",
+        "symfony/yaml": "^4.4|^5.0",
         "twig/twig": "^2.4|^3.0"
     },
 
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
+        "doctrine/common": "^2.12",
         "friendsofphp/php-cs-fixer": "^2.16",
         "knplabs/gaufrette": "^0.9",
         "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
+        "phpstan/phpstan": "^0.12.10",
+        "phpstan/phpstan-doctrine": "^0.12.9",
+        "phpstan/phpstan-symfony": "^0.12.4",
         "phpunit/phpunit": "^7.5",
         "sensio/framework-extra-bundle": "^5.0",
-        "symfony/browser-kit": "^4.0|^5.0",
-        "symfony/class-loader": "^4.0|^5.0",
+        "symfony/browser-kit": "^4.4|^5.0",
         "symfony/phpunit-bridge": "^5.0",
-        "symfony/security-bundle": "^4.0|^5.0",
-        "symfony/var-dumper": "^4.0|^5.0",
+        "symfony/security-bundle": "^4.4|^5.0",
+        "symfony/var-dumper": "^4.4|^5.0",
         "twistor/flysystem-stream-wrapper": "^1.0"
     },
     "config": {

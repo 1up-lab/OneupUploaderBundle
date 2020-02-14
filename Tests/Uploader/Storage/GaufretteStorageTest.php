@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class GaufretteStorageTest extends TestCase
 {
+    protected $file;
     protected $directory;
     protected $storage;
 

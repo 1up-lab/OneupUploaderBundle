@@ -6,7 +6,7 @@ namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
 use Exception;
 use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BlueimpErrorHandler implements ErrorHandlerInterface
 {

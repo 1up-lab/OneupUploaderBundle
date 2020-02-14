@@ -7,6 +7,8 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\UploadEvents;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class AbstractUploadTest extends AbstractControllerTest
 {
@@ -48,7 +50,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
+        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, static function (PreUploadEvent $event) use (&$me, &$preValidation): void {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -57,17 +59,17 @@ abstract class AbstractUploadTest extends AbstractControllerTest
             // add a new key to the attribute list
             $request->attributes->set('grumpy', 'cat');
 
-            $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $file);
+            $me->assertInstanceOf(UploadedFile::class, $file);
         });
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
+        $dispatcher->addListener(UploadEvents::POST_UPLOAD, static function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
             ++$uploadCount;
             $preValidation *= -1;
 
             $file = $event->getFile();
             $request = $event->getRequest();
 
-            $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\File', $file);
+            $me->assertInstanceOf(File::class, $file);
             $me->assertEquals(128, $file->getSize());
             $me->assertEquals('cat', $request->get('grumpy'));
         });
@@ -75,7 +77,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getRequestFile()]);
 
         $this->assertCount(1, $this->getUploadedFiles());
-        $this->assertSame($uploadCount, \count($this->getUploadedFiles()));
+        $this->assertCount($uploadCount, $this->getUploadedFiles());
         $this->assertSame(1, $preValidation);
     }
 

@@ -22,4 +22,9 @@ class FilesystemFile extends UploadedFile implements FileInterface
     {
         return $this->getClientOriginalExtension();
     }
+
+    public function getFileSystem()
+    {
+        return null;
+    }
 }

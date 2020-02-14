@@ -11,7 +11,6 @@ interface StorageInterface
     /**
      * Uploads a File instance to the configured storage.
      *
-     * @param        $file
      * @param string $name
      * @param string $path
      */

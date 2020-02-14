@@ -4,23 +4,19 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Naming;
 
+use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class UniqidNamerTest extends TestCase
 {
     public function testNamerReturnsName(): void
     {
-        // TODO Reenable this test.
-        $this->markTestSkipped('Details: https://github.com/Ocramius/Instantiator/pull/8#issuecomment-47446963');
-
-        $file = $this->getMockBuilder('Oneup\UploaderBundle\Uploader\File\FilesystemFile')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        /** @var FilesystemFile&MockObject $file */
+        $file = $this->createMock(FilesystemFile::class);
 
         $file
-            ->expects($this->any())
             ->method('getExtension')
             ->willReturn('jpeg')
         ;
@@ -31,16 +27,10 @@ class UniqidNamerTest extends TestCase
 
     public function testNamerReturnsUniqueName(): void
     {
-        // TODO Reenable this test.
-        $this->markTestSkipped('Details: https://github.com/Ocramius/Instantiator/pull/8#issuecomment-47446963');
-
-        $file = $this->getMockBuilder('Oneup\UploaderBundle\Uploader\File\FilesystemFile')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        /** @var FilesystemFile&MockObject $file */
+        $file = $this->createMock(FilesystemFile::class);
 
         $file
-            ->expects($this->any())
             ->method('getExtension')
             ->willReturn('jpeg')
         ;
