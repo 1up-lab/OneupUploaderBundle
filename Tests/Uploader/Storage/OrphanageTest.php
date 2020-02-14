@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use PHPUnit\Framework\TestCase;
@@ -26,10 +28,10 @@ abstract class OrphanageTest extends TestCase
         $filesystem->remove($this->realDirectory);
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
-            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
+            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -41,10 +43,10 @@ abstract class OrphanageTest extends TestCase
         $this->assertCount(0, $finder);
     }
 
-    public function testUploadAndFetching()
+    public function testUploadAndFetching(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
-            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
+            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -69,7 +71,7 @@ abstract class OrphanageTest extends TestCase
         $this->assertCount($this->numberOfPayloads, $finder);
     }
 
-    public function testUploadAndFetchingIfDirectoryDoesNotExist()
+    public function testUploadAndFetchingIfDirectoryDoesNotExist(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->tempDirectory);
@@ -80,7 +82,7 @@ abstract class OrphanageTest extends TestCase
         $this->assertCount(0, $files);
     }
 
-    public function testIfGetFilesMethodIsAccessible()
+    public function testIfGetFilesMethodIsAccessible(): void
     {
         // since ticket #48, getFiles has to be public
         $method = new \ReflectionMethod($this->orphanage, 'getFiles');

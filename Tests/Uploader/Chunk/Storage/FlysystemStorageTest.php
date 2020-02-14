@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
 use League\Flysystem\Adapter\Local as Adapter;
@@ -15,7 +17,7 @@ class FlysystemStorageTest extends ChunkStorageTest
     protected $chunkKey = 'chunks';
     protected $chunkDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         // create a cache dir
         $parentDir = sprintf('/tmp/%s', uniqid('', true));
@@ -33,7 +35,7 @@ class FlysystemStorageTest extends ChunkStorageTest
         FlysystemStreamWrapper::register('tests', $filesystem);
 
         $this->storage = new FlysystemStorage($filesystem, 100000, 'tests:/', $this->chunkKey);
-        $this->tmpDir = $this->parentDir.'/'.$this->chunkKey;
+        $this->tmpDir = $this->parentDir . '/' . $this->chunkKey;
 
         $system->mkdir($this->tmpDir);
     }

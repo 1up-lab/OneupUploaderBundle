@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Response;
 
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class EmptyResponseTest extends TestCase
 {
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $response = new EmptyResponse();
         $assembled = $response->assemble();
@@ -16,7 +18,7 @@ class EmptyResponseTest extends TestCase
         $this->assertCount(0, $assembled);
     }
 
-    public function testWithItems()
+    public function testWithItems(): void
     {
         $response = new EmptyResponse();
 

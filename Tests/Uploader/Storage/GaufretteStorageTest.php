@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Gaufrette\Adapter\Local as Adapter;
@@ -17,9 +19,9 @@ class GaufretteStorageTest extends TestCase
     protected $directory;
     protected $storage;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->directory = sys_get_temp_dir().'/storage';
+        $this->directory = sys_get_temp_dir() . '/storage';
 
         // create temporary file
         $this->file = tempnam(sys_get_temp_dir(), 'uploader');
@@ -40,7 +42,7 @@ class GaufretteStorageTest extends TestCase
         $filesystem->remove($this->directory);
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         $uploadedFile = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, true);
 

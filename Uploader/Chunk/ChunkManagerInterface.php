@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -9,10 +11,9 @@ interface ChunkManagerInterface
     /**
      * Adds a new Chunk to a given uuid.
      *
-     * @param string       $uuid
-     * @param int          $index
-     * @param UploadedFile $chunk
-     * @param string       $original The file name of the original file
+     * @param string $uuid
+     * @param int    $index
+     * @param string $original The file name of the original file
      *
      * @return File the moved chunk file
      */

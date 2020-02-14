@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Naming;
 
 use Oneup\UploaderBundle\Tests\Uploader\File\FileTest;
@@ -10,16 +12,16 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class UrlSafeNamerTest extends FileTest
 {
-    public function setUp()
+    public function setUp(): void
     {
-        $this->path = sys_get_temp_dir().'/oneup_namer_test';
+        $this->path = sys_get_temp_dir() . '/oneup_namer_test';
 
         if (!file_exists($this->path)) {
             mkdir($this->path);
         }
 
         $this->basename = 'test_file.txt';
-        $this->pathname = $this->path.'/'.$this->basename;
+        $this->pathname = $this->path . '/' . $this->basename;
         $this->extension = 'txt';
         $this->size = 9; //something = 9 bytes
         $this->mimeType = 'text/plain';
@@ -36,14 +38,14 @@ class UrlSafeNamerTest extends FileTest
         rmdir($this->path);
     }
 
-    public function testCanGetString()
+    public function testCanGetString(): void
     {
         $namer = new UrlSafeNamer();
         $this->assertIsString($namer->name($this->file));
         $this->assertStringEndsWith($this->extension, $namer->name($this->file));
     }
 
-    public function testTwoFileNamesAreNotEqual()
+    public function testTwoFileNamesAreNotEqual(): void
     {
         $namer = new UrlSafeNamer();
 

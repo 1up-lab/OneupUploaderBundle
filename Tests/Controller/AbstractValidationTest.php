@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
@@ -7,7 +9,7 @@ use Oneup\UploaderBundle\UploadEvents;
 
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
-    public function testAgainstMaxSize()
+    public function testAgainstMaxSize(): void
     {
         // assemble a request
         $client = $this->client;
@@ -21,7 +23,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
-    public function testEvents()
+    public function testEvents(): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -30,7 +32,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function () use (&$validationCount) {
+        $dispatcher->addListener(UploadEvents::VALIDATION, function () use (&$validationCount): void {
             ++$validationCount;
         });
 
@@ -39,7 +41,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $this->assertSame(1, $validationCount);
     }
 
-    public function testIfRequestIsAvailableInEvent()
+    public function testIfRequestIsAvailableInEvent(): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -49,7 +51,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $validationCount = 0;
         $me = $this;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function (ValidationEvent $event) use (&$validationCount, &$me) {
+        $dispatcher->addListener(UploadEvents::VALIDATION, function (ValidationEvent $event) use (&$validationCount, &$me): void {
             $me->assertInstanceOf('Symfony\Component\HttpFoundation\Request', $event->getRequest());
 
             // to be sure this listener is called
@@ -61,7 +63,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $this->assertSame(1, $validationCount);
     }
 
-    public function testAgainstCorrectMimeType()
+    public function testAgainstCorrectMimeType(): void
     {
         // assemble a request
         $client = $this->client;
@@ -81,7 +83,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         }
     }
 
-    public function testAgainstCorrectMimeTypeAndIncorrectExtension()
+    public function testAgainstCorrectMimeTypeAndIncorrectExtension(): void
     {
         // assemble a request
         $client = $this->client;
@@ -94,7 +96,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
-    public function testAgainstIncorrectMimeType()
+    public function testAgainstIncorrectMimeType(): void
     {
         $this->markTestSkipped('Mock mime type getter.');
 

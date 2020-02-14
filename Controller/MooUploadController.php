@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Uploader\Response\MooUploadResponse;
@@ -92,7 +94,7 @@ class MooUploadController extends AbstractChunkedController
         // loop through every char and convert it to an integer
         // we need this for sorting
         foreach (str_split($id) as $char) {
-            $ints += ord($char);
+            $ints += \ord($char);
         }
 
         return $ints;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage as FilesystemChunkStorage;
@@ -14,11 +16,11 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class FilesystemOrphanageStorageTest extends OrphanageTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->numberOfPayloads = 5;
-        $this->tempDirectory = sys_get_temp_dir().'/orphanage';
-        $this->realDirectory = sys_get_temp_dir().'/storage';
+        $this->tempDirectory = sys_get_temp_dir() . '/orphanage';
+        $this->realDirectory = sys_get_temp_dir() . '/storage';
         $this->payloads = [];
 
         $filesystem = new Filesystem();
@@ -33,15 +35,7 @@ class FilesystemOrphanageStorageTest extends OrphanageTest
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 
-            // create an uploaded file to upload
-            // TODO at EOL of SF 3.4 this can be removed
-            if(Kernel::VERSION_ID < 40400) {
-                $uploadedFile = new UploadedFile($file, $i.'grumpycat.jpeg', null, null, null, true);
-            } else {
-                $uploadedFile = new UploadedFile($file, $i.'grumpycat.jpeg', null, null, true);
-            }
-
-            $this->payloads[] = new FilesystemFile($uploadedFile);
+            $this->payloads[] = new FilesystemFile(new UploadedFile($file, $i . 'grumpycat.jpeg', null, null, true));
         }
 
         // create underlying storage

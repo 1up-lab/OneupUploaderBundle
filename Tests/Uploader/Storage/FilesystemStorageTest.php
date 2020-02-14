@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
@@ -15,9 +17,9 @@ class FilesystemStorageTest extends TestCase
     protected $directory;
     protected $file;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->directory = sys_get_temp_dir().'/storage';
+        $this->directory = sys_get_temp_dir() . '/storage';
 
         // create temporary file
         $this->file = tempnam(sys_get_temp_dir(), 'uploader');
@@ -33,7 +35,7 @@ class FilesystemStorageTest extends TestCase
         $filesystem->remove($this->directory);
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         $uploadedFile = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, true);
 

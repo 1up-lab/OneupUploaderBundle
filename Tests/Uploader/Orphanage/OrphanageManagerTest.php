@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Orphanage;
 
 use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager;
@@ -14,17 +16,17 @@ class OrphanageManagerTest extends TestCase
     protected $mockContainer;
     protected $mockConfig;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->numberOfOrphans = 10;
-        $this->orphanagePath = sys_get_temp_dir().'/orphanage';
+        $this->orphanagePath = sys_get_temp_dir() . '/orphanage';
 
         $filesystem = new Filesystem();
         $filesystem->mkdir($this->orphanagePath);
 
         // create n orphans with a filemtime in the past
         for ($i = 0; $i < $this->numberOfOrphans; ++$i) {
-            touch($this->orphanagePath.'/'.uniqid(), time() - 1000);
+            touch($this->orphanagePath . '/' . uniqid(), time() - 1000);
         }
 
         $this->mockConfig = [
@@ -41,7 +43,7 @@ class OrphanageManagerTest extends TestCase
         $filesystem->remove($this->orphanagePath);
     }
 
-    public function testGetSpecificService()
+    public function testGetSpecificService(): void
     {
         $manager = new OrphanageManager($this->mockContainer, $this->mockConfig);
         $service = $manager->get('grumpycat');
@@ -49,11 +51,11 @@ class OrphanageManagerTest extends TestCase
         $this->assertTrue($service);
     }
 
-    public function testClearAllInPast()
+    public function testClearAllInPast(): void
     {
         // create n orphans with a filemtime in the past
         for ($i = 0; $i < $this->numberOfOrphans; ++$i) {
-            touch($this->orphanagePath.'/'.uniqid(), time() - 1000);
+            touch($this->orphanagePath . '/' . uniqid(), time() - 1000);
         }
 
         $manager = new OrphanageManager($this->mockContainer, $this->mockConfig);
@@ -65,12 +67,12 @@ class OrphanageManagerTest extends TestCase
         $this->assertCount(0, $finder);
     }
 
-    public function testClearSomeInPast()
+    public function testClearSomeInPast(): void
     {
         // create n orphans with half filetimes in the past and half in the future
         // relative to the given threshold
         for ($i = 0; $i < $this->numberOfOrphans; ++$i) {
-            touch($this->orphanagePath.'/'.uniqid(), time() - $i * 20);
+            touch($this->orphanagePath . '/' . uniqid(), time() - $i * 20);
         }
 
         $manager = new OrphanageManager($this->mockContainer, $this->mockConfig);
@@ -82,7 +84,7 @@ class OrphanageManagerTest extends TestCase
         $this->assertCount($this->numberOfOrphans / 2, $finder);
     }
 
-    public function testClearIfDirectoryDoesNotExist()
+    public function testClearIfDirectoryDoesNotExist(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->mockConfig['directory']);
@@ -101,7 +103,7 @@ class OrphanageManagerTest extends TestCase
             ->expects($this->any())
             ->method('get')
             ->with('oneup_uploader.orphanage.grumpycat')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         return $mock;

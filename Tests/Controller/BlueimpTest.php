@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\PostUploadEvent;
@@ -10,7 +12,7 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class BlueimpTest extends AbstractUploadTest
 {
-    public function testSingleUpload()
+    public function testSingleUpload(): void
     {
         // assemble a request
         $client = $this->client;
@@ -30,7 +32,7 @@ class BlueimpTest extends AbstractUploadTest
         }
     }
 
-    public function testResponseForOldBrowsers()
+    public function testResponseForOldBrowsers(): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -43,7 +45,7 @@ class BlueimpTest extends AbstractUploadTest
         $this->assertCount(1, $this->getUploadedFiles());
     }
 
-    public function testEvents()
+    public function testEvents(): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -54,7 +56,7 @@ class BlueimpTest extends AbstractUploadTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -66,7 +68,7 @@ class BlueimpTest extends AbstractUploadTest
             $me->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $file);
         });
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation) {
+        $dispatcher->addListener(UploadEvents::POST_UPLOAD, function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
             ++$uploadCount;
             $preValidation *= -1;
 
@@ -81,6 +83,7 @@ class BlueimpTest extends AbstractUploadTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getRequestFile(), $this->requestHeaders);
 
         $this->assertCount(1, $this->getUploadedFiles());
+
         $this->assertCount($uploadCount, $this->getUploadedFiles());
         $this->assertSame(1, $preValidation);
     }

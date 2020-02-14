@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\File;
 
 use Gaufrette\Adapter\AwsS3;
@@ -14,7 +16,6 @@ class GaufretteFile extends File implements FileInterface
     protected $mimeType;
 
     /**
-     * @param File                           $file
      * @param FilesystemInterface|Filesystem $filesystem
      * @param string|null                    $streamWrapperPrefix
      */
@@ -25,7 +26,7 @@ class GaufretteFile extends File implements FileInterface
             : 'Gaufrette\Filesystem';
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)));
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \is_object($filesystem) ? \get_class($filesystem) : \gettype($filesystem)));
         }
 
         parent::__construct($file->getKey(), $filesystem);
@@ -49,7 +50,7 @@ class GaufretteFile extends File implements FileInterface
         if ($this->filesystem->getAdapter() instanceof StreamFactory && !$this->size) {
             if ($this->streamWrapperPrefix) {
                 try {
-                    $this->setSize(filesize($this->streamWrapperPrefix.$this->getKey()));
+                    $this->setSize(filesize($this->streamWrapperPrefix . $this->getKey()));
                 } catch (\Exception $e) {
                     // Fail gracefully if there was a problem with opening the file and
                     // let gaufrette load the file into memory allowing it to throw exceptions
@@ -88,7 +89,7 @@ class GaufretteFile extends File implements FileInterface
         if ($this->filesystem->getAdapter() instanceof StreamFactory && !$this->mimeType) {
             if ($this->streamWrapperPrefix) {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $this->mimeType = finfo_file($finfo, $this->streamWrapperPrefix.$this->getKey());
+                $this->mimeType = finfo_file($finfo, $this->streamWrapperPrefix . $this->getKey());
                 finfo_close($finfo);
             }
         } elseif ($this->filesystem->getAdapter() instanceof AwsS3 && !$this->mimeType) {

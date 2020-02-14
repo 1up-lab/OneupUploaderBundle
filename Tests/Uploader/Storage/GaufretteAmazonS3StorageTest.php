@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use AmazonS3 as AmazonClient;
@@ -16,7 +18,7 @@ class GaufretteAmazonS3StorageTest extends TestCase
     protected $directory;
     protected $storage;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (
             false === getenv('AWS_ACCESS_KEY_ID') ||
@@ -27,7 +29,7 @@ class GaufretteAmazonS3StorageTest extends TestCase
         }
 
         $this->prefix = 'someObscureStorage';
-        $this->directory = sys_get_temp_dir().'/'.$this->prefix;
+        $this->directory = sys_get_temp_dir() . '/' . $this->prefix;
         if (!file_exists($this->directory)) {
             mkdir($this->directory);
         }
@@ -59,12 +61,10 @@ class GaufretteAmazonS3StorageTest extends TestCase
         }
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
-        $uploadedFile = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, true);
-
-        $payload = new FilesystemFile($uploadedFile);
-        $this->storage->upload($payload, $this->prefix.'/notsogrumpyanymore.jpeg');
+        $payload = new FilesystemFile(new UploadedFile($this->file, 'grumpycat.jpeg', null, null, true));
+        $this->storage->upload($payload, $this->prefix . '/notsogrumpyanymore.jpeg');
 
         $files = $this->filesystem->listKeys($this->prefix);
 
@@ -76,8 +76,8 @@ class GaufretteAmazonS3StorageTest extends TestCase
                 // ignore the prefix directory
                 continue;
             }
-            $this->assertSame($this->prefix.'/notsogrumpyanymore.jpeg', $filename);
-            $this->assertSame(1024, strlen($this->filesystem->read($filename)));
+            $this->assertSame($this->prefix . '/notsogrumpyanymore.jpeg', $filename);
+            $this->assertSame(1024, \strlen($this->filesystem->read($filename)));
         }
     }
 }

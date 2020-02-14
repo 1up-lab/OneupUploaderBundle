@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\UploadEvents;
@@ -9,7 +11,7 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class BlueimpValidationTest extends AbstractValidationTest
 {
-    public function testAgainstMaxSize()
+    public function testAgainstMaxSize(): void
     {
         // assemble a request
         /** @var Client $client */
@@ -25,7 +27,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $this->assertFalse(strpos($response->getContent(), 'error.maxsize'), 'Failed to translate error id into lang');
     }
 
-    public function testEvents()
+    public function testEvents(): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -34,7 +36,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function () use (&$validationCount) {
+        $dispatcher->addListener(UploadEvents::VALIDATION, function () use (&$validationCount): void {
             ++$validationCount;
         });
 
@@ -43,7 +45,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $this->assertSame(1, $validationCount);
     }
 
-    public function testAgainstCorrectMimeType()
+    public function testAgainstCorrectMimeType(): void
     {
         // assemble a request
         $client = $this->client;
@@ -63,7 +65,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         }
     }
 
-    public function testAgainstIncorrectMimeType()
+    public function testAgainstIncorrectMimeType(): void
     {
         $this->markTestSkipped('Mock mime type getter.');
 

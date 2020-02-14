@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Templating\Helper\UploaderHelper;
@@ -25,7 +27,7 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     protected $helper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = static::createClient();
         $this->client->catchExceptions(false);
@@ -47,13 +49,14 @@ abstract class AbstractControllerTest extends WebTestCase
         }
 
         foreach ($this->getUploadedFiles() as $file) {
-            @unlink($file);
+            /* @var \SplFileInfo $file */
+            @unlink($file->getPathname());
         }
 
         unset($this->client, $this->controller);
     }
 
-    public function testRoute()
+    public function testRoute(): void
     {
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
@@ -61,32 +64,32 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->assertSame(0, strpos($endpoint, '/_uploader'));
     }
 
-    public function testCallByGet()
+    public function testCallByGet(): void
     {
         $this->implTestCallBy('GET', 405, 'text/html');
     }
 
-    public function testCallByDelete()
+    public function testCallByDelete(): void
     {
         $this->implTestCallBy('DELETE', 405, 'text/html');
     }
 
-    public function testCallByPatch()
+    public function testCallByPatch(): void
     {
         $this->implTestCallBy('PATCH');
     }
 
-    public function testCallByPost()
+    public function testCallByPost(): void
     {
         $this->implTestCallBy('POST');
     }
 
-    public function testCallByPut()
+    public function testCallByPut(): void
     {
         $this->implTestCallBy('PUT');
     }
 
-    public function testEmptyHttpAcceptHeader()
+    public function testEmptyHttpAcceptHeader(): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -101,7 +104,7 @@ abstract class AbstractControllerTest extends WebTestCase
 
     abstract protected function getConfigKey();
 
-    protected function implTestCallBy($method, $expectedStatusCode = 200, $expectedContentType = 'application/json')
+    protected function implTestCallBy($method, $expectedStatusCode = 200, $expectedContentType = 'application/json'): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());

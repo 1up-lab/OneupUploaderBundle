@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
@@ -16,7 +18,7 @@ class ChunkManager implements ChunkManagerInterface
         $this->storage = $storage;
     }
 
-    public function clear()
+    public function clear(): void
     {
         $this->storage->clear($this->configuration['maxage']);
     }

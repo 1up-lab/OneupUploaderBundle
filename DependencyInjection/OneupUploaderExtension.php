@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -21,13 +23,13 @@ class OneupUploaderExtension extends Extension
     protected $container;
     protected $config;
 
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $this->config = $this->processConfiguration($configuration, $configs);
         $this->container = $container;
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('uploader.xml');
         $loader->load('templating.xml');
         $loader->load('validators.xml');
@@ -59,7 +61,7 @@ class OneupUploaderExtension extends Extension
         $container->setParameter('oneup_uploader.maxsize', $maxsize);
     }
 
-    protected function processOrphanageConfig()
+    protected function processOrphanageConfig(): void
     {
         if ('filesystem' === $this->config['chunks']['storage']['type']) {
             $defaultDir = sprintf('%s/uploader/orphanage', $this->container->getParameter('kernel.cache_dir'));
@@ -74,7 +76,7 @@ class OneupUploaderExtension extends Extension
 
     protected function processMapping($key, &$mapping)
     {
-        $mapping['max_size'] = $mapping['max_size'] < 0 || is_string($mapping['max_size']) ?
+        $mapping['max_size'] = $mapping['max_size'] < 0 || \is_string($mapping['max_size']) ?
             $this->getMaxUploadSize($mapping['max_size']) :
             $mapping['max_size']
         ;
@@ -131,11 +133,11 @@ class OneupUploaderExtension extends Extension
     protected function createErrorHandler($config)
     {
         return null === $config['error_handler'] ?
-            new Reference('oneup_uploader.error_handler.'.$config['frontend']) :
+            new Reference('oneup_uploader.error_handler.' . $config['frontend']) :
             new Reference($config['error_handler']);
     }
 
-    protected function verifyPhpVersion($config)
+    protected function verifyPhpVersion($config): void
     {
         if ($config['enable_progress'] || $config['enable_cancelation']) {
             if (strnatcmp(PHP_VERSION, '5.4.0') < 0) {
@@ -144,7 +146,7 @@ class OneupUploaderExtension extends Extension
         }
     }
 
-    protected function createChunkStorageService()
+    protected function createChunkStorageService(): void
     {
         $config = &$this->config['chunks']['storage'];
 
@@ -208,7 +210,7 @@ class OneupUploaderExtension extends Extension
                     $folder = $this->config['mappings'][$key]['root_folder'] ? '' : $key;
 
                     $config['directory'] = null === $config['directory'] ?
-                        \sprintf('%s/uploads/%s', $this->getTargetDir(), $folder) :
+                        sprintf('%s/uploads/%s', $this->getTargetDir(), $folder) :
                         $this->normalizePath($config['directory'])
                     ;
 
@@ -257,7 +259,7 @@ class OneupUploaderExtension extends Extension
         return $storageService;
     }
 
-    protected function registerFilesystem($type, $key, $class, $filesystem, $buffer, $streamWrapper = null, $prefix = '')
+    protected function registerFilesystem($type, $key, $class, $filesystem, $buffer, $streamWrapper = null, $prefix = ''): void
     {
         switch ($type) {
             case 'gaufrette':
@@ -272,7 +274,7 @@ class OneupUploaderExtension extends Extension
                 break;
         }
 
-        if (strlen($filesystem) <= 0) {
+        if (\strlen($filesystem) <= 0) {
             throw new ServiceNotFoundException('Empty service name');
         }
 
@@ -302,8 +304,8 @@ class OneupUploaderExtension extends Extension
     protected function getValueInBytes($input)
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
-        $input = trim($input);
-        $last = strtolower($input[strlen($input) - 1]);
+        $input = trim((string) $input);
+        $last = strtolower($input[\strlen($input) - 1]);
         $numericInput = (float) substr($input, 0, -1);
 
         switch ($last) {
@@ -330,18 +332,18 @@ class OneupUploaderExtension extends Extension
             return null;
         }
 
-        return rtrim($input, '/').'/';
+        return rtrim($input, '/') . '/';
     }
 
     protected function getTargetDir()
     {
         $projectDir = $this->container->hasParameter('kernel.project_dir') ?
         $this->container->getParameter('kernel.project_dir') :
-        $this->container->getParameter('kernel.root_dir').'/..';
-        $publicDir = \sprintf('%s/public', $projectDir);
+        $this->container->getParameter('kernel.root_dir') . '/..';
+        $publicDir = sprintf('%s/public', $projectDir);
 
         if (!is_dir($publicDir)) {
-            $publicDir = \sprintf('%s/web', $projectDir);
+            $publicDir = sprintf('%s/web', $projectDir);
         }
 
         return $publicDir;

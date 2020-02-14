@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\EventListener;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
@@ -7,7 +9,7 @@ use Oneup\UploaderBundle\Uploader\Exception\ValidationException;
 
 class AllowedMimetypeAndExtensionValidationListener
 {
-    public function onValidate(ValidationEvent $event)
+    public function onValidate(ValidationEvent $event): void
     {
         $config = $event->getConfig();
         $file = $event->getFile();
@@ -24,7 +26,7 @@ class AllowedMimetypeAndExtensionValidationListener
         }
 
         if (empty($config['allowed_mimetypes'][$mimetype])
-            || in_array($extension, $config['allowed_mimetypes'][$mimetype], true)
+            || \in_array($extension, $config['allowed_mimetypes'][$mimetype], true)
         ) {
             return;
         }

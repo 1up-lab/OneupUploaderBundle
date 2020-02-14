@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\File;
 
 use League\Flysystem\File;
@@ -44,5 +46,10 @@ class FlysystemFile extends File implements FileInterface
     public function getExtension()
     {
         return pathinfo($this->getPath(), PATHINFO_EXTENSION);
+    }
+
+    public function getFilesystem()
+    {
+        return $this->filesystem;
     }
 }

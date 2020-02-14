@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Gaufrette\File;
@@ -17,8 +19,6 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
     protected $type;
 
     /**
-     * @param StorageInterface      $storage
-     * @param SessionInterface      $session
      * @param GaufretteChunkStorage $chunkStorage this class is only used if the gaufrette chunk storage is used
      * @param                       $config
      * @param                       $type

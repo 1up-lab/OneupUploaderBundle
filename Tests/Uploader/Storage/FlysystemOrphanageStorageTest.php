@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use League\Flysystem\Adapter\Local as Adapter;
@@ -21,12 +23,12 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
     protected $chunksKey = 'chunks';
     protected $orphanageKey = 'orphanage';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->numberOfPayloads = 5;
-        $this->realDirectory = sys_get_temp_dir().'/storage';
-        $this->chunkDirectory = $this->realDirectory.'/'.$this->chunksKey;
-        $this->tempDirectory = $this->realDirectory.'/'.$this->orphanageKey;
+        $this->realDirectory = sys_get_temp_dir() . '/storage';
+        $this->chunkDirectory = $this->realDirectory . '/' . $this->chunksKey;
+        $this->tempDirectory = $this->realDirectory . '/' . $this->orphanageKey;
         $this->payloads = [];
 
         $filesystem = new Filesystem();
@@ -74,10 +76,10 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         FlysystemStreamWrapper::unregister('tests');
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
-            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
+            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -90,10 +92,10 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $this->assertCount(0, $finder);
     }
 
-    public function testUploadAndFetching()
+    public function testUploadAndFetching(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
-            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
+            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();

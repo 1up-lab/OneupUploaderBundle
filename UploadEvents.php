@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle;
 
 final class UploadEvents
 {
-    const PRE_UPLOAD = 'oneup_uploader.pre_upload';
-    const POST_UPLOAD = 'oneup_uploader.post_upload';
-    const POST_PERSIST = 'oneup_uploader.post_persist';
-    const POST_CHUNK_UPLOAD = 'oneup_uploader.post_chunk_upload';
-    const VALIDATION = 'oneup_uploader.validation';
+    public const PRE_UPLOAD = 'oneup_uploader.pre_upload';
+    public const POST_UPLOAD = 'oneup_uploader.post_upload';
+    public const POST_PERSIST = 'oneup_uploader.post_persist';
+    public const POST_CHUNK_UPLOAD = 'oneup_uploader.post_chunk_upload';
+    public const VALIDATION = 'oneup_uploader.validation';
 
     public static function preUpload(string $mapping): string
     {

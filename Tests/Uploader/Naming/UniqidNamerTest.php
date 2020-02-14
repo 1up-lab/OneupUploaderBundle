@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Naming;
 
 use Oneup\UploaderBundle\Uploader\Naming\UniqidNamer;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class UniqidNamerTest extends TestCase
 {
-    public function testNamerReturnsName()
+    public function testNamerReturnsName(): void
     {
         // TODO Reenable this test.
         $this->markTestSkipped('Details: https://github.com/Ocramius/Instantiator/pull/8#issuecomment-47446963');
@@ -20,14 +22,14 @@ class UniqidNamerTest extends TestCase
         $file
             ->expects($this->any())
             ->method('getExtension')
-            ->will($this->returnValue('jpeg'))
+            ->willReturn('jpeg')
         ;
 
         $namer = new UniqidNamer();
         $this->assertRegExp('/[a-z0-9]{13}.jpeg/', $namer->name($file));
     }
 
-    public function testNamerReturnsUniqueName()
+    public function testNamerReturnsUniqueName(): void
     {
         // TODO Reenable this test.
         $this->markTestSkipped('Details: https://github.com/Ocramius/Instantiator/pull/8#issuecomment-47446963');
@@ -40,7 +42,7 @@ class UniqidNamerTest extends TestCase
         $file
             ->expects($this->any())
             ->method('getExtension')
-            ->will($this->returnValue('jpeg'))
+            ->willReturn('jpeg')
         ;
 
         $namer = new UniqidNamer();
