@@ -24,13 +24,7 @@ class FilesystemFileTest extends FileTest
 
         file_put_contents($this->pathname, 'something');
 
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, null, true);
-        } else {
-            $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, true);
-        }
-
+        $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, true);
         $this->file = new FilesystemFile($file);
     }
 

@@ -81,29 +81,22 @@ class BlueimpTest extends AbstractUploadTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getRequestFile(), $this->requestHeaders);
 
         $this->assertCount(1, $this->getUploadedFiles());
-        $this->assertSame($uploadCount, count($this->getUploadedFiles()));
+        $this->assertCount($uploadCount, $this->getUploadedFiles());
         $this->assertSame(1, $preValidation);
     }
 
-    protected function getConfigKey()
+    protected function getConfigKey(): string
     {
         return 'blueimp';
     }
 
-    protected function getRequestParameters()
+    protected function getRequestParameters(): array
     {
         return [];
     }
 
-    protected function getRequestFile()
+    protected function getRequestFile(): array
     {
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            return ['files' => [
-                new UploadedFile($this->createTempFile(128), 'cat.txt', 'text/plain', 128, null, true)
-            ]];
-        }
-
         return ['files' => [
             new UploadedFile($this->createTempFile(128), 'cat.txt', 'text/plain', null, true)
         ]];

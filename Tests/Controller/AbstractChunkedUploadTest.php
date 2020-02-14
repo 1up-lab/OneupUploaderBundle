@@ -33,13 +33,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 
             $dispatcher->addListener(UploadEvents::PRE_UPLOAD, function (PreUploadEvent $event) use (&$me, $basename) {
                 $file = $event->getFile();
-
-                // TODO at EOL of SF 3.4 this can be removed
-                if(Kernel::VERSION_ID < 40400) {
-                    $size = $file->getClientSize();
-                } else {
-                    $size = $file->getSize();
-                }
+                $size = $file->getSize();
 
                 $me->assertNotNull($size);
                 $me->assertGreaterThan(0, $size);

@@ -107,7 +107,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $endpoint = $this->helper->endpoint($this->getConfigKey());
 
         // Since SF 4.4 the exception is 'swallowed' and never gets as far as here!
-        if (405 === $expectedStatusCode && Kernel::VERSION_ID < 40400) {
+        if (405 === $expectedStatusCode) {
             $this->expectException(MethodNotAllowedHttpException::class);
         }
 

@@ -26,12 +26,7 @@ class UrlSafeNamerTest extends FileTest
 
         file_put_contents($this->pathname, 'something');
 
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, null, true);
-        } else {
-            $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, true);
-        }
+        $file = new UploadedFile($this->pathname, 'test_file.txt', null, null, true);
         $this->file = new FilesystemFile($file);
     }
 
@@ -44,13 +39,14 @@ class UrlSafeNamerTest extends FileTest
     public function testCanGetString()
     {
         $namer = new UrlSafeNamer();
-        $this->assertInternalType('string', $namer->name($this->file));
+        $this->assertIsString($namer->name($this->file));
         $this->assertStringEndsWith($this->extension, $namer->name($this->file));
     }
 
-    public function test_two_file_names_not_equal()
+    public function testTwoFileNamesAreNotEqual()
     {
         $namer = new UrlSafeNamer();
+
         // Trying 200 times just to be sure
         for ($i = 0; $i < 200; ++$i) {
             $name1 = $namer->name($this->file);

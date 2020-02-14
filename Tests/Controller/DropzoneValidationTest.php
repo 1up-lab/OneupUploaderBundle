@@ -19,16 +19,6 @@ class DropzoneValidationTest extends AbstractValidationTest
 
     protected function getOversizedFile()
     {
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            return new UploadedFile(
-                $this->createTempFile(512),
-                'cat.ok',
-                'text/plain',
-                512
-            );
-        }
-
         return new UploadedFile(
             $this->createTempFile(512),
             'cat.ok',
@@ -38,16 +28,6 @@ class DropzoneValidationTest extends AbstractValidationTest
 
     protected function getFileWithCorrectMimeType()
     {
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            return new UploadedFile(
-                $this->createTempFile(128),
-                'cat.txt',
-                'text/plain',
-                128
-            );
-        }
-
         return new UploadedFile(
             $this->createTempFile(128),
             'cat.txt',
@@ -57,16 +37,6 @@ class DropzoneValidationTest extends AbstractValidationTest
 
     protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
     {
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            return new UploadedFile(
-                $this->createTempFile(128),
-                'cat.txxt',
-                'text/plain',
-                128
-            );
-        }
-
         return new UploadedFile(
             $this->createTempFile(128),
             'cat.txxt',
@@ -76,16 +46,6 @@ class DropzoneValidationTest extends AbstractValidationTest
 
     protected function getFileWithIncorrectMimeType()
     {
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            return new UploadedFile(
-                $this->createTempFile(128),
-                'cat.ok',
-                'image/gif',
-                128
-            );
-        }
-
         return new UploadedFile(
             $this->createTempFile(128),
             'cat.ok',

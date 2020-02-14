@@ -93,12 +93,7 @@ class FilesystemStorage implements ChunkStorageInterface
         // the file is only renamed before it is uploaded
         if ($renameChunk) {
             // create an file to meet interface restrictions
-            // TODO at EOL of SF 3.4 this can be removed
-            if(Kernel::VERSION_ID < 40400) {
-                $file = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, $assembled->getSize(), null, true);
-            } else {
-                $file = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, true);
-            }
+            $file = new UploadedFile($assembled->getPathname(), $assembled->getBasename(), null, null, true);
             $assembled = new FilesystemFile($file);
         }
 

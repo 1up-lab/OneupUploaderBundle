@@ -112,12 +112,7 @@ class MooUploadController extends AbstractChunkedController
         $uploadFileName = sprintf('%s_%s', $headers->get('x-file-id'), $headers->get('x-file-name'));
 
         // create an uploaded file to upload
-        // TODO at EOL of SF 3.4 this can be removed
-        if(Kernel::VERSION_ID < 40400) {
-            $file = new UploadedFile($tempFile, $uploadFileName, null, null, null, true);
-        } else {
-            $file = new UploadedFile($tempFile, $uploadFileName, null, null, true);
-        }
+        $file = new UploadedFile($tempFile, $uploadFileName, null, null, true);
 
         return [$file, $uploadFileName];
     }
