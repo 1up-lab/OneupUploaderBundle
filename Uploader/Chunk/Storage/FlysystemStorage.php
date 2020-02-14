@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use League\Flysystem\FileNotFoundException;
@@ -31,7 +33,7 @@ class FlysystemStorage implements ChunkStorageInterface
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function clear($maxAge, $prefix = null)
+    public function clear($maxAge, $prefix = null): void
     {
         $prefix = $prefix ?: $this->prefix;
         $matches = $this->filesystem->listContents($prefix, true);
@@ -45,7 +47,7 @@ class FlysystemStorage implements ChunkStorageInterface
         // would remain
         foreach ($matches as $key) {
             $path = $key['path'];
-            $timestamp = isset($key['timestamp']) ? $key['timestamp'] : $this->filesystem->getTimestamp($path);
+            $timestamp = $key['timestamp'] ?? $this->filesystem->getTimestamp($path);
 
             if ($maxAge <= $now - $timestamp) {
                 $toDelete[] = $path;
@@ -63,7 +65,7 @@ class FlysystemStorage implements ChunkStorageInterface
         }
     }
 
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original)
+    public function addChunk($uuid, $index, UploadedFile $chunk, $original): void
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -79,8 +81,8 @@ class FlysystemStorage implements ChunkStorageInterface
     public function assembleChunks($chunks, $removeChunk, $renameChunk)
     {
         // the index is only added to be in sync with the filesystem storage
-        $path = $this->prefix.'/'.$this->unhandledChunk['uuid'].'/';
-        $filename = $this->unhandledChunk['index'].'_'.$this->unhandledChunk['original'];
+        $path = $this->prefix . '/' . $this->unhandledChunk['uuid'] . '/';
+        $filename = $this->unhandledChunk['index'] . '_' . $this->unhandledChunk['original'];
 
         if (empty($chunks)) {
             $target = $filename;
@@ -96,8 +98,8 @@ class FlysystemStorage implements ChunkStorageInterface
             $mode = 'wb';
         }
 
-        $file = fopen($this->unhandledChunk['chunk']->getPathname(), 'rb');
-        $dest = fopen($this->streamWrapperPrefix.'/'.$path.$target, $mode);
+        $file = fopen($this->unhandledChunk['chunk']->getPathname(), 'r');
+        $dest = fopen($this->streamWrapperPrefix . '/' . $path . $target, $mode);
 
         stream_copy_to_stream($file, $dest);
 
@@ -112,14 +114,14 @@ class FlysystemStorage implements ChunkStorageInterface
              * the previous file is unaccessible by the user, but if it is not removed
              * it will block the user from trying to re-upload it.
              */
-            if ($this->filesystem->has($path.$name)) {
-                $this->filesystem->delete($path.$name);
+            if ($this->filesystem->has($path . $name)) {
+                $this->filesystem->delete($path . $name);
             }
 
-            $this->filesystem->rename($path.$target, $path.$name);
+            $this->filesystem->rename($path . $target, $path . $name);
             $target = $name;
         }
-        $uploaded = $this->filesystem->get($path.$target);
+        $uploaded = $this->filesystem->get($path . $target);
 
         if (!$renameChunk) {
             return $uploaded;
@@ -128,7 +130,7 @@ class FlysystemStorage implements ChunkStorageInterface
         return new FlysystemFile($uploaded, $this->filesystem, $this->streamWrapperPrefix);
     }
 
-    public function cleanup($path)
+    public function cleanup($path): void
     {
         try {
             $this->filesystem->delete($path);
@@ -142,7 +144,7 @@ class FlysystemStorage implements ChunkStorageInterface
         // Prevent path traversal attacks
         $uuid = basename($uuid);
 
-        return $this->filesystem->listFiles($this->prefix.'/'.$uuid);
+        return $this->filesystem->listFiles($this->prefix . '/' . $uuid);
     }
 
     public function getFilesystem()

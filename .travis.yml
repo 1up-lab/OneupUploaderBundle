@@ -18,11 +18,17 @@ cache:
 matrix:
   allow_failures:
     - env: SYMFONY_VERSION=dev-master
-  exclude:
-    - php: 7.0
-      env: SYMFONY_VERSION=^4.0
-    - php: 7.0
-      env: SYMFONY_VERSION=dev-master
+
+jobs:
+  include:
+    - stage: test
+      name: 'Test installing lowest dependencies'
+      php: 7.3
+      install:
+        - travis_wait composer update --prefer-lowest --prefer-stable --no-interaction --no-suggest
+      before_script: skip
+      script:
+        - ./vendor/bin/phpunit
 
 before_install:
   - travis_retry composer selfupdate

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use League\Flysystem\Adapter\Local as Adapter;
@@ -21,9 +23,9 @@ class FlysystemStorageTest extends TestCase
     protected $storage;
     protected $file;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->directory = sys_get_temp_dir().'/storage';
+        $this->directory = sys_get_temp_dir() . '/storage';
 
         // create temporary file
         $this->file = tempnam(sys_get_temp_dir(), 'uploader');
@@ -38,13 +40,13 @@ class FlysystemStorageTest extends TestCase
         $this->storage = new Storage($filesystem, 100000);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->directory);
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         $payload = new FilesystemFile(new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true));
         $this->storage->upload($payload, 'notsogrumpyanymore.jpeg');
@@ -60,7 +62,7 @@ class FlysystemStorageTest extends TestCase
         }
     }
 
-    public function testUploadWithPath()
+    public function testUploadWithPath(): void
     {
         $payload = new FilesystemFile(new UploadedFile($this->file, 'grumpycat.jpeg', null, null, null, true));
         $this->storage->upload($payload, 'notsogrumpyanymore.jpeg', 'cat');

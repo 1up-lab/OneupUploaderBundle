@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use League\Flysystem\File;
@@ -17,11 +19,9 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     protected $type;
 
     /**
-     * @param StorageInterface $storage
-     * @param SessionInterface $session
-     * @param ChunkStorage     $chunkStorage this class is only used if the gaufrette chunk storage is used
-     * @param                  $config
-     * @param                  $type
+     * @param ChunkStorage $chunkStorage this class is only used if the gaufrette chunk storage is used
+     * @param              $config
+     * @param              $type
      */
     public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorage $chunkStorage, $config, $type)
     {

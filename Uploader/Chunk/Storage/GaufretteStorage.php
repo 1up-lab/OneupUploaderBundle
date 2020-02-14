@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Gaufrette\Adapter\StreamFactory;
@@ -30,7 +32,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             : 'Gaufrette\Filesystem';
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)));
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \is_object($filesystem) ? \get_class($filesystem) : \gettype($filesystem)));
         }
 
         if (!($filesystem->getAdapter() instanceof StreamFactory)) {
@@ -50,7 +52,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * @param      $maxAge
      * @param null $prefix
      */
-    public function clear($maxAge, $prefix = null)
+    public function clear($maxAge, $prefix = null): void
     {
         $prefix = $prefix ?: $this->prefix;
         $matches = $this->filesystem->listKeys($prefix);
@@ -101,12 +103,11 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * for gaufrette based chunk storage therefore assembleChunks will
      * be called in the same request.
      *
-     * @param              $uuid
-     * @param              $index
-     * @param UploadedFile $chunk
-     * @param              $original
+     * @param $uuid
+     * @param $index
+     * @param $original
      */
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original)
+    public function addChunk($uuid, $index, UploadedFile $chunk, $original): void
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -122,12 +123,12 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
     public function assembleChunks($chunks, $removeChunk, $renameChunk)
     {
         // the index is only added to be in sync with the filesystem storage
-        $path = $this->prefix.'/'.$this->unhandledChunk['uuid'].'/';
-        $filename = $this->unhandledChunk['index'].'_'.$this->unhandledChunk['original'];
+        $path = $this->prefix . '/' . $this->unhandledChunk['uuid'] . '/';
+        $filename = $this->unhandledChunk['index'] . '_' . $this->unhandledChunk['original'];
 
         if (empty($chunks)) {
             $target = $filename;
-            $this->ensureRemotePathExists($path.$target);
+            $this->ensureRemotePathExists($path . $target);
         } else {
             /*
              * The array only contains items with matching prefix until the filename
@@ -138,7 +139,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             $target = pathinfo($chunks[0], PATHINFO_BASENAME);
         }
 
-        $dst = $this->filesystem->createStream($path.$target);
+        $dst = $this->filesystem->createStream($path . $target);
         if (0 === $this->unhandledChunk['index']) {
             // if it's the first chunk overwrite the already existing part
             // to avoid appending to earlier failed uploads
@@ -160,14 +161,14 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
              * the previous file is unaccessible by the user, but if it is not removed
              * it will block the user from trying to re-upload it.
              */
-            if ($this->filesystem->has($path.$name)) {
-                $this->filesystem->delete($path.$name);
+            if ($this->filesystem->has($path . $name)) {
+                $this->filesystem->delete($path . $name);
             }
 
-            $this->filesystem->rename($path.$target, $path.$name);
+            $this->filesystem->rename($path . $target, $path . $name);
             $target = $name;
         }
-        $uploaded = $this->filesystem->get($path.$target);
+        $uploaded = $this->filesystem->get($path . $target);
 
         if (!$renameChunk) {
             return $uploaded;
@@ -176,7 +177,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         return new GaufretteFile($uploaded, $this->filesystem, $this->streamWrapperPrefix);
     }
 
-    public function cleanup($path)
+    public function cleanup($path): void
     {
         $this->filesystem->delete($path);
     }
@@ -186,7 +187,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         // Prevent path traversal attacks
         $uuid = basename($uuid);
 
-        $results = $this->filesystem->listKeys($this->prefix.'/'.$uuid);
+        $results = $this->filesystem->listKeys($this->prefix . '/' . $uuid);
 
         /* exclude files without an index, so if there is a completed file which
          * failed to upload it will not get mixed together with new one's chunks.

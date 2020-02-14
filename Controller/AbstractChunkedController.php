@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
@@ -41,7 +43,7 @@ abstract class AbstractChunkedController extends AbstractController
      * @param responseInterface $response - A response object
      * @param Request           $request  - The request object
      */
-    protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request)
+    protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request): void
     {
         // get basic container stuff
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
@@ -88,7 +90,7 @@ abstract class AbstractChunkedController extends AbstractController
      * @param Request           $request  - The request object
      * @param bool              $isLast   - True if this is the last chunk, false otherwise
      */
-    protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast)
+    protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast): void
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);

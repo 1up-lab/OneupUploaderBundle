@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
@@ -11,7 +13,7 @@ class FileBagExtractorTest extends TestCase
     protected $method;
     protected $mock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $controller = 'Oneup\UploaderBundle\Controller\AbstractController';
         $mock = $this->getMockBuilder($controller)
@@ -26,7 +28,7 @@ class FileBagExtractorTest extends TestCase
         $this->mock = $mock;
     }
 
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $result = $this->invoke(new FileBag());
 
@@ -34,7 +36,7 @@ class FileBagExtractorTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    public function testWithNullArrayValue()
+    public function testWithNullArrayValue(): void
     {
         $bag = new FileBag([
             [null],
@@ -46,7 +48,7 @@ class FileBagExtractorTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    public function testWithSingleFile()
+    public function testWithSingleFile(): void
     {
         $bag = new FileBag([
             new UploadedFile(__FILE__, 'name'),
@@ -59,7 +61,7 @@ class FileBagExtractorTest extends TestCase
         $this->assertCount(1, $result);
     }
 
-    public function testWithMultipleFiles()
+    public function testWithMultipleFiles(): void
     {
         $bag = new FileBag([
             new UploadedFile(__FILE__, 'name1'),
@@ -74,7 +76,7 @@ class FileBagExtractorTest extends TestCase
         $this->assertCount(3, $result);
     }
 
-    public function testWithMultipleFilesContainingNullValues()
+    public function testWithMultipleFilesContainingNullValues(): void
     {
         $bag = new FileBag([
             // we need to inject an array,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\ErrorHandler;
 
 use Exception;
@@ -18,7 +20,7 @@ class BlueimpErrorHandler implements ErrorHandlerInterface
         $this->translator = $translator;
     }
 
-    public function addException(AbstractResponse $response, Exception $exception)
+    public function addException(AbstractResponse $response, Exception $exception): void
     {
         $message = $this->translator->trans($exception->getMessage(), [], 'OneupUploaderBundle');
         $response->addToOffset(['error' => $message], ['files']);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Uploader\Gaufrette;
 
 use Gaufrette\Stream;
@@ -24,7 +26,7 @@ class StreamManager
         return new LocalStream($file->getPathname());
     }
 
-    protected function ensureRemotePathExists($path)
+    protected function ensureRemotePathExists($path): void
     {
         if (!$this->filesystem->has($path)) {
             $this->filesystem->write($path, '', true);
@@ -34,12 +36,12 @@ class StreamManager
     protected function openStream(Stream $stream, $mode)
     {
         // always use binary mode
-        $mode = $mode.'b+';
+        $mode = $mode . 'b+';
 
         return $stream->open(new StreamMode($mode));
     }
 
-    protected function stream(FileInterface $file, Stream $dst)
+    protected function stream(FileInterface $file, Stream $dst): void
     {
         $src = $this->createSourceStream($file);
 

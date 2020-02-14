@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Event\PostPersistEvent;
@@ -85,7 +87,7 @@ abstract class AbstractController
         $fileIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fileBag), \RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($fileIterator as $file) {
-            if (is_array($file) || null === $file) {
+            if (\is_array($file) || null === $file) {
                 continue;
             }
 
@@ -106,7 +108,7 @@ abstract class AbstractController
      *  @param ResponseInterface $response a response object
      *  @param Request $request the request object
      */
-    protected function handleUpload($file, ResponseInterface $response, Request $request)
+    protected function handleUpload($file, ResponseInterface $response, Request $request): void
     {
         // wrap the file if it is not done yet which can only happen
         // if it wasn't a chunked upload, in which case it is definitely
@@ -135,7 +137,7 @@ abstract class AbstractController
      *  @param ResponseInterface $response a response object
      *  @param Request $request the request object
      */
-    protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request)
+    protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request): void
     {
         // dispatch pre upload event (both the specific and the general)
         $preUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
@@ -150,7 +152,7 @@ abstract class AbstractController
      *  @param ResponseInterface $response a response object
      *  @param Request $request the request object
      */
-    protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request)
+    protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request): void
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
@@ -163,7 +165,7 @@ abstract class AbstractController
         }
     }
 
-    protected function validate(FileInterface $file, Request $request, ResponseInterface $response = null)
+    protected function validate(FileInterface $file, Request $request, ResponseInterface $response = null): void
     {
         $event = new ValidationEvent($file, $request, $this->config, $this->type, $response);
 
@@ -187,7 +189,7 @@ abstract class AbstractController
         $response = new JsonResponse($data, $statusCode);
         $response->headers->set('Vary', 'Accept');
 
-        if (!in_array('application/json', $request->getAcceptableContentTypes(), true)) {
+        if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
             $response->headers->set('Content-type', 'text/plain');
         }
 
@@ -212,9 +214,8 @@ abstract class AbstractController
      * Event dispatch proxy that avoids using deprecated interfaces.
      *
      * @param $event
-     * @param string $eventName
      */
-    protected function dispatchEvent($event, string $eventName)
+    protected function dispatchEvent($event, string $eventName): void
     {
         $dispatcher = $this->container->get('event_dispatcher');
 

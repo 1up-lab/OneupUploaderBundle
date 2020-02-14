@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TemplateHelperTest extends WebTestCase
 {
-    public function testName()
+    public function testName(): void
     {
         $client = static::createClient();
         $container = $client->getContainer();
@@ -17,7 +19,7 @@ class TemplateHelperTest extends WebTestCase
         $this->assertSame($helper->getName(), 'oneup_uploader');
     }
 
-    public function testNonExistentMappingForMaxSize()
+    public function testNonExistentMappingForMaxSize(): void
     {
         $this->expectException('\InvalidArgumentException');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
 use Gaufrette\Adapter\Local as Adapter;
@@ -19,12 +21,12 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
     protected $chunksKey = 'chunks';
     protected $orphanageKey = 'orphanage';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->numberOfPayloads = 5;
-        $this->realDirectory = sys_get_temp_dir().'/storage';
-        $this->chunkDirectory = $this->realDirectory.'/'.$this->chunksKey;
-        $this->tempDirectory = $this->realDirectory.'/'.$this->orphanageKey;
+        $this->realDirectory = sys_get_temp_dir() . '/storage';
+        $this->chunkDirectory = $this->realDirectory . '/' . $this->chunksKey;
+        $this->tempDirectory = $this->realDirectory . '/' . $this->orphanageKey;
         $this->payloads = [];
 
         if (!$this->checkIfTempnameMatchesAfterCreation()) {
@@ -66,10 +68,10 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         }
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
-            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
+            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
@@ -82,10 +84,10 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         $this->assertCount(0, $finder);
     }
 
-    public function testUploadAndFetching()
+    public function testUploadAndFetching(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
-            $this->orphanage->upload($this->payloads[$i], $i.'notsogrumpyanymore.jpeg');
+            $this->orphanage->upload($this->payloads[$i], $i . 'notsogrumpyanymore.jpeg');
         }
 
         $finder = new Finder();
