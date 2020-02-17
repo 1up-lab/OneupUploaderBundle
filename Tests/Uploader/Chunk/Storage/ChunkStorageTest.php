@@ -11,7 +11,11 @@ use Symfony\Component\Finder\Finder;
 
 abstract class ChunkStorageTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected $tmpDir;
+
     /**
      * @var ChunkStorageInterface
      */
@@ -70,7 +74,7 @@ abstract class ChunkStorageTest extends TestCase
         $this->assertTrue(true);
     }
 
-    protected function fillDirectory($number): void
+    protected function fillDirectory(int $number): void
     {
         $system = new Filesystem();
 

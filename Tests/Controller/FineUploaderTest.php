@@ -8,17 +8,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FineUploaderTest extends AbstractChunkedUploadTest
 {
-    protected function getConfigKey()
+    protected function getConfigKey(): string
     {
         return 'fineuploader';
     }
 
-    protected function getRequestParameters()
+    protected function getRequestParameters(): array
     {
         return [];
     }
 
-    protected function getRequestFile()
+    protected function getRequestFile(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),
@@ -27,7 +27,7 @@ class FineUploaderTest extends AbstractChunkedUploadTest
         );
     }
 
-    protected function getNextRequestParameters($i)
+    protected function getNextRequestParameters(int $i): array
     {
         return [
             'qqtotalparts' => $this->total,
@@ -37,7 +37,7 @@ class FineUploaderTest extends AbstractChunkedUploadTest
         ];
     }
 
-    protected function getNextFile($i)
+    protected function getNextFile(int $i): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(20),

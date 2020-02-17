@@ -4,17 +4,32 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
-use League\Flysystem\File;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FlysystemStorage implements ChunkStorageInterface
 {
+    /**
+     * @var int
+     */
     public $bufferSize;
+
+    /**
+     * @var array
+     */
     protected $unhandledChunk;
+
+    /**
+     * @var string
+     */
     protected $prefix;
+
+    /**
+     * @var string
+     */
     protected $streamWrapperPrefix;
 
     /**
@@ -22,19 +37,28 @@ class FlysystemStorage implements ChunkStorageInterface
      */
     private $filesystem;
 
-    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix, $prefix)
+    public function __construct(Filesystem $filesystem, int $bufferSize, string $streamWrapperPrefix, string $prefix)
     {
-        if (null === $streamWrapperPrefix) {
-            throw new \InvalidArgumentException('Stream wrapper must be configured.');
-        }
-
         $this->filesystem = $filesystem;
         $this->bufferSize = $bufferSize;
         $this->prefix = $prefix;
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function clear($maxAge, $prefix = null): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void
+    {
+        // Prevent path traversal attacks
+        $uuid = basename($uuid);
+
+        $this->unhandledChunk = [
+            'uuid' => $uuid,
+            'index' => $index,
+            'chunk' => $chunk,
+            'original' => $original,
+        ];
+    }
+
+    public function clear(int $maxAge, string $prefix = null): void
     {
         $prefix = $prefix ?: $this->prefix;
         $matches = $this->filesystem->listContents($prefix, true);
@@ -66,20 +90,10 @@ class FlysystemStorage implements ChunkStorageInterface
         }
     }
 
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original): void
-    {
-        // Prevent path traversal attacks
-        $uuid = basename($uuid);
-
-        $this->unhandledChunk = [
-            'uuid' => $uuid,
-            'index' => $index,
-            'chunk' => $chunk,
-            'original' => $original,
-        ];
-    }
-
-    public function assembleChunks($chunks, $removeChunk, $renameChunk)
+    /**
+     * @param array $chunks
+     */
+    public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk): FlysystemFile
     {
         // the index is only added to be in sync with the filesystem storage
         $path = $this->prefix . '/' . $this->unhandledChunk['uuid'] . '/';
@@ -123,7 +137,7 @@ class FlysystemStorage implements ChunkStorageInterface
             $target = $name;
         }
 
-        /** @var File $uploaded */
+        /** @var FlysystemFile $uploaded */
         $uploaded = $this->filesystem->get($path . $target);
 
         if (!$renameChunk) {
@@ -133,7 +147,7 @@ class FlysystemStorage implements ChunkStorageInterface
         return new FlysystemFile($uploaded, $this->filesystem, $this->streamWrapperPrefix);
     }
 
-    public function cleanup($path): void
+    public function cleanup(string $path): void
     {
         try {
             $this->filesystem->delete($path);
@@ -142,7 +156,7 @@ class FlysystemStorage implements ChunkStorageInterface
         }
     }
 
-    public function getChunks($uuid)
+    public function getChunks(string $uuid): array
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -150,12 +164,12 @@ class FlysystemStorage implements ChunkStorageInterface
         return $this->filesystem->listFiles($this->prefix . '/' . $uuid);
     }
 
-    public function getFilesystem()
+    public function getFilesystem(): FilesystemInterface
     {
         return $this->filesystem;
     }
 
-    public function getStreamWrapperPrefix()
+    public function getStreamWrapperPrefix(): string
     {
         return $this->streamWrapperPrefix;
     }

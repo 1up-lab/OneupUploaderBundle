@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
+use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
-use Oneup\UploaderBundle\UploadEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 {
+    /**
+     * @var int
+     */
     protected $total = 6;
 
     public function testChunkedUpload(): void
@@ -29,9 +34,10 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
                 $basename = $file->getClientOriginalName();
             }
 
+            /** @var EventDispatcherInterface $dispatcher */
             $dispatcher = $this->client->getContainer()->get('event_dispatcher');
 
-            $dispatcher->addListener(UploadEvents::PRE_UPLOAD, static function (PreUploadEvent $event) use (&$me, $basename): void {
+            $dispatcher->addListener(PreUploadEvent::class, static function (PreUploadEvent $event) use (&$me, $basename): void {
                 $file = $event->getFile();
                 $size = $file->getSize();
 
@@ -41,7 +47,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
                 $me->assertEquals($file->getBasename(), $basename);
             });
 
-            $dispatcher->addListener(UploadEvents::VALIDATION, static function (ValidationEvent $event) use (&$validationCount): void {
+            $dispatcher->addListener(ValidationEvent::class, static function (ValidationEvent $event) use (&$validationCount): void {
                 ++$validationCount;
             });
 
@@ -75,7 +81,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
             // each time create a new client otherwise the events won't get dispatched
             $dispatcher = $this->client->getContainer()->get('event_dispatcher');
 
-            $dispatcher->addListener(UploadEvents::POST_CHUNK_UPLOAD, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
+            $dispatcher->addListener(PostChunkUploadEvent::class, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
                 ++$chunkCount;
 
                 $chunk = $event->getChunk();
@@ -83,7 +89,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
                 $me->assertEquals($chunkSize, $chunk->getSize());
             });
 
-            $dispatcher->addListener(UploadEvents::POST_UPLOAD, static function (Event $event) use (&$uploadCount): void {
+            $dispatcher->addListener(PostUploadEvent::class, static function (Event $event) use (&$uploadCount): void {
                 ++$uploadCount;
             });
 
@@ -94,7 +100,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         $this->assertSame(1, $uploadCount);
     }
 
-    abstract protected function getNextRequestParameters($i);
+    abstract protected function getNextRequestParameters(int $i): array;
 
-    abstract protected function getNextFile($i);
+    abstract protected function getNextFile(int $i): UploadedFile;
 }

@@ -9,6 +9,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class FilesystemStorageTest extends ChunkStorageTest
 {
+    /**
+     * @var string
+     */
     protected $tmpDir;
 
     public function setUp(): void
@@ -20,9 +23,7 @@ class FilesystemStorageTest extends ChunkStorageTest
         $system->mkdir($tmpDir);
 
         $this->tmpDir = $tmpDir;
-        $this->storage = new FilesystemStorage([
-            'directory' => $this->tmpDir,
-        ]);
+        $this->storage = new FilesystemStorage($this->tmpDir);
     }
 
     public function tearDown(): void

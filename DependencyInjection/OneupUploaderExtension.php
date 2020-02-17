@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\DependencyInjection;
 
+use Gaufrette\Filesystem as GaufretteFilesystem;
+use League\Flysystem\Filesystem as FlysystemFilesystem;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -15,12 +17,14 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class OneupUploaderExtension extends Extension
 {
-    protected $storageServices = [];
-
     /**
      * @var ContainerBuilder
      */
     protected $container;
+
+    /**
+     * @var array
+     */
     protected $config;
 
     public function load(array $configs, ContainerBuilder $container): void
@@ -74,15 +78,13 @@ class OneupUploaderExtension extends Extension
         ;
     }
 
-    protected function processMapping($key, &$mapping)
+    protected function processMapping(string $key, array &$mapping): array
     {
         $mapping['max_size'] = $mapping['max_size'] < 0 || \is_string($mapping['max_size']) ?
             $this->getMaxUploadSize($mapping['max_size']) :
             $mapping['max_size']
         ;
         $controllerName = $this->createController($key, $mapping);
-
-        $this->verifyPhpVersion($mapping);
 
         return [$controllerName, [
             'enable_progress' => $mapping['enable_progress'],
@@ -92,7 +94,7 @@ class OneupUploaderExtension extends Extension
         ]];
     }
 
-    protected function createController($key, $config)
+    protected function createController(string $key, array $config): string
     {
         // create the storage service according to the configuration
         $storageService = $this->createStorageService($config['storage'], $key, $config['use_orphanage']);
@@ -130,20 +132,11 @@ class OneupUploaderExtension extends Extension
         return $controllerName;
     }
 
-    protected function createErrorHandler($config)
+    protected function createErrorHandler(array $config): Reference
     {
         return null === $config['error_handler'] ?
             new Reference('oneup_uploader.error_handler.' . $config['frontend']) :
             new Reference($config['error_handler']);
-    }
-
-    protected function verifyPhpVersion($config): void
-    {
-        if ($config['enable_progress'] || $config['enable_cancelation']) {
-            if (strnatcmp(PHP_VERSION, '5.4.0') < 0) {
-                throw new InvalidArgumentException('You need to run PHP version 5.4.0 or above to use the progress/cancelation feature.');
-            }
-        }
     }
 
     protected function createChunkStorageService(): void
@@ -190,7 +183,7 @@ class OneupUploaderExtension extends Extension
         }
     }
 
-    protected function createStorageService(&$config, $key, $orphanage = false)
+    protected function createStorageService(array &$config, string $key, bool $orphanage = false): Reference
     {
         $storageService = null;
 
@@ -258,16 +251,16 @@ class OneupUploaderExtension extends Extension
         return $storageService;
     }
 
-    protected function registerFilesystem($type, $key, $class, $filesystem, $buffer, $streamWrapper = null, $prefix = ''): void
+    protected function registerFilesystem(string $type, string $key, string $class, string $filesystem, string $buffer, string $streamWrapper = null, string $prefix = ''): void
     {
         switch ($type) {
             case 'gaufrette':
-                if (!class_exists('Gaufrette\\Filesystem')) {
+                if (!class_exists(GaufretteFilesystem::class)) {
                     throw new InvalidArgumentException('You have to install knplabs/knp-gaufrette-bundle in order to use it as a chunk storage service.');
                 }
                 break;
             case 'flysystem':
-                if (!class_exists('League\\Flysystem\\Filesystem')) {
+                if (!class_exists(FlysystemFilesystem::class)) {
                     throw new InvalidArgumentException('You have to install oneup/flysystem-bundle in order to use it as a chunk storage service.');
                 }
                 break;
@@ -287,7 +280,10 @@ class OneupUploaderExtension extends Extension
             ->addArgument($prefix);
     }
 
-    protected function getMaxUploadSize($input)
+    /**
+     * @param mixed $input
+     */
+    protected function getMaxUploadSize($input): int
     {
         $input = $this->getValueInBytes($input);
         $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
@@ -300,7 +296,10 @@ class OneupUploaderExtension extends Extension
         return min(min($input, $maxPost), $maxFile);
     }
 
-    protected function getValueInBytes($input)
+    /**
+     * @param mixed $input
+     */
+    protected function getValueInBytes($input): int
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
         $input = trim((string) $input);
@@ -320,12 +319,12 @@ class OneupUploaderExtension extends Extension
         return (int) $input;
     }
 
-    protected function normalizePath($input)
+    protected function normalizePath(string $input): string
     {
         return rtrim($input, '/');
     }
 
-    protected function normalizeStreamWrapper($input)
+    protected function normalizeStreamWrapper(?string $input): ?string
     {
         if (null === $input) {
             return null;
@@ -334,7 +333,7 @@ class OneupUploaderExtension extends Extension
         return rtrim($input, '/') . '/';
     }
 
-    protected function getTargetDir()
+    protected function getTargetDir(): string
     {
         $projectDir = $this->container->hasParameter('kernel.project_dir') ?
         $this->container->getParameter('kernel.project_dir') :

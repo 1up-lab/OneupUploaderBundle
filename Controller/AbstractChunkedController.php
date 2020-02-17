@@ -7,7 +7,6 @@ namespace Oneup\UploaderBundle\Controller;
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
-use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -93,6 +92,7 @@ abstract class AbstractChunkedController extends AbstractController
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);
-        $this->dispatchEvent($postUploadEvent, UploadEvents::POST_CHUNK_UPLOAD);
+
+        $this->dispatchEvent($postUploadEvent);
     }
 }

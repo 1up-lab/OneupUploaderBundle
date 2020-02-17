@@ -38,7 +38,7 @@ class FineUploaderResponseTest extends TestCase
 
         $assembled = $response->assemble();
 
-        $this->assertInternalType('array', $assembled);
+        $this->assertIsArray($assembled);
         $this->assertArrayHasKey('cat', $assembled);
         $this->assertArrayHasKey('dog', $assembled);
         $this->assertSame($assembled['cat'], $cat);

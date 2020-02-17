@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Gaufrette;
 
+use Gaufrette\Filesystem;
+use Gaufrette\FilesystemInterface;
 use Gaufrette\Stream;
 use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
@@ -12,10 +14,17 @@ use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 
 class StreamManager
 {
+    /**
+     * @var int
+     */
     public $buffersize;
+
+    /**
+     * @var FilesystemInterface|Filesystem
+     */
     protected $filesystem;
 
-    protected function createSourceStream(FileInterface $file)
+    protected function createSourceStream(FileInterface $file): Stream
     {
         if ($file instanceof GaufretteFile) {
             // The file is always streamable as the chunk storage only allows
@@ -26,17 +35,17 @@ class StreamManager
         return new LocalStream($file->getPathname());
     }
 
-    protected function ensureRemotePathExists($path): void
+    protected function ensureRemotePathExists(string $path): void
     {
         if (!$this->filesystem->has($path)) {
             $this->filesystem->write($path, '', true);
         }
     }
 
-    protected function openStream(Stream $stream, $mode)
+    protected function openStream(Stream $stream, string $mode): bool
     {
         // always use binary mode
-        $mode = $mode . 'b+';
+        $mode .= 'b+';
 
         return $stream->open(new StreamMode($mode));
     }

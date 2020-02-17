@@ -6,11 +6,13 @@ namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class BlueimpController extends AbstractChunkedController
 {
-    public function upload()
+    public function upload(): JsonResponse
     {
         $request = $this->getRequest();
         $response = new EmptyResponse();
@@ -32,9 +34,11 @@ class BlueimpController extends AbstractChunkedController
         return $this->createSupportedJsonResponse($response->assemble());
     }
 
-    public function progress()
+    public function progress(): JsonResponse
     {
         $request = $this->getRequest();
+
+        /** @var SessionInterface $session */
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
@@ -53,8 +57,9 @@ class BlueimpController extends AbstractChunkedController
         return $this->createSupportedJsonResponse($progress);
     }
 
-    protected function parseChunkedRequest(Request $request)
+    protected function parseChunkedRequest(Request $request): array
     {
+        /** @var SessionInterface $session */
         $session = $this->container->get('session');
         $headerRange = $request->headers->get('content-range');
         $attachmentName = rawurldecode(preg_replace('/(^[^"]+")|("$)/', '', $request->headers->get('content-disposition')));

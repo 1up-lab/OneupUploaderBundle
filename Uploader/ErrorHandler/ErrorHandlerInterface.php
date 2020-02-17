@@ -9,8 +9,5 @@ use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 
 interface ErrorHandlerInterface
 {
-    /**
-     * Adds an exception to a given response.
-     */
-    public function addException(AbstractResponse $response, Exception $exception);
+    public function addException(AbstractResponse $response, Exception $exception): void;
 }

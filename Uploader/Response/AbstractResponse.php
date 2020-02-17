@@ -6,6 +6,9 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
 {
+    /**
+     * @var array
+     */
     protected $data;
 
     public function __construct()
@@ -13,24 +16,39 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
         $this->data = [];
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     */
     public function offsetSet($offset, $value): void
     {
         null === $offset ? $this->data[] = $value : $this->data[$offset] = $value;
     }
 
-    public function offsetExists($offset)
+    /**
+     * @param mixed $offset
+     */
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     */
     public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed|null
+     */
     public function offsetGet($offset)
     {
-        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+        return $this->data[$offset] ?? null;
     }
 
     /**

@@ -17,8 +17,19 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class GaufretteOrphanageStorageTest extends OrphanageTest
 {
+    /**
+     * @var string
+     */
     protected $chunkDirectory;
+
+    /**
+     * @var string
+     */
     protected $chunksKey = 'chunks';
+
+    /**
+     * @var string
+     */
     protected $orphanageKey = 'orphanage';
 
     public function setUp(): void
@@ -112,7 +123,7 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         $this->assertCount($this->numberOfPayloads, $finder);
     }
 
-    public function checkIfTempnameMatchesAfterCreation()
+    public function checkIfTempnameMatchesAfterCreation(): bool
     {
         return 0 === strpos(@tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory);
     }

@@ -10,6 +10,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouteLoader extends Loader
 {
+    /**
+     * @var array
+     */
     protected $controllers;
 
     public function __construct(array $controllers)
@@ -17,12 +20,12 @@ class RouteLoader extends Loader
         $this->controllers = $controllers;
     }
 
-    public function supports($resource, string $type = null)
+    public function supports($resource, $type = null): bool
     {
         return 'uploader' === $type;
     }
 
-    public function load($resource, string $type = null)
+    public function load($resource, $type = null): RouteCollection
     {
         $routes = new RouteCollection();
         $separator = '::';

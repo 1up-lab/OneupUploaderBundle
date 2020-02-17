@@ -5,15 +5,32 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Tests\Uploader\Orphanage;
 
 use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class OrphanageManagerTest extends TestCase
 {
+    /**
+     * @var int
+     */
     protected $numberOfOrphans;
+
+    /**
+     * @var string
+     */
     protected $orphanagePath;
+
+    /**
+     * @var MockObject|ContainerInterface
+     */
     protected $mockContainer;
+
+    /**
+     * @var array
+     */
     protected $mockConfig;
 
     public function setUp(): void
@@ -96,6 +113,9 @@ class OrphanageManagerTest extends TestCase
         $this->assertTrue(true);
     }
 
+    /**
+     * @return MockObject|ContainerInterface
+     */
     protected function getContainerMock()
     {
         $mock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');

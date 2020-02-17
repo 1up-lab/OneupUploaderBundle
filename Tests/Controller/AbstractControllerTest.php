@@ -7,18 +7,30 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Oneup\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
+    /**
+     * @var array
+     */
     protected $createdFiles;
 
     /**
      * @var KernelBrowser
      */
     protected $client;
+
+    /**
+     * @var array
+     */
     protected $requestHeaders;
+
+    /**
+     * @var ContainerInterface
+     */
     protected static $container;
 
     /**
@@ -102,9 +114,9 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->assertSame($response->headers->get('Content-Type'), 'text/plain; charset=UTF-8');
     }
 
-    abstract protected function getConfigKey();
+    abstract protected function getConfigKey(): string;
 
-    protected function implTestCallBy($method, $expectedStatusCode = 200, $expectedContentType = 'application/json'): void
+    protected function implTestCallBy(string $method, int $expectedStatusCode = 200, string $expectedContentType = 'application/json'): void
     {
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
@@ -120,7 +132,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->assertContains($expectedContentType, $response->headers->get('Content-Type'));
     }
 
-    protected function createTempFile($size = 128)
+    protected function createTempFile(int $size = 128): string
     {
         $file = tempnam(sys_get_temp_dir(), 'uploader_');
         file_put_contents($file, str_repeat('A', $size));
@@ -130,7 +142,7 @@ abstract class AbstractControllerTest extends WebTestCase
         return $file;
     }
 
-    protected function getUploadedFiles()
+    protected function getUploadedFiles(): Finder
     {
         $env = self::$container->getParameter('kernel.environment');
         $root = self::$container->getParameter('kernel.project_dir');

@@ -15,12 +15,19 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FlysystemStorageTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected $directory;
 
     /**
      * @var Storage
      */
     protected $storage;
+
+    /**
+     * @var string
+     */
     protected $file;
 
     public function setUp(): void

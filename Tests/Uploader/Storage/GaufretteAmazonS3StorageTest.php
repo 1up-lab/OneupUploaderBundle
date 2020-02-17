@@ -14,10 +14,29 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class GaufretteAmazonS3StorageTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected $prefix;
+
+    /**
+     * @var string
+     */
     protected $file;
+
+    /**
+     * @var GaufretteFilesystem
+     */
     protected $filesystem;
+
+    /**
+     * @var string
+     */
     protected $directory;
+
+    /**
+     * @var GaufretteStorage
+     */
     protected $storage;
 
     public function setUp(): void

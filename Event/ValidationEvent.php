@@ -6,18 +6,44 @@ namespace Oneup\UploaderBundle\Event;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Oneup\UploaderBundle\UploadEvents;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class ValidationEvent extends Event
 {
+    public const NAME = UploadEvents::VALIDATION;
+
+    /**
+     * @var FileInterface|File
+     */
     protected $file;
+
+    /**
+     * @var array
+     */
     protected $config;
+
+    /**
+     * @var string
+     */
     protected $type;
+
+    /**
+     * @var Request
+     */
     protected $request;
+
+    /**
+     * @var ResponseInterface|null
+     */
     protected $response;
 
-    public function __construct(FileInterface $file, Request $request, array $config, $type, ResponseInterface $response = null)
+    /**
+     * @param FileInterface|File $file
+     */
+    public function __construct($file, Request $request, array $config, string $type, ResponseInterface $response = null)
     {
         $this->file = $file;
         $this->config = $config;
@@ -26,27 +52,30 @@ class ValidationEvent extends Event
         $this->response = $response;
     }
 
+    /**
+     * @return FileInterface|File
+     */
     public function getFile()
     {
         return $this->file;
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    public function getResponse()
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }

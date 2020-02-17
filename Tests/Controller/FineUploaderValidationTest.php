@@ -8,12 +8,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FineUploaderValidationTest extends AbstractValidationTest
 {
-    protected function getConfigKey()
+    protected function getConfigKey(): string
     {
         return 'fineuploader_validation';
     }
 
-    protected function getRequestParameters()
+    protected function getRequestParameters(): array
     {
         return [];
     }

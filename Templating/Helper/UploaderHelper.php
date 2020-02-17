@@ -9,7 +9,14 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class UploaderHelper extends Helper
 {
+    /**
+     * @var RouterInterface
+     */
     protected $router;
+
+    /**
+     * @var array
+     */
     protected $maxsize;
 
     public function __construct(RouterInterface $router, array $maxsize)
@@ -18,32 +25,35 @@ class UploaderHelper extends Helper
         $this->maxsize = $maxsize;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'oneup_uploader';
     }
 
-    public function endpoint($key)
+    public function endpoint(string $key): string
     {
         return $this->router->generate(sprintf('_uploader_upload_%s', $key));
     }
 
-    public function progress($key)
+    public function progress(string $key): string
     {
         return $this->router->generate(sprintf('_uploader_progress_%s', $key));
     }
 
-    public function cancel($key)
+    public function cancel(string $key): string
     {
         return $this->router->generate(sprintf('_uploader_cancel_%s', $key));
     }
 
-    public function uploadKey()
+    public function uploadKey(): ?string
     {
         return ini_get('session.upload_progress.name');
     }
 
-    public function maxSize($key)
+    /**
+     * @return mixed
+     */
+    public function maxSize(string $key)
     {
         if (!\array_key_exists($key, $this->maxsize)) {
             throw new \InvalidArgumentException('No such mapping found to get maxsize for.');

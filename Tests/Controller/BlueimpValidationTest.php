@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Controller;
 
-use Oneup\UploaderBundle\UploadEvents;
+use Oneup\UploaderBundle\Event\ValidationEvent;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -35,7 +35,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function () use (&$validationCount): void {
+        $dispatcher->addListener(ValidationEvent::class, static function () use (&$validationCount): void {
             ++$validationCount;
         });
 
@@ -80,17 +80,17 @@ class BlueimpValidationTest extends AbstractValidationTest
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
-    protected function getConfigKey()
+    protected function getConfigKey(): string
     {
         return 'blueimp_validation';
     }
 
-    protected function getRequestParameters()
+    protected function getRequestParameters(): array
     {
         return [];
     }
 
-    protected function getOversizedFile()
+    protected function getOversizedFile(): array
     {
         return ['files' => [new UploadedFile(
             $this->createTempFile(512),
@@ -99,7 +99,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         )]];
     }
 
-    protected function getFileWithCorrectMimeType()
+    protected function getFileWithCorrectMimeType(): array
     {
         return ['files' => [new UploadedFile(
             $this->createTempFile(128),
@@ -108,7 +108,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         )]];
     }
 
-    protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
+    protected function getFileWithCorrectMimeTypeAndIncorrectExtension(): array
     {
         return ['files' => [new UploadedFile(
             $this->createTempFile(128),
@@ -117,7 +117,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         )]];
     }
 
-    protected function getFileWithIncorrectMimeType()
+    protected function getFileWithIncorrectMimeType(): array
     {
         return [new UploadedFile(
             $this->createTempFile(128),

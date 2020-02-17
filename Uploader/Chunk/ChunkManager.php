@@ -9,10 +9,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ChunkManager implements ChunkManagerInterface
 {
+    /**
+     * @var array
+     */
     protected $configuration;
+
+    /**
+     * @var ChunkStorageInterface
+     */
     protected $storage;
 
-    public function __construct($configuration, ChunkStorageInterface $storage)
+    public function __construct(array $configuration, ChunkStorageInterface $storage)
     {
         $this->configuration = $configuration;
         $this->storage = $storage;
@@ -23,7 +30,7 @@ class ChunkManager implements ChunkManagerInterface
         $this->storage->clear($this->configuration['maxage']);
     }
 
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original)
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original)
     {
         return $this->storage->addChunk($uuid, $index, $chunk, $original);
     }
@@ -33,17 +40,17 @@ class ChunkManager implements ChunkManagerInterface
         return $this->storage->assembleChunks($chunks, $removeChunk, $renameChunk);
     }
 
-    public function cleanup($path)
+    public function cleanup(string $path): void
     {
-        return $this->storage->cleanup($path);
+        $this->storage->cleanup($path);
     }
 
-    public function getChunks($uuid)
+    public function getChunks(string $uuid)
     {
         return $this->storage->getChunks($uuid);
     }
 
-    public function getLoadDistribution()
+    public function getLoadDistribution(): bool
     {
         return $this->configuration['load_distribution'];
     }

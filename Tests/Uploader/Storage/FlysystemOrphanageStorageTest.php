@@ -19,8 +19,19 @@ use Twistor\FlysystemStreamWrapper;
 
 class FlysystemOrphanageStorageTest extends OrphanageTest
 {
+    /**
+     * @var string
+     */
     protected $chunkDirectory;
+
+    /**
+     * @var string
+     */
     protected $chunksKey = 'chunks';
+
+    /**
+     * @var string
+     */
     protected $orphanageKey = 'orphanage';
 
     public function setUp(): void

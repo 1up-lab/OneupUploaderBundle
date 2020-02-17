@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Orphanage;
 
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage;
+use Oneup\UploaderBundle\Uploader\Storage\GaufretteOrphanageStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class OrphanageManager
 {
-    protected $config;
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
+
+    /**
+     * @var array
+     */
+    protected $config;
 
     public function __construct(ContainerInterface $container, array $config)
     {
@@ -19,12 +28,15 @@ class OrphanageManager
         $this->config = $config;
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->container->has(sprintf('oneup_uploader.orphanage.%s', $key));
     }
 
-    public function get($key)
+    /**
+     * @return object|null
+     */
+    public function get(string $key)
     {
         return $this->container->get(sprintf('oneup_uploader.orphanage.%s', $key));
     }
@@ -33,12 +45,15 @@ class OrphanageManager
     {
         // Really ugly solution to clearing the orphanage on gaufrette
         $class = $this->container->getParameter('oneup_uploader.orphanage.class');
-        if ('Oneup\UploaderBundle\Uploader\Storage\GaufretteOrphanageStorage' === $class) {
+
+        if (GaufretteOrphanageStorage::class === $class) {
+            /** @var GaufretteStorage $chunkStorage */
             $chunkStorage = $this->container->get('oneup_uploader.chunks_storage');
             $chunkStorage->clear($this->config['maxage'], $this->config['directory']);
 
             return;
         }
+
         $system = new Filesystem();
         $finder = new Finder();
 
@@ -66,6 +81,7 @@ class OrphanageManager
         // We crawl the array backward as the Finder returns the parent first
         for ($i = $size - 1; $i >= 0; --$i) {
             $dir = $dirArray[$i];
+
             if (!(new \FilesystemIterator((string) $dir))->valid()) {
                 $system->remove((string) $dir);
             }

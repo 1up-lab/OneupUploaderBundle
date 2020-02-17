@@ -6,13 +6,17 @@ namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Uploader\Response\FineUploaderResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FineUploaderController extends AbstractChunkedController
 {
-    public function upload()
+    public function upload(): JsonResponse
     {
         $request = $this->getRequest();
+
+        /** @var TranslatorInterface $translator */
         $translator = $this->container->get('translator');
 
         $response = new FineUploaderResponse();
@@ -40,7 +44,7 @@ class FineUploaderController extends AbstractChunkedController
         return $this->createSupportedJsonResponse($response->assemble());
     }
 
-    protected function parseChunkedRequest(Request $request)
+    protected function parseChunkedRequest(Request $request): array
     {
         $index = (int) $request->get('qqpartindex');
         $total = (int) $request->get('qqtotalparts');

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use League\Flysystem\File;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
+use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 
 class FlysystemStorage implements StorageInterface
 {
@@ -20,23 +21,28 @@ class FlysystemStorage implements StorageInterface
     protected $streamWrapperPrefix;
 
     /**
-     * @var float
+     * @var int
      */
     protected $bufferSize;
 
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $filesystem;
 
-    public function __construct(Filesystem $filesystem, $bufferSize, $streamWrapperPrefix = null)
+    public function __construct(FilesystemInterface $filesystem, int $bufferSize, ?string $streamWrapperPrefix = null)
     {
         $this->filesystem = $filesystem;
         $this->bufferSize = $bufferSize;
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function upload(FileInterface $file, $name, $path = null)
+    /**
+     * @param FileInterface|SymfonyFile $file
+     *
+     * @return FileInterface|SymfonyFile
+     */
+    public function upload($file, string $name, string $path = null)
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 

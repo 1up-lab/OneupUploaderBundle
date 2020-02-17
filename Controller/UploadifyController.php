@@ -6,10 +6,11 @@ namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UploadifyController extends AbstractController
 {
-    public function upload()
+    public function upload(): JsonResponse
     {
         $request = $this->getRequest();
         $response = new EmptyResponse();

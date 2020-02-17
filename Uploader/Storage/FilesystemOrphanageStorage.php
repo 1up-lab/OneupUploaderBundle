@@ -12,12 +12,27 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageStorageInterface
 {
+    /**
+     * @var StorageInterface
+     */
     protected $storage;
+
+    /**
+     * @var SessionInterface
+     */
     protected $session;
+
+    /**
+     * @var array
+     */
     protected $config;
+
+    /**
+     * @var string
+     */
     protected $type;
 
-    public function __construct(StorageInterface $storage, SessionInterface $session, $config, $type)
+    public function __construct(StorageInterface $storage, SessionInterface $session, array $config, string $type)
     {
         parent::__construct($config['directory']);
 
@@ -28,7 +43,12 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         $this->type = $type;
     }
 
-    public function upload(FileInterface $file, $name, $path = null)
+    /**
+     * @param FileInterface|File $file
+     *
+     * @return FileInterface|File
+     */
+    public function upload($file, string $name, string $path = null)
     {
         if (!$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
@@ -37,7 +57,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         return parent::upload($file, $name, $this->getPath());
     }
 
-    public function uploadFiles(array $files = null)
+    public function uploadFiles(array $files = null): array
     {
         try {
             if (null === $files) {
@@ -55,9 +75,10 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         }
     }
 
-    public function getFiles()
+    public function getFiles(): array
     {
         $finder = new Finder();
+
         try {
             $finder->in($this->getFindPath())->files();
         } catch (\InvalidArgumentException $e) {
@@ -68,15 +89,15 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             $finder->append([]);
         }
 
-        return $finder;
+        return iterator_to_array($finder);
     }
 
-    protected function getPath()
+    protected function getPath(): string
     {
         return sprintf('%s/%s', $this->session->getId(), $this->type);
     }
 
-    protected function getFindPath()
+    protected function getFindPath(): string
     {
         return sprintf('%s/%s', $this->config['directory'], $this->getPath());
     }

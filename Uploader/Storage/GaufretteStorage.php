@@ -14,14 +14,12 @@ use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
 
 class GaufretteStorage extends StreamManager implements StorageInterface
 {
+    /**
+     * @var string|null
+     */
     protected $streamWrapperPrefix;
 
-    /**
-     * @param FilesystemInterface|Filesystem $filesystem
-     * @param int                            $bufferSize
-     * @param string|null                    $streamWrapperPrefix
-     */
-    public function __construct($filesystem, $bufferSize, $streamWrapperPrefix = null)
+    public function __construct(FilesystemInterface $filesystem, int $bufferSize, ?string $streamWrapperPrefix = null)
     {
         $base = interface_exists(FilesystemInterface::class)
             ? FilesystemInterface::class
@@ -36,11 +34,16 @@ class GaufretteStorage extends StreamManager implements StorageInterface
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function upload(FileInterface $file, $name, $path = null)
+    /**
+     * @param FileInterface|GaufretteFile $file
+     *
+     * @return FileInterface|GaufretteFile
+     */
+    public function upload($file, string $name, string $path = null)
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
-        if ($this->filesystem->getAdapter() instanceof MetadataSupporter) {
+        if ($this->filesystem instanceof Filesystem && $this->filesystem->getAdapter() instanceof MetadataSupporter) {
             $this->filesystem->getAdapter()->setMetadata($name, ['contentType' => $file->getMimeType()]);
         }
 

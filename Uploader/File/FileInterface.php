@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\File;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 /**
  * Every function in this interface should be considered unsafe.
  * They are only meant to abstract away some basic file functionality.
@@ -30,7 +32,7 @@ interface FileInterface
     /**
      * Return the path of the file without the filename.
      *
-     * @return mixed
+     * @return string|null
      */
     public function getPath();
 
@@ -50,10 +52,11 @@ interface FileInterface
 
     /**
      * Returns the guessed extension of the file.
-     *
+     */
+    public function getExtension(): string;
+
+    /**
      * @return mixed
      */
-    public function getExtension();
-
     public function getFileSystem();
 }

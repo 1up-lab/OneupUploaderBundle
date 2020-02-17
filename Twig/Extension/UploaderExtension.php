@@ -10,6 +10,9 @@ use Twig\TwigFunction;
 
 class UploaderExtension extends AbstractExtension
 {
+    /**
+     * @var UploaderHelper
+     */
     protected $helper;
 
     public function __construct(UploaderHelper $helper)
@@ -17,12 +20,12 @@ class UploaderExtension extends AbstractExtension
         $this->helper = $helper;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'oneup_uploader';
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('oneup_uploader_endpoint', [$this, 'endpoint']),
@@ -33,27 +36,30 @@ class UploaderExtension extends AbstractExtension
         ];
     }
 
-    public function endpoint($key)
+    public function endpoint(string $key): string
     {
         return $this->helper->endpoint($key);
     }
 
-    public function progress($key)
+    public function progress(string $key): string
     {
         return $this->helper->progress($key);
     }
 
-    public function cancel($key)
+    public function cancel(string $key): string
     {
         return $this->helper->cancel($key);
     }
 
-    public function uploadKey()
+    public function uploadKey(): string
     {
         return $this->helper->uploadKey();
     }
 
-    public function maxSize($key)
+    /**
+     * @return mixed
+     */
+    public function maxSize(string $key)
     {
         return $this->helper->maxSize($key);
     }

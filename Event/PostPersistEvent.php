@@ -4,19 +4,46 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Event;
 
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Oneup\UploaderBundle\UploadEvents;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class PostPersistEvent extends Event
 {
+    public const NAME = UploadEvents::POST_PERSIST;
+
+    /**
+     * @var FileInterface|File
+     */
     protected $file;
+
+    /**
+     * @var Request
+     */
     protected $request;
+
+    /**
+     * @var string
+     */
     protected $type;
+
+    /**
+     * @var ResponseInterface
+     */
     protected $response;
+
+    /**
+     * @var array
+     */
     protected $config;
 
-    public function __construct($file, ResponseInterface $response, Request $request, $type, array $config)
+    /**
+     * @param FileInterface|File $file
+     */
+    public function __construct($file, ResponseInterface $response, Request $request, string $type, array $config)
     {
         $this->file = $file;
         $this->request = $request;
@@ -25,27 +52,30 @@ class PostPersistEvent extends Event
         $this->config = $config;
     }
 
+    /**
+     * @return FileInterface|File
+     */
     public function getFile()
     {
         return $this->file;
     }
 
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getResponse()
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }

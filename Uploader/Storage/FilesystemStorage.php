@@ -5,18 +5,27 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements StorageInterface
 {
+    /**
+     * @var string
+     */
     protected $directory;
 
-    public function __construct($directory)
+    public function __construct(string $directory)
     {
         $this->directory = $directory;
     }
 
-    public function upload(FileInterface $file, $name, $path = null)
+    /**
+     * @param FileInterface|File $file
+     *
+     * @return FileInterface|File
+     */
+    public function upload($file, string $name, string $path = null)
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
         $path = sprintf('%s/%s', $this->directory, $path);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -13,13 +12,9 @@ interface ChunkManagerInterface
     /**
      * Adds a new Chunk to a given uuid.
      *
-     * @param string $uuid
-     * @param int    $index
-     * @param string $original The file name of the original file
-     *
-     * @return File|null the moved chunk file
+     * @return mixed
      */
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original);
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original);
 
     /**
      * Assembles the given chunks and return the resulting file.
@@ -28,32 +23,26 @@ interface ChunkManagerInterface
      * @param bool  $removeChunk remove the chunk file once its assembled
      * @param bool  $renameChunk rename the chunk file once its assembled
      *
-     * @return File
+     * @return mixed
      */
     public function assembleChunks($chunks, $removeChunk = true, $renameChunk = false);
 
     /**
      * Get chunks associated with the given uuid.
      *
-     * @param string $uuid
-     *
-     * @return Finder A finder instance
+     * @return mixed
      */
-    public function getChunks($uuid);
+    public function getChunks(string $uuid);
 
     /**
      * Clean a given path.
-     *
-     * @param string $path
-     *
-     * @return bool
      */
-    public function cleanup($path);
+    public function cleanup(string $path): void;
 
     /**
      * Clears the chunk manager directory. Remove all files older than the configured maxage.
      */
-    public function clear();
+    public function clear(): void;
 
-    public function getLoadDistribution();
+    public function getLoadDistribution(): bool;
 }

@@ -12,14 +12,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements ChunkStorageInterface
 {
+    /**
+     * @var string
+     */
     protected $directory;
 
-    public function __construct($directory)
+    public function __construct(string $directory)
     {
         $this->directory = $directory;
     }
 
-    public function clear($maxAge): void
+    public function clear(int $maxAge): void
     {
         $system = new Filesystem();
         $finder = new Finder();
@@ -38,7 +41,7 @@ class FilesystemStorage implements ChunkStorageInterface
         }
     }
 
-    public function addChunk($uuid, $index, UploadedFile $chunk, $original)
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): File
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -55,7 +58,10 @@ class FilesystemStorage implements ChunkStorageInterface
         return $chunk->move($path, $name);
     }
 
-    public function assembleChunks($chunks, $removeChunk, $renameChunk)
+    /**
+     * @param \IteratorAggregate $chunks
+     */
+    public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk): File
     {
         if (!($chunks instanceof \IteratorAggregate)) {
             throw new \InvalidArgumentException('The first argument must implement \IteratorAggregate interface.');
@@ -102,16 +108,14 @@ class FilesystemStorage implements ChunkStorageInterface
         return $assembled;
     }
 
-    public function cleanup($path)
+    public function cleanup(string $path): void
     {
         // cleanup
         $filesystem = new Filesystem();
         $filesystem->remove($path);
-
-        return true;
     }
 
-    public function getChunks($uuid)
+    public function getChunks(string $uuid): Finder
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);

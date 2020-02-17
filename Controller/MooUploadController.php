@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Controller;
 
+use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
 use Oneup\UploaderBundle\Uploader\Response\MooUploadResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class MooUploadController extends AbstractChunkedController
 {
+    /**
+     * @var MooUploadResponse
+     */
     protected $response;
 
-    public function upload()
+    public function upload(): JsonResponse
     {
         $request = $this->getRequest();
         $response = new MooUploadResponse();
@@ -55,8 +60,9 @@ class MooUploadController extends AbstractChunkedController
         return $this->createSupportedJsonResponse($response->assemble());
     }
 
-    protected function parseChunkedRequest(Request $request)
+    protected function parseChunkedRequest(Request $request): array
     {
+        /** @var ChunkManagerInterface $chunkManager */
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
         $headers = $request->headers;
         $parameters = array_keys($request->query->all());
@@ -86,7 +92,7 @@ class MooUploadController extends AbstractChunkedController
         return [$last, $uuid, $index, $orig];
     }
 
-    protected function createIndex($id)
+    protected function createIndex(string $id): int
     {
         $ints = 0;
 
@@ -99,7 +105,7 @@ class MooUploadController extends AbstractChunkedController
         return $ints;
     }
 
-    protected function getUploadedFile(Request $request)
+    protected function getUploadedFile(Request $request): array
     {
         $headers = $request->headers;
 

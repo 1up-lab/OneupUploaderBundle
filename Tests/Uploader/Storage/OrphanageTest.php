@@ -4,21 +4,42 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+use Oneup\UploaderBundle\Uploader\Storage\OrphanageStorageInterface;
+use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 abstract class OrphanageTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected $tempDirectory;
+
+    /**
+     * @var string
+     */
     protected $realDirectory;
 
     /**
-     * @var \Oneup\UploaderBundle\Uploader\Storage\OrphanageStorageInterface
+     * @var OrphanageStorageInterface
      */
     protected $orphanage;
+
+    /**
+     * @var StorageInterface
+     */
     protected $storage;
+
+    /**
+     * @var array
+     */
     protected $payloads;
+
+    /**
+     * @var int
+     */
     protected $numberOfPayloads;
 
     public function tearDown(): void
@@ -59,7 +80,7 @@ abstract class OrphanageTest extends TestCase
 
         $files = $this->orphanage->uploadFiles();
 
-        $this->assertInternalType('array', $files);
+        $this->assertIsArray($files);
         $this->assertCount($this->numberOfPayloads, $files);
 
         $finder = new Finder();
@@ -78,7 +99,7 @@ abstract class OrphanageTest extends TestCase
 
         $files = $this->orphanage->uploadFiles();
 
-        $this->assertInternalType('array', $files);
+        $this->assertIsArray($files);
         $this->assertCount(0, $files);
     }
 

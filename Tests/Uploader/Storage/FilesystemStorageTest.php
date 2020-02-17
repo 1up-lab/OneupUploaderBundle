@@ -13,7 +13,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorageTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected $directory;
+
+    /**
+     * @var string
+     */
     protected $file;
 
     public function setUp(): void

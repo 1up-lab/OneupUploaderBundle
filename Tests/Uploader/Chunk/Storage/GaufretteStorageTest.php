@@ -11,8 +11,19 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class GaufretteStorageTest extends ChunkStorageTest
 {
+    /**
+     * @var string
+     */
     protected $parentDir;
+
+    /**
+     * @var string
+     */
     protected $chunkKey = 'chunks';
+
+    /**
+     * @var string
+     */
     protected $chunkDir;
 
     public function setUp(): void

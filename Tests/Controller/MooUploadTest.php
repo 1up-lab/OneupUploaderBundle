@@ -8,17 +8,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MooUploadTest extends AbstractControllerTest
 {
-    protected function getConfigKey()
+    protected function getConfigKey(): string
     {
         return 'mooupload';
     }
 
-    protected function getRequestParameters()
+    protected function getRequestParameters(): array
     {
         return [];
     }
 
-    protected function getRequestFile()
+    protected function getRequestFile(): array
     {
         return [new UploadedFile(
             $this->createTempFile(128),

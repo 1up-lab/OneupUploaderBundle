@@ -8,17 +8,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DropzoneTest extends AbstractUploadTest
 {
-    protected function getConfigKey()
+    protected function getConfigKey(): string
     {
         return 'dropzone';
     }
 
-    protected function getRequestParameters()
+    protected function getRequestParameters(): array
     {
         return [];
     }
 
-    protected function getRequestFile()
+    protected function getRequestFile(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),

@@ -13,11 +13,12 @@ use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
-use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractController
@@ -56,11 +57,13 @@ abstract class AbstractController
         $this->type = $type;
     }
 
-    abstract public function upload();
+    abstract public function upload(): JsonResponse;
 
-    public function progress()
+    public function progress(): JsonResponse
     {
         $request = $this->getRequest();
+
+        /** @var SessionInterface $session */
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
@@ -74,9 +77,11 @@ abstract class AbstractController
         return new JsonResponse($value);
     }
 
-    public function cancel()
+    public function cancel(): JsonResponse
     {
         $request = $this->getRequest();
+
+        /** @var SessionInterface $session */
         $session = $this->container->get('session');
 
         $prefix = ini_get('session.upload_progress.prefix');
@@ -99,7 +104,7 @@ abstract class AbstractController
      *
      * @return array An array of files
      */
-    protected function getFiles(FileBag $bag)
+    protected function getFiles(FileBag $bag): array
     {
         $files = [];
         $fileBag = $bag->all();
@@ -124,8 +129,6 @@ abstract class AbstractController
      *  Note: The return value differs when
      *
      *  @param mixed $file The file to upload
-     *  @param ResponseInterface $response a response object
-     *  @param Request $request the request object
      */
     protected function handleUpload($file, ResponseInterface $response, Request $request): void
     {
@@ -160,7 +163,8 @@ abstract class AbstractController
     {
         // dispatch pre upload event (both the specific and the general)
         $preUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
-        $this->dispatchEvent($preUploadEvent, UploadEvents::PRE_UPLOAD);
+
+        $this->dispatchEvent($preUploadEvent);
     }
 
     /**
@@ -168,19 +172,19 @@ abstract class AbstractController
      *  and post persist events.
      *
      *  @param mixed $uploaded the uploaded file
-     *  @param ResponseInterface $response a response object
-     *  @param Request $request the request object
      */
     protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request): void
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
-        $this->dispatchEvent($postUploadEvent, UploadEvents::POST_UPLOAD);
+
+        $this->dispatchEvent($postUploadEvent);
 
         if (!$this->config['use_orphanage']) {
             // dispatch post persist event (both the specific and the general)
             $postPersistEvent = new PostPersistEvent($uploaded, $response, $request, $this->type, $this->config);
-            $this->dispatchEvent($postPersistEvent, UploadEvents::POST_PERSIST);
+
+            $this->dispatchEvent($postPersistEvent);
         }
     }
 
@@ -188,7 +192,7 @@ abstract class AbstractController
     {
         $event = new ValidationEvent($file, $request, $this->config, $this->type, $response);
 
-        $this->dispatchEvent($event, UploadEvents::VALIDATION);
+        $this->dispatchEvent($event);
     }
 
     /**
@@ -198,11 +202,8 @@ abstract class AbstractController
      * then the content type of the response will be set to text/plain instead.
      *
      * @param mixed $data
-     * @param int   $statusCode
-     *
-     * @return JsonResponse
      */
-    protected function createSupportedJsonResponse($data, $statusCode = 200)
+    protected function createSupportedJsonResponse($data, int $statusCode = 200): JsonResponse
     {
         $request = $this->getRequest();
         $response = new JsonResponse($data, $statusCode);
@@ -215,12 +216,7 @@ abstract class AbstractController
         return $response;
     }
 
-    /**
-     * Get the master request.
-     *
-     * @return Request
-     */
-    protected function getRequest()
+    protected function getRequest(): Request
     {
         return $this->container->get('request_stack')->getMasterRequest();
     }
@@ -228,14 +224,13 @@ abstract class AbstractController
     /**
      * Event dispatch proxy that avoids using deprecated interfaces.
      *
-     * @param object $event
+     * @param Event $event
      */
-    protected function dispatchEvent($event, string $eventName): void
+    protected function dispatchEvent($event): void
     {
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get('event_dispatcher');
 
-        $dispatcher->dispatch($event, $eventName);
-        $dispatcher->dispatch($event, sprintf('%s.%s', $eventName, $this->type));
+        $dispatcher->dispatch($event);
     }
 }

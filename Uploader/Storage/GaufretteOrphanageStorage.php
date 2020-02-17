@@ -12,10 +12,29 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
 {
+    /**
+     * @var StorageInterface
+     */
     protected $storage;
+
+    /**
+     * @var SessionInterface
+     */
     protected $session;
+
+    /**
+     * @var GaufretteChunkStorage
+     */
     protected $chunkStorage;
+
+    /**
+     * @var array
+     */
     protected $config;
+
+    /**
+     * @var string
+     */
     protected $type;
 
     public function __construct(StorageInterface $storage, SessionInterface $session, GaufretteChunkStorage $chunkStorage, array $config, string $type)
@@ -33,7 +52,12 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
         $this->type = $type;
     }
 
-    public function upload(FileInterface $file, $name, $path = null)
+    /**
+     * @param FileInterface|GaufretteFile $file
+     *
+     * @return FileInterface|GaufretteFile
+     */
+    public function upload($file, string $name, string $path = null)
     {
         if (!$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
@@ -42,7 +66,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
         return parent::upload($file, $name, $this->getPath());
     }
 
-    public function uploadFiles(array $files = null)
+    public function uploadFiles(array $files = null): array
     {
         try {
             if (null === $files) {
@@ -65,7 +89,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
         }
     }
 
-    public function getFiles()
+    public function getFiles(): array
     {
         $keys = $this->chunkStorage->getFilesystem()->listKeys($this->getPath());
         $keys = $keys['keys'];
@@ -79,7 +103,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
         return $files;
     }
 
-    protected function getPath()
+    protected function getPath(): string
     {
         // the storage is initiated in the root of the filesystem, from where the orphanage directory
         // should be relative.

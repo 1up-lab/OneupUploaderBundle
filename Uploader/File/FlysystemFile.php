@@ -5,50 +5,43 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Uploader\File;
 
 use League\Flysystem\File;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 class FlysystemFile extends File implements FileInterface
 {
+    /**
+     * @var string|null
+     */
     protected $streamWrapperPrefix;
+
+    /**
+     * @var string
+     */
     protected $mimeType;
 
-    public function __construct(File $file, Filesystem $filesystem, $streamWrapperPrefix = null)
+    public function __construct(File $file, FilesystemInterface $filesystem, string $streamWrapperPrefix = null)
     {
         parent::__construct($filesystem, $file->getPath());
+
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    /**
-     * Returns the path of the file.
-     *
-     * @return string
-     */
-    public function getPathname()
+    public function getPathname(): string
     {
         return $this->getPath();
     }
 
-    /**
-     * Returns the basename of the file.
-     *
-     * @return string
-     */
-    public function getBasename()
+    public function getBasename(): string
     {
         return pathinfo($this->getPath(), PATHINFO_BASENAME);
     }
 
-    /**
-     * Returns the guessed extension of the file.
-     *
-     * @return mixed
-     */
-    public function getExtension()
+    public function getExtension(): string
     {
         return pathinfo($this->getPath(), PATHINFO_EXTENSION);
     }
 
-    public function getFilesystem()
+    public function getFilesystem(): FilesystemInterface
     {
         return $this->filesystem;
     }

@@ -6,11 +6,34 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 class MooUploadResponse extends AbstractResponse
 {
+    /**
+     * @var int|string
+     */
     protected $id;
+
+    /**
+     * @var string|null
+     */
     protected $name;
+
+    /**
+     * @var int
+     */
     protected $size;
+
+    /**
+     * @var int
+     */
     protected $error;
+
+    /**
+     * @var bool
+     */
     protected $finish;
+
+    /**
+     * @var string
+     */
     protected $uploadedName;
 
     public function __construct()
@@ -21,7 +44,7 @@ class MooUploadResponse extends AbstractResponse
         parent::__construct();
     }
 
-    public function assemble()
+    public function assemble(): array
     {
         $data = $this->data;
 
@@ -35,74 +58,83 @@ class MooUploadResponse extends AbstractResponse
         return $data;
     }
 
-    public function setId($id)
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
-    public function setName($name)
+    public function setName(string $name = null): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setSize($size)
+    /**
+     * @param mixed $size
+     */
+    public function setSize($size): self
     {
-        $this->size = $size;
+        $this->size = (int) $size;
 
         return $this;
     }
 
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
 
-    public function setError($error)
+    public function setError(int $error): self
     {
         $this->error = $error;
 
         return $this;
     }
 
-    public function getError()
+    public function getError(): int
     {
         return $this->error;
     }
 
-    public function setFinish($finish)
+    public function setFinish(bool $finish): self
     {
         $this->finish = $finish;
 
         return $this;
     }
 
-    public function getFinish()
+    public function getFinish(): bool
     {
         return $this->finish;
     }
 
-    public function setUploadedName($name)
+    public function setUploadedName(string $name): self
     {
         $this->uploadedName = $name;
 
         return $this;
     }
 
-    public function getUploadedName()
+    public function getUploadedName(): string
     {
         return $this->uploadedName;
     }

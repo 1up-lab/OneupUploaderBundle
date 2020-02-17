@@ -8,17 +8,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class YUI3ValidationTest extends AbstractValidationTest
 {
-    protected function getConfigKey()
+    protected function getConfigKey(): string
     {
         return 'yui3_validation';
     }
 
-    protected function getRequestParameters()
+    protected function getRequestParameters(): array
     {
         return [];
     }
 
-    protected function getOversizedFile()
+    protected function getOversizedFile(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(512),
@@ -27,7 +27,7 @@ class YUI3ValidationTest extends AbstractValidationTest
         );
     }
 
-    protected function getFileWithCorrectMimeType()
+    protected function getFileWithCorrectMimeType(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),
@@ -36,7 +36,7 @@ class YUI3ValidationTest extends AbstractValidationTest
         );
     }
 
-    protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
+    protected function getFileWithCorrectMimeTypeAndIncorrectExtension(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),
@@ -45,7 +45,7 @@ class YUI3ValidationTest extends AbstractValidationTest
         );
     }
 
-    protected function getFileWithIncorrectMimeType()
+    protected function getFileWithIncorrectMimeType(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),

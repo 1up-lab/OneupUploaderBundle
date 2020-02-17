@@ -7,29 +7,24 @@ namespace Oneup\UploaderBundle\Uploader\File;
 use Gaufrette\Adapter\AwsS3;
 use Gaufrette\Adapter\StreamFactory;
 use Gaufrette\File;
-use Gaufrette\Filesystem;
 use Gaufrette\FilesystemInterface;
 
 class GaufretteFile extends File implements FileInterface
 {
+    /**
+     * @var string|null
+     */
     protected $streamWrapperPrefix;
-    protected $mimeType;
 
     /**
-     * @param FilesystemInterface|Filesystem $filesystem
-     * @param string|null                    $streamWrapperPrefix
+     * @var string
      */
-    public function __construct(File $file, $filesystem, $streamWrapperPrefix = null)
+    protected $mimeType;
+
+    public function __construct(File $file, FilesystemInterface $filesystem, string $streamWrapperPrefix = null)
     {
-        $base = interface_exists(FilesystemInterface::class)
-            ? FilesystemInterface::class
-            : Filesystem::class;
-
-        if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \get_class($filesystem)));
-        }
-
         parent::__construct($file->getKey(), $filesystem);
+
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
@@ -43,7 +38,7 @@ class GaufretteFile extends File implements FileInterface
      * and will have heavy performance footprint.
      * !! ------- !!
      */
-    public function getSize()
+    public function getSize(): int
     {
         // This can only work on streamable files, so basically local files,
         // still only perform it once even on local files to avoid bothering the filesystem.php g
@@ -64,25 +59,22 @@ class GaufretteFile extends File implements FileInterface
         return parent::getSize();
     }
 
-    public function getPathname()
+    public function getPathname(): string
     {
         return $this->getKey();
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return pathinfo($this->getKey(), PATHINFO_DIRNAME);
     }
 
-    public function getBasename()
+    public function getBasename(): string
     {
         return pathinfo($this->getKey(), PATHINFO_BASENAME);
     }
 
-    /**
-     * @return string
-     */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         // This can only work on streamable files, so basically local files,
         // still only perform it once even on local files to avoid bothering the filesystem.
@@ -106,15 +98,13 @@ class GaufretteFile extends File implements FileInterface
      * Now that we may be able to get the mime-type the extension
      * COULD be guessed based on that, but it would be even less
      * accurate as mime-types can have multiple extensions.
-     *
-     * @return mixed
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return pathinfo($this->getKey(), PATHINFO_EXTENSION);
     }
 
-    public function getFilesystem()
+    public function getFilesystem(): FilesystemInterface
     {
         return $this->filesystem;
     }

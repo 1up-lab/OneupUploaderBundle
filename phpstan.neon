@@ -15,6 +15,7 @@ parameters:
         - var
         - vendor
 
+    checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
 

@@ -6,7 +6,6 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
-use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -50,7 +49,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(UploadEvents::PRE_UPLOAD, static function (PreUploadEvent $event) use (&$me, &$preValidation): void {
+        $dispatcher->addListener(PreUploadEvent::class, static function (PreUploadEvent $event) use (&$me, &$preValidation): void {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -62,7 +61,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
             $me->assertInstanceOf(UploadedFile::class, $file);
         });
 
-        $dispatcher->addListener(UploadEvents::POST_UPLOAD, static function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
+        $dispatcher->addListener(PostUploadEvent::class, static function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
             ++$uploadCount;
             $preValidation *= -1;
 
@@ -81,7 +80,10 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $this->assertSame(1, $preValidation);
     }
 
-    abstract protected function getRequestParameters();
+    abstract protected function getRequestParameters(): array;
 
+    /**
+     * @return mixed
+     */
     abstract protected function getRequestFile();
 }

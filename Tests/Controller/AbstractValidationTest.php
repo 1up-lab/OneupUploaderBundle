@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
-use Oneup\UploaderBundle\UploadEvents;
 
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
@@ -32,7 +31,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function () use (&$validationCount): void {
+        $dispatcher->addListener(ValidationEvent::class, static function () use (&$validationCount): void {
             ++$validationCount;
         });
 
@@ -51,7 +50,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $validationCount = 0;
         $me = $this;
 
-        $dispatcher->addListener(UploadEvents::VALIDATION, function (ValidationEvent $event) use (&$validationCount, &$me): void {
+        $dispatcher->addListener(ValidationEvent::class, static function (ValidationEvent $event) use (&$validationCount, &$me): void {
             $me->assertInstanceOf('Symfony\Component\HttpFoundation\Request', $event->getRequest());
 
             // to be sure this listener is called
@@ -112,13 +111,25 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
+    /**
+     * @return mixed
+     */
     abstract protected function getFileWithCorrectMimeType();
 
+    /**
+     * @return mixed
+     */
     abstract protected function getFileWithCorrectMimeTypeAndIncorrectExtension();
 
+    /**
+     * @return mixed
+     */
     abstract protected function getFileWithIncorrectMimeType();
 
+    /**
+     * @return mixed
+     */
     abstract protected function getOversizedFile();
 
-    abstract protected function getRequestParameters();
+    abstract protected function getRequestParameters(): array;
 }

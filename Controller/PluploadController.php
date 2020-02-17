@@ -6,11 +6,12 @@ namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class PluploadController extends AbstractChunkedController
 {
-    public function upload()
+    public function upload(): JsonResponse
     {
         $request = $this->getRequest();
         $response = new EmptyResponse();
@@ -32,7 +33,7 @@ class PluploadController extends AbstractChunkedController
         return $this->createSupportedJsonResponse($response->assemble());
     }
 
-    protected function parseChunkedRequest(Request $request)
+    protected function parseChunkedRequest(Request $request): array
     {
         $session = $this->container->get('session');
 

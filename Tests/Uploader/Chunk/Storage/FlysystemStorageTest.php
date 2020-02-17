@@ -13,8 +13,19 @@ use Twistor\FlysystemStreamWrapper;
 
 class FlysystemStorageTest extends ChunkStorageTest
 {
+    /**
+     * @var string
+     */
     protected $parentDir;
+
+    /**
+     * @var string
+     */
     protected $chunkKey = 'chunks';
+
+    /**
+     * @var string
+     */
     protected $chunkDir;
 
     public function setUp(): void

@@ -8,16 +8,19 @@ use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 
 class ValidationException extends UploadException
 {
+    /**
+     * @var string
+     */
     protected $errorMessage;
 
-    public function setErrorMessage($message)
+    public function setErrorMessage(string $message): self
     {
         $this->errorMessage = $message;
 
         return $this;
     }
 
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
         // if no error message is set, return the exception message
         if (!$this->errorMessage) {
