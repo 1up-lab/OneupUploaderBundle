@@ -65,15 +65,15 @@ abstract class AbstractChunkedController extends AbstractController
             if (null === $chunk) {
                 $this->dispatchChunkEvents($assembled, $response, $request, $last);
             }
+        } else {
+            $chunks = $chunkManager->getChunks($uuid);
+            $assembled = $chunkManager->assembleChunks($chunks, true, true);
         }
 
         // if all chunks collected and stored, proceed
         // with reassembling the parts
-        if ($last && !$chunkManager->getLoadDistribution()) {
-            $chunks = $chunkManager->getChunks($uuid);
-            $assembled = $chunkManager->assembleChunks($chunks, true, true);
+        if ($last) {
             $path = $assembled->getPath();
-
             $this->handleUpload($assembled, $response, $request);
 
             $chunkManager->cleanup($path);

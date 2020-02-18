@@ -138,6 +138,7 @@ abstract class AbstractController
         if (!($file instanceof FileInterface)) {
             $file = new FilesystemFile($file);
         }
+
         $this->validate($file, $request, $response);
 
         $this->dispatchPreUploadEvent($file, $response, $request);
@@ -223,10 +224,8 @@ abstract class AbstractController
 
     /**
      * Event dispatch proxy that avoids using deprecated interfaces.
-     *
-     * @param Event $event
      */
-    protected function dispatchEvent($event): void
+    protected function dispatchEvent(Event $event): void
     {
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get('event_dispatcher');
