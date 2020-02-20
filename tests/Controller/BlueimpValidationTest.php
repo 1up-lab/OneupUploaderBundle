@@ -35,7 +35,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         // event data
         $validationCount = 0;
 
-        $dispatcher->addListener(ValidationEvent::class, static function () use (&$validationCount): void {
+        $dispatcher->addListener(ValidationEvent::NAME, static function () use (&$validationCount): void {
             ++$validationCount;
         });
 

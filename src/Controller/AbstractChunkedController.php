@@ -93,6 +93,6 @@ abstract class AbstractChunkedController extends AbstractController
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);
 
-        $this->dispatchEvent($postUploadEvent);
+        $this->dispatchEvent($postUploadEvent, PostChunkUploadEvent::NAME);
     }
 }
