@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage as FilesystemChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemOrphanageStorage;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
@@ -39,12 +40,15 @@ class FilesystemOrphanageStorageTest extends OrphanageTest
         // create underlying storage
         $this->storage = new FilesystemStorage($this->realDirectory);
 
+        // is ignored anyways
+        $chunkStorage = new FilesystemChunkStorage('/tmp/');
+
         // create orphanage
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
         $config = ['directory' => $this->tempDirectory];
 
-        $this->orphanage = new FilesystemOrphanageStorage($this->storage, $session, $config, 'cat');
+        $this->orphanage = new FilesystemOrphanageStorage($this->storage, $session, $chunkStorage, $config, 'cat');
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
+use Oneup\UploaderBundle\Uploader\Chunk\Storage\FilesystemStorage as ChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Finder\Finder;
@@ -23,6 +24,11 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
     protected $session;
 
     /**
+     * @var ChunkStorage
+     */
+    protected $chunkStorage;
+
+    /**
      * @var array
      */
     protected $config;
@@ -32,13 +38,13 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
      */
     protected $type;
 
-    public function __construct(StorageInterface $storage, SessionInterface $session, array $config, string $type)
+    public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorage $chunkStorage, array $config, string $type)
     {
         parent::__construct($config['directory']);
 
-        // We can just ignore the chunkstorage here, it's not needed to access the files
         $this->storage = $storage;
         $this->session = $session;
+        $this->chunkStorage = $chunkStorage;
         $this->config = $config;
         $this->type = $type;
     }
