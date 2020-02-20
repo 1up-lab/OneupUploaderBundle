@@ -42,6 +42,7 @@ abstract class AbstractControllerTest extends WebTestCase
     {
         $this->client = static::createClient(['debug' => false]);
         $this->client->catchExceptions(false);
+        $this->client->disableReboot();
 
         self::$container = $this->client->getContainer();
         $this->helper = self::$container->get('oneup_uploader.templating.uploader_helper');

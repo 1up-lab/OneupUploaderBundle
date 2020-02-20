@@ -27,15 +27,19 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         $basename = '';
         $validationCount = 0;
 
+        /** @var EventDispatcherInterface $dispatcher */
+        $dispatcher = $this->client->getContainer()->get('event_dispatcher');
+
+        $dispatcher->addListener(ValidationEvent::class, static function (ValidationEvent $event) use (&$validationCount): void {
+            ++$validationCount;
+        });
+
         for ($i = 0; $i < $this->total; ++$i) {
             $file = $this->getNextFile($i);
 
             if ('' === $basename) {
                 $basename = $file->getClientOriginalName();
             }
-
-            /** @var EventDispatcherInterface $dispatcher */
-            $dispatcher = $this->client->getContainer()->get('event_dispatcher');
 
             $dispatcher->addListener(PreUploadEvent::class, static function (PreUploadEvent $event) use (&$me, $basename): void {
                 $file = $event->getFile();
@@ -45,10 +49,6 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
                 $me->assertGreaterThan(0, $size);
 
                 $me->assertEquals($file->getBasename(), $basename);
-            });
-
-            $dispatcher->addListener(ValidationEvent::class, static function (ValidationEvent $event) use (&$validationCount): void {
-                ++$validationCount;
             });
 
             $this->client->request('POST', $endpoint, $this->getNextRequestParameters($i), [$file], $this->requestHeaders);
@@ -77,22 +77,21 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         $uploadCount = 0;
         $chunkSize = $this->getNextFile(0)->getSize();
 
+        $dispatcher = $this->client->getContainer()->get('event_dispatcher');
+
+        $dispatcher->addListener(PostChunkUploadEvent::class, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
+            ++$chunkCount;
+
+            $chunk = $event->getChunk();
+
+            $me->assertEquals($chunkSize, $chunk->getSize());
+        });
+
+        $dispatcher->addListener(PostUploadEvent::class, static function (Event $event) use (&$uploadCount): void {
+            ++$uploadCount;
+        });
+
         for ($i = 0; $i < $this->total; ++$i) {
-            // each time create a new client otherwise the events won't get dispatched
-            $dispatcher = $this->client->getContainer()->get('event_dispatcher');
-
-            $dispatcher->addListener(PostChunkUploadEvent::class, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
-                ++$chunkCount;
-
-                $chunk = $event->getChunk();
-
-                $me->assertEquals($chunkSize, $chunk->getSize());
-            });
-
-            $dispatcher->addListener(PostUploadEvent::class, static function (Event $event) use (&$uploadCount): void {
-                ++$uploadCount;
-            });
-
             $this->client->request('POST', $endpoint, $this->getNextRequestParameters($i), [$this->getNextFile($i)], $this->requestHeaders);
         }
 
