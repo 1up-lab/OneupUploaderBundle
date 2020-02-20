@@ -165,7 +165,7 @@ abstract class AbstractController
         // dispatch pre upload event (both the specific and the general)
         $preUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
 
-        $this->dispatchEvent($preUploadEvent);
+        $this->dispatchEvent($preUploadEvent, PreUploadEvent::NAME);
     }
 
     /**
@@ -179,13 +179,13 @@ abstract class AbstractController
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
 
-        $this->dispatchEvent($postUploadEvent);
+        $this->dispatchEvent($postUploadEvent, PostUploadEvent::NAME);
 
         if (!$this->config['use_orphanage']) {
             // dispatch post persist event (both the specific and the general)
             $postPersistEvent = new PostPersistEvent($uploaded, $response, $request, $this->type, $this->config);
 
-            $this->dispatchEvent($postPersistEvent);
+            $this->dispatchEvent($postPersistEvent, PostPersistEvent::NAME);
         }
     }
 
@@ -193,7 +193,7 @@ abstract class AbstractController
     {
         $event = new ValidationEvent($file, $request, $this->config, $this->type, $response);
 
-        $this->dispatchEvent($event);
+        $this->dispatchEvent($event, ValidationEvent::NAME);
     }
 
     /**
@@ -225,11 +225,11 @@ abstract class AbstractController
     /**
      * Event dispatch proxy that avoids using deprecated interfaces.
      */
-    protected function dispatchEvent(Event $event): void
+    protected function dispatchEvent(Event $event, $eventName = null): void
     {
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get('event_dispatcher');
 
-        $dispatcher->dispatch($event);
+        $dispatcher->dispatch($event, $eventName);
     }
 }

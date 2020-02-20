@@ -30,7 +30,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->client->getContainer()->get('event_dispatcher');
 
-        $dispatcher->addListener(ValidationEvent::class, static function (ValidationEvent $event) use (&$validationCount): void {
+        $dispatcher->addListener(ValidationEvent::NAME, static function (ValidationEvent $event) use (&$validationCount): void {
             ++$validationCount;
         });
 
@@ -41,7 +41,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
                 $basename = $file->getClientOriginalName();
             }
 
-            $dispatcher->addListener(PreUploadEvent::class, static function (PreUploadEvent $event) use (&$me, $basename): void {
+            $dispatcher->addListener(PreUploadEvent::NAME, static function (PreUploadEvent $event) use (&$me, $basename): void {
                 $file = $event->getFile();
                 $size = $file->getSize();
 
@@ -79,14 +79,14 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 
         $dispatcher = $this->client->getContainer()->get('event_dispatcher');
 
-        $dispatcher->addListener(PostChunkUploadEvent::class, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
+        $dispatcher->addListener(PostChunkUploadEvent::NAME, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
             ++$chunkCount;
             $chunk = $event->getChunk();
 
             $me->assertEquals($chunkSize, $chunk->getSize());
         });
 
-        $dispatcher->addListener(PostUploadEvent::class, static function (Event $event) use (&$uploadCount): void {
+        $dispatcher->addListener(PostUploadEvent::NAME, static function (Event $event) use (&$uploadCount): void {
             ++$uploadCount;
         });
 

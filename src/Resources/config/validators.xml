@@ -5,15 +5,15 @@
 
     <services>
         <service id="Oneup\UploaderBundle\EventListener\MaxSizeValidationListener">
-            <tag name="kernel.event_listener" event="Oneup\UploaderBundle\Event\ValidationEvent" method="onValidate" />
+            <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
 
         <service id="Oneup\UploaderBundle\EventListener\AllowedMimetypeAndExtensionValidationListener">
-            <tag name="kernel.event_listener" event="Oneup\UploaderBundle\Event\ValidationEvent" method="onValidate" />
+            <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
 
         <service id="Oneup\UploaderBundle\EventListener\DisallowedMimetypeValidationListener">
-            <tag name="kernel.event_listener" event="Oneup\UploaderBundle\Event\ValidationEvent" method="onValidate" />
+            <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
         </service>
     </services>
 

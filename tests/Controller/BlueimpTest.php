@@ -55,7 +55,7 @@ class BlueimpTest extends AbstractUploadTest
         $uploadCount = 0;
         $preValidation = 1;
 
-        $dispatcher->addListener(PreUploadEvent::class, static function (PreUploadEvent $event) use (&$me, &$preValidation): void {
+        $dispatcher->addListener(PreUploadEvent::NAME, static function (PreUploadEvent $event) use (&$me, &$preValidation): void {
             $preValidation -= 2;
 
             $file = $event->getFile();
@@ -67,7 +67,7 @@ class BlueimpTest extends AbstractUploadTest
             $me->assertInstanceOf(UploadedFile::class, $file);
         });
 
-        $dispatcher->addListener(PostUploadEvent::class, static function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
+        $dispatcher->addListener(PostUploadEvent::NAME, static function (PostUploadEvent $event) use (&$uploadCount, &$me, &$preValidation): void {
             ++$uploadCount;
             $preValidation *= -1;
 
