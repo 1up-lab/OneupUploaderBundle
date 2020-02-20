@@ -20,11 +20,19 @@ class RouteLoader extends Loader
         $this->controllers = $controllers;
     }
 
+    /**
+     * @param mixed $resource
+     * @param string|null $type
+     */
     public function supports($resource, $type = null): bool
     {
         return 'uploader' === $type;
     }
 
+    /**
+     * @param mixed $resource
+     * @param string|null $type
+     */
     public function load($resource, $type = null): RouteCollection
     {
         $routes = new RouteCollection();

@@ -1,11 +1,5 @@
-includes:
-    - vendor/phpstan/phpstan-symfony/extension.neon
-
 parameters:
     bootstrap: %rootDir%/../../../vendor/autoload.php
-
-    symfony:
-        container_xml_path: %rootDir%/../../../tests/App/var/cache/test/AppKernelTestDebugContainer.xml
 
     excludes_analyse:
         - src/DependencyInjection/Configuration.php
