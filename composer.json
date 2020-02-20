@@ -61,8 +61,13 @@
 
     "autoload": {
         "psr-4": {
-            "Oneup\\UploaderBundle\\": ""
+            "Oneup\\UploaderBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Oneup\\UploaderBundle\\Tests\\": "tests"
         },
-        "classmap": [ "Tests/App/Kernel.php"]
+        "classmap": [ "tests/App/Kernel.php"]
     }
 }
