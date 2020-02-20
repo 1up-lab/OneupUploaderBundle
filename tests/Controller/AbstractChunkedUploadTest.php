@@ -81,7 +81,6 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
 
         $dispatcher->addListener(PostChunkUploadEvent::class, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
             ++$chunkCount;
-
             $chunk = $event->getChunk();
 
             $me->assertEquals($chunkSize, $chunk->getSize());
