@@ -77,27 +77,3 @@ jobs:
               run: composer update --prefer-lowest --prefer-stable --no-interaction --no-suggest
             - name: Run the unit tests
               run: vendor/bin/phpunit --colors=always
-
-    windows:
-        name: Windows
-        runs-on: windows-latest
-        steps:
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 7.3
-                  extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo_mysql, zlib
-                  ini-values: memory_limit=1G
-                  tools: prestissimo
-                  coverage: none
-
-            - name: Adjust the Git autocrlf setting
-              run: git config --global core.autocrlf false
-
-            - name: Checkout
-              uses: actions/checkout@v2
-
-            - name: Install the dependencies
-              run: composer install --no-interaction --no-suggest --no-progress
-            - name: Run the unit tests
-              run: vendor/bin/phpunit.bat --colors=always
