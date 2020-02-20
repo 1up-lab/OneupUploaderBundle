@@ -225,7 +225,7 @@ abstract class AbstractController
     /**
      * Event dispatch proxy that avoids using deprecated interfaces.
      */
-    protected function dispatchEvent(Event $event, $eventName = null): void
+    protected function dispatchEvent(Event $event, string $eventName = null): void
     {
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get('event_dispatcher');
