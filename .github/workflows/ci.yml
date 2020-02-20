@@ -32,7 +32,7 @@ jobs:
               run: vendor/bin/phpstan analyze src/ tests/ --level=6
 
     tests:
-        name: PHP ${{ matrix.php }}
+        name: PHP ${{ matrix.php }} / SF ^${{ matrix.symfony }}
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
