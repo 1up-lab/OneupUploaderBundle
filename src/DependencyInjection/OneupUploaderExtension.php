@@ -237,7 +237,6 @@ class OneupUploaderExtension extends Extension
                     ->register($orphanageName, '%oneup_uploader.orphanage.class%')
                     ->addArgument($storageService)
                     ->addArgument(new Reference('session'))
-                    ->addArgument(new Reference('oneup_uploader.chunks_storage'))
                     ->addArgument($this->config['orphanage'])
                     ->addArgument($key)
                     ->setPublic(true)
