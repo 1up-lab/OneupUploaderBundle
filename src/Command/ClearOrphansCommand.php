@@ -11,21 +11,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ClearOrphansCommand extends Command
 {
-    protected static $defaultName = 'oneup:uploader:clear-orphans'; // Make command lazy load
+    protected static $defaultName = 'oneup:uploader:clear-orphans';
 
-    /** @var OrphanageManager */
-    protected $manager;
+    /**
+     * @var OrphanageManager
+     */
+    private $manager;
 
-    public function __construct(OrphanageManager $manager, ?string $name = null)
+    public function __construct(OrphanageManager $manager)
     {
-        parent::__construct($name);
         $this->manager = $manager;
+
+        parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->setName(self::$defaultName) // BC with 2.7
             ->setDescription('Clear orphaned uploads according to the max-age you defined in your configuration.')
         ;
     }

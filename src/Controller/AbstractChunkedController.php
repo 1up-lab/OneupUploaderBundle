@@ -26,10 +26,8 @@ abstract class AbstractChunkedController extends AbstractController
      *    - orig: The original file name.
      *
      * @param Request $request - The request object
-     *
-     * @return array
      */
-    abstract protected function parseChunkedRequest(Request $request);
+    abstract protected function parseChunkedRequest(Request $request): array;
 
     /**
      *  This function will be called in order to upload and save an
@@ -45,13 +43,11 @@ abstract class AbstractChunkedController extends AbstractController
      */
     protected function handleChunkedUpload(UploadedFile $file, ResponseInterface $response, Request $request): void
     {
-        // get basic container stuff
         /** @var ChunkManagerInterface $chunkManager */
         $chunkManager = $this->container->get('oneup_uploader.chunk_manager');
 
         // get information about this chunked request
         [$last, $uuid, $index, $orig] = $this->parseChunkedRequest($request);
-
         $chunk = $chunkManager->addChunk($uuid, $index, $file, $orig);
 
         if (null !== $chunk) {
