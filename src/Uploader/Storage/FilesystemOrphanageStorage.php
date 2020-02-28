@@ -69,6 +69,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             if (null === $files) {
                 $files = $this->getFiles();
             }
+
             $return = [];
 
             foreach ($files as $file) {
@@ -81,7 +82,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         }
     }
 
-    public function getFiles(): array
+    public function getFiles(): Finder
     {
         $finder = new Finder();
 
@@ -95,7 +96,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             $finder->append([]);
         }
 
-        return iterator_to_array($finder);
+        return $finder;
     }
 
     protected function getPath(): string
