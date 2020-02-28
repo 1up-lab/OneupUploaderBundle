@@ -14,7 +14,6 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
-#        - '#Parameter .* of function (fopen|fwrite|fclose) expects (string|resource), (string|resource)\|false given\.#'
         - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\.#'
         -
             message: '#Parameter \#1 \$parameters of class Symfony\\Component\\HttpFoundation\\FileBag constructor expects array<Symfony\\Component\\HttpFoundation\\File\\UploadedFile>, array<int, Symfony\\Component\\HttpFoundation\\File\\UploadedFile\|null> given\.#'
