@@ -12,7 +12,7 @@ class FilesystemFile extends UploadedFile implements FileInterface
     public function __construct(File $file)
     {
         if ($file instanceof UploadedFile) {
-            parent::__construct($file->getPathname(), $file->getClientOriginalName(), $file->getClientMimeType(), $file->getError(), true);
+            parent::__construct($file->getPathname(), (string) $file->getClientOriginalName(), $file->getClientMimeType(), $file->getError(), true);
         } else {
             parent::__construct($file->getPathname(), $file->getBasename(), $file->getMimeType(), 0, true);
         }

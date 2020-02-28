@@ -28,9 +28,11 @@ class FilesystemOrphanageStorageTest extends OrphanageTest
 
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
             // create temporary file
-            $file = tempnam(sys_get_temp_dir(), 'uploader');
+            $file = (string) tempnam(sys_get_temp_dir(), 'uploader');
 
+            /** @var resource $pointer */
             $pointer = fopen($file, 'w+');
+
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 

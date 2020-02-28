@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -23,14 +24,18 @@ class BlueimpValidationTest extends AbstractValidationTest
         //$this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
-        $this->assertFalse(strpos($response->getContent(), 'error.maxsize'), 'Failed to translate error id into lang');
+        $this->assertFalse(strpos((string) $response->getContent(), 'error.maxsize'), 'Failed to translate error id into lang');
     }
 
     public function testEvents(): void
     {
         $client = $this->client;
+
+        /** @var ContainerInterface $container */
+        $container = $client->getContainer();
+
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $dispatcher = $client->getContainer()->get('event_dispatcher');
+        $dispatcher = $container->get('event_dispatcher');
 
         // event data
         $validationCount = 0;

@@ -8,6 +8,7 @@ use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Oneup\UploaderBundle\Event\ValidationEvent;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -27,8 +28,11 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         $basename = '';
         $validationCount = 0;
 
+        /** @var ContainerInterface $container */
+        $container = $this->client->getContainer();
+
         /** @var EventDispatcherInterface $dispatcher */
-        $dispatcher = $this->client->getContainer()->get('event_dispatcher');
+        $dispatcher = $container->get('event_dispatcher');
 
         $dispatcher->addListener(ValidationEvent::NAME, static function (ValidationEvent $event) use (&$validationCount): void {
             ++$validationCount;
@@ -77,7 +81,10 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         $uploadCount = 0;
         $chunkSize = $this->getNextFile(0)->getSize();
 
-        $dispatcher = $this->client->getContainer()->get('event_dispatcher');
+        /** @var ContainerInterface $container */
+        $container = $this->client->getContainer();
+
+        $dispatcher = $container->get('event_dispatcher');
 
         $dispatcher->addListener(PostChunkUploadEvent::NAME, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {
             ++$chunkCount;

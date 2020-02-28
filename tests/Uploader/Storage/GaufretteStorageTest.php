@@ -35,9 +35,11 @@ class GaufretteStorageTest extends TestCase
         $this->directory = sys_get_temp_dir() . '/storage';
 
         // create temporary file
-        $this->file = tempnam(sys_get_temp_dir(), 'uploader');
+        $this->file = (string) tempnam(sys_get_temp_dir(), 'uploader');
 
+        /** @var resource $pointer */
         $pointer = fopen($this->file, 'w+');
+
         fwrite($pointer, str_repeat('A', 1024), 1024);
         fclose($pointer);
 

@@ -8,6 +8,7 @@ use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PluploadController extends AbstractChunkedController
 {
@@ -35,6 +36,7 @@ class PluploadController extends AbstractChunkedController
 
     protected function parseChunkedRequest(Request $request): array
     {
+        /** @var SessionInterface $session */
         $session = $this->container->get('session');
 
         $orig = $request->get('name');

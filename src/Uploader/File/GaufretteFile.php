@@ -45,7 +45,7 @@ class GaufretteFile extends File implements FileInterface
         if ($this->filesystem->getAdapter() instanceof StreamFactory && !$this->size) {
             if ($this->streamWrapperPrefix) {
                 try {
-                    $this->setSize(filesize($this->streamWrapperPrefix . $this->getKey()));
+                    $this->setSize((int) filesize($this->streamWrapperPrefix . $this->getKey()));
                 } catch (\Exception $e) {
                     // Fail gracefully if there was a problem with opening the file and
                     // let gaufrette load the file into memory allowing it to throw exceptions
@@ -80,8 +80,9 @@ class GaufretteFile extends File implements FileInterface
         // still only perform it once even on local files to avoid bothering the filesystem.
         if ($this->filesystem->getAdapter() instanceof StreamFactory && !$this->mimeType) {
             if ($this->streamWrapperPrefix) {
+                /** @var resource $finfo */
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $this->mimeType = finfo_file($finfo, $this->streamWrapperPrefix . $this->getKey());
+                $this->mimeType = (string) finfo_file($finfo, $this->streamWrapperPrefix . $this->getKey());
                 finfo_close($finfo);
             }
         } elseif ($this->filesystem->getAdapter() instanceof AwsS3 && !$this->mimeType) {

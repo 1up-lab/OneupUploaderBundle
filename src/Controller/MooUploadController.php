@@ -74,7 +74,7 @@ class MooUploadController extends AbstractChunkedController
 
         try {
             // loop through every file that has been uploaded before
-            foreach ($chunkManager->getChunks($uuid) as $file) {
+            foreach ($chunkManager->getChunks((string) $uuid) as $file) {
                 $size += $file->getSize();
             }
         } catch (\InvalidArgumentException $e) {
@@ -110,7 +110,7 @@ class MooUploadController extends AbstractChunkedController
         $headers = $request->headers;
 
         // create temporary file in systems temp dir
-        $tempFile = tempnam(sys_get_temp_dir(), 'uploader');
+        $tempFile = (string) tempnam(sys_get_temp_dir(), 'uploader');
         $contents = file_get_contents('php://input');
 
         // put data from php://input to temp file

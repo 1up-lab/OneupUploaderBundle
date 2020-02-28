@@ -7,7 +7,6 @@ namespace Oneup\UploaderBundle\Tests\Uploader\File;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\File\File;
 
 abstract class FileTest extends TestCase
 {
@@ -17,7 +16,7 @@ abstract class FileTest extends TestCase
     protected $storage;
 
     /**
-     * @var File|FileInterface
+     * @var FileInterface
      */
     protected $file;
 

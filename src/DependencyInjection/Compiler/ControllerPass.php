@@ -21,7 +21,7 @@ class ControllerPass implements CompilerPassInterface
             $fqdn = $container->getDefinition($id)->getClass();
             if (isset($autowired_controllers[$fqdn])) {
                 // Retrieve auto wired controller
-                $autowired_definition = $container->getDefinition($fqdn);
+                $autowired_definition = $container->getDefinition((string) $fqdn);
 
                 // Retrieve arguments from OneUp controller
                 $arguments = $container->getDefinition($id)->getArguments();

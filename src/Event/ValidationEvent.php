@@ -75,7 +75,7 @@ class ValidationEvent extends Event
         return $this->request;
     }
 
-    public function getResponse(): ResponseInterface
+    public function getResponse(): ?ResponseInterface
     {
         return $this->response;
     }

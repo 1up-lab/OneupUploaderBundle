@@ -6,6 +6,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -47,8 +48,12 @@ class BlueimpTest extends AbstractUploadTest
     public function testEvents(): void
     {
         $client = $this->client;
+
+        /** @var ContainerInterface $container */
+        $container = $client->getContainer();
+
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $dispatcher = $client->getContainer()->get('event_dispatcher');
+        $dispatcher = $container->get('event_dispatcher');
 
         // event data
         $me = $this;

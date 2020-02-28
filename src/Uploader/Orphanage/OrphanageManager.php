@@ -67,7 +67,7 @@ class OrphanageManager
         }
 
         foreach ($finder as $file) {
-            $system->remove($file->getRealPath());
+            $system->remove((string) $file->getRealPath());
         }
 
         // Now that the files are cleaned, we check if we need to remove some directories as well

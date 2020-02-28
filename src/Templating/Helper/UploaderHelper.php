@@ -45,9 +45,9 @@ class UploaderHelper extends Helper
         return $this->router->generate(sprintf('_uploader_cancel_%s', $key));
     }
 
-    public function uploadKey(): ?string
+    public function uploadKey(): string
     {
-        return ini_get('session.upload_progress.name');
+        return (string) ini_get('session.upload_progress.name');
     }
 
     /**

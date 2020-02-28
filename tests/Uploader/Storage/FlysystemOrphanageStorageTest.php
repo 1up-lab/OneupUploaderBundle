@@ -66,9 +66,11 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
 
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
             // create temporary file as if it was reassembled by the chunk manager
-            $file = tempnam($this->chunkDirectory, 'uploader');
+            $file = (string) tempnam($this->chunkDirectory, 'uploader');
 
+            /** @var resource $pointer */
             $pointer = fopen($file, 'w+');
+
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 

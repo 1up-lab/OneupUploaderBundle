@@ -113,7 +113,10 @@ class FlysystemStorage implements ChunkStorageInterface
             $mode = 'wb';
         }
 
+        /** @var resource $file */
         $file = fopen($this->unhandledChunk['chunk']->getPathname(), 'r');
+
+        /** @var resource $dest */
         $dest = fopen($this->streamWrapperPrefix . '/' . $path . $target, $mode);
 
         stream_copy_to_stream($file, $dest);

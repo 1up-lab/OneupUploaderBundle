@@ -24,7 +24,7 @@ class OrphanageManagerTest extends TestCase
     protected $orphanagePath;
 
     /**
-     * @var MockObject|ContainerInterface
+     * @var MockObject&ContainerInterface
      */
     protected $mockContainer;
 
@@ -114,10 +114,11 @@ class OrphanageManagerTest extends TestCase
     }
 
     /**
-     * @return MockObject|ContainerInterface
+     * @return MockObject&ContainerInterface
      */
     protected function getContainerMock()
     {
+        /** @var MockObject&ContainerInterface $mock */
         $mock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $mock
             ->expects($this->any())

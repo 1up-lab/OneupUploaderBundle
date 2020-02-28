@@ -37,7 +37,7 @@ class FilesystemStorage implements ChunkStorageInterface
         }
 
         foreach ($finder as $file) {
-            $system->remove($file->getRealPath());
+            $system->remove((string) $file->getRealPath());
         }
     }
 

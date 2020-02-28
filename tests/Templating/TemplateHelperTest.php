@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Templating;
 
+use Psr\Container\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TemplateHelperTest extends WebTestCase
 {
     public function testName(): void
     {
+        /** @var KernelBrowser $client */
         $client = static::createClient();
+
+        /** @var ContainerInterface $container */
         $container = $client->getContainer();
 
         $helper = $container->get('oneup_uploader.templating.uploader_helper');
@@ -23,7 +28,10 @@ class TemplateHelperTest extends WebTestCase
     {
         $this->expectException('\InvalidArgumentException');
 
+        /** @var KernelBrowser $client */
         $client = static::createClient();
+
+        /** @var ContainerInterface $container */
         $container = $client->getContainer();
 
         $helper = $container->get('oneup_uploader.templating.uploader_helper');

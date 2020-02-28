@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
+use Psr\Container\ContainerInterface;
 
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
@@ -25,8 +26,12 @@ abstract class AbstractValidationTest extends AbstractControllerTest
     public function testEvents(): void
     {
         $client = $this->client;
+
+        /** @var ContainerInterface $container */
+        $container = $client->getContainer();
+
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $dispatcher = $client->getContainer()->get('event_dispatcher');
+        $dispatcher = $container->get('event_dispatcher');
 
         // event data
         $validationCount = 0;
@@ -43,8 +48,12 @@ abstract class AbstractValidationTest extends AbstractControllerTest
     public function testIfRequestIsAvailableInEvent(): void
     {
         $client = $this->client;
+
+        /** @var ContainerInterface $container */
+        $container = $client->getContainer();
+
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-        $dispatcher = $client->getContainer()->get('event_dispatcher');
+        $dispatcher = $container->get('event_dispatcher');
 
         // event data
         $validationCount = 0;

@@ -11,12 +11,14 @@ use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\ErrorHandlerInterface;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
+use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -66,8 +68,8 @@ abstract class AbstractController
         /** @var SessionInterface $session */
         $session = $this->container->get('session');
 
-        $prefix = ini_get('session.upload_progress.prefix');
-        $name = ini_get('session.upload_progress.name');
+        $prefix = (string) ini_get('session.upload_progress.prefix');
+        $name = (string) ini_get('session.upload_progress.name');
 
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
@@ -84,8 +86,8 @@ abstract class AbstractController
         /** @var SessionInterface $session */
         $session = $this->container->get('session');
 
-        $prefix = ini_get('session.upload_progress.prefix');
-        $name = ini_get('session.upload_progress.name');
+        $prefix = (string) ini_get('session.upload_progress.prefix');
+        $name = (string) ini_get('session.upload_progress.name');
 
         $key = sprintf('%s.%s', $prefix, $request->get($name));
 
@@ -144,6 +146,7 @@ abstract class AbstractController
         $this->dispatchPreUploadEvent($file, $response, $request);
 
         // no error happend, proceed
+        /** @var NamerInterface $namer */
         $namer = $this->container->get($this->config['namer']);
         $name = $namer->name($file);
 
@@ -219,7 +222,13 @@ abstract class AbstractController
 
     protected function getRequest(): Request
     {
-        return $this->container->get('request_stack')->getMasterRequest();
+        /** @var RequestStack $requestStack */
+        $requestStack = $this->container->get('request_stack');
+
+        /** @var Request $request */
+        $request = $requestStack->getMasterRequest();
+
+        return $request;
     }
 
     /**

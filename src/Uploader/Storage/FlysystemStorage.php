@@ -47,6 +47,7 @@ class FlysystemStorage implements StorageInterface
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
         if ($file instanceof FilesystemFile) {
+            /** @var resource $stream */
             $stream = fopen($file->getPathname(), 'r+');
 
             $this->filesystem->putStream($path, $stream, [
@@ -75,12 +76,14 @@ class FlysystemStorage implements StorageInterface
             return new FlysystemFile($file, $this->filesystem, $this->streamWrapperPrefix);
         }
 
-        $manager = new MountManager([
-            'chunks' => $file->getFilesystem(),
-            'dest' => $this->filesystem,
-        ]);
+        if ($file instanceof FileInterface) {
+            $manager = new MountManager([
+                'chunks' => $file->getFilesystem(),
+                'dest' => $this->filesystem,
+            ]);
 
-        $manager->move(sprintf('chunks://%s', $file->getPathname()), sprintf('dest://%s', $path));
+            $manager->move(sprintf('chunks://%s', $file->getPathname()), sprintf('dest://%s', $path));
+        }
 
         /** @var File $file */
         $file = $this->filesystem->get($path);

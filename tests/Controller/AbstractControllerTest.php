@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
@@ -44,14 +45,23 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->client->catchExceptions(false);
         $this->client->disableReboot();
 
-        self::$container = $this->client->getContainer();
-        $this->helper = self::$container->get('oneup_uploader.templating.uploader_helper');
+        /** @var ContainerInterface $container */
+        $container = $this->client->getContainer();
+
+        /** @var UploaderHelper $helper */
+        $helper = self::$container->get('oneup_uploader.templating.uploader_helper');
+
+        /** @var RouterInterface $router */
+        $router = self::$container->get('router');
+
+        self::$container = $container;
+        $this->helper = $helper;
         $this->createdFiles = [];
         $this->requestHeaders = [
             'HTTP_ACCEPT' => 'application/json',
         ];
 
-        self::$container->get('router')->getRouteCollection()->all();
+        $router->getRouteCollection()->all();
     }
 
     public function tearDown(): void
@@ -135,7 +145,7 @@ abstract class AbstractControllerTest extends WebTestCase
 
     protected function createTempFile(int $size = 128): string
     {
-        $file = tempnam(sys_get_temp_dir(), 'uploader_');
+        $file = (string) tempnam(sys_get_temp_dir(), 'uploader_');
         file_put_contents($file, str_repeat('A', $size));
 
         $this->createdFiles[] = $file;

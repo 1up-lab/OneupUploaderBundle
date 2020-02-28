@@ -56,9 +56,11 @@ class GaufretteAmazonS3StorageTest extends TestCase
         }
 
         // create temporary file
-        $this->file = tempnam($this->directory, 'uploader');
+        $this->file = (string) tempnam($this->directory, 'uploader');
 
+        /** @var resource $pointer */
         $pointer = fopen($this->file, 'w+');
+
         fwrite($pointer, str_repeat('A', 1024), 1024);
         fclose($pointer);
 
