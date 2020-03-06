@@ -7,3 +7,4 @@ Tests/App/cache
 Tests/App/logs
 
 .idea
+.phpunit.result.cache

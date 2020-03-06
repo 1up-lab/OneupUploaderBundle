@@ -14,7 +14,7 @@ class EmptyResponseTest extends TestCase
         $response = new EmptyResponse();
         $assembled = $response->assemble();
 
-        $this->assertInternalType('array', $assembled);
+        $this->assertIsArray($assembled);
         $this->assertCount(0, $assembled);
     }
 
@@ -28,7 +28,7 @@ class EmptyResponseTest extends TestCase
 
         $assembled = $response->assemble();
 
-        $this->assertInternalType('array', $assembled);
+        $this->assertIsArray($assembled);
         $this->assertCount(2, $assembled);
     }
 }
