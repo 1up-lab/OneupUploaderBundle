@@ -240,5 +240,6 @@ abstract class AbstractController
         $dispatcher = $this->container->get('event_dispatcher');
 
         $dispatcher->dispatch($event, $eventName);
+        $dispatcher->dispatch($event, sprintf('%s.%s', $eventName, $this->type));
     }
 }
