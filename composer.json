@@ -1,7 +1,7 @@
 {
     "name": "oneup/uploader-bundle",
     "type": "symfony-bundle",
-    "description": "Handles multi file uploads in Symfony2. Features included: Chunked upload, Orphans management, Gaufrette support.",
+    "description": "This Symfony bundle provides a server implementation for handling single and multiple file uploads using either FineUploader, jQuery File Uploader, YUI3 Uploader, Uploadify, FancyUpload, MooUpload, Plupload or Dropzone. Features include chunked uploads, orphanages, Gaufrette and Flysystem support.",
     "keywords": ["fileupload", "upload", "FineUploader", "blueimp", "jQuery File Uploader", "YUI3 Uploader", "Uploadify", "FancyUpload", "MooUpload", "Plupload", "Dropzone"],
     "homepage": "https://1up.io",
     "license": "MIT",
