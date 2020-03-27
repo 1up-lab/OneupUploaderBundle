@@ -3,47 +3,49 @@
     "type": "symfony-bundle",
     "description": "Handles multi file uploads in Symfony2. Features included: Chunked upload, Orphans management, Gaufrette support.",
     "keywords": ["fileupload", "upload", "FineUploader", "blueimp", "jQuery File Uploader", "YUI3 Uploader", "Uploadify", "FancyUpload", "MooUpload", "Plupload", "Dropzone"],
-    "homepage": "http://1up.io",
+    "homepage": "https://1up.io",
     "license": "MIT",
     "authors": [
         {
             "name": "Jim Schmid",
             "email": "js@1up.io",
-            "homepage": "http://1up.io",
+            "homepage": "https://1up.io",
             "role": "Developer"
         },
         {
             "name": "David Greminger",
             "email": "dg@1up.io",
-            "homepage": "http://1up.io",
+            "homepage": "https://1up.io",
             "role": "Developer"
         }
     ],
 
     "require": {
-        "php": "^7.1",
-        "symfony/asset": "^3.4|^4.0",
-        "symfony/finder": "^3.4|^4.0",
-        "symfony/framework-bundle": "^3.4|^4.0",
-        "symfony/http-foundation": "^3.4|^4.0",
-        "symfony/templating": "^3.4|^4.0",
-        "symfony/translation": "^3.4|^4.0",
-        "symfony/yaml": "^3.4|^4.0",
-        "twig/twig": "^1.41|^2.10|^3.0"
+        "php": "^7.2.5",
+        "symfony/asset": "^4.4|^5.0",
+        "symfony/event-dispatcher-contracts": "^1.0|^2.0",
+        "symfony/finder": "^4.4|^5.0",
+        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/templating": "^4.4|^5.0",
+        "symfony/translation": "^4.4|^5.0",
+        "symfony/translation-contracts": "^1.0|^2.0",
+        "symfony/yaml": "^4.4|^5.0",
+        "twig/twig": "^2.4|^3.0"
     },
 
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
+        "doctrine/common": "^2.12",
         "friendsofphp/php-cs-fixer": "^2.16",
         "knplabs/gaufrette": "^0.9",
         "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
-        "phpunit/phpunit": "^7.5",
+        "phpstan/phpstan": "^0.12.10",
+        "phpunit/phpunit": "^8.5",
         "sensio/framework-extra-bundle": "^5.0",
-        "symfony/browser-kit": "^3.4|^4.0",
-        "symfony/class-loader": "^3.4|^4.0",
+        "symfony/browser-kit": "^4.4|^5.0",
         "symfony/phpunit-bridge": "^5.0",
-        "symfony/security-bundle": "^3.4|^4.0",
-        "symfony/var-dumper": "^3.4|^4.0",
+        "symfony/security-bundle": "^4.4|^5.0",
+        "symfony/var-dumper": "^4.4|^5.0",
         "twistor/flysystem-stream-wrapper": "^1.0"
     },
     "config": {
@@ -57,8 +59,13 @@
 
     "autoload": {
         "psr-4": {
-            "Oneup\\UploaderBundle\\": ""
+            "Oneup\\UploaderBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Oneup\\UploaderBundle\\Tests\\": "tests"
         },
-        "classmap": [ "Tests/App/AppKernel.php"]
+        "classmap": [ "tests/App/Kernel.php"]
     }
 }

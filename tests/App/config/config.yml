@@ -1,0 +1,146 @@
+framework:
+    translator:      { fallback: en }
+    secret:          secret
+    router:
+        resource: "%kernel.project_dir%/config/routing.yml"
+        strict_requirements: "%kernel.debug%"
+#    templating:
+#        engines: ['php']
+    default_locale:  en
+    session:
+        storage_id: session.storage.native
+        handler_id: ~
+    test:           true
+
+security:
+    providers:
+        in_memory: { memory: ~ }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+
+oneup_uploader:
+    mappings:
+
+        fineuploader:
+            frontend: fineuploader
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+        fineuploader_validation:
+            frontend: fineuploader
+            max_size: 256
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+            allowed_mimetypes:
+                image/jpeg : ['jpg', 'jpeg', 'jpe']
+                text/plain : ['txt']
+
+            disallowed_mimetypes: [ "image/gif" ]
+
+        fancyupload:
+            frontend: fancyupload
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+        fancyupload_validation:
+            frontend: fancyupload
+            max_size: 256
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+            allowed_mimetypes:
+                image/jpeg : ['jpg', 'jpeg', 'jpe']
+                text/plain : ['txt']
+            disallowed_mimetypes: [ "image/gif" ]
+
+        dropzone:
+            frontend: dropzone
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+        dropzone_validation:
+            frontend: dropzone
+            max_size: 256
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+            allowed_mimetypes:
+                image/jpeg : ['jpg', 'jpeg', 'jpe']
+                text/plain : ['txt']
+            disallowed_mimetypes: [ "image/gif" ]
+
+        yui3:
+            frontend: yui3
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+        yui3_validation:
+            frontend: yui3
+            max_size: 256
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+            allowed_mimetypes:
+                image/jpeg : ['jpg', 'jpeg', 'jpe']
+                text/plain : ['txt']
+            disallowed_mimetypes: [ "image/gif" ]
+
+        plupload:
+            frontend: plupload
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+        plupload_validation:
+            frontend: plupload
+            max_size: 256
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+            allowed_mimetypes:
+                image/jpeg : ['jpg', 'jpeg', 'jpe']
+                text/plain : ['txt']
+            disallowed_mimetypes: [ "image/gif" ]
+
+        uploadify:
+            frontend: uploadify
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+        uploadify_validation:
+            frontend: uploadify
+            max_size: 256
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+
+            allowed_mimetypes:
+                image/jpeg : ['jpg', 'jpeg', 'jpe']
+                text/plain : ['txt']
+            disallowed_mimetypes: [ "image/gif" ]
+
+        blueimp:
+            frontend: blueimp
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+            error_handler: oneup_uploader.error_handler.blueimp
+
+        blueimp_validation:
+            frontend: blueimp
+            max_size: 256
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"
+            error_handler: oneup_uploader.error_handler.blueimp
+
+            allowed_mimetypes:
+                image/jpeg : ['jpg', 'jpeg', 'jpe']
+                text/plain : ['txt']
+            disallowed_mimetypes: [ "image/gif" ]
+
+        mooupload:
+            frontend: mooupload
+            storage:
+                directory: "%kernel.project_dir%/cache/%kernel.environment%/upload"

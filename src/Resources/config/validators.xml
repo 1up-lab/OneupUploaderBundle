@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Oneup\UploaderBundle\EventListener\MaxSizeValidationListener">
+            <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
+        </service>
+
+        <service id="Oneup\UploaderBundle\EventListener\AllowedMimetypeAndExtensionValidationListener">
+            <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
+        </service>
+
+        <service id="Oneup\UploaderBundle\EventListener\DisallowedMimetypeValidationListener">
+            <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
+        </service>
+    </services>
+
+</container>
