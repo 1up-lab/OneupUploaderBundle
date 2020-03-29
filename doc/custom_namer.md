@@ -126,5 +126,45 @@ class CatNamer implements NamerInterface
     }
 }
 ```
-
 Every file uploaded through the `Controller` of this mapping will be named with your new directory structure.
+
+## How to use additional request params for naming?
+
+Inject the `RequestStack` into your custom `Namer` and call `getCurrentRequest()` on it:
+
+```php
+<?php
+
+namespace Acme\DemoBundle;
+
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
+use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+class CatNamer implements NamerInterface
+{
+    private $requestStack;
+    
+    public function __construct(RequestStack $requestStack){
+        $this->requestStack = $requestStack;
+    }
+    
+    /**
+     * Creates a catId directory name for the file being uploaded.
+     *
+     * @param FileInterface $file
+     * @return string The directory name.
+     */
+    public function name(FileInterface $file)
+    {
+        // Prevent path traversal attacks
+        $catId = basename($this->requestStack->getCurrentRequest()->get('catId'))
+        
+        return sprintf('cat_%s/%s.%s',
+            $catId,
+            uniqid(),
+            $file->getExtension()
+        );
+    }
+}
+```
