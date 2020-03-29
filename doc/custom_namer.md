@@ -157,7 +157,8 @@ class CatNamer implements NamerInterface
      */
     public function name(FileInterface $file)
     {
-        $catId = $this->requestStack->getCurrentRequest()->get('catId')
+        // Prevent path traversal attacks
+        $catId = basename($this->requestStack->getCurrentRequest()->get('catId'))
         
         return sprintf('cat_%s/%s.%s',
             $catId,
