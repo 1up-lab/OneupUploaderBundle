@@ -116,7 +116,8 @@ class CatNamer implements NamerInterface
      */
     public function name(FileInterface $file)
     {
-        $userId = $this->tokenStorage->getToken()->getUser()->getId();
+        // Prevent path traversal attacks
+        $userId = basename($this->tokenStorage->getToken()->getUser()->getId());
         
         return sprintf('%s/%s.%s',
             $userId,
