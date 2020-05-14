@@ -1,6 +1,9 @@
 OneupUploaderBundle
 ===================
 
+![CI](https://github.com/1up-lab/OneupUploaderBundle/workflows/CI/badge.svg)
+[![Total Downloads](https://poser.pugx.org/oneup/uploader-bundle/d/total.png)](https://packagist.org/packages/oneup/uploader-bundle)
+
 The OneupUploaderBundle for Symfony adds support for handling file uploads using one of the following JavaScript libraries, or [your own implementation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_uploader.md).
 
 * [Dropzone](http://www.dropzonejs.com/)
@@ -21,9 +24,6 @@ Features included:
 * Provides an orphanage for cleaning up orphaned files
 * Supports [Session upload progress & cancelation of uploads](http://php.net/manual/en/session.upload-progress.php) as of PHP 5.4
 * Fully unit tested
-
-[![Build Status](https://travis-ci.org/1up-lab/OneupUploaderBundle.png?branch=master)](https://travis-ci.org/1up-lab/OneupUploaderBundle)
-[![Total Downloads](https://poser.pugx.org/oneup/uploader-bundle/d/total.png)](https://packagist.org/packages/oneup/uploader-bundle)
 
 Documentation
 -------------
