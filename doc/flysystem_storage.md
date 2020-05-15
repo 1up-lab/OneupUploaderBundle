@@ -16,7 +16,7 @@ Add the OneupFlysystemBundle to your composer.json file.
 ```js
 {
     "require": {
-        "oneup/flysystem-bundle": "1.4.*"
+        "oneup/flysystem-bundle": "^3.4"
     }
 }
 ```
