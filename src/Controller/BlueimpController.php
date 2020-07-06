@@ -76,7 +76,7 @@ class BlueimpController extends AbstractChunkedController
         // previously saved files, let me know.
         $size = ((int) $endByte + 1 - (int) $startByte);
         $last = ((int) $endByte + 1) === (int) $totalBytes;
-        $index = $last ? \PHP_INT_MAX : floor($startByte / $size);
+        $index = $last ? \PHP_INT_MAX : (int) floor($startByte / $size);
 
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session
