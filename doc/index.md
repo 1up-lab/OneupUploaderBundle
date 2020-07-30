@@ -160,6 +160,7 @@ some more advanced features.
 * [Template helpers Reference](templating.md)
 * [Configuration Reference](configuration_reference.md)
 * [Testing this bundle](testing.md)
+* [Config based on PHP files](php_config.md)
 
 ## FAQ
 
