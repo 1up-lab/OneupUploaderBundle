@@ -1,5 +1,6 @@
 parameters:
-    bootstrap: %rootDir%/../../../vendor/autoload.php
+    bootstrapFiles:
+        - %rootDir%/../../../vendor/autoload.php
 
     excludes_analyse:
         - src/DependencyInjection/Configuration.php

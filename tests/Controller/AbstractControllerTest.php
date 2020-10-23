@@ -140,7 +140,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $response = $client->getResponse();
 
         $this->assertSame($expectedStatusCode, $response->getStatusCode());
-        $this->assertStringContainsStringIgnoringCase($expectedContentType, $response->headers->get('Content-Type'));
+        $this->assertStringContainsStringIgnoringCase($expectedContentType, (string) $response->headers->get('Content-Type'));
     }
 
     protected function createTempFile(int $size = 128): string
