@@ -113,7 +113,7 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
 
         $files = $this->orphanage->uploadFiles();
 
-        $this->assertInternalType('array', $files);
+        $this->assertIsArray($files);
         $this->assertCount($this->numberOfPayloads, $files);
 
         $finder = new Finder();

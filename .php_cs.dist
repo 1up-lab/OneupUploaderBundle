@@ -7,11 +7,13 @@ $finder = PhpCsFixer\Finder::create()
 
 return PhpCsFixer\Config::create()
     ->setRules([
+        '@DoctrineAnnotation' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         '@PHP71Migration' => true,
         '@PHP71Migration:risky' => true,
         '@PHPUnit60Migration:risky' => true,
+        '@PHPUnit75Migration:risky' => true,
         'align_multiline_comment' => true,
         'array_syntax' => ['syntax' => 'short'],
         'concat_space' => [
