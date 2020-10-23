@@ -3,8 +3,9 @@ phpunit.xml
 vendor
 log
 var
-Tests/App/cache
-Tests/App/logs
+tests/App/cache
+tests/App/logs
+tests/var
 
 .idea
 .phpunit.result.cache
