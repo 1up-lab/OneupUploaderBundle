@@ -106,8 +106,6 @@ abstract class AbstractValidationTest extends AbstractControllerTest
 
     public function testAgainstIncorrectMimeType(): void
     {
-        $this->markTestSkipped('Mock mime type getter.');
-
         // assemble a request
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());

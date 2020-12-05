@@ -71,8 +71,6 @@ class BlueimpValidationTest extends AbstractValidationTest
 
     public function testAgainstIncorrectMimeType(): void
     {
-        $this->markTestSkipped('Mock mime type getter.');
-
         // assemble a request
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
