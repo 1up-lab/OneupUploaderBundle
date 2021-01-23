@@ -197,7 +197,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
          * failed to upload it will not get mixed together with new one's chunks.
          */
 
-        return preg_grep('/^.+\/(\d+)_/', $results['keys']);
+        return (array) preg_grep('/^.+\/(\d+)_/', $results['keys']);
     }
 
     public function getFilesystem(): FilesystemInterface
