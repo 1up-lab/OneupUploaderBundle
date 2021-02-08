@@ -67,8 +67,11 @@ class OneupUploaderExtension extends Extension
 
     protected function processOrphanageConfig(): void
     {
+        /** @var string $kernelCacheDir */
+        $kernelCacheDir = $this->container->getParameter('kernel.cache_dir');
+
         if ('filesystem' === $this->config['chunks']['storage']['type']) {
-            $defaultDir = sprintf('%s/uploader/orphanage', $this->container->getParameter('kernel.cache_dir'));
+            $defaultDir = sprintf('%s/uploader/orphanage', $kernelCacheDir);
         } else {
             $defaultDir = 'orphanage';
         }
@@ -141,6 +144,8 @@ class OneupUploaderExtension extends Extension
 
     protected function createChunkStorageService(): void
     {
+        /** @var string $kernelCacheDir */
+        $kernelCacheDir = $this->container->getParameter('kernel.cache_dir');
         $config = &$this->config['chunks']['storage'];
 
         $storageClass = sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']);
@@ -148,7 +153,7 @@ class OneupUploaderExtension extends Extension
         switch ($config['type']) {
             case 'filesystem':
                 $config['directory'] = null === $config['directory'] ?
-                    sprintf('%s/uploader/chunks', $this->container->getParameter('kernel.cache_dir')) :
+                    sprintf('%s/uploader/chunks', $kernelCacheDir) :
                     $this->normalizePath($config['directory'])
                 ;
 
@@ -335,9 +340,22 @@ class OneupUploaderExtension extends Extension
 
     protected function getTargetDir(): string
     {
-        $projectDir = $this->container->hasParameter('kernel.project_dir') ?
-        $this->container->getParameter('kernel.project_dir') :
-        $this->container->getParameter('kernel.root_dir') . '/..';
+        $projectDir = '';
+
+        /** @var string $kernelProjectDir */
+        $kernelProjectDir = $this->container->getParameter('kernel.project_dir');
+
+        /** @var string $kernelRootDir */
+        $kernelRootDir = $this->container->getParameter('kernel.root_dir');
+
+        if ($this->container->hasParameter('kernel.project_dir')) {
+            $projectDir = $kernelProjectDir;
+        }
+
+        if ($this->container->hasParameter('kernel.root_dir')) {
+            $projectDir = sprintf('%s/..', $kernelRootDir);
+        }
+
         $publicDir = sprintf('%s/public', $projectDir);
 
         if (!is_dir($publicDir)) {

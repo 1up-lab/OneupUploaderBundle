@@ -39,7 +39,7 @@ class GaufretteAmazonS3StorageTest extends TestCase
      */
     protected $storage;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         if (
             false === getenv('AWS_ACCESS_KEY_ID') ||
@@ -74,7 +74,7 @@ class GaufretteAmazonS3StorageTest extends TestCase
         $this->storage = new GaufretteStorage($this->filesystem, 100000, null);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $files = $this->filesystem->listKeys($this->prefix);
         foreach ($files['keys'] as $filename) {

@@ -13,7 +13,7 @@ use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 
 class GaufretteFileTest extends FileTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $adapter = new Adapter(sys_get_temp_dir(), true);
         $filesystem = new GaufretteFilesystem($adapter);
@@ -39,7 +39,7 @@ class GaufretteFileTest extends FileTest
         $this->file = new GaufretteFile(new File($this->pathname, $filesystem), $filesystem, 'gaufrette://oneup/');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         unlink(sys_get_temp_dir() . '/' . $this->pathname);
         rmdir(sys_get_temp_dir() . '/' . $this->path);

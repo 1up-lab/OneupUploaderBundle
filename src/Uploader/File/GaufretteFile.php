@@ -66,12 +66,12 @@ class GaufretteFile extends File implements FileInterface
 
     public function getPath(): string
     {
-        return pathinfo($this->getKey(), PATHINFO_DIRNAME);
+        return pathinfo($this->getKey(), \PATHINFO_DIRNAME);
     }
 
     public function getBasename(): string
     {
-        return pathinfo($this->getKey(), PATHINFO_BASENAME);
+        return pathinfo($this->getKey(), \PATHINFO_BASENAME);
     }
 
     public function getMimeType(): string
@@ -81,7 +81,7 @@ class GaufretteFile extends File implements FileInterface
         if ($this->filesystem->getAdapter() instanceof StreamFactory && !$this->mimeType) {
             if ($this->streamWrapperPrefix) {
                 /** @var resource $finfo */
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $finfo = finfo_open(\FILEINFO_MIME_TYPE);
                 $this->mimeType = (string) finfo_file($finfo, $this->streamWrapperPrefix . $this->getKey());
                 finfo_close($finfo);
             }
@@ -102,7 +102,7 @@ class GaufretteFile extends File implements FileInterface
      */
     public function getExtension(): string
     {
-        return pathinfo($this->getKey(), PATHINFO_EXTENSION);
+        return pathinfo($this->getKey(), \PATHINFO_EXTENSION);
     }
 
     public function getFilesystem(): FilesystemInterface

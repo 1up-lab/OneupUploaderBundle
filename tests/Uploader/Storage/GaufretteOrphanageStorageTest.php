@@ -32,7 +32,7 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
      */
     protected $orphanageKey = 'orphanage';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->numberOfPayloads = 5;
         $this->realDirectory = sys_get_temp_dir() . '/storage';

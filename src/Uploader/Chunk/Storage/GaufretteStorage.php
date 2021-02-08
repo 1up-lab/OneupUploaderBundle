@@ -136,8 +136,8 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
              * therefore the order will be decided depending on the filename
              * It is only case-insensitive to be overly-careful.
              */
-            sort($chunks, SORT_STRING | SORT_FLAG_CASE);
-            $target = pathinfo($chunks[0], PATHINFO_BASENAME);
+            sort($chunks, \SORT_STRING | \SORT_FLAG_CASE);
+            $target = pathinfo($chunks[0], \PATHINFO_BASENAME);
         }
 
         $dst = $this->filesystem->createStream($path . $target);
@@ -197,7 +197,13 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
          * failed to upload it will not get mixed together with new one's chunks.
          */
 
-        return preg_grep('/^.+\/(\d+)_/', $results['keys']);
+        $chunks = preg_grep('/^.+\/(\d+)_/', $results['keys']);
+
+        if (false === $chunks) {
+            return [];
+        }
+
+        return $chunks;
     }
 
     public function getFilesystem(): FilesystemInterface

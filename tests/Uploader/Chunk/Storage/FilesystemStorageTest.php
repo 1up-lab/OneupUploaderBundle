@@ -14,7 +14,7 @@ class FilesystemStorageTest extends ChunkStorageTest
      */
     protected $tmpDir;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         // create a cache dir
         $tmpDir = sprintf('/tmp/%s', uniqid());
@@ -26,7 +26,7 @@ class FilesystemStorageTest extends ChunkStorageTest
         $this->storage = new FilesystemStorage($this->tmpDir);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $system = new Filesystem();
         $system->remove($this->tmpDir);

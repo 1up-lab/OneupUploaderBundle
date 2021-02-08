@@ -22,7 +22,7 @@ class FileBagExtractorTest extends TestCase
      */
     protected $mock;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $controller = AbstractController::class;
         $mock = $this->getMockBuilder($controller)

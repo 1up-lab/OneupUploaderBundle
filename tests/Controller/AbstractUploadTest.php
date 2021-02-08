@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class AbstractUploadTest extends AbstractControllerTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
