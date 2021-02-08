@@ -155,7 +155,10 @@ abstract class AbstractControllerTest extends WebTestCase
 
     protected function getUploadedFiles(): Finder
     {
+        /** @var string $env */
         $env = self::$container->getParameter('kernel.environment');
+
+        /** @var string $root */
         $root = self::$container->getParameter('kernel.project_dir');
 
         // assemble path
