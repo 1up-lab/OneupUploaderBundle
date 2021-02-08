@@ -30,7 +30,7 @@ class FlysystemStorageTest extends TestCase
      */
     protected $file;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->directory = sys_get_temp_dir() . '/storage';
 
@@ -49,7 +49,7 @@ class FlysystemStorageTest extends TestCase
         $this->storage = new Storage($filesystem, 100000);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->directory);

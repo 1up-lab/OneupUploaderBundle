@@ -42,7 +42,7 @@ abstract class OrphanageTest extends TestCase
      */
     protected $numberOfPayloads;
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->tempDirectory);

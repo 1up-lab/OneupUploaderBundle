@@ -34,7 +34,7 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
      */
     protected $orphanageKey = 'orphanage';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->numberOfPayloads = 5;
         $this->realDirectory = sys_get_temp_dir() . '/storage';
@@ -82,7 +82,7 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         }
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         (new Filesystem())->remove($this->realDirectory);
 

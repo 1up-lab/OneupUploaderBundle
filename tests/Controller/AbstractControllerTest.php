@@ -39,7 +39,7 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     protected $helper;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = static::createClient(['debug' => false]);
         $this->client->catchExceptions(false);
@@ -64,7 +64,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $router->getRouteCollection()->all();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         foreach ($this->createdFiles as $file) {
             @unlink($file);

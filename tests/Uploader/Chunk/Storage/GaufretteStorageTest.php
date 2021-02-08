@@ -26,7 +26,7 @@ class GaufretteStorageTest extends ChunkStorageTest
      */
     protected $chunkDir;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         // create a cache dir
         $parentDir = sprintf('/tmp/%s', uniqid());
@@ -46,7 +46,7 @@ class GaufretteStorageTest extends ChunkStorageTest
         $system->mkdir($this->tmpDir);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $system = new Filesystem();
         $system->remove($this->parentDir);

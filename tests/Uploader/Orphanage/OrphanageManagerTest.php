@@ -33,7 +33,7 @@ class OrphanageManagerTest extends TestCase
      */
     protected $mockConfig;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->numberOfOrphans = 10;
         $this->orphanagePath = sys_get_temp_dir() . '/orphanage';
@@ -54,7 +54,7 @@ class OrphanageManagerTest extends TestCase
         $this->mockContainer = $this->getContainerMock();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->orphanagePath);

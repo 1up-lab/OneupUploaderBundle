@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UrlSafeNamerTest extends FileTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->path = sys_get_temp_dir() . '/oneup_namer_test';
 
@@ -31,7 +31,7 @@ class UrlSafeNamerTest extends FileTest
         $this->file = new FilesystemFile($file);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         unlink($this->pathname);
         rmdir($this->path);

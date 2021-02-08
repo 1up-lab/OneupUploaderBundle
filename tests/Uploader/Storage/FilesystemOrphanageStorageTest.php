@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class FilesystemOrphanageStorageTest extends OrphanageTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->numberOfPayloads = 5;
         $this->tempDirectory = sys_get_temp_dir() . '/orphanage';

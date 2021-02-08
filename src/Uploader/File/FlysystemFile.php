@@ -33,12 +33,12 @@ class FlysystemFile extends File implements FileInterface
 
     public function getBasename(): string
     {
-        return pathinfo($this->getPath(), PATHINFO_BASENAME);
+        return pathinfo($this->getPath(), \PATHINFO_BASENAME);
     }
 
     public function getExtension(): string
     {
-        return pathinfo($this->getPath(), PATHINFO_EXTENSION);
+        return pathinfo($this->getPath(), \PATHINFO_EXTENSION);
     }
 
     public function getFilesystem(): FilesystemInterface

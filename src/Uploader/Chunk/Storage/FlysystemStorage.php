@@ -102,8 +102,8 @@ class FlysystemStorage implements ChunkStorageInterface
         if (empty($chunks)) {
             $target = $filename;
         } else {
-            sort($chunks, SORT_STRING | SORT_FLAG_CASE);
-            $target = pathinfo($chunks[0]['path'], PATHINFO_BASENAME);
+            sort($chunks, \SORT_STRING | \SORT_FLAG_CASE);
+            $target = pathinfo($chunks[0]['path'], \PATHINFO_BASENAME);
         }
 
         $mode = 'ab';
