@@ -342,18 +342,18 @@ class OneupUploaderExtension extends Extension
     {
         $projectDir = '';
 
-        if ($this->container->hasParameter('kernel.project_dir')) {
-            /** @var string $kernelProjectDir */
-            $kernelProjectDir = $this->container->getParameter('kernel.project_dir');
-
-            $projectDir = $kernelProjectDir;
-        }
-
         if ($this->container->hasParameter('kernel.root_dir')) {
             /** @var string $kernelRootDir */
             $kernelRootDir = $this->container->getParameter('kernel.root_dir');
 
             $projectDir = sprintf('%s/..', $kernelRootDir);
+        }
+
+        if ($this->container->hasParameter('kernel.project_dir')) {
+            /** @var string $kernelProjectDir */
+            $kernelProjectDir = $this->container->getParameter('kernel.project_dir');
+
+            $projectDir = $kernelProjectDir;
         }
 
         $publicDir = sprintf('%s/public', $projectDir);
