@@ -66,7 +66,7 @@ abstract class AbstractController
         $request = $this->getRequest();
 
         /** @var SessionInterface $session */
-        $session = $this->container->get('session');
+        $session = $request->getSession();
 
         $prefix = (string) ini_get('session.upload_progress.prefix');
         $name = (string) ini_get('session.upload_progress.name');
@@ -84,7 +84,7 @@ abstract class AbstractController
         $request = $this->getRequest();
 
         /** @var SessionInterface $session */
-        $session = $this->container->get('session');
+        $session = $request->getSession();
 
         $prefix = (string) ini_get('session.upload_progress.prefix');
         $name = (string) ini_get('session.upload_progress.name');
@@ -226,7 +226,9 @@ abstract class AbstractController
         $requestStack = $this->container->get('request_stack');
 
         /** @var Request $request */
-        $request = $requestStack->getMasterRequest();
+        $request = method_exists($requestStack, 'getMainRequest')
+            ? $requestStack->getMainRequest()
+            : $requestStack->getMasterRequest();
 
         return $request;
     }

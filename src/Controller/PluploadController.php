@@ -37,7 +37,7 @@ class PluploadController extends AbstractChunkedController
     protected function parseChunkedRequest(Request $request): array
     {
         /** @var SessionInterface $session */
-        $session = $this->container->get('session');
+        $session = $request->getSession();
 
         $orig = $request->get('name');
         $index = (int) $request->get('chunk');
