@@ -4,7 +4,7 @@ OneupUploaderBundle
 [![CI](https://github.com/1up-lab/OneupUploaderBundle/workflows/CI/badge.svg)](https://github.com/1up-lab/OneupUploaderBundle/actions)
 [![Total Downloads](https://poser.pugx.org/oneup/uploader-bundle/d/total.png)](https://packagist.org/packages/oneup/uploader-bundle)
 
-The OneupUploaderBundle for Symfony adds support for handling file uploads using one of the following JavaScript libraries, or [your own implementation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_uploader.md).
+The OneupUploaderBundle for Symfony adds support for handling file uploads using one of the following JavaScript libraries, or [your own implementation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/doc/custom_uploader.md).
 
 * [Dropzone](http://www.dropzonejs.com/)
 * [jQuery File Upload](http://blueimp.github.io/jQuery-File-Upload/)
@@ -28,7 +28,7 @@ Features included:
 Documentation
 -------------
 
-The entry point of the documentation can be found in the file `Resources/docs/index.md`
+The entry point of the documentation can be found in the file `docs/index.md`
 
 [Read the documentation for master](https://github.com/1up-lab/OneupUploaderBundle/blob/master/doc/index.md)
 
@@ -39,8 +39,8 @@ Upgrade Notes
 * Version **1.5.0** supports now [Flysystem](https://github.com/1up-lab/OneupFlysystemBundle) (Thank you @[lsv](https://github.com/lsv)! PR [#213](https://github.com/1up-lab/OneupUploaderBundle/pull/213)) and is no longer compatible with PHP 5.3 (it's [EOL](http://php.net/eol.php) since August 2014 anyway).
 * Version **v1.0.0** introduced some backward compatibility breaks. For a full list of changes, head to the [dedicated pull request](https://github.com/1up-lab/OneupUploaderBundle/pull/57).
 * If you're using chunked uploads consider upgrading from **v0.9.6** to **v0.9.7**. A critical issue was reported regarding the assembly of chunks. More information in ticket [#21](https://github.com/1up-lab/OneupUploaderBundle/issues/21#issuecomment-21560320).
-* Error management [changed](https://github.com/1up-lab/OneupUploaderBundle/pull/25) in Version **0.9.6**. You can now register an `ErrorHandler` per configured frontend. This comes bundled with some adjustments to the `blueimp` controller. More information is available in [the documentation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_error_handler.md).
-* Event dispatching [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/a408548b241f47af3539b2137c1817a21a51fde9) in Version **0.9.5**. The dispatching is now handled in the `upload*` functions. So if you have created your own implementation, be sure to remove the call to the `dispatchEvents` function, otherwise it will be called twice. Furthermore no `POST_UPLOAD` event will be fired anymore after uploading a chunk. You can get more information on this topic in the [documentation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_logic.md#using-chunked-uploads).
+* Error management [changed](https://github.com/1up-lab/OneupUploaderBundle/pull/25) in Version **0.9.6**. You can now register an `ErrorHandler` per configured frontend. This comes bundled with some adjustments to the `blueimp` controller. More information is available in [the documentation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/doc/custom_error_handler.md).
+* Event dispatching [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/a408548b241f47af3539b2137c1817a21a51fde9) in Version **0.9.5**. The dispatching is now handled in the `upload*` functions. So if you have created your own implementation, be sure to remove the call to the `dispatchEvents` function, otherwise it will be called twice. Furthermore no `POST_UPLOAD` event will be fired anymore after uploading a chunk. You can get more information on this topic in the [documentation](https://github.com/1up-lab/OneupUploaderBundle/blob/master/doc/custom_logic.md#using-chunked-uploads).
 * Event names [changed](https://github.com/1up-lab/OneupUploaderBundle/commit/f5d5fe4b6f7b9a04ce633acbc9c94a2dd0e0d6be) in Version **0.9.3**, update your EventListener accordingly.
 
 License
