@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -65,8 +64,7 @@ abstract class AbstractController
     {
         $request = $this->getRequest();
 
-        /** @var SessionInterface $session */
-        $session = $this->container->get('session');
+        $session = $request->getSession();
 
         $prefix = (string) ini_get('session.upload_progress.prefix');
         $name = (string) ini_get('session.upload_progress.name');
@@ -83,8 +81,7 @@ abstract class AbstractController
     {
         $request = $this->getRequest();
 
-        /** @var SessionInterface $session */
-        $session = $this->container->get('session');
+        $session = $request->getSession();
 
         $prefix = (string) ini_get('session.upload_progress.prefix');
         $name = (string) ini_get('session.upload_progress.name');
@@ -226,7 +223,9 @@ abstract class AbstractController
         $requestStack = $this->container->get('request_stack');
 
         /** @var Request $request */
-        $request = $requestStack->getMasterRequest();
+        $request = method_exists($requestStack, 'getMainRequest')
+            ? $requestStack->getMainRequest()
+            : $requestStack->getMasterRequest();
 
         return $request;
     }
