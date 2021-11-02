@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+// TODO V2
 use League\Flysystem\Adapter\Local as Adapter;
-use League\Flysystem\File;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem as FSAdapter;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage as ChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
@@ -78,7 +80,7 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
             // It seems that tempnam on OS X prepends 'private' to chunkDirectory, so strip that off as well
             $fileKey = str_replace([$this->realDirectory, '/private'], '', $file);
 
-            $this->payloads[] = new FlysystemFile(new File($filesystem, $fileKey), $filesystem);
+            $this->payloads[] = new FlysystemFile($fileKey, 0, 'file', $filesystem);
         }
     }
 
@@ -89,6 +91,10 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         FlysystemStreamWrapper::unregister('tests');
     }
 
+    /**
+     * @throws FileNotFoundException
+     * @throws FileExistsException
+     */
     public function testUpload(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
@@ -105,6 +111,10 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $this->assertCount(0, $finder);
     }
 
+    /**
+     * @throws FileNotFoundException
+     * @throws FileExistsException
+     */
     public function testUploadAndFetching(): void
     {
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {

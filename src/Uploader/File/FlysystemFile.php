@@ -4,41 +4,59 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\File;
 
-use League\Flysystem\File;
+// TODO V2
 use League\Flysystem\FilesystemInterface;
 
-class FlysystemFile extends File implements FileInterface
+class FlysystemFile implements FileInterface
 {
-    /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
+    /** @var int */
+    private $size;
 
-    /**
-     * @var string
-     */
-    protected $mimeType;
+    /** @var string */
+    private $pathname;
 
-    public function __construct(File $file, FilesystemInterface $filesystem, string $streamWrapperPrefix = null)
+    /** @var string */
+    private $mimeType;
+
+    /** @var FilesystemInterface */
+    private $filesystem;
+
+    public function __construct(string $pathname, int $size, string $mimeType, FilesystemInterface $filesystem)
     {
-        parent::__construct($filesystem, $file->getPath());
+        $this->pathname = $pathname;
+        $this->size = $size;
+        $this->mimeType = $mimeType;
+        $this->filesystem = $filesystem;
+    }
 
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
+    public function getSize(): int
+    {
+        return $this->size;
     }
 
     public function getPathname(): string
     {
-        return $this->getPath();
+        return $this->pathname;
+    }
+
+    public function getPath(): string
+    {
+        return pathinfo($this->pathname, \PATHINFO_DIRNAME);
+    }
+
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
     }
 
     public function getBasename(): string
     {
-        return pathinfo($this->getPath(), \PATHINFO_BASENAME);
+        return basename($this->pathname);
     }
 
     public function getExtension(): string
     {
-        return pathinfo($this->getPath(), \PATHINFO_EXTENSION);
+        return pathinfo($this->pathname, \PATHINFO_EXTENSION);
     }
 
     public function getFilesystem(): FilesystemInterface

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
+// TODO V2
 use League\Flysystem\Adapter\Local as Adapter;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem as FSAdapter;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage as Storage;
@@ -55,6 +58,10 @@ class FlysystemStorageTest extends TestCase
         $filesystem->remove($this->directory);
     }
 
+    /**
+     * @throws FileNotFoundException
+     * @throws FileExistsException
+     */
     public function testUpload(): void
     {
         $uploadedFile = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, true);
@@ -73,6 +80,10 @@ class FlysystemStorageTest extends TestCase
         }
     }
 
+    /**
+     * @throws FileNotFoundException
+     * @throws FileExistsException
+     */
     public function testUploadWithPath(): void
     {
         $uploadedFile = new UploadedFile($this->file, 'grumpycat.jpeg', null, null, true);
