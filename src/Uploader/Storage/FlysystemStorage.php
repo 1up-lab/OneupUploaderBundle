@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-// TODO V2
-use League\Flysystem\FileExistsException;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
 use League\Flysystem\MountManager;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
@@ -27,11 +25,11 @@ class FlysystemStorage implements StorageInterface
     protected $bufferSize;
 
     /**
-     * @var FilesystemInterface
+     * @var FilesystemOperator
      */
     private $filesystem;
 
-    public function __construct(FilesystemInterface $filesystem, int $bufferSize, ?string $streamWrapperPrefix = null)
+    public function __construct(FilesystemOperator $filesystem, int $bufferSize, ?string $streamWrapperPrefix = null)
     {
         $this->filesystem = $filesystem;
         $this->bufferSize = $bufferSize;
@@ -41,8 +39,7 @@ class FlysystemStorage implements StorageInterface
     /**
      * @param FileInterface|SymfonyFile $file
      *
-     * @throws FileExistsException
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      *
      * @return FileInterface|SymfonyFile
      */
@@ -54,7 +51,7 @@ class FlysystemStorage implements StorageInterface
             /** @var resource $stream */
             $stream = fopen($file->getPathname(), 'r+');
 
-            $this->filesystem->putStream($path, $stream, [
+            $this->filesystem->writeStream($path, $stream, [
                 'mimetype' => $file->getMimeType(),
             ]);
 
@@ -62,7 +59,7 @@ class FlysystemStorage implements StorageInterface
                 fclose($stream);
             }
 
-            $resultFile = new FlysystemFile($path, 0, 'file', $this->filesystem);
+            $resultFile = new FlysystemFile($path, $this->filesystem);
 
             unlink($file->getPathname());
 
@@ -70,9 +67,9 @@ class FlysystemStorage implements StorageInterface
         }
 
         if ($file instanceof FlysystemFile && $file->getFilesystem() === $this->filesystem) {
-            $file->getFilesystem()->rename($file->getPathname(), $path);
+            $file->getFilesystem()->move($file->getPathname(), $path);
 
-            return new FlysystemFile($path, 0, 'file', $this->filesystem);
+            return new FlysystemFile($path, $this->filesystem);
         }
 
         if ($file instanceof FileInterface) {
@@ -84,6 +81,6 @@ class FlysystemStorage implements StorageInterface
             $manager->move('chunks://' . $file->getPathname(), 'dest://' . $path);
         }
 
-        return new FlysystemFile($path, 0, 'file', $this->filesystem);
+        return new FlysystemFile($path, $this->filesystem);
     }
 }

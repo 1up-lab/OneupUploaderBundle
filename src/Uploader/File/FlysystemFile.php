@@ -4,34 +4,29 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\File;
 
-// TODO V2
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
 
 class FlysystemFile implements FileInterface
 {
-    /** @var int */
-    private $size;
-
     /** @var string */
     private $pathname;
 
-    /** @var string */
-    private $mimeType;
-
-    /** @var FilesystemInterface */
+    /** @var FilesystemOperator */
     private $filesystem;
 
-    public function __construct(string $pathname, int $size, string $mimeType, FilesystemInterface $filesystem)
+    public function __construct(string $pathname, FilesystemOperator $filesystem)
     {
         $this->pathname = $pathname;
-        $this->size = $size;
-        $this->mimeType = $mimeType;
         $this->filesystem = $filesystem;
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function getSize(): int
     {
-        return $this->size;
+        return $this->filesystem->fileSize($this->pathname);
     }
 
     public function getPathname(): string
@@ -44,9 +39,12 @@ class FlysystemFile implements FileInterface
         return pathinfo($this->pathname, \PATHINFO_DIRNAME);
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function getMimeType(): string
     {
-        return $this->mimeType;
+        return $this->filesystem->mimeType($this->pathname);
     }
 
     public function getBasename(): string
@@ -59,7 +57,7 @@ class FlysystemFile implements FileInterface
         return pathinfo($this->pathname, \PATHINFO_EXTENSION);
     }
 
-    public function getFilesystem(): FilesystemInterface
+    public function getFilesystem(): FilesystemOperator
     {
         return $this->filesystem;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\DependencyInjection;
 
-// TODO V2
 use Gaufrette\Filesystem as GaufretteFilesystem;
 use League\Flysystem\Filesystem as FlysystemFilesystem;
 use Symfony\Component\Config\FileLocator;

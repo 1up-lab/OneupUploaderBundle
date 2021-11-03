@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
-// TODO V2
 use Exception;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -35,7 +35,7 @@ class FlysystemStorage implements ChunkStorageInterface
     protected $streamWrapperPrefix;
 
     /**
-     * @var Filesystem
+     * @var FilesystemOperator
      */
     private $filesystem;
 
@@ -60,6 +60,9 @@ class FlysystemStorage implements ChunkStorageInterface
         ];
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function clear(int $maxAge, string $prefix = null): void
     {
         $prefix = $prefix ?: $this->prefix;
@@ -72,9 +75,10 @@ class FlysystemStorage implements ChunkStorageInterface
         // this also means the files inside are old
         // but after the files are deleted the dirs
         // would remain
+        /** @var StorageAttributes $key */
         foreach ($matches as $key) {
-            $path = $key['path'];
-            $timestamp = $key['timestamp'] ?? $this->filesystem->getTimestamp($path);
+            $path = $key->path();
+            $timestamp = $key->lastModified();
 
             if ($maxAge <= $now - $timestamp) {
                 $toDelete[] = $path;
@@ -94,6 +98,8 @@ class FlysystemStorage implements ChunkStorageInterface
 
     /**
      * @param array $chunks
+     *
+     * @throws FilesystemException
      */
     public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk): FlysystemFile
     {
@@ -134,42 +140,48 @@ class FlysystemStorage implements ChunkStorageInterface
              * the previous file is unaccessible by the user, but if it is not removed
              * it will block the user from trying to re-upload it.
              */
-            if ($this->filesystem->has($path . $name)) {
+            if ($this->filesystem->fileExists($path . $name)) {
                 $this->filesystem->delete($path . $name);
             }
 
-            $this->filesystem->rename($path . $target, $path . $name);
+            $this->filesystem->move($path . $target, $path . $name);
             $target = $name;
         }
 
-        /** @var FlysystemFile $uploaded */
-        $uploaded = $this->filesystem->get($path . $target);
-
-        if (!$renameChunk) {
-            return $uploaded;
-        }
-
-        return new FlysystemFile($path . $target, 0, 'file', $this->filesystem);
+        return new FlysystemFile($path . $target, $this->filesystem);
     }
 
     public function cleanup(string $path): void
     {
         try {
             $this->filesystem->delete($path);
-        } catch (FileNotFoundException $e) {
+        } catch (FilesystemException $e) {
             // File already gone.
         }
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function getChunks(string $uuid): array
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
 
-        return $this->filesystem->listFiles($this->prefix . '/' . $uuid);
+        return $this->filesystem->listContents($this->prefix . '/' . $uuid)
+            ->filter(function (StorageAttributes $attributes) { return $attributes->isFile(); })
+            ->sortByPath()
+            ->map(function (StorageAttributes $attributes) {
+                return [
+                    'path' => $attributes->path(),
+                    'type' => $attributes->type(),
+                    'timestamp' => $attributes->lastModified(),
+                    'size' => $this->filesystem->fileSize($attributes->path()),
+                ];
+            })->toArray();
     }
 
-    public function getFilesystem(): FilesystemInterface
+    public function getFilesystem(): FilesystemOperator
     {
         return $this->filesystem;
     }
