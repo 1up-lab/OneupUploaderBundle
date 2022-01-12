@@ -75,6 +75,7 @@ class OrphanageManager
         $finder = new Finder();
         $finder->in($this->config['directory'])->directories();
 
+        /** @var array<int, \Symfony\Component\Finder\SplFileInfo> $dirArray */
         $dirArray = iterator_to_array($finder, false);
         $size = \count($dirArray);
 
