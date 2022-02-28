@@ -30,7 +30,7 @@ class Kernel extends BaseKernel
         $loader->load($this->getProjectDir() . '/config/config.yml');
     }
 
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return __DIR__;
     }
