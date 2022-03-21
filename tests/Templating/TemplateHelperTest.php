@@ -12,6 +12,8 @@ class TemplateHelperTest extends WebTestCase
 {
     public function testName(): void
     {
+        self::ensureKernelShutdown();
+
         /** @var KernelBrowser $client */
         $client = static::createClient();
 
@@ -27,6 +29,8 @@ class TemplateHelperTest extends WebTestCase
     public function testNonExistentMappingForMaxSize(): void
     {
         $this->expectException('\InvalidArgumentException');
+
+        self::ensureKernelShutdown();
 
         /** @var KernelBrowser $client */
         $client = static::createClient();

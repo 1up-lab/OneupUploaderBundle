@@ -36,8 +36,12 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.2, 7.3, 7.4, 8.0]
-                symfony: [4.4, 5.0]
+                php: [7.4, 8.0]
+                symfony: [4.4, 5.4, 6.0]
+                exclude:
+                    # Symfony 6.0 does not supports php <8.0
+                    - php: 7.4
+                      symfony: 6.0
         steps:
             - name: Setup PHP
               uses: shivammathur/setup-php@2.9.0
@@ -63,7 +67,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@2.7.0
               with:
-                  php-version: 7.2
+                  php-version: 7.4
                   extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo_mysql, zlib
                   coverage: none
 

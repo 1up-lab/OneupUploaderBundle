@@ -10,7 +10,6 @@ framework:
 #        engines: ['php']
     default_locale:  en
     session:
-        storage_id: session.storage.native
         handler_id: ~
     test:           true
 
@@ -21,8 +20,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: ~
 
 oneup_uploader:
     mappings:
