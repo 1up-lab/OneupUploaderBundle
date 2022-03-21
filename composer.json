@@ -52,7 +52,7 @@
         "knplabs/gaufrette": "^0.9",
         "oneup/flysystem-bundle": "^1.2 || ^2.0 || ^3.0",
         "phpstan/phpstan": "^0.12.10",
-        "phpunit/phpunit": "^8.5",
+        "phpunit/phpunit": "^9.0",
         "sensio/framework-extra-bundle": "^5.0 || ^6.0",
         "symfony/browser-kit": "^4.4 || ^5.0 || ^6.0",
         "symfony/phpunit-bridge": "^5.0",

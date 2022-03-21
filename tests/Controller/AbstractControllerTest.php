@@ -41,6 +41,8 @@ abstract class AbstractControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
+        self::ensureKernelShutdown();
+
         $this->client = static::createClient(['debug' => false]);
         $this->client->catchExceptions(false);
         $this->client->disableReboot();
@@ -49,12 +51,13 @@ abstract class AbstractControllerTest extends WebTestCase
         $container = $this->client->getContainer();
 
         /** @var UploaderHelper $helper */
-        $helper = self::$container->get('oneup_uploader.templating.uploader_helper');
+        $helper = $container->get('oneup_uploader.templating.uploader_helper');
 
         /** @var RouterInterface $router */
-        $router = self::$container->get('router');
+        $router = $container->get('router');
 
         self::$container = $container;
+
         $this->helper = $helper;
         $this->createdFiles = [];
         $this->requestHeaders = [
