@@ -10,6 +10,8 @@ use Oneup\UploaderBundle\Uploader\Storage\FilesystemOrphanageStorage;
 use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -49,8 +51,13 @@ class FilesystemOrphanageStorageTest extends OrphanageTest
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
+        $requestStack = new RequestStack();
+        $request = new Request();
+        $request->setSession($session);
+        $requestStack->push($request);
+
         $config = ['directory' => $this->tempDirectory];
 
-        $this->orphanage = new FilesystemOrphanageStorage($this->storage, $session, $chunkStorage, $config, 'cat');
+        $this->orphanage = new FilesystemOrphanageStorage($this->storage, $requestStack, $chunkStorage, $config, 'cat');
     }
 }

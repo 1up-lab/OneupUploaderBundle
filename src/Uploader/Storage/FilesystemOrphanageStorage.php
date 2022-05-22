@@ -9,6 +9,7 @@ use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageStorageInterface
@@ -19,7 +20,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
     protected $storage;
 
     /**
-     * @var SessionInterface
+     * @var SessionInterface|null
      */
     protected $session;
 
@@ -38,12 +39,12 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
      */
     protected $type;
 
-    public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorage $chunkStorage, array $config, string $type)
+    public function __construct(StorageInterface $storage, RequestStack $requestStack, ChunkStorage $chunkStorage, array $config, string $type)
     {
         parent::__construct($config['directory']);
 
         $this->storage = $storage;
-        $this->session = $session;
+        $this->session = $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getSession() : null;
         $this->chunkStorage = $chunkStorage;
         $this->config = $config;
         $this->type = $type;
@@ -56,7 +57,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
      */
     public function upload($file, string $name, string $path = null)
     {
-        if (!$this->session->isStarted()) {
+        if (!$this->session || !$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         }
 
