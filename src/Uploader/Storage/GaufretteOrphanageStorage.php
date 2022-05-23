@@ -9,6 +9,7 @@ use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage as GaufretteChu
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
@@ -48,7 +49,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
 
         $this->storage = $storage;
         $this->chunkStorage = $chunkStorage;
-        $this->session = $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getSession() : null;
+        $this->session = $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getSession() : new Session();
         $this->config = $config;
         $this->type = $type;
     }
@@ -60,7 +61,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
      */
     public function upload($file, string $name, string $path = null)
     {
-        if (!$this->session || !$this->session->isStarted()) {
+        if (!$this->session instanceof SessionInterface || !$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         }
 

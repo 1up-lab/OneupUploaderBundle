@@ -57,7 +57,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
      */
     public function upload($file, string $name, string $path = null)
     {
-        if (!$this->session || !$this->session->isStarted()) {
+        if (!$this->session instanceof SessionInterface || !$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         }
 
