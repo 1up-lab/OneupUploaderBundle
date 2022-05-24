@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
-use Composer\InstalledVersions;
 use League\Flysystem\Filesystem as FSAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter as Adapter;
@@ -158,14 +157,6 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
         $key = key($files);
         $file = $files[$key];
         $this->assertSame($key, $file->getPathname());
-
-        $mimeType = version_compare(
-            InstalledVersions::getVersion('symfony/mime'),
-            '6.0.0.0',
-            '<'
-        ) ? 'text/plain' : 'image/jpeg';
-
-        $this->assertSame($mimeType, $file->getMimetype());
         $this->assertSame(1024, $file->getSize());
     }
 }

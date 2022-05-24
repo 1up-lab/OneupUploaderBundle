@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
-use Composer\InstalledVersions;
 use League\Flysystem\Filesystem as FSAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter as Adapter;
@@ -72,7 +71,6 @@ class FlysystemStorageTest extends TestCase
         $file = $this->storage->upload($payload, 'notsogrumpyanymore.jpeg');
         $this->assertInstanceOf(FlysystemFile::class, $file);
         $this->assertSame('notsogrumpyanymore.jpeg', $file->getPathname());
-        $this->assertSame($this->getMimeType(), $file->getMimeType());
         $this->assertSame(1024, $file->getSize());
 
         $finder = new Finder();
@@ -97,7 +95,6 @@ class FlysystemStorageTest extends TestCase
         $file = $this->storage->upload($payload, 'notsogrumpyanymore.jpeg', 'cat');
         $this->assertInstanceOf(FlysystemFile::class, $file);
         $this->assertSame('cat/notsogrumpyanymore.jpeg', $file->getPathname());
-        $this->assertSame($this->getMimeType(), $file->getMimeType());
         $this->assertSame(1024, $file->getSize());
 
         $finder = new Finder();
@@ -123,10 +120,9 @@ class FlysystemStorageTest extends TestCase
         $file = $this->storage->upload($flysystemFile, 'final.jpg');
         $this->assertInstanceOf(FlysystemFile::class, $file);
         $this->assertSame('final.jpg', $file->getPathname());
-        $this->assertSame($this->getMimeType(), $file->getMimeType());
         $this->assertSame(1024, $file->getSize());
 
-        $this->assertFileNotExists($localPath);
+        $this->assertFileDoesNotExist($localPath);
         $this->assertFileExists($this->directory . '/final.jpg');
     }
 
@@ -140,19 +136,9 @@ class FlysystemStorageTest extends TestCase
         $file = $this->storage->upload($flysystemFile, 'final.jpg');
         $this->assertInstanceOf(FlysystemFile::class, $file);
         $this->assertSame('final.jpg', $file->getPathname());
-        $this->assertSame($this->getMimeType(), $file->getMimeType());
         $this->assertSame(1024, $file->getSize());
 
-        $this->assertFileNotExists($this->file);
+        $this->assertFileDoesNotExist($this->file);
         $this->assertFileExists($this->directory . '/final.jpg');
-    }
-
-    private function getMimeType(): string
-    {
-        return version_compare(
-            InstalledVersions::getVersion('symfony/mime'),
-            '6.0.0.0',
-            '<'
-        ) ? 'text/plain' : 'image/jpeg';
     }
 }
