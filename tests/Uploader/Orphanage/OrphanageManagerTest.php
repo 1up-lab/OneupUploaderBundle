@@ -65,7 +65,7 @@ class OrphanageManagerTest extends TestCase
         $manager = new OrphanageManager($this->mockContainer, $this->mockConfig);
         $service = $manager->get('grumpycat');
 
-        $this->assertTrue($service);
+        $this->assertInstanceOf(\stdClass::class, $service);
     }
 
     public function testClearAllInPast(): void
@@ -119,12 +119,12 @@ class OrphanageManagerTest extends TestCase
     protected function getContainerMock()
     {
         /** @var MockObject&ContainerInterface $mock */
-        $mock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $mock = $this->createMock(ContainerInterface::class);
         $mock
             ->expects($this->any())
             ->method('get')
             ->with('oneup_uploader.orphanage.grumpycat')
-            ->willReturn(true)
+            ->willReturn(new \stdClass())
         ;
 
         return $mock;

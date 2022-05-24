@@ -13,7 +13,6 @@ class UniqidNamerTest extends TestCase
 {
     public function testNamerReturnsName(): void
     {
-        /** @var FilesystemFile&MockObject $file */
         $file = $this->createMock(FilesystemFile::class);
 
         $file
@@ -22,7 +21,7 @@ class UniqidNamerTest extends TestCase
         ;
 
         $namer = new UniqidNamer();
-        $this->assertRegExp('/[a-z0-9]{13}.jpeg/', $namer->name($file));
+        $this->assertMatchesRegularExpression('/[a-z0-9]{13}.jpeg/', $namer->name($file));
     }
 
     public function testNamerReturnsUniqueName(): void

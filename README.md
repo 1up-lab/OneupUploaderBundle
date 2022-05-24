@@ -34,6 +34,7 @@ The entry point of the documentation can be found in the file `docs/index.md`
 
 Upgrade Notes
 -------------
+* Version **3.2.0** supports now Symfony 6 (kudos to @[pich](https://github.com/pich)), see [#421](https://github.com/1up-lab/OneupUploaderBundle/pull/421)! PHP 7.2/7.3 support was dropped.
 * Version **3.0.0** supports now Symfony 5 (kudos to @[steveWinter](https://github.com/steveWinter), @[gubler](https://github.com/gubler), @[patrickbussmann](https://github.com/patrickbussmann), @[ErnadoO](https://github.com/ErnadoO) and @[enumag](https://github.com/enumag), see [#373](https://github.com/1up-lab/OneupUploaderBundle/pull/373)! Symfony 3.x support was dropped.
 * Version **2.0.0** supports now Symfony 4 (Thank you @[istvancsabakis](https://github.com/istvancsabakis), see [#295](https://github.com/1up-lab/OneupUploaderBundle/pull/295))! Symfony 2.x support was dropped. You can also configure a file extension validation whitelist now (PR [#262](https://github.com/1up-lab/OneupUploaderBundle/pull/262)).
 * Version **1.5.0** supports now [Flysystem](https://github.com/1up-lab/OneupFlysystemBundle) (Thank you @[lsv](https://github.com/lsv)! PR [#213](https://github.com/1up-lab/OneupUploaderBundle/pull/213)) and is no longer compatible with PHP 5.3 (it's [EOL](http://php.net/eol.php) since August 2014 anyway).
