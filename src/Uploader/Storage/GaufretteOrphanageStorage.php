@@ -8,6 +8,7 @@ use Gaufrette\File;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage as GaufretteChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -20,7 +21,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
     protected $storage;
 
     /**
-     * @var SessionInterface|null
+     * @var SessionInterface
      */
     protected $session;
 
@@ -47,9 +48,12 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
          */
         parent::__construct($chunkStorage->getFilesystem(), $chunkStorage->buffersize, $chunkStorage->getStreamWrapperPrefix());
 
+        /** @var Request $request */
+        $request = $requestStack->getCurrentRequest();
+
         $this->storage = $storage;
         $this->chunkStorage = $chunkStorage;
-        $this->session = $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getSession() : new Session();
+        $this->session = $request->getSession();
         $this->config = $config;
         $this->type = $type;
     }

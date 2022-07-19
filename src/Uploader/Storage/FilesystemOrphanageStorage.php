@@ -9,6 +9,7 @@ use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -20,7 +21,7 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
     protected $storage;
 
     /**
-     * @var SessionInterface|null
+     * @var SessionInterface
      */
     protected $session;
 
@@ -43,8 +44,11 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
     {
         parent::__construct($config['directory']);
 
+        /** @var Request $request */
+        $request = $requestStack->getCurrentRequest();
+
         $this->storage = $storage;
-        $this->session = $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getSession() : null;
+        $this->session = $request->getSession();
         $this->chunkStorage = $chunkStorage;
         $this->config = $config;
         $this->type = $type;

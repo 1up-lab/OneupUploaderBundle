@@ -9,6 +9,7 @@ use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage as ChunkStorage
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -20,7 +21,7 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     protected $storage;
 
     /**
-     * @var SessionInterface|null
+     * @var SessionInterface
      */
     protected $session;
 
@@ -47,9 +48,12 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
          */
         parent::__construct($chunkStorage->getFilesystem(), $chunkStorage->bufferSize, $chunkStorage->getStreamWrapperPrefix());
 
+        /** @var Request $request */
+        $request = $requestStack->getCurrentRequest();
+
         $this->storage = $storage;
         $this->chunkStorage = $chunkStorage;
-        $this->session = $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getSession() : null;
+        $this->session = $request->getSession();
         $this->config = $config;
         $this->type = $type;
     }
