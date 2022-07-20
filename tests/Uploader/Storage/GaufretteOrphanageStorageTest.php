@@ -12,6 +12,8 @@ use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteOrphanageStorage;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -60,9 +62,14 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
+        $requestStack = new RequestStack();
+        $request = new Request();
+        $request->setSession($session);
+        $requestStack->push($request);
+
         $config = ['directory' => 'orphanage'];
 
-        $this->orphanage = new GaufretteOrphanageStorage($this->storage, $session, $chunkStorage, $config, 'cat');
+        $this->orphanage = new GaufretteOrphanageStorage($this->storage, $requestStack, $chunkStorage, $config, 'cat');
 
         for ($i = 0; $i < $this->numberOfPayloads; ++$i) {
             // create temporary file as if it was reassembled by the chunk manager
