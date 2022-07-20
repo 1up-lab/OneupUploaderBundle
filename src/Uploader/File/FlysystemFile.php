@@ -4,44 +4,60 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\File;
 
-use League\Flysystem\File;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
 
-class FlysystemFile extends File implements FileInterface
+class FlysystemFile implements FileInterface
 {
-    /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
+    /** @var string */
+    private $pathname;
 
-    /**
-     * @var string
-     */
-    protected $mimeType;
+    /** @var FilesystemOperator */
+    private $filesystem;
 
-    public function __construct(File $file, FilesystemInterface $filesystem, string $streamWrapperPrefix = null)
+    public function __construct(string $pathname, FilesystemOperator $filesystem)
     {
-        parent::__construct($filesystem, $file->getPath());
+        $this->pathname = $pathname;
+        $this->filesystem = $filesystem;
+    }
 
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
+    /**
+     * @throws FilesystemException
+     */
+    public function getSize(): int
+    {
+        return $this->filesystem->fileSize($this->pathname);
     }
 
     public function getPathname(): string
     {
-        return $this->getPath();
+        return $this->pathname;
+    }
+
+    public function getPath(): string
+    {
+        return pathinfo($this->pathname, \PATHINFO_DIRNAME);
+    }
+
+    /**
+     * @throws FilesystemException
+     */
+    public function getMimeType(): string
+    {
+        return $this->filesystem->mimeType($this->pathname);
     }
 
     public function getBasename(): string
     {
-        return pathinfo($this->getPath(), \PATHINFO_BASENAME);
+        return basename($this->pathname);
     }
 
     public function getExtension(): string
     {
-        return pathinfo($this->getPath(), \PATHINFO_EXTENSION);
+        return pathinfo($this->pathname, \PATHINFO_EXTENSION);
     }
 
-    public function getFilesystem(): FilesystemInterface
+    public function getFilesystem(): FilesystemOperator
     {
         return $this->filesystem;
     }

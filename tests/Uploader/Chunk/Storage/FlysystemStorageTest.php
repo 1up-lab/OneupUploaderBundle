@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Chunk\Storage;
 
-use League\Flysystem\Adapter\Local as Adapter;
 use League\Flysystem\Filesystem as LeagueFilesystem;
-use League\Flysystem\Plugin\ListFiles;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\Local\LocalFilesystemAdapter as Adapter;
+use M2MTech\FlysystemStreamWrapper\FlysystemStreamWrapper;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage;
 use Symfony\Component\Filesystem\Filesystem;
-use Twistor\FlysystemStreamWrapper;
 
 class FlysystemStorageTest extends ChunkStorageTest
 {
@@ -41,7 +41,6 @@ class FlysystemStorageTest extends ChunkStorageTest
         $adapter = new Adapter($this->parentDir);
 
         $filesystem = new LeagueFilesystem($adapter);
-        $filesystem->addPlugin(new ListFiles());
 
         FlysystemStreamWrapper::register('tests', $filesystem);
 
@@ -57,5 +56,31 @@ class FlysystemStorageTest extends ChunkStorageTest
         $system->remove($this->parentDir);
 
         FlysystemStreamWrapper::unregister('tests');
+    }
+
+    /**
+     * @throws FilesystemException
+     */
+    public function testGetChunks(): void
+    {
+        $uuid = uniqid('', true);
+        $dir = $this->tmpDir . '/' . $uuid;
+        $system = new Filesystem();
+        $system->mkdir($dir);
+        $timeFrom = time();
+        $system->mkdir($dir . '/shouldNotBeListed');
+        $system->dumpFile($dir . '/chunk1', 'test');
+        $system->dumpFile($dir . '/chunk2', 'test');
+        $system->dumpFile($dir . '/chunk3', 'test');
+        $timeTo = time();
+
+        $files = $this->storage->getChunks($uuid);
+        $this->assertCount(3, $files);
+        $file = $files[0];
+        $this->assertSame($this->chunkKey . '/' . $uuid . '/chunk1', $file['path']);
+        $this->assertSame('file', $file['type']);
+        $this->assertGreaterThanOrEqual($timeFrom, $file['timestamp']);
+        $this->assertLessThanOrEqual($timeTo, $file['timestamp']);
+        $this->assertSame(4, $file['size']);
     }
 }

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use League\Flysystem\File;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\StorageAttributes;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage as ChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
@@ -61,6 +62,8 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     /**
      * @param FileInterface|SymfonyFile $file
      *
+     * @throws FilesystemException
+     *
      * @return FileInterface|SymfonyFile
      */
     public function upload($file, string $name, string $path = null)
@@ -72,6 +75,9 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
         return parent::upload($file, $name, $this->getPath());
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function uploadFiles(array $files = null): array
     {
         try {
@@ -95,6 +101,9 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
         }
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function getFiles(): array
     {
         $fileList = $this->chunkStorage
@@ -102,13 +111,11 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
             ->listContents($this->getPath());
         $files = [];
 
+        /** @var StorageAttributes $fileDetail */
         foreach ($fileList as $fileDetail) {
-            $key = $fileDetail['path'];
-            if ('file' === $fileDetail['type']) {
-                $files[$key] = new FlysystemFile(
-                    new File($this->chunkStorage->getFilesystem(), $key),
-                    $this->chunkStorage->getFilesystem()
-                );
+            $key = $fileDetail->path();
+            if ($fileDetail->isFile()) {
+                $files[$key] = new FlysystemFile($key, $this->chunkStorage->getFilesystem());
             }
         }
 
