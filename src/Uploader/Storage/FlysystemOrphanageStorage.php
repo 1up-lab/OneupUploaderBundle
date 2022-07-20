@@ -10,8 +10,9 @@ use League\Flysystem\StorageAttributes;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage as ChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageStorageInterface
@@ -41,7 +42,7 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
      */
     protected $type;
 
-    public function __construct(StorageInterface $storage, SessionInterface $session, ChunkStorage $chunkStorage, array $config, string $type)
+    public function __construct(StorageInterface $storage, RequestStack $requestStack, ChunkStorage $chunkStorage, array $config, string $type)
     {
         /*
          * initiate the storage on the chunk storage's filesystem
@@ -49,9 +50,12 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
          */
         parent::__construct($chunkStorage->getFilesystem(), $chunkStorage->bufferSize, $chunkStorage->getStreamWrapperPrefix());
 
+        /** @var Request $request */
+        $request = $requestStack->getCurrentRequest();
+
         $this->storage = $storage;
         $this->chunkStorage = $chunkStorage;
-        $this->session = $session;
+        $this->session = $request->getSession();
         $this->config = $config;
         $this->type = $type;
     }
@@ -65,8 +69,8 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
      */
     public function upload($file, string $name, string $path = null)
     {
-        if (!$this->session->isStarted()) {
-            throw new RuntimeException('You need a running session in order to run the Orphanage.');
+        if (!$this->session instanceof SessionInterface || !$this->session->isStarted()) {
+            throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         }
 
         return parent::upload($file, $name, $this->getPath());

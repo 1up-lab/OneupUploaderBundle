@@ -241,7 +241,7 @@ class OneupUploaderExtension extends Extension
                 $this->container
                     ->register($orphanageName, '%oneup_uploader.orphanage.class%')
                     ->addArgument($storageService)
-                    ->addArgument(new Reference('session'))
+                    ->addArgument(new Reference('request_stack'))
                     ->addArgument(new Reference('oneup_uploader.chunks_storage'))
                     ->addArgument($this->config['orphanage'])
                     ->addArgument($key)
