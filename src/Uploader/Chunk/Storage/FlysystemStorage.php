@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
-use Exception;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
@@ -90,7 +89,7 @@ class FlysystemStorage implements ChunkStorageInterface
             // a directory is not empty
             try {
                 $this->filesystem->delete($path);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 continue;
             }
         }

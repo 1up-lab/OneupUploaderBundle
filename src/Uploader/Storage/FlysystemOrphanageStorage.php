@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Storage;
 
-use Exception;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage as ChunkStorage;
@@ -90,14 +89,14 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
             foreach ($files as $key => $file) {
                 try {
                     $return[] = $this->storage->upload($file, str_replace($this->getPath(), '', $key));
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     // well, we tried.
                     continue;
                 }
             }
 
             return $return;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return [];
         }
     }
