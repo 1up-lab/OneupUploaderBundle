@@ -46,6 +46,7 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
      *
      * @return mixed|null
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->data[$offset] ?? null;
