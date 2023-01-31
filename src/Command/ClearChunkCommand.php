@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Command;
 
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand('oneup:uploader:clear-chunks')]
 class ClearChunkCommand extends Command
 {
-    protected static $defaultName = 'oneup:uploader:clear-chunks'; // Make command lazy load
-
     /**
      * @var ChunkManager
      */

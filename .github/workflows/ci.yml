@@ -14,14 +14,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Setup PHP
-              uses: shivammathur/setup-php@2.9.0
+              uses: shivammathur/setup-php@2
               with:
-                  php-version: 7.4
+                  php-version: 8.0
                   extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo, zlib
                   coverage: none
 
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install the dependencies
               run: composer install --no-interaction --no-suggest
@@ -36,22 +36,18 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.4, 8.0]
-                symfony: [4.4, 5.4, 6.0]
-                exclude:
-                    # Symfony 6.0 does not supports php <8.0
-                    - php: 7.4
-                      symfony: 6.0
+                php: [8.0, 8.1]
+                symfony: [5.4, 6.0, 6.1]
         steps:
             - name: Setup PHP
-              uses: shivammathur/setup-php@2.9.0
+              uses: shivammathur/setup-php@2
               with:
                   php-version: ${{ matrix.php }}
                   extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo_mysql, zlib
                   coverage: none
 
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install the dependencies
               run: |
@@ -65,14 +61,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Setup PHP
-              uses: shivammathur/setup-php@2.7.0
+              uses: shivammathur/setup-php@2
               with:
-                  php-version: 7.4
+                  php-version: 8.0
                   extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo_mysql, zlib
                   coverage: none
 
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install the dependencies
               run: composer update --prefer-lowest --prefer-stable --no-interaction --no-suggest
