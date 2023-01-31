@@ -7,9 +7,9 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractUploadTest extends AbstractControllerTest
 {
