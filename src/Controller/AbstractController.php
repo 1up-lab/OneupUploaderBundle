@@ -220,7 +220,10 @@ abstract class AbstractController
         /** @var RequestStack $requestStack */
         $requestStack = $this->container->get('request_stack');
 
-        return $requestStack->getMainRequest();
+        /** @var Request $request */
+        $request = $requestStack->getMainRequest();
+
+        return $request;
     }
 
     /**

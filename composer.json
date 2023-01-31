@@ -46,8 +46,8 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.0",
-        "doctrine/common": "^2.13 || ^3.0",
-        "doctrine/doctrine-bundle": "^2.4",
+        "doctrine/common": "^3.0",
+        "doctrine/doctrine-bundle": "^2.7",
         "friendsofphp/php-cs-fixer": "^2.16",
         "knplabs/gaufrette": "^0.9",
         "m2mtech/flysystem-stream-wrapper": "^1.0",
