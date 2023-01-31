@@ -117,6 +117,11 @@ class FilesystemStorage implements ChunkStorageInterface
                 return $s < $t;
             });
 
-        return array_values(iterator_to_array($finder, false));
+        $return = [];
+        foreach ($finder as $file) {
+            $return[] = $file;
+        }
+
+        return $return;
     }
 }

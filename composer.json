@@ -55,7 +55,7 @@
         "oneup/flysystem-bundle": "^4.1",
         "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5",
-        "sensio/framework-extra-bundle": "^5.0 || ^6.0",
+        "sensio/framework-extra-bundle": "^6.0",
         "symfony/browser-kit": ">=5.4",
         "symfony/phpunit-bridge": ">=5.4",
         "symfony/security-bundle": ">=5.4",
