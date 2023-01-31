@@ -6,6 +6,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
@@ -31,6 +32,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $container = $client->getContainer();
 
         $endpoint = $this->helper->endpoint($this->getConfigKey());
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $container->get('event_dispatcher');
 
         // event data
@@ -53,6 +55,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $container = $client->getContainer();
 
         $endpoint = $this->helper->endpoint($this->getConfigKey());
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $container->get('event_dispatcher');
 
         // event data

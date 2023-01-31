@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Uploader\Storage;
 
-use AmazonS3 as AmazonClient;
-use Gaufrette\Adapter\AmazonS3 as S3Adapter;
+use Aws\S3\S3Client;
+use Gaufrette\Adapter\AwsS3 as S3Adapter;
 use Gaufrette\Filesystem as GaufretteFilesystem;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
@@ -64,7 +64,7 @@ class GaufretteAmazonS3StorageTest extends TestCase
         fwrite($pointer, str_repeat('A', 1024), 1024);
         fclose($pointer);
 
-        $service = new AmazonClient([
+        $service = new S3Client([
           'key' => getenv('AWS_ACCESS_KEY_ID'),
           'secret' => getenv('AWS_SECRET_ACCESS_KEY'),
         ]);

@@ -84,6 +84,7 @@ abstract class AbstractChunkedUploadTest extends AbstractUploadTest
         /** @var ContainerInterface $container */
         $container = $this->client->getContainer();
 
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $container->get('event_dispatcher');
 
         $dispatcher->addListener(PostChunkUploadEvent::NAME, static function (PostChunkUploadEvent $event) use (&$chunkCount, $chunkSize, &$me): void {

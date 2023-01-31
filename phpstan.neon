@@ -2,7 +2,7 @@ parameters:
     bootstrapFiles:
         - %rootDir%/../../../vendor/autoload.php
 
-    excludes_analyse:
+    excludePaths:
         - src/DependencyInjection/Configuration.php
         - tests/App/cache
         - tests/App/logs

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
+use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 
 interface ChunkStorageInterface
 {
@@ -18,7 +19,7 @@ interface ChunkStorageInterface
     /**
      * @param mixed $chunks
      *
-     * @return mixed
+     * @return \SplFileInfo|FlysystemFile|GaufretteFile
      */
     public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk);
 

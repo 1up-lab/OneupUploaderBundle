@@ -7,6 +7,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BlueimpValidationTest extends AbstractValidationTest
@@ -35,6 +36,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $container = $client->getContainer();
 
         $endpoint = $this->helper->endpoint($this->getConfigKey());
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $container->get('event_dispatcher');
 
         // event data

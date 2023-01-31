@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
+use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ChunkManagerInterface
@@ -23,7 +24,7 @@ interface ChunkManagerInterface
      * @param bool  $removeChunk remove the chunk file once its assembled
      * @param bool  $renameChunk rename the chunk file once its assembled
      *
-     * @return mixed
+     * @return \SplFileInfo|FlysystemFile|GaufretteFile
      */
     public function assembleChunks($chunks, $removeChunk = true, $renameChunk = false);
 

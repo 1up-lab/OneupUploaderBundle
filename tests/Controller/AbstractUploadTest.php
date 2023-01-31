@@ -9,6 +9,7 @@ use Oneup\UploaderBundle\Event\PreUploadEvent;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractUploadTest extends AbstractControllerTest
 {
@@ -47,6 +48,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
         $container = $client->getContainer();
 
         $endpoint = $this->helper->endpoint($this->getConfigKey());
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $container->get('event_dispatcher');
 
         // event data
