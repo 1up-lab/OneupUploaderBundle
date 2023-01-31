@@ -60,7 +60,7 @@ class FilesystemStorage implements ChunkStorageInterface
 
     public function assembleChunks(array $chunks, bool $removeChunk, bool $renameChunk): FileInterface
     {
-        $base = $chunks[0];
+        $base = array_shift($chunks);
 
         foreach ($chunks as $file) {
             if (false === file_put_contents($base->getPathname(), file_get_contents($file->getPathname()), \FILE_APPEND | \LOCK_EX)) {
