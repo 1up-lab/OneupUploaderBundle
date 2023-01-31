@@ -86,7 +86,7 @@ class FlysystemStorage implements ChunkStorageInterface
     /**
      * @throws FilesystemException
      */
-    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk, bool $renameChunk): FlysystemFile
+    public function assembleChunks(array $chunks, bool $removeChunk, bool $renameChunk): FlysystemFile
     {
         // the index is only added to be in sync with the filesystem storage
         $path = $this->prefix . '/' . $this->unhandledChunk['uuid'] . '/';

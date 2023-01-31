@@ -20,7 +20,7 @@ interface ChunkManagerInterface
      * @param bool $removeChunk remove the chunk file once its assembled
      * @param bool $renameChunk rename the chunk file once its assembled
      */
-    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk = true, bool $renameChunk = false): FileInterface;
+    public function assembleChunks(array $chunks, bool $removeChunk = true, bool $renameChunk = false): FileInterface;
 
     /**
      * Get chunks associated with the given uuid.

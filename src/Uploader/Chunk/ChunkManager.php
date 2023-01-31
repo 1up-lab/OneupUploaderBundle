@@ -6,20 +6,13 @@ namespace Oneup\UploaderBundle\Uploader\Chunk;
 
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\ChunkStorageInterface;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ChunkManager implements ChunkManagerInterface
 {
-    /**
-     * @var array
-     */
-    protected $configuration;
+    protected array $configuration;
 
-    /**
-     * @var ChunkStorageInterface
-     */
-    protected $storage;
+    protected ChunkStorageInterface $storage;
 
     public function __construct(array $configuration, ChunkStorageInterface $storage)
     {
@@ -37,7 +30,7 @@ class ChunkManager implements ChunkManagerInterface
         return $this->storage->addChunk($uuid, $index, $chunk, $original);
     }
 
-    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, $removeChunk = true, $renameChunk = false): FileInterface
+    public function assembleChunks(array $chunks, $removeChunk = true, $renameChunk = false): FileInterface
     {
         return $this->storage->assembleChunks($chunks, $removeChunk, $renameChunk);
     }

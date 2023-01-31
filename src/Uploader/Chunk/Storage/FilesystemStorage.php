@@ -58,23 +58,11 @@ class FilesystemStorage implements ChunkStorageInterface
         return new FilesystemFile($file);
     }
 
-    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk, bool $renameChunk): FileInterface
+    public function assembleChunks(array $chunks, bool $removeChunk, bool $renameChunk): FileInterface
     {
-        if (!($chunks instanceof \IteratorAggregate)) {
-            throw new \InvalidArgumentException('The first argument must implement \IteratorAggregate interface.');
-        }
+        $base = $chunks[0];
 
-        /** @var \Iterator $iterator */
-        $iterator = $chunks->getIterator();
-
-        /** @var UploadedFile $base */
-        $base = $iterator->current();
-        $iterator->next();
-
-        while ($iterator->valid()) {
-            /** @var UploadedFile $file */
-            $file = $iterator->current();
-
+        foreach ($chunks as $file) {
             if (false === file_put_contents($base->getPathname(), file_get_contents($file->getPathname()), \FILE_APPEND | \LOCK_EX)) {
                 throw new \RuntimeException('Reassembling chunks failed.');
             }
@@ -83,8 +71,6 @@ class FilesystemStorage implements ChunkStorageInterface
                 $filesystem = new Filesystem();
                 $filesystem->remove($file->getPathname());
             }
-
-            $iterator->next();
         }
 
         $name = $base->getBasename();

@@ -120,7 +120,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         return null;
     }
 
-    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk, bool $renameChunk): GaufretteFile
+    public function assembleChunks(array $chunks, bool $removeChunk, bool $renameChunk): GaufretteFile
     {
         // the index is only added to be in sync with the filesystem storage
         $path = $this->prefix . '/' . $this->unhandledChunk['uuid'] . '/';

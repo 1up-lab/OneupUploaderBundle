@@ -13,7 +13,7 @@ interface ChunkStorageInterface
 
     public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): ?FileInterface;
 
-    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk, bool $renameChunk): FileInterface;
+    public function assembleChunks(array $chunks, bool $removeChunk, bool $renameChunk): FileInterface;
 
     public function cleanup(string $path): void;
 
