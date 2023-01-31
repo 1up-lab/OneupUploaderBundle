@@ -30,7 +30,7 @@ class FlysystemStorage implements StorageInterface
     /**
      * @throws FilesystemException
      */
-    public function upload(FileInterface|File$file, string $name, string $path = null): FileInterface|File
+    public function upload(FileInterface|File $file, string $name, string $path = null): FileInterface|File
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
