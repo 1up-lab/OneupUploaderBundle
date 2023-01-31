@@ -38,6 +38,10 @@ jobs:
             matrix:
                 php: [8.0, 8.1]
                 symfony: [5.4, 6.0, 6.1]
+                exclude:
+                    # Symfony 6.1 does not supports php <8.1
+                    - php: 8.0
+                      symfony: 6.1
         steps:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2

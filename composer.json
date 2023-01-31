@@ -46,7 +46,7 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.0",
-        "doctrine/common": "^2.12 || ^3.0",
+        "doctrine/common": "^2.13 || ^3.0",
         "doctrine/doctrine-bundle": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.16",
         "knplabs/gaufrette": "^0.9",
