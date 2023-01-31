@@ -33,6 +33,7 @@
     ],
     "require": {
         "php": "^8.0",
+        "ext-fileinfo": "*",
         "symfony/asset": "^5.4 || ^6.0",
         "symfony/event-dispatcher-contracts": "^2.0 || ^3.0",
         "symfony/finder": "^5.4 || ^6.0",

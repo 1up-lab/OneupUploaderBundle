@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Event;
 
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\UploadEvents;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,40 +14,19 @@ class PostChunkUploadEvent extends Event
 {
     public const NAME = UploadEvents::POST_CHUNK_UPLOAD;
 
-    /**
-     * @var mixed
-     */
-    protected $chunk;
+    protected FileInterface $chunk;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected Request $request;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
-    /**
-     * @var ResponseInterface
-     */
-    protected $response;
+    protected ResponseInterface $response;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var bool
-     */
-    protected $isLast;
+    protected bool $isLast;
 
-    /**
-     * @param mixed $chunk
-     */
-    public function __construct($chunk, ResponseInterface $response, Request $request, bool $isLast, string $type, array $config)
+    public function __construct(FileInterface $chunk, ResponseInterface $response, Request $request, bool $isLast, string $type, array $config)
     {
         $this->chunk = $chunk;
         $this->request = $request;
@@ -57,9 +37,9 @@ class PostChunkUploadEvent extends Event
     }
 
     /**
-     * @return mixed
+     * @return FileInterface
      */
-    public function getChunk()
+    public function getChunk(): FileInterface
     {
         return $this->chunk;
     }

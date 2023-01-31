@@ -15,35 +15,17 @@ class PostPersistEvent extends Event
 {
     public const NAME = UploadEvents::POST_PERSIST;
 
-    /**
-     * @var FileInterface|File
-     */
-    protected $file;
+    protected FileInterface|File $file;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected Request $request;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
-    /**
-     * @var ResponseInterface
-     */
-    protected $response;
+    protected ResponseInterface $response;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @param FileInterface|File $file
-     */
-    public function __construct($file, ResponseInterface $response, Request $request, string $type, array $config)
+    public function __construct(FileInterface|File $file, ResponseInterface $response, Request $request, string $type, array $config)
     {
         $this->file = $file;
         $this->request = $request;
@@ -52,10 +34,7 @@ class PostPersistEvent extends Event
         $this->config = $config;
     }
 
-    /**
-     * @return FileInterface|File
-     */
-    public function getFile()
+    public function getFile(): FileInterface|File
     {
         return $this->file;
     }

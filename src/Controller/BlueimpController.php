@@ -19,7 +19,7 @@ class BlueimpController extends AbstractChunkedController
 
         $chunked = null !== $request->headers->get('content-range');
 
-        foreach ((array) $files as $file) {
+        foreach ($files as $file) {
             try {
                 $chunked ?
                     $this->handleChunkedUpload($file, $response, $request) :
@@ -43,8 +43,8 @@ class BlueimpController extends AbstractChunkedController
         $name = (string) ini_get('session.upload_progress.name');
 
         // ref: https://github.com/blueimp/jQuery-File-Upload/wiki/PHP-Session-Upload-Progress
-        $key = sprintf('%s.%s', $prefix, $request->get($name));
-        $value = $session->get($key);
+        $key = sprintf('%s.%s', $prefix, $request->request->get($name, $request->query->get($name)));
+        $value = (array) $session->get($key);
 
         $progress = [
             'lengthComputable' => true,
@@ -62,7 +62,7 @@ class BlueimpController extends AbstractChunkedController
         $attachmentName = rawurldecode((string) preg_replace('/(^[^"]+")|("$)/', '', (string) $request->headers->get('content-disposition')));
 
         // split the header string to the appropriate parts
-        [, $startByte, $endByte, $totalBytes] = preg_split('/[^0-9]+/', (string) $headerRange);
+        [, $startByte, $endByte, $totalBytes] = (array) preg_split('/[^0-9]+/', (string) $headerRange);
 
         // getting information about chunks
         // note: We don't have a chance to get the last $total
@@ -73,7 +73,7 @@ class BlueimpController extends AbstractChunkedController
         // previously saved files, let me know.
         $size = ((int) $endByte + 1 - (int) $startByte);
         $last = ((int) $endByte + 1) === (int) $totalBytes;
-        $index = $last ? \PHP_INT_MAX : (int) floor($startByte / $size);
+        $index = $last ? \PHP_INT_MAX : (int) floor((int) $startByte / $size);
 
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session

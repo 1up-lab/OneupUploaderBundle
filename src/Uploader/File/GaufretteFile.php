@@ -11,10 +11,7 @@ use Gaufrette\FilesystemInterface;
 
 class GaufretteFile extends File implements FileInterface
 {
-    /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
+    protected ?string $streamWrapperPrefix;
 
     /**
      * @var string
@@ -79,9 +76,7 @@ class GaufretteFile extends File implements FileInterface
         // This can only work on streamable files, so basically local files,
         // still only perform it once even on local files to avoid bothering the filesystem.
         if ($this->filesystem->getAdapter() instanceof StreamFactory && !$this->mimeType) {
-            if ($this->streamWrapperPrefix) {
-                /** @var resource $finfo */
-                $finfo = finfo_open(\FILEINFO_MIME_TYPE);
+            if ($this->streamWrapperPrefix && ($finfo = finfo_open(\FILEINFO_MIME_TYPE))) {
                 $this->mimeType = (string) finfo_file($finfo, $this->streamWrapperPrefix . $this->getKey());
                 finfo_close($finfo);
             }

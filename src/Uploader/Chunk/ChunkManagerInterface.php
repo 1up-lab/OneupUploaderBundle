@@ -4,41 +4,33 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk;
 
-use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
-use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ChunkManagerInterface
 {
     /**
      * Adds a new Chunk to a given uuid.
-     *
-     * @return mixed
      */
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original);
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): ?FileInterface;
 
     /**
      * Assembles the given chunks and return the resulting file.
      *
-     * @param mixed $chunks
      * @param bool  $removeChunk remove the chunk file once its assembled
      * @param bool  $renameChunk rename the chunk file once its assembled
-     *
-     * @return \SplFileInfo|FlysystemFile|GaufretteFile
      */
-    public function assembleChunks($chunks, $removeChunk = true, $renameChunk = false);
+    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk = true, bool $renameChunk = false): FileInterface;
 
     /**
      * Get chunks associated with the given uuid.
-     *
-     * @return mixed
      */
-    public function getChunks(string $uuid);
+    public function getChunks(string $uuid): array;
 
     /**
      * Clean a given path.
      */
-    public function cleanup(string $path): void;
+    public function cleanup(?string $path): void;
 
     /**
      * Clears the chunk manager directory. Remove all files older than the configured maxage.

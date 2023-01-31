@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Gaufrette\Adapter\StreamFactory;
-use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Gaufrette\FilesystemInterface;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Oneup\UploaderBundle\Uploader\Gaufrette\StreamManager;
@@ -71,7 +71,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
                 if ($maxAge <= $now - $this->filesystem->mtime($key)) {
                     $toDelete[] = $key;
                 }
-            } catch (FileNotFound $exception) {
+            } catch (\Exception) {
                 // ignore
             }
         }
@@ -83,7 +83,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
                 if ($maxAge <= $now - $this->filesystem->mtime($key)) {
                     $this->filesystem->delete($key);
                 }
-            } catch (FileNotFound $exception) {
+            } catch (\Exception) {
                 // ignore
             }
         }
@@ -105,7 +105,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * for gaufrette based chunk storage therefore assembleChunks will
      * be called in the same request.
      */
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): ?FileInterface
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -116,12 +116,11 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             'chunk' => $chunk,
             'original' => $original,
         ];
+
+        return null;
     }
 
-    /**
-     * @param array $chunks
-     */
-    public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk): GaufretteFile
+    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk, bool $renameChunk): GaufretteFile
     {
         // the index is only added to be in sync with the filesystem storage
         $path = $this->prefix . '/' . $this->unhandledChunk['uuid'] . '/';
@@ -136,6 +135,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
              * therefore the order will be decided depending on the filename
              * It is only case-insensitive to be overly-careful.
              */
+            $chunks = (array) $chunks;
             sort($chunks, \SORT_STRING | \SORT_FLAG_CASE);
             $target = pathinfo($chunks[0], \PATHINFO_BASENAME);
         }

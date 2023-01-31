@@ -29,7 +29,6 @@ class DropzoneController extends AbstractChunkedController
                     $this->handleUpload($file, $response, $request)
                 ;
             } catch (UploadException $e) {
-                $statusCode = 500; //Dropzone displays error if HTTP response is 40x or 50x
                 $this->errorHandler->addException($response, $e);
 
                 /** @var TranslatorInterface $translator */
@@ -47,16 +46,14 @@ class DropzoneController extends AbstractChunkedController
 
     protected function parseChunkedRequest(Request $request): array
     {
-        $totalChunkCount = $request->get('dztotalchunkcount');
-        $index = (int) $request->get('dzchunkindex');
+        $totalChunkCount = $request->request->get('dztotalchunkcount', $request->query->get('dztotalchunkcount'));
+        $index = (int) $request->request->get('dzchunkindex', $request->query->get('dzchunkindex'));
         $last = ($index + 1) === (int) $totalChunkCount;
         $uuid = $request->get('dzuuid');
 
-        /**
-         * @var UploadedFile
-         */
-        $file = $request->files->get('file')->getClientOriginalName();
-        $orig = $file;
+        /** @var UploadedFile $file */
+        $file = $request->files->get('file');
+        $orig = $file->getClientOriginalName();
 
         return [$last, $uuid, $index, $orig];
     }

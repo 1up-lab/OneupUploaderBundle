@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -12,10 +13,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements ChunkStorageInterface
 {
-    /**
-     * @var string
-     */
-    protected $directory;
+    protected string $directory;
 
     public function __construct(string $directory)
     {
@@ -41,7 +39,7 @@ class FilesystemStorage implements ChunkStorageInterface
         }
     }
 
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): File
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): ?FileInterface
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -55,13 +53,12 @@ class FilesystemStorage implements ChunkStorageInterface
             $filesystem->mkdir(sprintf('%s/%s', $this->directory, $uuid));
         }
 
-        return $chunk->move($path, $name);
+        $file = $chunk->move($path, $name);
+
+        return new FilesystemFile($file);
     }
 
-    /**
-     * @param \IteratorAggregate $chunks
-     */
-    public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk): File
+    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk, bool $renameChunk): FileInterface
     {
         if (!($chunks instanceof \IteratorAggregate)) {
             throw new \InvalidArgumentException('The first argument must implement \IteratorAggregate interface.');
@@ -70,10 +67,12 @@ class FilesystemStorage implements ChunkStorageInterface
         /** @var \Iterator $iterator */
         $iterator = $chunks->getIterator();
 
+        /** @var UploadedFile $base */
         $base = $iterator->current();
         $iterator->next();
 
         while ($iterator->valid()) {
+            /** @var UploadedFile $file */
             $file = $iterator->current();
 
             if (false === file_put_contents($base->getPathname(), file_get_contents($file->getPathname()), \FILE_APPEND | \LOCK_EX)) {
@@ -105,7 +104,7 @@ class FilesystemStorage implements ChunkStorageInterface
             $assembled = new FilesystemFile($file);
         }
 
-        return $assembled;
+        return $assembled instanceof FilesystemFile ? $assembled : new FilesystemFile($assembled);
     }
 
     public function cleanup(string $path): void
@@ -115,7 +114,7 @@ class FilesystemStorage implements ChunkStorageInterface
         $filesystem->remove($path);
     }
 
-    public function getChunks(string $uuid): Finder
+    public function getChunks(string $uuid): array
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -131,6 +130,6 @@ class FilesystemStorage implements ChunkStorageInterface
                 return $s < $t;
             });
 
-        return $finder;
+        return iterator_to_array($finder->getIterator());
     }
 }

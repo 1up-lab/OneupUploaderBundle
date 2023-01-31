@@ -15,6 +15,7 @@ use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +72,7 @@ abstract class AbstractController
 
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
-        $key = sprintf('%s.%s', $prefix, $request->get($name));
+        $key = sprintf('%s.%s', $prefix, $request->request->get($name, $request->query->get($name)));
         $value = $session->get($key);
 
         return new JsonResponse($value);
@@ -86,9 +87,9 @@ abstract class AbstractController
         $prefix = (string) ini_get('session.upload_progress.prefix');
         $name = (string) ini_get('session.upload_progress.name');
 
-        $key = sprintf('%s.%s', $prefix, $request->get($name));
+        $key = sprintf('%s.%s', $prefix, $request->request->get($name, $request->query->get($name)));
 
-        $progress = $session->get($key);
+        $progress = (array) $session->get($key);
         $progress['cancel_upload'] = false;
 
         $session->set($key, $progress);
@@ -127,9 +128,9 @@ abstract class AbstractController
      *
      *  Note: The return value differs when
      *
-     *  @param mixed $file The file to upload
+     *  @param File|FileInterface $file The file to upload
      */
-    protected function handleUpload($file, ResponseInterface $response, Request $request): void
+    protected function handleUpload(File|FileInterface $file, ResponseInterface $response, Request $request): void
     {
         // wrap the file if it is not done yet which can only happen
         // if it wasn't a chunked upload, in which case it is definitely
@@ -172,9 +173,9 @@ abstract class AbstractController
      *  This function is a helper function which dispatches post upload
      *  and post persist events.
      *
-     *  @param mixed $uploaded the uploaded file
+     *  @param File|FileInterface $uploaded the uploaded file
      */
-    protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request): void
+    protected function dispatchPostEvents(File|FileInterface $uploaded, ResponseInterface $response, Request $request): void
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);

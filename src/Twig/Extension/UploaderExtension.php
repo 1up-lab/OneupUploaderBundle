@@ -10,10 +10,7 @@ use Twig\TwigFunction;
 
 class UploaderExtension extends AbstractExtension
 {
-    /**
-     * @var UploaderHelper
-     */
-    protected $helper;
+    protected UploaderHelper $helper;
 
     public function __construct(UploaderHelper $helper)
     {

@@ -6,7 +6,9 @@ namespace Oneup\UploaderBundle\Controller;
 
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -79,12 +81,12 @@ abstract class AbstractChunkedController extends AbstractController
     /**
      *  This function is a helper function which dispatches post chunk upload event.
      *
-     * @param mixed             $uploaded - The uploaded chunk
+     * @param FileInterface     $uploaded - The uploaded chunk
      * @param responseInterface $response - A response object
      * @param Request           $request  - The request object
      * @param bool              $isLast   - True if this is the last chunk, false otherwise
      */
-    protected function dispatchChunkEvents($uploaded, ResponseInterface $response, Request $request, $isLast): void
+    protected function dispatchChunkEvents(FileInterface $uploaded, ResponseInterface $response, Request $request, $isLast): void
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostChunkUploadEvent($uploaded, $response, $request, $isLast, $this->type, $this->config);

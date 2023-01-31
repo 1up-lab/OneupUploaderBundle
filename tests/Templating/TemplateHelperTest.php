@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Tests\Templating;
 
+use Oneup\UploaderBundle\Templating\Helper\UploaderHelper;
 use Psr\Container\ContainerInterface;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TemplateHelperTest extends WebTestCase
@@ -14,12 +14,12 @@ class TemplateHelperTest extends WebTestCase
     {
         self::ensureKernelShutdown();
 
-        /** @var KernelBrowser $client */
         $client = static::createClient();
 
         /** @var ContainerInterface $container */
         $container = $client->getContainer();
 
+        /** @var UploaderHelper $helper */
         $helper = $container->get('oneup_uploader.templating.uploader_helper');
 
         // this is for code coverage
@@ -32,12 +32,12 @@ class TemplateHelperTest extends WebTestCase
 
         self::ensureKernelShutdown();
 
-        /** @var KernelBrowser $client */
         $client = static::createClient();
 
         /** @var ContainerInterface $container */
         $container = $client->getContainer();
 
+        /** @var UploaderHelper $helper */
         $helper = $container->get('oneup_uploader.templating.uploader_helper');
         $helper->maxSize(uniqid());
 

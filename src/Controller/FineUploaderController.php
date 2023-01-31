@@ -46,8 +46,8 @@ class FineUploaderController extends AbstractChunkedController
 
     protected function parseChunkedRequest(Request $request): array
     {
-        $index = (int) $request->get('qqpartindex');
-        $total = (int) $request->get('qqtotalparts');
+        $index = (int) $request->request->get('qqpartindex', $request->query->get('qqpartindex'));
+        $total = (int) $request->request->get('qqtotalparts', $request->query->get('qqtotalparts'));
         $uuid = $request->get('qquuid');
         $orig = $request->get('qqfilename');
         $last = ($total - 1) === $index;

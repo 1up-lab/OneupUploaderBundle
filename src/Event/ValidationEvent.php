@@ -15,35 +15,17 @@ class ValidationEvent extends Event
 {
     public const NAME = UploadEvents::VALIDATION;
 
-    /**
-     * @var FileInterface|File
-     */
-    protected $file;
+    protected FileInterface|File $file;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected Request $request;
 
-    /**
-     * @var ResponseInterface|null
-     */
-    protected $response;
+    protected ?ResponseInterface $response;
 
-    /**
-     * @param FileInterface|File $file
-     */
-    public function __construct($file, Request $request, array $config, string $type, ResponseInterface $response = null)
+    public function __construct(FileInterface|File $file, Request $request, array $config, string $type, ResponseInterface $response = null)
     {
         $this->file = $file;
         $this->config = $config;
@@ -52,10 +34,7 @@ class ValidationEvent extends Event
         $this->response = $response;
     }
 
-    /**
-     * @return FileInterface|File
-     */
-    public function getFile()
+    public function getFile(): FileInterface|File
     {
         return $this->file;
     }

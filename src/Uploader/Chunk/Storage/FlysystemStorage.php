@@ -8,35 +8,21 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
+use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FlysystemStorage implements ChunkStorageInterface
 {
-    /**
-     * @var int
-     */
-    public $bufferSize;
+    public int $bufferSize;
 
-    /**
-     * @var array
-     */
-    protected $unhandledChunk;
+    protected array $unhandledChunk;
 
-    /**
-     * @var string
-     */
-    protected $prefix;
+    protected string $prefix;
 
-    /**
-     * @var string
-     */
-    protected $streamWrapperPrefix;
+    protected string $streamWrapperPrefix;
 
-    /**
-     * @var FilesystemOperator
-     */
-    private $filesystem;
+    private FilesystemOperator $filesystem;
 
     public function __construct(Filesystem $filesystem, int $bufferSize, string $streamWrapperPrefix, string $prefix)
     {
@@ -46,7 +32,7 @@ class FlysystemStorage implements ChunkStorageInterface
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): ?FileInterface
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -57,6 +43,8 @@ class FlysystemStorage implements ChunkStorageInterface
             'chunk' => $chunk,
             'original' => $original,
         ];
+
+        return null;
     }
 
     /**
@@ -96,11 +84,9 @@ class FlysystemStorage implements ChunkStorageInterface
     }
 
     /**
-     * @param array $chunks
-     *
      * @throws FilesystemException
      */
-    public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk): FlysystemFile
+    public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk, bool $renameChunk): FlysystemFile
     {
         // the index is only added to be in sync with the filesystem storage
         $path = $this->prefix . '/' . $this->unhandledChunk['uuid'] . '/';
@@ -109,6 +95,7 @@ class FlysystemStorage implements ChunkStorageInterface
         if (empty($chunks)) {
             $target = $filename;
         } else {
+            $chunks = (array) $chunks;
             sort($chunks, \SORT_STRING | \SORT_FLAG_CASE);
             $target = pathinfo($chunks[0]['path'], \PATHINFO_BASENAME);
         }

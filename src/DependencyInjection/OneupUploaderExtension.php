@@ -17,15 +17,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class OneupUploaderExtension extends Extension
 {
-    /**
-     * @var ContainerBuilder
-     */
-    protected $container;
+    protected ContainerBuilder $container;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -111,7 +105,7 @@ class OneupUploaderExtension extends Extension
             $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
             $controllerType = $customFrontend['class'];
 
-            if (empty($controllerName) || empty($controllerType)) {
+            if (empty($controllerType)) {
                 throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
         }
@@ -285,10 +279,7 @@ class OneupUploaderExtension extends Extension
             ->addArgument($prefix);
     }
 
-    /**
-     * @param mixed $input
-     */
-    protected function getMaxUploadSize($input): int
+    protected function getMaxUploadSize(string|int $input): int
     {
         $input = $this->getValueInBytes($input);
         $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
@@ -298,13 +289,10 @@ class OneupUploaderExtension extends Extension
             return min($maxPost, $maxFile);
         }
 
-        return min(min($input, $maxPost), $maxFile);
+        return min($input, $maxPost, $maxFile);
     }
 
-    /**
-     * @param mixed $input
-     */
-    protected function getValueInBytes($input): int
+    protected function getValueInBytes(string|int|false $input): int
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
         $input = trim((string) $input);

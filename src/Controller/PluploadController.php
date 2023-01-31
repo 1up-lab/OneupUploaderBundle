@@ -37,9 +37,9 @@ class PluploadController extends AbstractChunkedController
     {
         $session = $request->getSession();
 
-        $orig = $request->get('name');
-        $index = (int) $request->get('chunk');
-        $last = (int) $request->get('chunks') - 1 === (int) $request->get('chunk');
+        $orig = $request->request->get('name', $request->query->get('name'));
+        $index = (int) $request->request->get('chunk', $request->query->get('chunk'));
+        $last = (int) $request->request->get('chunks', $request->query->get('chunks')) - 1 === $index;
 
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session

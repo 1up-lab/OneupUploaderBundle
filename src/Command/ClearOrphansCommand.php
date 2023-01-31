@@ -13,10 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('oneup:uploader:clear-orphans')]
 class ClearOrphansCommand extends Command
 {
-    /**
-     * @var OrphanageManager
-     */
-    private $manager;
+    private OrphanageManager $manager;
 
     public function __construct(OrphanageManager $manager)
     {
@@ -36,6 +33,6 @@ class ClearOrphansCommand extends Command
     {
         $this->manager->clear();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -13,10 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('oneup:uploader:clear-chunks')]
 class ClearChunkCommand extends Command
 {
-    /**
-     * @var ChunkManager
-     */
-    private $manager;
+    private ChunkManager $manager;
 
     public function __construct(ChunkManager $manager)
     {
@@ -36,6 +33,6 @@ class ClearChunkCommand extends Command
     {
         $this->manager->clear();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
