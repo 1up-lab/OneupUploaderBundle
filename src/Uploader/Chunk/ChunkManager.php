@@ -44,7 +44,7 @@ class ChunkManager implements ChunkManagerInterface
 
     public function cleanup(?string $path): void
     {
-        if (!is_null($path)) {
+        if (null !== $path) {
             $this->storage->cleanup($path);
         }
     }

@@ -17,8 +17,8 @@ interface ChunkManagerInterface
     /**
      * Assembles the given chunks and return the resulting file.
      *
-     * @param bool  $removeChunk remove the chunk file once its assembled
-     * @param bool  $renameChunk rename the chunk file once its assembled
+     * @param bool $removeChunk remove the chunk file once its assembled
+     * @param bool $renameChunk rename the chunk file once its assembled
      */
     public function assembleChunks(\IteratorAggregate|iterable|null $chunks, bool $removeChunk = true, bool $renameChunk = false): FileInterface;
 

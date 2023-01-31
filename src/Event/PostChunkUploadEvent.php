@@ -36,9 +36,6 @@ class PostChunkUploadEvent extends Event
         $this->config = $config;
     }
 
-    /**
-     * @return FileInterface
-     */
     public function getChunk(): FileInterface
     {
         return $this->chunk;
