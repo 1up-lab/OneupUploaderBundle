@@ -6,6 +6,7 @@ namespace Oneup\UploaderBundle\Uploader\Chunk\Storage;
 
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ChunkStorageInterface
 {
