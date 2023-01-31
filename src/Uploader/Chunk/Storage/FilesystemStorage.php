@@ -107,6 +107,7 @@ class FilesystemStorage implements ChunkStorageInterface
 
         $finder = new Finder();
         $finder
+            ->files()
             ->in(sprintf('%s/%s', $this->directory, $uuid))->files()->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
                 $t = explode('_', $a->getBasename());
                 $s = explode('_', $b->getBasename());
@@ -116,6 +117,6 @@ class FilesystemStorage implements ChunkStorageInterface
                 return $s < $t;
             });
 
-        return iterator_to_array($finder->getIterator());
+        return array_values(iterator_to_array($finder, false));
     }
 }

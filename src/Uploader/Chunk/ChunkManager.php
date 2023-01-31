@@ -44,7 +44,7 @@ class ChunkManager implements ChunkManagerInterface
 
     public function getChunks(string $uuid): array
     {
-        return (array) $this->storage->getChunks($uuid);
+        return $this->storage->getChunks($uuid);
     }
 
     public function getLoadDistribution(): bool
