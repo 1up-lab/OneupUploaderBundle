@@ -11,13 +11,11 @@ use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Oneup\UploaderBundle\Uploader\Gaufrette\StreamManager;
 use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
+use Symfony\Component\HttpFoundation\File\File;
 
 class GaufretteStorage extends StreamManager implements StorageInterface
 {
-    /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
+    protected ?string $streamWrapperPrefix;
 
     public function __construct(FilesystemInterface $filesystem, int $bufferSize, ?string $streamWrapperPrefix = null)
     {
@@ -34,16 +32,11 @@ class GaufretteStorage extends StreamManager implements StorageInterface
         $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    /**
-     * @param FileInterface|GaufretteFile $file
-     *
-     * @return FileInterface|GaufretteFile
-     */
-    public function upload($file, string $name, string $path = null)
+    public function upload(FileInterface|File $file, string $name, string $path = null): FileInterface|File
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
-        if ($this->filesystem instanceof Filesystem && $this->filesystem->getAdapter() instanceof MetadataSupporter) {
+        if (method_exists($this->filesystem, 'getAdapter') && $this->filesystem->getAdapter() instanceof MetadataSupporter) {
             $this->filesystem->getAdapter()->setMetadata($name, ['contentType' => $file->getMimeType()]);
         }
 

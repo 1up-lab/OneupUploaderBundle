@@ -10,8 +10,6 @@ interface NamerInterface
 {
     /**
      * Name a given file and return the name.
-     *
-     * @return string
      */
-    public function name(FileInterface $file);
+    public function name(FileInterface $file): string;
 }

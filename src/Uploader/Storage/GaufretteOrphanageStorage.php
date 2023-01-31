@@ -14,30 +14,15 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
 {
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface $storage;
 
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    protected SessionInterface $session;
 
-    /**
-     * @var GaufretteChunkStorage
-     */
-    protected $chunkStorage;
+    protected GaufretteChunkStorage $chunkStorage;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
     public function __construct(StorageInterface $storage, RequestStack $requestStack, GaufretteChunkStorage $chunkStorage, array $config, string $type)
     {
@@ -57,14 +42,9 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
         $this->type = $type;
     }
 
-    /**
-     * @param FileInterface|GaufretteFile $file
-     *
-     * @return FileInterface|GaufretteFile
-     */
-    public function upload($file, string $name, string $path = null)
+    public function upload(FileInterface|\Symfony\Component\HttpFoundation\File\File $file, string $name, string $path = null): FileInterface|\Symfony\Component\HttpFoundation\File\File
     {
-        if (!$this->session instanceof SessionInterface || !$this->session->isStarted()) {
+        if (!$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         }
 

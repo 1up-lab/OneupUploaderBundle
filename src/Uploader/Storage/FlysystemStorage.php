@@ -10,7 +10,7 @@ use League\Flysystem\MountManager;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FilesystemFile;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
-use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 class FlysystemStorage implements StorageInterface
 {
@@ -28,13 +28,9 @@ class FlysystemStorage implements StorageInterface
     }
 
     /**
-     * @param FileInterface|SymfonyFile $file
-     *
      * @throws FilesystemException
-     *
-     * @return FileInterface|SymfonyFile
      */
-    public function upload($file, string $name, string $path = null)
+    public function upload(FileInterface|File$file, string $name, string $path = null): FileInterface|File
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 

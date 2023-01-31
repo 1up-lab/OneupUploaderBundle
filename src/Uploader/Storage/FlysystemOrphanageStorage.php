@@ -9,37 +9,22 @@ use League\Flysystem\StorageAttributes;
 use Oneup\UploaderBundle\Uploader\Chunk\Storage\FlysystemStorage as ChunkStorage;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\FlysystemFile;
-use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageStorageInterface
 {
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface $storage;
 
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    protected SessionInterface $session;
 
-    /**
-     * @var ChunkStorage
-     */
-    protected $chunkStorage;
+    protected ChunkStorage $chunkStorage;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
     public function __construct(StorageInterface $storage, RequestStack $requestStack, ChunkStorage $chunkStorage, array $config, string $type)
     {
@@ -60,15 +45,11 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     }
 
     /**
-     * @param FileInterface|SymfonyFile $file
-     *
      * @throws FilesystemException
-     *
-     * @return FileInterface|SymfonyFile
      */
-    public function upload($file, string $name, string $path = null)
+    public function upload(FileInterface|File $file, string $name, string $path = null): FileInterface|File
     {
-        if (!$this->session instanceof SessionInterface || !$this->session->isStarted()) {
+        if (!$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         }
 
@@ -89,14 +70,14 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
             foreach ($files as $key => $file) {
                 try {
                     $return[] = $this->storage->upload($file, str_replace($this->getPath(), '', $key));
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     // well, we tried.
                     continue;
                 }
             }
 
             return $return;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return [];
         }
     }

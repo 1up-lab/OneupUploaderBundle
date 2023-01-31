@@ -6,15 +6,9 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 class FineUploaderResponse extends AbstractResponse
 {
-    /**
-     * @var bool
-     */
-    protected $success;
+    protected bool $success;
 
-    /**
-     * @var string|null
-     */
-    protected $error;
+    protected ?string $error;
 
     public function __construct()
     {
@@ -45,7 +39,7 @@ class FineUploaderResponse extends AbstractResponse
 
     public function setSuccess(bool $success): self
     {
-        $this->success = (bool) $success;
+        $this->success = $success;
 
         return $this;
     }

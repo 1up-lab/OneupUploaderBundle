@@ -15,30 +15,15 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageStorageInterface
 {
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
+    protected StorageInterface $storage;
 
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    protected SessionInterface $session;
 
-    /**
-     * @var ChunkStorage
-     */
-    protected $chunkStorage;
+    protected ChunkStorage $chunkStorage;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
     public function __construct(StorageInterface $storage, RequestStack $requestStack, ChunkStorage $chunkStorage, array $config, string $type)
     {
@@ -54,14 +39,9 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         $this->type = $type;
     }
 
-    /**
-     * @param FileInterface|File $file
-     *
-     * @return FileInterface|File
-     */
-    public function upload($file, string $name, string $path = null)
+    public function upload(FileInterface|File $file, string $name, string $path = null): FileInterface|File
     {
-        if (!$this->session instanceof SessionInterface || !$this->session->isStarted()) {
+        if (!$this->session->isStarted()) {
             throw new \RuntimeException('You need a running session in order to run the Orphanage.');
         }
 

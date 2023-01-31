@@ -10,10 +10,8 @@ class UrlSafeNamer implements NamerInterface
 {
     /**
      * Name a given file and return the name.
-     *
-     * @return string
      */
-    public function name(FileInterface $file)
+    public function name(FileInterface $file): string
     {
         $bytes = random_bytes(256 / 8);
 

@@ -9,18 +9,13 @@ use Oneup\UploaderBundle\Uploader\Storage\GaufretteOrphanageStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class OrphanageManager
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ContainerInterface $container;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
     public function __construct(ContainerInterface $container, array $config)
     {
@@ -75,7 +70,7 @@ class OrphanageManager
         $finder = new Finder();
         $finder->in($this->config['directory'])->directories();
 
-        /** @var array<int, \Symfony\Component\Finder\SplFileInfo> $dirArray */
+        /** @var array<int, SplFileInfo> $dirArray */
         $dirArray = iterator_to_array($finder, false);
         $size = \count($dirArray);
 

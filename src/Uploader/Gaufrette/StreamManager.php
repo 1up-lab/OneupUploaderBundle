@@ -11,20 +11,15 @@ use Gaufrette\Stream\Local as LocalStream;
 use Gaufrette\StreamMode;
 use Oneup\UploaderBundle\Uploader\File\FileInterface;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 class StreamManager
 {
-    /**
-     * @var int
-     */
-    public $buffersize;
+    public int $buffersize;
 
-    /**
-     * @var FilesystemInterface|Filesystem
-     */
-    protected $filesystem;
+    protected FilesystemInterface|Filesystem $filesystem;
 
-    protected function createSourceStream(FileInterface $file): Stream
+    protected function createSourceStream(FileInterface|File $file): Stream
     {
         if ($file instanceof GaufretteFile) {
             // The file is always streamable as the chunk storage only allows
@@ -50,7 +45,7 @@ class StreamManager
         return $stream->open(new StreamMode($mode));
     }
 
-    protected function stream(FileInterface $file, Stream $dst): void
+    protected function stream(FileInterface|File $file, Stream $dst): void
     {
         $src = $this->createSourceStream($file);
 

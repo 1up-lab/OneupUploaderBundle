@@ -6,7 +6,7 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 class EmptyResponse extends AbstractResponse
 {
-    public function assemble()
+    public function assemble(): array
     {
         return $this->data;
     }
