@@ -201,10 +201,8 @@ abstract class AbstractController
      *
      * On top of that, if the client does not support the application/json type,
      * then the content type of the response will be set to text/plain instead.
-     *
-     * @param mixed $data
      */
-    protected function createSupportedJsonResponse($data, int $statusCode = 200): JsonResponse
+    protected function createSupportedJsonResponse(mixed $data, int $statusCode = 200): JsonResponse
     {
         $request = $this->getRequest();
         $response = new JsonResponse($data, $statusCode);
@@ -222,12 +220,7 @@ abstract class AbstractController
         /** @var RequestStack $requestStack */
         $requestStack = $this->container->get('request_stack');
 
-        /** @var Request $request */
-        $request = method_exists($requestStack, 'getMainRequest')
-            ? $requestStack->getMainRequest()
-            : $requestStack->getMasterRequest();
-
-        return $request;
+        return $requestStack->getMainRequest();
     }
 
     /**

@@ -55,10 +55,10 @@
         "phpstan/phpstan": "^0.12.10",
         "phpunit/phpunit": "^9.5",
         "sensio/framework-extra-bundle": "^5.0 || ^6.0",
-        "symfony/browser-kit": "^4.4 || ^5.4 || ^6.0",
-        "symfony/phpunit-bridge": "^5.4",
-        "symfony/security-bundle": "^4.4 || ^5.4 || ^6.0",
-        "symfony/var-dumper": "^4.4 || ^5.4 || ^6.0",
+        "symfony/browser-kit": ">=5.4",
+        "symfony/phpunit-bridge": ">=5.4",
+        "symfony/security-bundle": ">=5.4",
+        "symfony/var-dumper": ">=5.4",
         "twistor/flysystem-stream-wrapper": "^1.0"
     },
     "suggest": {
