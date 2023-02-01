@@ -114,7 +114,11 @@ class FilesystemStorage implements ChunkStorageInterface
                 $t = (int) $t[0];
                 $s = (int) $s[0];
 
-                return $s < $t;
+                if ($t === $s) {
+                    return 0;
+                }
+
+                return ($s < $t) ? -1 : 1;
             });
 
         $return = [];
