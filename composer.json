@@ -32,7 +32,7 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "symfony/asset": "^4.4 || ^5.4 || ^6.0",
         "symfony/event-dispatcher-contracts": "^1.0 || ^2.0 || ^3.0",
         "symfony/finder": "^4.4 || ^5.4 || ^6.0",

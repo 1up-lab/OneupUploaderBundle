@@ -24,38 +24,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractController
 {
-    /**
-     * @var ErrorHandlerInterface
-     */
-    protected $errorHandler;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    public function __construct(ContainerInterface $container, StorageInterface $storage, ErrorHandlerInterface $errorHandler, array $config, string $type)
+    public function __construct(protected ContainerInterface $container, protected StorageInterface $storage, protected ErrorHandlerInterface $errorHandler, protected array $config, protected string $type)
     {
-        $this->errorHandler = $errorHandler;
-        $this->container = $container;
-        $this->storage = $storage;
-        $this->config = $config;
-        $this->type = $type;
     }
 
     abstract public function upload(): JsonResponse;
@@ -223,9 +193,7 @@ abstract class AbstractController
         $requestStack = $this->container->get('request_stack');
 
         /** @var Request $request */
-        $request = method_exists($requestStack, 'getMainRequest')
-            ? $requestStack->getMainRequest()
-            : $requestStack->getMasterRequest();
+        $request = $requestStack->getMainRequest();
 
         return $request;
     }

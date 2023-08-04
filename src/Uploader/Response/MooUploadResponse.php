@@ -22,25 +22,11 @@ class MooUploadResponse extends AbstractResponse
     protected $size;
 
     /**
-     * @var int
-     */
-    protected $error;
-
-    /**
-     * @var bool
-     */
-    protected $finish;
-
-    /**
      * @var string
      */
     protected $uploadedName;
 
-    public function __construct()
-    {
-        $this->finish = true;
-        $this->error = 0;
-
+    public function __construct(protected bool $finish = true, protected int $error = 0) {
         parent::__construct();
     }
 

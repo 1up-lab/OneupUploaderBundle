@@ -12,20 +12,8 @@ use Symfony\Component\Finder\Finder;
 
 class OrphanageManager
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
 
-    /**
-     * @var array
-     */
-    protected $config;
-
-    public function __construct(ContainerInterface $container, array $config)
-    {
-        $this->container = $container;
-        $this->config = $config;
+    public function __construct(protected ContainerInterface $container, protected array $config) {
     }
 
     public function has(string $key): bool

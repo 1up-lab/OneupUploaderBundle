@@ -21,16 +21,12 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
     protected $unhandledChunk;
 
     /**
-     * @var string
+     * @param FilesystemInterface $filesystem
+     * @param int $bufferSize
+     * @param string|null $streamWrapperPrefix
+     * @param string $prefix
      */
-    protected $prefix;
-
-    /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
-
-    public function __construct(FilesystemInterface $filesystem, int $bufferSize, ?string $streamWrapperPrefix, string $prefix)
+    public function __construct(FilesystemInterface $filesystem, int $bufferSize, protected ?string $streamWrapperPrefix, protected string $prefix)
     {
         $base = interface_exists(FilesystemInterface::class)
             ? FilesystemInterface::class
@@ -45,8 +41,6 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         }
         $this->filesystem = $filesystem;
         $this->buffersize = $bufferSize;
-        $this->prefix = $prefix;
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
     /**

@@ -15,25 +15,11 @@ use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 class FlysystemStorage implements StorageInterface
 {
     /**
-     * @var string|null
+     * @param FilesystemOperator $filesystem
+     * @param int $bufferSize
+     * @param string|null $streamWrapperPrefix
      */
-    protected $streamWrapperPrefix;
-
-    /**
-     * @var int
-     */
-    protected $bufferSize;
-
-    /**
-     * @var FilesystemOperator
-     */
-    private $filesystem;
-
-    public function __construct(FilesystemOperator $filesystem, int $bufferSize, ?string $streamWrapperPrefix = null)
-    {
-        $this->filesystem = $filesystem;
-        $this->bufferSize = $bufferSize;
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
+    public function __construct(private FilesystemOperator $filesystem, protected int $bufferSize, protected ?string $streamWrapperPrefix = null) {
     }
 
     /**

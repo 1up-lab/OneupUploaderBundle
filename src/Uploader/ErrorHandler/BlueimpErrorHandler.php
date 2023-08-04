@@ -11,13 +11,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class BlueimpErrorHandler implements ErrorHandlerInterface
 {
     /**
-     * @var TranslatorInterface
+     * @param TranslatorInterface $translator
      */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
+    public function __construct(private  TranslatorInterface $translator){
     }
 
     public function addException(AbstractResponse $response, Exception $exception): void

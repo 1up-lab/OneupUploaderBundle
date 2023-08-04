@@ -17,31 +17,18 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageStorageInterface
 {
     /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    /**
      * @var SessionInterface
      */
     protected $session;
 
     /**
-     * @var ChunkStorage
+     * @param StorageInterface $storage
+     * @param RequestStack $requestStack
+     * @param ChunkStorage $chunkStorage
+     * @param array $config
+     * @param string $type
      */
-    protected $chunkStorage;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    public function __construct(StorageInterface $storage, RequestStack $requestStack, ChunkStorage $chunkStorage, array $config, string $type)
+    public function __construct(protected StorageInterface $storage, RequestStack $requestStack, protected ChunkStorage $chunkStorage, protected array $config, protected string $type)
     {
         /*
          * initiate the storage on the chunk storage's filesystem
@@ -51,12 +38,7 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
 
         /** @var Request $request */
         $request = $requestStack->getCurrentRequest();
-
-        $this->storage = $storage;
-        $this->chunkStorage = $chunkStorage;
         $this->session = $request->getSession();
-        $this->config = $config;
-        $this->type = $type;
     }
 
     /**

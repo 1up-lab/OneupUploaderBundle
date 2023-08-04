@@ -11,13 +11,9 @@ use Twig\TwigFunction;
 class UploaderExtension extends AbstractExtension
 {
     /**
-     * @var UploaderHelper
+     * @param UploaderHelper $helper
      */
-    protected $helper;
-
-    public function __construct(UploaderHelper $helper)
-    {
-        $this->helper = $helper;
+    public function __construct(protected UploaderHelper $helper){
     }
 
     public function getName(): string

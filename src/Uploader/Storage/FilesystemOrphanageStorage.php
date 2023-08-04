@@ -16,42 +16,24 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageStorageInterface
 {
     /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    /**
      * @var SessionInterface
      */
     protected $session;
 
     /**
-     * @var ChunkStorage
+     * @param StorageInterface $storage
+     * @param RequestStack $requestStack
+     * @param ChunkStorage $chunkStorage
+     * @param array $config
+     * @param string $type
      */
-    protected $chunkStorage;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    public function __construct(StorageInterface $storage, RequestStack $requestStack, ChunkStorage $chunkStorage, array $config, string $type)
+    public function __construct(protected StorageInterface $storage, RequestStack $requestStack, protected ChunkStorage $chunkStorage, protected array $config, protected string $type)
     {
         parent::__construct($config['directory']);
 
         /** @var Request $request */
         $request = $requestStack->getCurrentRequest();
-
-        $this->storage = $storage;
         $this->session = $request->getSession();
-        $this->chunkStorage = $chunkStorage;
-        $this->config = $config;
-        $this->type = $type;
     }
 
     /**

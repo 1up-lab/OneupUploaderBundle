@@ -10,19 +10,10 @@ use Symfony\Component\Templating\Helper\Helper;
 class UploaderHelper extends Helper
 {
     /**
-     * @var RouterInterface
+     * @param RouterInterface $router
+     * @param array $maxsize
      */
-    protected $router;
-
-    /**
-     * @var array
-     */
-    protected $maxsize;
-
-    public function __construct(RouterInterface $router, array $maxsize)
-    {
-        $this->router = $router;
-        $this->maxsize = $maxsize;
+    public function __construct(protected RouterInterface $router, protected array $maxsize) {
     }
 
     public function getName(): string

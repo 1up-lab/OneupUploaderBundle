@@ -7,27 +7,17 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 class FineUploaderResponse extends AbstractResponse
 {
     /**
-     * @var bool
+     * @param bool $success
+     * @param string|null $error
      */
-    protected $success;
-
-    /**
-     * @var string|null
-     */
-    protected $error;
-
-    public function __construct()
-    {
-        $this->success = true;
-        $this->error = null;
-
+    public function __construct(protected bool $success = true, protected ?string $error = null) {
         parent::__construct();
     }
 
     public function assemble(): array
     {
         // explicitly overwrite success and error key
-        // as these keys are used internaly by the
+        // as these keys are used internally by the
         // frontend uploader
         $data = $this->data;
         $data['success'] = $this->success;

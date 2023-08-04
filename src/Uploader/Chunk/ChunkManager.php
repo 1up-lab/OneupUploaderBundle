@@ -10,19 +10,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class ChunkManager implements ChunkManagerInterface
 {
     /**
-     * @var array
+     * @param array $configuration
+     * @param ChunkStorageInterface $storage
      */
-    protected $configuration;
-
-    /**
-     * @var ChunkStorageInterface
-     */
-    protected $storage;
-
-    public function __construct(array $configuration, ChunkStorageInterface $storage)
-    {
-        $this->configuration = $configuration;
-        $this->storage = $storage;
+    public function __construct(protected array $configuration, protected ChunkStorageInterface $storage) {
     }
 
     public function clear(): void

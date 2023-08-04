@@ -7,13 +7,9 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
 {
     /**
-     * @var array
+     * @param array $data
      */
-    protected $data;
-
-    public function __construct()
-    {
-        $this->data = [];
+    public function __construct(protected array $data = []){
     }
 
     /**

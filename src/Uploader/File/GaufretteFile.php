@@ -12,20 +12,18 @@ use Gaufrette\FilesystemInterface;
 class GaufretteFile extends File implements FileInterface
 {
     /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
-
-    /**
      * @var string
      */
     protected $mimeType;
 
-    public function __construct(File $file, FilesystemInterface $filesystem, string $streamWrapperPrefix = null)
+    /**
+     * @param File $file
+     * @param FilesystemInterface $filesystem
+     * @param string|null $streamWrapperPrefix
+     */
+    public function __construct(File $file, FilesystemInterface $filesystem, protected ?string $streamWrapperPrefix = null)
     {
         parent::__construct($file->getKey(), $filesystem);
-
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
     /**
