@@ -81,7 +81,7 @@ class OneupUploaderExtension extends Extension
         ;
     }
 
-    protected function processMapping(string $key, array &$mapping): array
+    protected function processMapping(string $key, array & $mapping): array
     {
         $mapping['max_size'] = $mapping['max_size'] < 0 || \is_string($mapping['max_size']) ?
             $this->getMaxUploadSize($mapping['max_size']) :
@@ -188,7 +188,7 @@ class OneupUploaderExtension extends Extension
         }
     }
 
-    protected function createStorageService(array &$config, string $key, bool $orphanage = false): Reference
+    protected function createStorageService(array & $config, string $key, bool $orphanage = false): Reference
     {
         $storageService = null;
 

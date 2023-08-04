@@ -17,8 +17,6 @@ class GaufretteFile extends File implements FileInterface
     protected $mimeType;
 
     /**
-     * @param File $file
-     * @param FilesystemInterface $filesystem
      * @param string|null $streamWrapperPrefix
      */
     public function __construct(File $file, FilesystemInterface $filesystem, protected ?string $streamWrapperPrefix = null)

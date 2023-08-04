@@ -10,8 +10,8 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouteLoader extends Loader
 {
-
-    public function __construct(protected array $controllers) {
+    public function __construct(protected array $controllers)
+    {
         parent::__construct();
     }
 

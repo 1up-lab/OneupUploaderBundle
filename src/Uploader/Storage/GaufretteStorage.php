@@ -15,11 +15,9 @@ use Symfony\Component\Filesystem\Filesystem as LocalFilesystem;
 class GaufretteStorage extends StreamManager implements StorageInterface
 {
     /**
-     * @param FilesystemInterface $filesystem
-     * @param int $bufferSize
      * @param string|null $streamWrapperPrefix
      */
-    public function __construct(FilesystemInterface $filesystem, int $bufferSize, protected  ?string $streamWrapperPrefix = null)
+    public function __construct(FilesystemInterface $filesystem, int $bufferSize, protected ?string $streamWrapperPrefix = null)
     {
         $base = interface_exists(FilesystemInterface::class)
             ? FilesystemInterface::class

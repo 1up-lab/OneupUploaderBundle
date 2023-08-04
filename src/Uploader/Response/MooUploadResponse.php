@@ -26,7 +26,8 @@ class MooUploadResponse extends AbstractResponse
      */
     protected $uploadedName;
 
-    public function __construct(protected bool $finish = true, protected int $error = 0) {
+    public function __construct(protected bool $finish = true, protected int $error = 0)
+    {
         parent::__construct();
     }
 

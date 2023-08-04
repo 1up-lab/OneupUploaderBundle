@@ -20,11 +20,12 @@ class FlysystemStorage implements ChunkStorageInterface
 
     /**
      * @param Filesystem $filesystem
-     * @param int $bufferSize
-     * @param string $streamWrapperPrefix
-     * @param string $prefix
+     * @param int        $bufferSize
+     * @param string     $streamWrapperPrefix
+     * @param string     $prefix
      */
-    public function __construct(protected Filesystem $filesystem, public int $bufferSize, protected string $streamWrapperPrefix, protected string $prefix) {
+    public function __construct(protected Filesystem $filesystem, public int $bufferSize, protected string $streamWrapperPrefix, protected string $prefix)
+    {
     }
 
     public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void

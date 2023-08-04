@@ -23,10 +23,9 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
 
     /**
      * @param StorageInterface $storage
-     * @param RequestStack $requestStack
-     * @param ChunkStorage $chunkStorage
-     * @param array $config
-     * @param string $type
+     * @param ChunkStorage     $chunkStorage
+     * @param array            $config
+     * @param string           $type
      */
     public function __construct(protected StorageInterface $storage, RequestStack $requestStack, protected ChunkStorage $chunkStorage, protected array $config, protected string $type)
     {

@@ -13,7 +13,8 @@ class BlueimpErrorHandler implements ErrorHandlerInterface
     /**
      * @param TranslatorInterface $translator
      */
-    public function __construct(private  TranslatorInterface $translator){
+    public function __construct(private TranslatorInterface $translator)
+    {
     }
 
     public function addException(AbstractResponse $response, Exception $exception): void

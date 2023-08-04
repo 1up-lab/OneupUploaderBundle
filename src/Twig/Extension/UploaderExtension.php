@@ -13,7 +13,8 @@ class UploaderExtension extends AbstractExtension
     /**
      * @param UploaderHelper $helper
      */
-    public function __construct(protected UploaderHelper $helper){
+    public function __construct(protected UploaderHelper $helper)
+    {
     }
 
     public function getName(): string

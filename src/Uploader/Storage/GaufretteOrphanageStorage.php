@@ -20,11 +20,10 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
     protected $session;
 
     /**
-     * @param StorageInterface $storage
-     * @param RequestStack $requestStack
+     * @param StorageInterface      $storage
      * @param GaufretteChunkStorage $chunkStorage
-     * @param array $config
-     * @param string $type
+     * @param array                 $config
+     * @param string                $type
      */
     public function __construct(protected StorageInterface $storage, RequestStack $requestStack, protected GaufretteChunkStorage $chunkStorage, protected array $config, protected string $type)
     {

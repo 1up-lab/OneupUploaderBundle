@@ -15,7 +15,8 @@ class FilesystemStorage implements ChunkStorageInterface
     /**
      * @param string $directory
      */
-    public function __construct(protected string $directory) {
+    public function __construct(protected string $directory)
+    {
     }
 
     public function clear(int $maxAge): void

@@ -9,7 +9,8 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
     /**
      * @param array $data
      */
-    public function __construct(protected array $data = []){
+    public function __construct(protected array $data = [])
+    {
     }
 
     /**

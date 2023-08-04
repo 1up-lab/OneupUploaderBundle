@@ -17,12 +17,13 @@ class PostUploadEvent extends Event
 
     /**
      * @param FileInterface|File $file
-     * @param ResponseInterface $response
-     * @param Request $request
-     * @param string $type
-     * @param array $config
+     * @param ResponseInterface  $response
+     * @param Request            $request
+     * @param string             $type
+     * @param array              $config
      */
-    public function __construct(protected FileInterface|File $file, protected ResponseInterface $response, protected Request $request, protected string $type, protected array $config) {
+    public function __construct(protected FileInterface | File $file, protected ResponseInterface $response, protected Request $request, protected string $type, protected array $config)
+    {
     }
 
     /**

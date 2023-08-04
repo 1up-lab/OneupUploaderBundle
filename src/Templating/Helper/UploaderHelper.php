@@ -11,9 +11,10 @@ class UploaderHelper extends Helper
 {
     /**
      * @param RouterInterface $router
-     * @param array $maxsize
+     * @param array           $maxsize
      */
-    public function __construct(protected RouterInterface $router, protected array $maxsize) {
+    public function __construct(protected RouterInterface $router, protected array $maxsize)
+    {
     }
 
     public function getName(): string

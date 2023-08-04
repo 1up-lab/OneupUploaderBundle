@@ -13,7 +13,8 @@ class FilesystemStorage implements StorageInterface
     /**
      * @param string $directory
      */
-    public function __construct(protected string $directory){
+    public function __construct(protected string $directory)
+    {
     }
 
     /**

@@ -10,10 +10,11 @@ use League\Flysystem\FilesystemOperator;
 class FlysystemFile implements FileInterface
 {
     /**
-     * @param string $pathname
+     * @param string             $pathname
      * @param FilesystemOperator $filesystem
      */
-    public function __construct(private string $pathname, private FilesystemOperator $filesystem) {
+    public function __construct(private string $pathname, private FilesystemOperator $filesystem)
+    {
     }
 
     /**
