@@ -10,9 +10,6 @@ use Twig\TwigFunction;
 
 class UploaderExtension extends AbstractExtension
 {
-    /**
-     * @param UploaderHelper $helper
-     */
     public function __construct(protected UploaderHelper $helper)
     {
     }
@@ -53,9 +50,6 @@ class UploaderExtension extends AbstractExtension
         return $this->helper->uploadKey();
     }
 
-    /**
-     * @return mixed
-     */
     public function maxSize(string $key)
     {
         return $this->helper->maxSize($key);

@@ -15,14 +15,7 @@ class ValidationEvent extends Event
 {
     public const NAME = UploadEvents::VALIDATION;
 
-    /**
-     * @param FileInterface|File     $file
-     * @param Request                $request
-     * @param array                  $config
-     * @param string                 $type
-     * @param ResponseInterface|null $response
-     */
-    public function __construct(protected FileInterface | File $file, protected Request $request, protected array $config, protected string $type, protected ?ResponseInterface $response = null)
+    public function __construct(protected FileInterface|File $file, protected Request $request, protected array $config, protected string $type, protected ?ResponseInterface $response = null)
     {
     }
 

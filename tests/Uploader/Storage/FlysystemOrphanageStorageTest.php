@@ -81,7 +81,7 @@ class FlysystemOrphanageStorageTest extends OrphanageTest
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 
-            //file key needs to be relative to the root of the flysystem filesystem
+            // file key needs to be relative to the root of the flysystem filesystem
             // It seems that tempnam on OS X prepends 'private' to chunkDirectory, so strip that off as well
             $fileKey = str_replace([$this->realDirectory, '/private'], '', $file);
 

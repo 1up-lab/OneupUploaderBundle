@@ -45,9 +45,6 @@ class MooUploadResponse extends AbstractResponse
         return $data;
     }
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): self
     {
         $this->id = $id;
@@ -55,9 +52,6 @@ class MooUploadResponse extends AbstractResponse
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
@@ -75,9 +69,6 @@ class MooUploadResponse extends AbstractResponse
         return $this->name;
     }
 
-    /**
-     * @param mixed $size
-     */
     public function setSize($size): self
     {
         $this->size = (int) $size;

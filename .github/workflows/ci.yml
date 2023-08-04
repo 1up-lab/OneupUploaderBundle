@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install the dependencies
-        run: composer install --no-interaction --no-suggest
+        run: composer install --no-interaction
       - name: Check the coding style
         run: vendor/bin/php-cs-fixer fix --diff --dry-run
       - name: Analyze the code
@@ -75,6 +75,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install the dependencies
-        run: composer update --prefer-lowest --prefer-stable --no-interaction --no-suggest
+        run: composer update --prefer-lowest --prefer-stable --no-interaction
       - name: Run the unit tests
         run: vendor/bin/phpunit --colors=always

@@ -81,7 +81,7 @@ class OneupUploaderExtension extends Extension
         ;
     }
 
-    protected function processMapping(string $key, array & $mapping): array
+    protected function processMapping(string $key, array &$mapping): array
     {
         $mapping['max_size'] = $mapping['max_size'] < 0 || \is_string($mapping['max_size']) ?
             $this->getMaxUploadSize($mapping['max_size']) :
@@ -188,7 +188,7 @@ class OneupUploaderExtension extends Extension
         }
     }
 
-    protected function createStorageService(array & $config, string $key, bool $orphanage = false): Reference
+    protected function createStorageService(array &$config, string $key, bool $orphanage = false): Reference
     {
         $storageService = null;
 
@@ -271,7 +271,7 @@ class OneupUploaderExtension extends Extension
                 break;
         }
 
-        if (\strlen($filesystem) <= 0) {
+        if ('' === $filesystem) {
             throw new ServiceNotFoundException('Empty service name');
         }
 
@@ -285,14 +285,11 @@ class OneupUploaderExtension extends Extension
             ->addArgument($prefix);
     }
 
-    /**
-     * @param mixed $input
-     */
     protected function getMaxUploadSize($input): int
     {
         $input = $this->getValueInBytes($input);
-        $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
-        $maxFile = $this->getValueInBytes(ini_get('post_max_size'));
+        $maxPost = $this->getValueInBytes(\ini_get('upload_max_filesize'));
+        $maxFile = $this->getValueInBytes(\ini_get('post_max_size'));
 
         if ($input < 0) {
             return min($maxPost, $maxFile);
@@ -301,9 +298,6 @@ class OneupUploaderExtension extends Extension
         return min(min($input, $maxPost), $maxFile);
     }
 
-    /**
-     * @param mixed $input
-     */
     protected function getValueInBytes($input): int
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
@@ -313,12 +307,12 @@ class OneupUploaderExtension extends Extension
 
         switch ($last) {
             case 'g': $numericInput *= 1024;
-            // no break
+                // no break
             case 'm': $numericInput *= 1024;
-            // no break
+                // no break
             case 'k': $numericInput *= 1024;
 
-            return (int) $numericInput;
+                return (int) $numericInput;
         }
 
         return (int) $input;

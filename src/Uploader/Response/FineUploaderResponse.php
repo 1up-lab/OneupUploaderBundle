@@ -6,10 +6,6 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 class FineUploaderResponse extends AbstractResponse
 {
-    /**
-     * @param bool        $success
-     * @param string|null $error
-     */
     public function __construct(protected bool $success = true, protected ?string $error = null)
     {
         parent::__construct();

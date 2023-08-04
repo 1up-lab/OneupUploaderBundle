@@ -36,8 +36,8 @@ abstract class AbstractController
 
         $session = $request->getSession();
 
-        $prefix = (string) ini_get('session.upload_progress.prefix');
-        $name = (string) ini_get('session.upload_progress.name');
+        $prefix = (string) \ini_get('session.upload_progress.prefix');
+        $name = (string) \ini_get('session.upload_progress.name');
 
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
@@ -53,8 +53,8 @@ abstract class AbstractController
 
         $session = $request->getSession();
 
-        $prefix = (string) ini_get('session.upload_progress.prefix');
-        $name = (string) ini_get('session.upload_progress.name');
+        $prefix = (string) \ini_get('session.upload_progress.prefix');
+        $name = (string) \ini_get('session.upload_progress.name');
 
         $key = sprintf('%s.%s', $prefix, $request->get($name));
 
@@ -97,7 +97,7 @@ abstract class AbstractController
      *
      *  Note: The return value differs when
      *
-     *  @param mixed $file The file to upload
+     * @param mixed $file The file to upload
      */
     protected function handleUpload($file, ResponseInterface $response, Request $request): void
     {
@@ -126,9 +126,9 @@ abstract class AbstractController
     /**
      *  This function is a helper function which dispatches pre upload event.
      *
-     *  @param FileInterface $uploaded the uploaded file
-     *  @param ResponseInterface $response a response object
-     *  @param Request $request the request object
+     * @param FileInterface     $uploaded the uploaded file
+     * @param ResponseInterface $response a response object
+     * @param Request           $request  the request object
      */
     protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request): void
     {
@@ -142,7 +142,7 @@ abstract class AbstractController
      *  This function is a helper function which dispatches post upload
      *  and post persist events.
      *
-     *  @param mixed $uploaded the uploaded file
+     * @param mixed $uploaded the uploaded file
      */
     protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request): void
     {
@@ -171,8 +171,6 @@ abstract class AbstractController
      *
      * On top of that, if the client does not support the application/json type,
      * then the content type of the response will be set to text/plain instead.
-     *
-     * @param mixed $data
      */
     protected function createSupportedJsonResponse($data, int $statusCode = 200): JsonResponse
     {

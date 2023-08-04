@@ -15,14 +15,7 @@ class PreUploadEvent extends Event
 {
     public const NAME = UploadEvents::PRE_UPLOAD;
 
-    /**
-     * @param File|FileInterface $file
-     * @param ResponseInterface  $response
-     * @param Request            $request
-     * @param string             $type
-     * @param array              $config
-     */
-    public function __construct(protected File | FileInterface $file, protected ResponseInterface $response, protected Request $request, protected string $type, protected array $config)
+    public function __construct(protected File|FileInterface $file, protected ResponseInterface $response, protected Request $request, protected string $type, protected array $config)
     {
     }
 

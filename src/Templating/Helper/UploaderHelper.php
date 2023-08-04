@@ -9,10 +9,6 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class UploaderHelper extends Helper
 {
-    /**
-     * @param RouterInterface $router
-     * @param array           $maxsize
-     */
     public function __construct(protected RouterInterface $router, protected array $maxsize)
     {
     }
@@ -39,12 +35,9 @@ class UploaderHelper extends Helper
 
     public function uploadKey(): string
     {
-        return (string) ini_get('session.upload_progress.name');
+        return (string) \ini_get('session.upload_progress.name');
     }
 
-    /**
-     * @return mixed
-     */
     public function maxSize(string $key)
     {
         if (!\array_key_exists($key, $this->maxsize)) {

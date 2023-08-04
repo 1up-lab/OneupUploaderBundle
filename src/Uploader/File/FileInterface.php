@@ -55,8 +55,5 @@ interface FileInterface
      */
     public function getExtension(): string;
 
-    /**
-     * @return mixed
-     */
     public function getFileSystem();
 }

@@ -48,7 +48,7 @@
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
         "doctrine/common": "^2.12 || ^3.0",
         "doctrine/doctrine-bundle": "^2.4",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "3.22.*",
         "knplabs/gaufrette": "^0.9",
         "oneup/flysystem-bundle": "^4.1",
         "phpstan/phpstan": "^0.12.10",

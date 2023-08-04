@@ -20,12 +20,6 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
      */
     protected $session;
 
-    /**
-     * @param StorageInterface $storage
-     * @param ChunkStorage     $chunkStorage
-     * @param array            $config
-     * @param string           $type
-     */
     public function __construct(protected StorageInterface $storage, RequestStack $requestStack, protected ChunkStorage $chunkStorage, protected array $config, protected string $type)
     {
         parent::__construct($config['directory']);
@@ -61,7 +55,8 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             foreach ($files as $file) {
                 $return[] = $this->storage->upload(
                     new FilesystemFile(new File($file->getPathname())),
-                    ltrim(str_replace($this->getFindPath(), '', (string) $file), '/'));
+                    ltrim(str_replace($this->getFindPath(), '', (string) $file), '/')
+                );
             }
 
             return $return;
@@ -77,10 +72,10 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         try {
             $finder->in($this->getFindPath())->files();
         } catch (\InvalidArgumentException $e) {
-            //catch non-existing directory exception.
-            //This can happen if getFiles is called and no file has yet been uploaded
+            // catch non-existing directory exception.
+            // This can happen if getFiles is called and no file has yet been uploaded
 
-            //push empty array into the finder so we can emulate no files found
+            // push empty array into the finder so we can emulate no files found
             $finder->append([]);
         }
 

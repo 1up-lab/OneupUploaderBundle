@@ -18,12 +18,6 @@ class FlysystemStorage implements ChunkStorageInterface
      */
     protected $unhandledChunk;
 
-    /**
-     * @param Filesystem $filesystem
-     * @param int        $bufferSize
-     * @param string     $streamWrapperPrefix
-     * @param string     $prefix
-     */
     public function __construct(protected Filesystem $filesystem, public int $bufferSize, protected string $streamWrapperPrefix, protected string $prefix)
     {
     }
@@ -150,7 +144,7 @@ class FlysystemStorage implements ChunkStorageInterface
         $uuid = basename($uuid);
 
         return $this->filesystem->listContents($this->prefix . '/' . $uuid)
-            ->filter(function (StorageAttributes $attributes) { return $attributes->isFile(); })
+            ->filter(fn (StorageAttributes $attributes) => $attributes->isFile())
             ->sortByPath()
             ->map(function (StorageAttributes $attributes) {
                 return [

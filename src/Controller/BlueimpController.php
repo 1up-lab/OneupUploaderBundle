@@ -39,8 +39,8 @@ class BlueimpController extends AbstractChunkedController
 
         $session = $request->getSession();
 
-        $prefix = (string) ini_get('session.upload_progress.prefix');
-        $name = (string) ini_get('session.upload_progress.name');
+        $prefix = (string) \ini_get('session.upload_progress.prefix');
+        $name = (string) \ini_get('session.upload_progress.name');
 
         // ref: https://github.com/blueimp/jQuery-File-Upload/wiki/PHP-Session-Upload-Progress
         $key = sprintf('%s.%s', $prefix, $request->get($name));

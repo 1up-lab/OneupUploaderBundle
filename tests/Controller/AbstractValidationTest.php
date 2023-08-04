@@ -18,7 +18,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getOversizedFile()], $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }
@@ -113,29 +113,17 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getFileWithIncorrectMimeType()], $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
-    /**
-     * @return mixed
-     */
     abstract protected function getFileWithCorrectMimeType();
 
-    /**
-     * @return mixed
-     */
     abstract protected function getFileWithCorrectMimeTypeAndIncorrectExtension();
 
-    /**
-     * @return mixed
-     */
     abstract protected function getFileWithIncorrectMimeType();
 
-    /**
-     * @return mixed
-     */
     abstract protected function getOversizedFile();
 
     abstract protected function getRequestParameters(): array;

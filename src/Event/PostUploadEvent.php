@@ -15,14 +15,7 @@ class PostUploadEvent extends Event
 {
     public const NAME = UploadEvents::POST_UPLOAD;
 
-    /**
-     * @param FileInterface|File $file
-     * @param ResponseInterface  $response
-     * @param Request            $request
-     * @param string             $type
-     * @param array              $config
-     */
-    public function __construct(protected FileInterface | File $file, protected ResponseInterface $response, protected Request $request, protected string $type, protected array $config)
+    public function __construct(protected FileInterface|File $file, protected ResponseInterface $response, protected Request $request, protected string $type, protected array $config)
     {
     }
 

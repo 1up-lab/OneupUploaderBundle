@@ -81,7 +81,7 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
             fwrite($pointer, str_repeat('A', 1024), 1024);
             fclose($pointer);
 
-            //gaufrette needs the key relative to it's root
+            // gaufrette needs the key relative to it's root
             $fileKey = str_replace($this->realDirectory, '', $file);
 
             $this->payloads[] = new GaufretteFile(new File($fileKey, $filesystem), $filesystem);
@@ -134,6 +134,6 @@ class GaufretteOrphanageStorageTest extends OrphanageTest
 
     public function checkIfTempnameMatchesAfterCreation(): bool
     {
-        return 0 === strpos((string) @tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory);
+        return str_starts_with((string) @tempnam($this->chunkDirectory, 'uploader'), $this->chunkDirectory);
     }
 }

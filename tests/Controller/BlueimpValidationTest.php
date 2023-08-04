@@ -21,7 +21,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getOversizedFile(), $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
         $this->assertFalse(strpos((string) $response->getContent(), 'error.maxsize'), 'Failed to translate error id into lang');
@@ -78,7 +78,7 @@ class BlueimpValidationTest extends AbstractValidationTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectMimeType(), $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }

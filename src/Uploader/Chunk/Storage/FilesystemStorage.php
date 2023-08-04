@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements ChunkStorageInterface
 {
-    /**
-     * @param string $directory
-     */
     public function __construct(protected string $directory)
     {
     }

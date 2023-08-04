@@ -6,41 +6,26 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
 {
-    /**
-     * @param array $data
-     */
     public function __construct(protected array $data = [])
     {
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
     public function offsetSet($offset, $value): void
     {
         null === $offset ? $this->data[] = $value : $this->data[$offset] = $value;
     }
 
-    /**
-     * @param mixed $offset
-     */
     public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }
 
-    /**
-     * @param mixed $offset
-     */
     public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
     }
 
     /**
-     * @param mixed $offset
-     *
      * @return mixed|null
      */
     #[\ReturnTypeWillChange]
@@ -52,8 +37,6 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
     /**
      * The \ArrayAccess interface does not support multi-dimensional array syntax such as $array["foo"][] = bar
      * This function will take a path of arrays and add a new element to it, creating the path if needed.
-     *
-     * @param mixed $value
      *
      * @throws \InvalidArgumentException if the path contains non-array items
      */

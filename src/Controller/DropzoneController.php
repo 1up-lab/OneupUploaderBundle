@@ -29,7 +29,7 @@ class DropzoneController extends AbstractChunkedController
                     $this->handleUpload($file, $response, $request)
                 ;
             } catch (UploadException $e) {
-                $statusCode = 500; //Dropzone displays error if HTTP response is 40x or 50x
+                $statusCode = 500; // Dropzone displays error if HTTP response is 40x or 50x
                 $this->errorHandler->addException($response, $e);
 
                 /** @var TranslatorInterface $translator */

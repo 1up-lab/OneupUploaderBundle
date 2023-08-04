@@ -14,11 +14,6 @@ use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 
 class FlysystemStorage implements StorageInterface
 {
-    /**
-     * @param FilesystemOperator $filesystem
-     * @param int                $bufferSize
-     * @param string|null        $streamWrapperPrefix
-     */
     public function __construct(private FilesystemOperator $filesystem, protected int $bufferSize, protected ?string $streamWrapperPrefix = null)
     {
     }

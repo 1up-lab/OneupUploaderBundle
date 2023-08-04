@@ -87,8 +87,5 @@ abstract class AbstractUploadTest extends AbstractControllerTest
 
     abstract protected function getRequestParameters(): array;
 
-    /**
-     * @return mixed
-     */
     abstract protected function getRequestFile();
 }

@@ -20,10 +20,6 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      */
     protected $unhandledChunk;
 
-    /**
-     * @param string|null $streamWrapperPrefix
-     * @param string      $prefix
-     */
     public function __construct(FilesystemInterface $filesystem, int $bufferSize, protected ?string $streamWrapperPrefix, protected string $prefix)
     {
         $base = interface_exists(FilesystemInterface::class)
@@ -31,7 +27,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             : Filesystem::class;
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \get_class($filesystem)));
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, $filesystem::class));
         }
 
         if ($filesystem instanceof Filesystem && !($filesystem->getAdapter() instanceof StreamFactory)) {
