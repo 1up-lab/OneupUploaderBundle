@@ -15,6 +15,7 @@ use Oneup\UploaderBundle\Uploader\Naming\NamerInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
 use Oneup\UploaderBundle\Uploader\Storage\StorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,10 +39,11 @@ abstract class AbstractController
 
         $prefix = (string) \ini_get('session.upload_progress.prefix');
         $name = (string) \ini_get('session.upload_progress.name');
-
+        /** @var string $value */
+        $value = $request->get($name);
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
-        $key = sprintf('%s.%s', $prefix, $request->get($name));
+        $key = sprintf('%s.%s', $prefix, $value);
         $value = $session->get($key);
 
         return new JsonResponse($value);
@@ -55,9 +57,11 @@ abstract class AbstractController
 
         $prefix = (string) \ini_get('session.upload_progress.prefix');
         $name = (string) \ini_get('session.upload_progress.name');
+        /** @var string $value */
+        $value = $request->get($name);
+        $key = sprintf('%s.%s', $prefix, $value);
 
-        $key = sprintf('%s.%s', $prefix, $request->get($name));
-
+        /** @var array $progress */
         $progress = $session->get($key);
         $progress['cancel_upload'] = false;
 
@@ -97,9 +101,9 @@ abstract class AbstractController
      *
      *  Note: The return value differs when
      *
-     * @param mixed $file The file to upload
+     * @param File $file The file to upload
      */
-    protected function handleUpload($file, ResponseInterface $response, Request $request): void
+    protected function handleUpload(File $file, ResponseInterface $response, Request $request): void
     {
         // wrap the file if it is not done yet which can only happen
         // if it wasn't a chunked upload, in which case it is definitely
@@ -118,6 +122,7 @@ abstract class AbstractController
         $name = $namer->name($file);
 
         // perform the real upload
+        /** @var File $uploaded */
         $uploaded = $this->storage->upload($file, $name);
 
         $this->dispatchPostEvents($uploaded, $response, $request);
@@ -142,9 +147,9 @@ abstract class AbstractController
      *  This function is a helper function which dispatches post upload
      *  and post persist events.
      *
-     * @param mixed $uploaded the uploaded file
+     * @param File $uploaded the uploaded file
      */
-    protected function dispatchPostEvents($uploaded, ResponseInterface $response, Request $request): void
+    protected function dispatchPostEvents(File $uploaded, ResponseInterface $response, Request $request): void
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
@@ -172,7 +177,7 @@ abstract class AbstractController
      * On top of that, if the client does not support the application/json type,
      * then the content type of the response will be set to text/plain instead.
      */
-    protected function createSupportedJsonResponse($data, int $statusCode = 200): JsonResponse
+    protected function createSupportedJsonResponse(mixed $data, int $statusCode = 200): JsonResponse
     {
         $request = $this->getRequest();
         $response = new JsonResponse($data, $statusCode);

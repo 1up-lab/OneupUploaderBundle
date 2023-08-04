@@ -6,6 +6,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
@@ -118,13 +119,13 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
-    abstract protected function getFileWithCorrectMimeType();
+    abstract protected function getFileWithCorrectMimeType(): UploadedFile;
 
-    abstract protected function getFileWithCorrectMimeTypeAndIncorrectExtension();
+    abstract protected function getFileWithCorrectMimeTypeAndIncorrectExtension(): UploadedFile;
 
-    abstract protected function getFileWithIncorrectMimeType();
+    abstract protected function getFileWithIncorrectMimeType(): UploadedFile;
 
-    abstract protected function getOversizedFile();
+    abstract protected function getOversizedFile(): UploadedFile;
 
     abstract protected function getRequestParameters(): array;
 }

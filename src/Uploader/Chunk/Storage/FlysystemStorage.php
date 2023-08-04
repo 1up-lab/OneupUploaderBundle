@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class FlysystemStorage implements ChunkStorageInterface
 {
     /**
-     * @var array|null
+     * @var array
      */
-    protected $unhandledChunk;
+    protected array $unhandledChunk = [];
 
     public function __construct(protected Filesystem $filesystem, public int $bufferSize, protected string $streamWrapperPrefix, protected string $prefix)
     {

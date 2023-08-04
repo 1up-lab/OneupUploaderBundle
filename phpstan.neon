@@ -15,6 +15,14 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
+        - '#Cannot cast mixed to int\.#'
+        - '#Cannot call method addListener\(\) on mixed\.#'
+        - '#Cannot call method getSize\(\) on mixed\.#'
+        - '#Cannot call method maxSize\(\) on mixed\.#'
+        - '#Cannot call method getPathname\(\) on mixed\.#'
+        - '#Cannot call method getPath\(\) on mixed\.#'
+        - '#Cannot call method getRealPath\(\) on mixed\.#'
+        - '#Cannot call method getBasename\(\) on mixed\.#'
         - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\.#'
         -
             message: '#Parameter \#1 \$parameters of class Symfony\\Component\\HttpFoundation\\FileBag constructor expects array<Symfony\\Component\\HttpFoundation\\File\\UploadedFile>, array<int, Symfony\\Component\\HttpFoundation\\File\\UploadedFile\|null> given\.#'
