@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Oneup\UploaderBundle\OneupUploaderBundle;
-use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -16,7 +15,6 @@ class Kernel extends BaseKernel
         $bundles = [
             new FrameworkBundle(),
             new SecurityBundle(),
-            new SensioFrameworkExtraBundle(),
 
             // bundle to test
             new OneupUploaderBundle(),

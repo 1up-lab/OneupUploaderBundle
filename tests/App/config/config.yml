@@ -1,6 +1,4 @@
 framework:
-    annotations:
-        enabled: true
     translator:      { fallback: en }
     secret:          secret
     router:

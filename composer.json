@@ -53,10 +53,9 @@
         "oneup/flysystem-bundle": "^4.1",
         "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5",
-        "sensio/framework-extra-bundle": "^5.0 || ^6.0",
         "m2mtech/flysystem-stream-wrapper": "^1.0",
         "symfony/browser-kit": "^4.4 || ^5.4 || ^6.0",
-        "symfony/phpunit-bridge": "6.0.*",
+        "symfony/phpunit-bridge": "^6.0",
         "symfony/security-bundle": "^4.4 || ^5.4 || ^6.0",
         "symfony/var-dumper": "^4.4 || ^5.4 || ^6.0",
         "twistor/flysystem-stream-wrapper": "^1.0"
