@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Oneup\UploaderBundle\Uploader\File;
 
-use Symfony\Component\HttpFoundation\File\File;
-
 /**
  * Every function in this interface should be considered unsafe.
  * They are only meant to abstract away some basic file functionality.
@@ -55,5 +53,8 @@ interface FileInterface
      */
     public function getExtension(): string;
 
+    /**
+     * @return mixed
+     */
     public function getFileSystem();
 }

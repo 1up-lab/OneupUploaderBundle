@@ -55,8 +55,10 @@ class FlysystemStorage implements StorageInterface
         }
 
         if ($file instanceof FileInterface) {
+            /** @var FilesystemOperator $filesystem */
+            $filesystem = $file->getFilesystem();
             $manager = new MountManager([
-                'chunks' => $file->getFilesystem(),
+                'chunks' => $filesystem,
                 'dest' => $this->filesystem,
             ]);
 

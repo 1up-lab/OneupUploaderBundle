@@ -38,6 +38,9 @@ class UploaderHelper extends Helper
         return (string) \ini_get('session.upload_progress.name');
     }
 
+    /**
+     * @return int
+     */
     public function maxSize(string $key)
     {
         if (!\array_key_exists($key, $this->maxsize)) {

@@ -16,6 +16,7 @@ class RouteLoader extends Loader
     }
 
     /**
+     * @param mixed $resource
      * @param string|null $type
      */
     public function supports($resource, $type = null): bool
@@ -24,6 +25,7 @@ class RouteLoader extends Loader
     }
 
     /**
+     * @param mixed $resource
      * @param string|null $type
      */
     public function load($resource, $type = null): RouteCollection

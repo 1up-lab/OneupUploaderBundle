@@ -38,6 +38,8 @@ abstract class AbstractResponse implements \ArrayAccess, ResponseInterface
      * The \ArrayAccess interface does not support multi-dimensional array syntax such as $array["foo"][] = bar
      * This function will take a path of arrays and add a new element to it, creating the path if needed.
      *
+     * @param array $value
+     *
      * @throws \InvalidArgumentException if the path contains non-array items
      */
     public function addToOffset($value, array $offsets): void

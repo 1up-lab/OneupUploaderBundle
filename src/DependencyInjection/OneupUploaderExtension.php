@@ -108,12 +108,12 @@ class OneupUploaderExtension extends Extension
         } else {
             $customFrontend = $config['custom_frontend'];
 
-            $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
-            $controllerType = $customFrontend['class'];
-
-            if (empty($controllerName) || empty($controllerType)) {
+            if (empty($customFrontend['name']) || empty($customFrontend['class'])) {
                 throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
+
+            $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
+            $controllerType = $customFrontend['class'];
         }
 
         $errorHandler = $this->createErrorHandler($config);
@@ -285,6 +285,9 @@ class OneupUploaderExtension extends Extension
             ->addArgument($prefix);
     }
 
+    /**
+     * @param mixed $input
+     */
     protected function getMaxUploadSize($input): int
     {
         $input = $this->getValueInBytes($input);
@@ -298,9 +301,16 @@ class OneupUploaderExtension extends Extension
         return min(min($input, $maxPost), $maxFile);
     }
 
+    /**
+     * @param mixed $input
+     */
     protected function getValueInBytes($input): int
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
+        if (!is_scalar($input)) {
+            return -1;
+        }
+
         $input = trim((string) $input);
         $last = strtolower($input[\strlen($input) - 1]);
         $numericInput = (float) substr($input, 0, -1);

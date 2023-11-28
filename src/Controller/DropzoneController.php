@@ -53,10 +53,11 @@ class DropzoneController extends AbstractChunkedController
         $uuid = $request->get('dzuuid');
 
         /**
-         * @var UploadedFile
+         * @var UploadedFile $file
          */
-        $file = $request->files->get('file')->getClientOriginalName();
-        $orig = $file;
+        $file = $request->files->get('file');
+        $fileName = $file->getClientOriginalName();
+        $orig = $fileName;
 
         return [$last, $uuid, $index, $orig];
     }
