@@ -50,10 +50,7 @@ class UploaderExtension extends AbstractExtension
         return $this->helper->uploadKey();
     }
 
-    /**
-     * @return int
-     */
-    public function maxSize(string $key)
+    public function maxSize(string $key): int
     {
         return $this->helper->maxSize($key);
     }

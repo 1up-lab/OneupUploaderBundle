@@ -73,9 +73,8 @@ abstract class AbstractChunkedController extends AbstractController
             $path = $assembled->getPath();
             if ($assembled instanceof File) {
                 $this->handleUpload($assembled, $response, $request);
-            } else {
-                // @todo $assembled is of type mixed, so would error without check
             }
+            // @todo $assembled is of type mixed, so would error without check
 
             $chunkManager->cleanup($path);
         }

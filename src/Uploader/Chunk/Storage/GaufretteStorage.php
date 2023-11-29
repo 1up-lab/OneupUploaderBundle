@@ -93,7 +93,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * for gaufrette based chunk storage therefore assembleChunks will
      * be called in the same request.
      */
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): mixed
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -104,6 +104,8 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             'chunk' => $chunk,
             'original' => $original,
         ];
+
+        return null;
     }
 
     /**

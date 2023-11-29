@@ -23,12 +23,7 @@ class ChunkManager implements ChunkManagerInterface
         return $this->storage->addChunk($uuid, $index, $chunk, $original);
     }
 
-    /**
-     * @param mixed $chunks
-     * @param bool $removeChunk
-     * @param bool $renameChunk
-     */
-    public function assembleChunks($chunks, $removeChunk = true, $renameChunk = false): mixed
+    public function assembleChunks(mixed $chunks, bool $removeChunk = true, bool $renameChunk = false): mixed
     {
         return $this->storage->assembleChunks($chunks, $removeChunk, $renameChunk);
     }

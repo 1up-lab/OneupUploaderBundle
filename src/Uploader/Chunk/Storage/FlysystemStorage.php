@@ -19,7 +19,7 @@ class FlysystemStorage implements ChunkStorageInterface
     {
     }
 
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): mixed
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -30,6 +30,8 @@ class FlysystemStorage implements ChunkStorageInterface
             'chunk' => $chunk,
             'original' => $original,
         ];
+
+        return null;
     }
 
     /**

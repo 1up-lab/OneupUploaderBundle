@@ -16,7 +16,7 @@ class FlysystemFile implements FileInterface
     /**
      * @throws FilesystemException
      */
-    public function getSize(): int
+    public function getSize()
     {
         return $this->filesystem->fileSize($this->pathname);
     }
@@ -34,7 +34,7 @@ class FlysystemFile implements FileInterface
     /**
      * @throws FilesystemException
      */
-    public function getMimeType(): string
+    public function getMimeType()
     {
         return $this->filesystem->mimeType($this->pathname);
     }

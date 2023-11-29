@@ -15,20 +15,12 @@ class RouteLoader extends Loader
         parent::__construct();
     }
 
-    /**
-     * @param mixed $resource
-     * @param string|null $type
-     */
-    public function supports($resource, $type = null): bool
+    public function supports(mixed $resource, string $type = null): bool
     {
         return 'uploader' === $type;
     }
 
-    /**
-     * @param mixed $resource
-     * @param string|null $type
-     */
-    public function load($resource, $type = null): RouteCollection
+    public function load(mixed $resource, string $type = null): RouteCollection
     {
         $routes = new RouteCollection();
         $separator = '::';

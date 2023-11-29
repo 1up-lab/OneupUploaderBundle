@@ -37,7 +37,7 @@ interface FileInterface
     /**
      * Returns the guessed mime type of the file.
      *
-     * @return string
+     * @return string|null
      */
     public function getMimeType();
 
@@ -53,8 +53,5 @@ interface FileInterface
      */
     public function getExtension(): string;
 
-    /**
-     * @return mixed
-     */
-    public function getFileSystem();
+    public function getFileSystem(): mixed;
 }

@@ -285,10 +285,7 @@ class OneupUploaderExtension extends Extension
             ->addArgument($prefix);
     }
 
-    /**
-     * @param mixed $input
-     */
-    protected function getMaxUploadSize($input): int
+    protected function getMaxUploadSize(mixed $input): int
     {
         $input = $this->getValueInBytes($input);
         $maxPost = $this->getValueInBytes(\ini_get('upload_max_filesize'));
@@ -301,13 +298,10 @@ class OneupUploaderExtension extends Extension
         return min(min($input, $maxPost), $maxFile);
     }
 
-    /**
-     * @param mixed $input
-     */
-    protected function getValueInBytes($input): int
+    protected function getValueInBytes(mixed $input): int
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
-        if (!is_scalar($input)) {
+        if (!\is_scalar($input)) {
             return -1;
         }
 

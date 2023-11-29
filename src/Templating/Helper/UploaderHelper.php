@@ -38,10 +38,7 @@ class UploaderHelper extends Helper
         return (string) \ini_get('session.upload_progress.name');
     }
 
-    /**
-     * @return int
-     */
-    public function maxSize(string $key)
+    public function maxSize(string $key): int
     {
         if (!\array_key_exists($key, $this->maxsize)) {
             throw new \InvalidArgumentException('No such mapping found to get maxsize for.');
