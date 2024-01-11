@@ -10,22 +10,11 @@ interface ChunkStorageInterface
 {
     public function clear(int $maxAge): void;
 
-    /**
-     * @return mixed
-     */
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original);
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): mixed;
 
-    /**
-     * @param mixed $chunks
-     *
-     * @return mixed
-     */
-    public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk);
+    public function assembleChunks(mixed $chunks, bool $removeChunk, bool $renameChunk): mixed;
 
     public function cleanup(string $path): void;
 
-    /**
-     * @return mixed
-     */
-    public function getChunks(string $uuid);
+    public function getChunks(string $uuid): mixed;
 }

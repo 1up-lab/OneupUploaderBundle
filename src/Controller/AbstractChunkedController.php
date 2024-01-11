@@ -7,6 +7,7 @@ namespace Oneup\UploaderBundle\Controller;
 use Oneup\UploaderBundle\Event\PostChunkUploadEvent;
 use Oneup\UploaderBundle\Uploader\Chunk\ChunkManagerInterface;
 use Oneup\UploaderBundle\Uploader\Response\ResponseInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -70,7 +71,10 @@ abstract class AbstractChunkedController extends AbstractController
         // with reassembling the parts
         if ($last) {
             $path = $assembled->getPath();
-            $this->handleUpload($assembled, $response, $request);
+            if ($assembled instanceof File) {
+                $this->handleUpload($assembled, $response, $request);
+            }
+            // @todo $assembled is of type mixed, so would error without check
 
             $chunkManager->cleanup($path);
         }

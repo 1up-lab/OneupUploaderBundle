@@ -6,6 +6,7 @@ namespace Oneup\UploaderBundle\Tests\Controller;
 
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class AbstractValidationTest extends AbstractControllerTest
 {
@@ -18,7 +19,7 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getOversizedFile()], $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }
@@ -113,30 +114,18 @@ abstract class AbstractValidationTest extends AbstractControllerTest
         $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getFileWithIncorrectMimeType()], $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }
 
-    /**
-     * @return mixed
-     */
-    abstract protected function getFileWithCorrectMimeType();
+    abstract protected function getFileWithCorrectMimeType(): UploadedFile;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function getFileWithCorrectMimeTypeAndIncorrectExtension();
+    abstract protected function getFileWithCorrectMimeTypeAndIncorrectExtension(): UploadedFile;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function getFileWithIncorrectMimeType();
+    abstract protected function getFileWithIncorrectMimeType(): UploadedFile;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function getOversizedFile();
+    abstract protected function getOversizedFile(): UploadedFile;
 
     abstract protected function getRequestParameters(): array;
 }

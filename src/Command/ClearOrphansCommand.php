@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Command;
 
 use Oneup\UploaderBundle\Uploader\Orphanage\OrphanageManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'oneup:uploader:clear-orphans'
+)]
 class ClearOrphansCommand extends Command
 {
     protected static $defaultName = 'oneup:uploader:clear-orphans';

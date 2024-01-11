@@ -15,31 +15,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageStorageInterface
 {
     /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    /**
      * @var SessionInterface
      */
     protected $session;
 
-    /**
-     * @var GaufretteChunkStorage
-     */
-    protected $chunkStorage;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    public function __construct(StorageInterface $storage, RequestStack $requestStack, GaufretteChunkStorage $chunkStorage, array $config, string $type)
+    public function __construct(protected StorageInterface $storage, RequestStack $requestStack, protected GaufretteChunkStorage $chunkStorage, protected array $config, protected string $type)
     {
         /*
          * initiate the storage on the chunk storage's filesystem
@@ -49,12 +29,7 @@ class GaufretteOrphanageStorage extends GaufretteStorage implements OrphanageSto
 
         /** @var Request $request */
         $request = $requestStack->getCurrentRequest();
-
-        $this->storage = $storage;
-        $this->chunkStorage = $chunkStorage;
         $this->session = $request->getSession();
-        $this->config = $config;
-        $this->type = $type;
     }
 
     /**

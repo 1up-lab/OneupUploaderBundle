@@ -42,9 +42,9 @@ class GaufretteAmazonS3StorageTest extends TestCase
     protected function setUp(): void
     {
         if (
-            false === getenv('AWS_ACCESS_KEY_ID') ||
-            false === getenv('AWS_SECRET_ACCESS_KEY') ||
-            false === getenv('AWS_BUCKET')
+            false === getenv('AWS_ACCESS_KEY_ID')
+            || false === getenv('AWS_SECRET_ACCESS_KEY')
+            || false === getenv('AWS_BUCKET')
         ) {
             $this->markTestSkipped('Missing AWS_* ENV variables.');
         }

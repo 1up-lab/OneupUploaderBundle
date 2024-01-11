@@ -1,17 +1,19 @@
 <?php
+use PhpCsFixer\Config;
 
 $finder = PhpCsFixer\Finder::create()
     ->in([__DIR__ . '/src', __DIR__ . '/tests'])
     ->exclude(['App/cache', 'App/var'])
 ;
 
-return PhpCsFixer\Config::create()
+$config = new Config();
+return $config
     ->setRules([
         '@DoctrineAnnotation' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        '@PHP71Migration' => true,
-        '@PHP71Migration:risky' => true,
+        '@PHP80Migration' => true,
+        '@PHP80Migration:risky' => true,
         '@PHPUnit60Migration:risky' => true,
         '@PHPUnit75Migration:risky' => true,
         'align_multiline_comment' => true,
@@ -21,11 +23,7 @@ return PhpCsFixer\Config::create()
         ],
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
-        'general_phpdoc_annotation_remove' => [
-            'author',
-            'expectedException',
-            'expectedExceptionMessage',
-        ],
+        'general_phpdoc_annotation_remove' => true,
         'heredoc_to_nowdoc' => true,
         'linebreak_after_opening_tag' => true,
         'list_syntax' => ['syntax' => 'short'],

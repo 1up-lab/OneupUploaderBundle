@@ -6,41 +6,13 @@ namespace Oneup\UploaderBundle\Uploader\Response;
 
 class MooUploadResponse extends AbstractResponse
 {
-    /**
-     * @var int|string
-     */
-    protected $id;
+    protected int|string|null $id;
+    protected ?string $name;
+    protected int $size;
+    protected string $uploadedName;
 
-    /**
-     * @var string|null
-     */
-    protected $name;
-
-    /**
-     * @var int
-     */
-    protected $size;
-
-    /**
-     * @var int
-     */
-    protected $error;
-
-    /**
-     * @var bool
-     */
-    protected $finish;
-
-    /**
-     * @var string
-     */
-    protected $uploadedName;
-
-    public function __construct()
+    public function __construct(protected bool $finish = true, protected int $error = 0)
     {
-        $this->finish = true;
-        $this->error = 0;
-
         parent::__construct();
     }
 
@@ -58,20 +30,14 @@ class MooUploadResponse extends AbstractResponse
         return $data;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): self
+    public function setId(int|string|null $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int|string|null
     {
         return $this->id;
     }
@@ -88,10 +54,7 @@ class MooUploadResponse extends AbstractResponse
         return $this->name;
     }
 
-    /**
-     * @param mixed $size
-     */
-    public function setSize($size): self
+    public function setSize(mixed $size): self
     {
         $this->size = (int) $size;
 

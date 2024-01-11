@@ -74,7 +74,9 @@ class MooUploadController extends AbstractChunkedController
 
         try {
             // loop through every file that has been uploaded before
-            foreach ($chunkManager->getChunks((string) $uuid) as $file) {
+            /** @var iterable $chunks */
+            $chunks = $chunkManager->getChunks((string) $uuid);
+            foreach ($chunks as $file) {
                 $size += $file->getSize();
             }
         } catch (\InvalidArgumentException $e) {

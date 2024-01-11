@@ -9,20 +9,8 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class UploaderHelper extends Helper
 {
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
-     * @var array
-     */
-    protected $maxsize;
-
-    public function __construct(RouterInterface $router, array $maxsize)
+    public function __construct(protected RouterInterface $router, protected array $maxsize)
     {
-        $this->router = $router;
-        $this->maxsize = $maxsize;
     }
 
     public function getName(): string
@@ -47,13 +35,10 @@ class UploaderHelper extends Helper
 
     public function uploadKey(): string
     {
-        return (string) ini_get('session.upload_progress.name');
+        return (string) \ini_get('session.upload_progress.name');
     }
 
-    /**
-     * @return mixed
-     */
-    public function maxSize(string $key)
+    public function maxSize(string $key): int
     {
         if (!\array_key_exists($key, $this->maxsize)) {
             throw new \InvalidArgumentException('No such mapping found to get maxsize for.');

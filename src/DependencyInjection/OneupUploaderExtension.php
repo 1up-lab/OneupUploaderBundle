@@ -108,12 +108,12 @@ class OneupUploaderExtension extends Extension
         } else {
             $customFrontend = $config['custom_frontend'];
 
-            $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
-            $controllerType = $customFrontend['class'];
-
-            if (empty($controllerName) || empty($controllerType)) {
+            if (empty($customFrontend['name']) || empty($customFrontend['class'])) {
                 throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
+
+            $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
+            $controllerType = $customFrontend['class'];
         }
 
         $errorHandler = $this->createErrorHandler($config);
@@ -271,7 +271,7 @@ class OneupUploaderExtension extends Extension
                 break;
         }
 
-        if (\strlen($filesystem) <= 0) {
+        if ('' === $filesystem) {
             throw new ServiceNotFoundException('Empty service name');
         }
 
@@ -285,14 +285,11 @@ class OneupUploaderExtension extends Extension
             ->addArgument($prefix);
     }
 
-    /**
-     * @param mixed $input
-     */
-    protected function getMaxUploadSize($input): int
+    protected function getMaxUploadSize(mixed $input): int
     {
         $input = $this->getValueInBytes($input);
-        $maxPost = $this->getValueInBytes(ini_get('upload_max_filesize'));
-        $maxFile = $this->getValueInBytes(ini_get('post_max_size'));
+        $maxPost = $this->getValueInBytes(\ini_get('upload_max_filesize'));
+        $maxFile = $this->getValueInBytes(\ini_get('post_max_size'));
 
         if ($input < 0) {
             return min($maxPost, $maxFile);
@@ -301,24 +298,25 @@ class OneupUploaderExtension extends Extension
         return min(min($input, $maxPost), $maxFile);
     }
 
-    /**
-     * @param mixed $input
-     */
-    protected function getValueInBytes($input): int
+    protected function getValueInBytes(mixed $input): int
     {
         // see: http://www.php.net/manual/en/function.ini-get.php
+        if (!\is_scalar($input)) {
+            return -1;
+        }
+
         $input = trim((string) $input);
         $last = strtolower($input[\strlen($input) - 1]);
         $numericInput = (float) substr($input, 0, -1);
 
         switch ($last) {
             case 'g': $numericInput *= 1024;
-            // no break
+                // no break
             case 'm': $numericInput *= 1024;
-            // no break
+                // no break
             case 'k': $numericInput *= 1024;
 
-            return (int) $numericInput;
+                return (int) $numericInput;
         }
 
         return (int) $input;

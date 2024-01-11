@@ -74,6 +74,7 @@ class FlysystemStorageTest extends ChunkStorageTest
         $system->dumpFile($dir . '/chunk3', 'test');
         $timeTo = time();
 
+        /** @var array $files */
         $files = $this->storage->getChunks($uuid);
         $this->assertCount(3, $files);
         $file = $files[0];

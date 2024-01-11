@@ -23,7 +23,7 @@ class FilesystemFile extends UploadedFile implements FileInterface
         return $this->getClientOriginalExtension();
     }
 
-    public function getFileSystem()
+    public function getFileSystem(): mixed
     {
         return null;
     }
