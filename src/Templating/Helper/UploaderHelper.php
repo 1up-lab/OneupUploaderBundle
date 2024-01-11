@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Oneup\UploaderBundle\Templating\Helper;
 
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\Helper\Helper;
 
-class UploaderHelper extends Helper
+class UploaderHelper
 {
     public function __construct(protected RouterInterface $router, protected array $maxsize)
     {
