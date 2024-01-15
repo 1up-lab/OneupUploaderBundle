@@ -66,7 +66,7 @@ jobs:
 
       - name: Install the dependencies
         run: |
-          composer require symfony/framework-bundle:^${{ matrix.symfony }} symfony/http-foundation:^${{ matrix.symfony }}
+          composer require symfony/framework-bundle:^${{ matrix.symfony }} symfony/http-foundation:^${{ matrix.symfony }} symfony/yaml:^${{ matrix.symfony }}
           composer install --no-interaction --no-suggest
 
       - name: Run the unit tests
