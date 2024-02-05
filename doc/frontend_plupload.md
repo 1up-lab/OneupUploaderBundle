@@ -52,7 +52,7 @@ security:
 Next steps
 ----------
 
-After this setup, you can move on and implement some of the more advanced features. A full list is available [here](https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/index.md#next-steps).
+After this setup, you can move on and implement some of the more advanced features. A full list is available [here](https://github.com/1up-lab/OneupUploaderBundle/blob/main/Resources/doc/index.md#next-steps).
 
 * [Process uploaded files using custom logic](custom_logic.md)
 * [Return custom data to frontend](response.md)
