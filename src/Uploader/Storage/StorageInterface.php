@@ -16,5 +16,5 @@ interface StorageInterface
      *
      * @return FileInterface|File
      */
-    public function upload($file, string $name, string $path = null);
+    public function upload($file, string $name, ?string $path = null);
 }

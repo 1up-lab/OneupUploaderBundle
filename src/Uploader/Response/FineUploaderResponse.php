@@ -42,7 +42,7 @@ class FineUploaderResponse extends AbstractResponse
         return $this->success;
     }
 
-    public function setError(string $msg = null): self
+    public function setError(?string $msg = null): self
     {
         $this->error = $msg;
 

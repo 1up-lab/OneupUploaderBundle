@@ -25,7 +25,7 @@ class FlysystemStorage implements StorageInterface
      *
      * @return FileInterface|SymfonyFile
      */
-    public function upload($file, string $name, string $path = null)
+    public function upload($file, string $name, ?string $path = null)
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
 
