@@ -15,8 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class ClearOrphansCommand extends Command
 {
-    protected static $defaultName = 'oneup:uploader:clear-orphans';
-
     /**
      * @var OrphanageManager
      */

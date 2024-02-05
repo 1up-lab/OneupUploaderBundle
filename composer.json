@@ -38,7 +38,6 @@
         "symfony/finder": "^5.4 || ^6.0 || ^7.0",
         "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0",
         "symfony/mime": "^5.4 || ^6.0 || ^7.0",
-        "symfony/templating": "^5.4 || ^6.0 || ^7.0",
         "symfony/translation": "^5.4 || ^6.0 || ^7.0",
         "symfony/translation-contracts": "^1.0 || ^2.0 || ^3.0",
         "symfony/yaml": "^5.4 || ^6.0 || ^7.0",
