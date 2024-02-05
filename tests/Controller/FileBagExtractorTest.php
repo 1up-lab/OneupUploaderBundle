@@ -83,10 +83,7 @@ class FileBagExtractorTest extends TestCase
         $this->assertCount(3, $result);
     }
 
-    /**
-     * @return mixed
-     */
-    protected function invoke(FileBag $bag)
+    protected function invoke(FileBag $bag): mixed
     {
         return $this->method->invoke($this->mock, $bag);
     }

@@ -20,7 +20,7 @@ class FilesystemFileTest extends FileTest
         $this->basename = 'test_file.txt';
         $this->pathname = $this->path . '/' . $this->basename;
         $this->extension = 'txt';
-        $this->size = 9; //something = 9 bytes
+        $this->size = 9; // something = 9 bytes
         $this->mimeType = 'text/plain';
 
         file_put_contents($this->pathname, 'something');

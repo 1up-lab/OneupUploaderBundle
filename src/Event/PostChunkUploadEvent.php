@@ -13,53 +13,11 @@ class PostChunkUploadEvent extends Event
 {
     public const NAME = UploadEvents::POST_CHUNK_UPLOAD;
 
-    /**
-     * @var mixed
-     */
-    protected $chunk;
-
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var ResponseInterface
-     */
-    protected $response;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var bool
-     */
-    protected $isLast;
-
-    /**
-     * @param mixed $chunk
-     */
-    public function __construct($chunk, ResponseInterface $response, Request $request, bool $isLast, string $type, array $config)
+    public function __construct(protected mixed $chunk, protected ResponseInterface $response, protected Request $request, protected bool $isLast, protected string $type, protected array $config)
     {
-        $this->chunk = $chunk;
-        $this->request = $request;
-        $this->response = $response;
-        $this->isLast = $isLast;
-        $this->type = $type;
-        $this->config = $config;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getChunk()
+    public function getChunk(): mixed
     {
         return $this->chunk;
     }

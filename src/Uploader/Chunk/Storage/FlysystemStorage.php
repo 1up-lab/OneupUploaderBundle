@@ -13,40 +13,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FlysystemStorage implements ChunkStorageInterface
 {
-    /**
-     * @var int
-     */
-    public $bufferSize;
+    protected array $unhandledChunk = [];
 
-    /**
-     * @var array
-     */
-    protected $unhandledChunk;
-
-    /**
-     * @var string
-     */
-    protected $prefix;
-
-    /**
-     * @var string
-     */
-    protected $streamWrapperPrefix;
-
-    /**
-     * @var FilesystemOperator
-     */
-    private $filesystem;
-
-    public function __construct(Filesystem $filesystem, int $bufferSize, string $streamWrapperPrefix, string $prefix)
+    public function __construct(protected Filesystem $filesystem, public int $bufferSize, protected string $streamWrapperPrefix, protected string $prefix)
     {
-        $this->filesystem = $filesystem;
-        $this->bufferSize = $bufferSize;
-        $this->prefix = $prefix;
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): mixed
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -57,6 +30,8 @@ class FlysystemStorage implements ChunkStorageInterface
             'chunk' => $chunk,
             'original' => $original,
         ];
+
+        return null;
     }
 
     /**
@@ -168,7 +143,7 @@ class FlysystemStorage implements ChunkStorageInterface
         $uuid = basename($uuid);
 
         return $this->filesystem->listContents($this->prefix . '/' . $uuid)
-            ->filter(function (StorageAttributes $attributes) { return $attributes->isFile(); })
+            ->filter(fn (StorageAttributes $attributes) => $attributes->isFile())
             ->sortByPath()
             ->map(function (StorageAttributes $attributes) {
                 return [

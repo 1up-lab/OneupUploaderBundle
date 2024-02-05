@@ -9,22 +9,14 @@ use League\Flysystem\FilesystemOperator;
 
 class FlysystemFile implements FileInterface
 {
-    /** @var string */
-    private $pathname;
-
-    /** @var FilesystemOperator */
-    private $filesystem;
-
-    public function __construct(string $pathname, FilesystemOperator $filesystem)
+    public function __construct(private string $pathname, private FilesystemOperator $filesystem)
     {
-        $this->pathname = $pathname;
-        $this->filesystem = $filesystem;
     }
 
     /**
      * @throws FilesystemException
      */
-    public function getSize(): int
+    public function getSize()
     {
         return $this->filesystem->fileSize($this->pathname);
     }
@@ -42,7 +34,7 @@ class FlysystemFile implements FileInterface
     /**
      * @throws FilesystemException
      */
-    public function getMimeType(): string
+    public function getMimeType()
     {
         return $this->filesystem->mimeType($this->pathname);
     }

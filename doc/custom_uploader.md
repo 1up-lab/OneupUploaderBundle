@@ -33,14 +33,18 @@ namespace Acme\DemoBundle\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Oneup\UploaderBundle\Controller\UploaderController;
-use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
+use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;use Symfony\Component\HttpFoundation\RequestStack;
 
 class CustomUploader extends UploaderController
 {
+
+    public function __construct(protected RequestStack $requestStack) {
+    }
+    
     public function upload()
     {
         // get some basic stuff together
-        $request = $this->container->get('request_stack')->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $response = new EmptyResponse();
         
         // get file from request (your own logic)
@@ -100,7 +104,7 @@ class FineUploaderResponse extends AbstractResponse
     public function assemble()
     {
         // explicitly overwrite success and error key
-        // as these keys are used internaly by the
+        // as these keys are used internally by the
         // frontend uploader
         $data = $this->data;
         $data['success'] = $this->success;

@@ -76,8 +76,8 @@ class OneupUploaderExtensionTest extends TestCase
         $getValueInBytes->setAccessible(true);
 
         $store = [
-            $getValueInBytes->invoke($mock, ini_get('upload_max_filesize')),
-            $getValueInBytes->invoke($mock, ini_get('post_max_size')),
+            $getValueInBytes->invoke($mock, \ini_get('upload_max_filesize')),
+            $getValueInBytes->invoke($mock, \ini_get('post_max_size')),
         ];
 
         $min = min($store);

@@ -10,14 +10,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements StorageInterface
 {
-    /**
-     * @var string
-     */
-    protected $directory;
-
-    public function __construct(string $directory)
+    public function __construct(protected string $directory)
     {
-        $this->directory = $directory;
     }
 
     /**

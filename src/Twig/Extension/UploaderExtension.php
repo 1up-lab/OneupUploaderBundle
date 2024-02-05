@@ -10,14 +10,8 @@ use Twig\TwigFunction;
 
 class UploaderExtension extends AbstractExtension
 {
-    /**
-     * @var UploaderHelper
-     */
-    protected $helper;
-
-    public function __construct(UploaderHelper $helper)
+    public function __construct(protected UploaderHelper $helper)
     {
-        $this->helper = $helper;
     }
 
     public function getName(): string
@@ -56,10 +50,7 @@ class UploaderExtension extends AbstractExtension
         return $this->helper->uploadKey();
     }
 
-    /**
-     * @return mixed
-     */
-    public function maxSize(string $key)
+    public function maxSize(string $key): int
     {
         return $this->helper->maxSize($key);
     }

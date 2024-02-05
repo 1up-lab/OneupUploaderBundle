@@ -20,24 +20,14 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      */
     protected $unhandledChunk;
 
-    /**
-     * @var string
-     */
-    protected $prefix;
-
-    /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
-
-    public function __construct(FilesystemInterface $filesystem, int $bufferSize, ?string $streamWrapperPrefix, string $prefix)
+    public function __construct(FilesystemInterface $filesystem, int $bufferSize, protected ?string $streamWrapperPrefix, protected string $prefix)
     {
         $base = interface_exists(FilesystemInterface::class)
             ? FilesystemInterface::class
             : Filesystem::class;
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, \get_class($filesystem)));
+            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, $filesystem::class));
         }
 
         if ($filesystem instanceof Filesystem && !($filesystem->getAdapter() instanceof StreamFactory)) {
@@ -45,8 +35,6 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
         }
         $this->filesystem = $filesystem;
         $this->buffersize = $bufferSize;
-        $this->prefix = $prefix;
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
     /**
@@ -105,7 +93,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * for gaufrette based chunk storage therefore assembleChunks will
      * be called in the same request.
      */
-    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): void
+    public function addChunk(string $uuid, int $index, UploadedFile $chunk, string $original): mixed
     {
         // Prevent path traversal attacks
         $uuid = basename($uuid);
@@ -116,6 +104,8 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             'chunk' => $chunk,
             'original' => $original,
         ];
+
+        return null;
     }
 
     /**

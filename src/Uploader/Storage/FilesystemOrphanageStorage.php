@@ -16,42 +16,17 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageStorageInterface
 {
     /**
-     * @var StorageInterface
-     */
-    protected $storage;
-
-    /**
      * @var SessionInterface
      */
     protected $session;
 
-    /**
-     * @var ChunkStorage
-     */
-    protected $chunkStorage;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    public function __construct(StorageInterface $storage, RequestStack $requestStack, ChunkStorage $chunkStorage, array $config, string $type)
+    public function __construct(protected StorageInterface $storage, RequestStack $requestStack, protected ChunkStorage $chunkStorage, protected array $config, protected string $type)
     {
         parent::__construct($config['directory']);
 
         /** @var Request $request */
         $request = $requestStack->getCurrentRequest();
-
-        $this->storage = $storage;
         $this->session = $request->getSession();
-        $this->chunkStorage = $chunkStorage;
-        $this->config = $config;
-        $this->type = $type;
     }
 
     /**
@@ -80,7 +55,8 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
             foreach ($files as $file) {
                 $return[] = $this->storage->upload(
                     new FilesystemFile(new File($file->getPathname())),
-                    ltrim(str_replace($this->getFindPath(), '', (string) $file), '/'));
+                    ltrim(str_replace($this->getFindPath(), '', (string) $file), '/')
+                );
             }
 
             return $return;
@@ -96,10 +72,10 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
         try {
             $finder->in($this->getFindPath())->files();
         } catch (\InvalidArgumentException $e) {
-            //catch non-existing directory exception.
-            //This can happen if getFiles is called and no file has yet been uploaded
+            // catch non-existing directory exception.
+            // This can happen if getFiles is called and no file has yet been uploaded
 
-            //push empty array into the finder so we can emulate no files found
+            // push empty array into the finder so we can emulate no files found
             $finder->append([]);
         }
 

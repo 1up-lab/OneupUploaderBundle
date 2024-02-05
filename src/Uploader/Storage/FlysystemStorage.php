@@ -14,26 +14,8 @@ use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 
 class FlysystemStorage implements StorageInterface
 {
-    /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
-
-    /**
-     * @var int
-     */
-    protected $bufferSize;
-
-    /**
-     * @var FilesystemOperator
-     */
-    private $filesystem;
-
-    public function __construct(FilesystemOperator $filesystem, int $bufferSize, ?string $streamWrapperPrefix = null)
+    public function __construct(private FilesystemOperator $filesystem, protected int $bufferSize, protected ?string $streamWrapperPrefix = null)
     {
-        $this->filesystem = $filesystem;
-        $this->bufferSize = $bufferSize;
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
     /**
@@ -73,8 +55,10 @@ class FlysystemStorage implements StorageInterface
         }
 
         if ($file instanceof FileInterface) {
+            /** @var FilesystemOperator $filesystem */
+            $filesystem = $file->getFilesystem();
             $manager = new MountManager([
-                'chunks' => $file->getFilesystem(),
+                'chunks' => $filesystem,
                 'dest' => $this->filesystem,
             ]);
 

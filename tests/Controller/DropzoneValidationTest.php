@@ -18,7 +18,7 @@ class DropzoneValidationTest extends AbstractValidationTest
         return [];
     }
 
-    protected function getOversizedFile()
+    protected function getOversizedFile(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(512),
@@ -27,7 +27,7 @@ class DropzoneValidationTest extends AbstractValidationTest
         );
     }
 
-    protected function getFileWithCorrectMimeType()
+    protected function getFileWithCorrectMimeType(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),
@@ -36,7 +36,7 @@ class DropzoneValidationTest extends AbstractValidationTest
         );
     }
 
-    protected function getFileWithCorrectMimeTypeAndIncorrectExtension()
+    protected function getFileWithCorrectMimeTypeAndIncorrectExtension(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),
@@ -45,7 +45,7 @@ class DropzoneValidationTest extends AbstractValidationTest
         );
     }
 
-    protected function getFileWithIncorrectMimeType()
+    protected function getFileWithIncorrectMimeType(): UploadedFile
     {
         return new UploadedFile(
             $this->createTempFile(128),

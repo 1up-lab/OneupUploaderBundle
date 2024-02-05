@@ -17,11 +17,11 @@ class BlueimpValidationTest extends AbstractValidationTest
         /** @var KernelBrowser $client */
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getOversizedFile(), $this->requestHeaders);
+        $file = ['files' => [$this->getOversizedFile()]];
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $file, $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
         $this->assertFalse(strpos((string) $response->getContent(), 'error.maxsize'), 'Failed to translate error id into lang');
@@ -43,8 +43,8 @@ class BlueimpValidationTest extends AbstractValidationTest
         $dispatcher->addListener(ValidationEvent::NAME, static function () use (&$validationCount): void {
             ++$validationCount;
         });
-
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType(), $this->requestHeaders);
+        $file = ['files' => [$this->getFileWithCorrectMimeType()]];
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $file, $this->requestHeaders);
 
         $this->assertSame(1, $validationCount);
     }
@@ -54,8 +54,8 @@ class BlueimpValidationTest extends AbstractValidationTest
         // assemble a request
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithCorrectMimeType(), $this->requestHeaders);
+        $file = ['files' => [$this->getFileWithCorrectMimeType()]];
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $file, $this->requestHeaders);
         $response = $client->getResponse();
 
         $this->assertTrue($response->isSuccessful());
@@ -74,11 +74,11 @@ class BlueimpValidationTest extends AbstractValidationTest
         // assemble a request
         $client = $this->client;
         $endpoint = $this->helper->endpoint($this->getConfigKey());
-
-        $client->request('POST', $endpoint, $this->getRequestParameters(), $this->getFileWithIncorrectMimeType(), $this->requestHeaders);
+        $file = [$this->getFileWithIncorrectMimeType()];
+        $client->request('POST', $endpoint, $this->getRequestParameters(), $file, $this->requestHeaders);
         $response = $client->getResponse();
 
-        //$this->assertTrue($response->isNotSuccessful());
+        // $this->assertTrue($response->isNotSuccessful());
         $this->assertSame($response->headers->get('Content-Type'), 'application/json');
         $this->assertCount(0, $this->getUploadedFiles());
     }
@@ -93,39 +93,39 @@ class BlueimpValidationTest extends AbstractValidationTest
         return [];
     }
 
-    protected function getOversizedFile(): array
+    protected function getOversizedFile(): UploadedFile
     {
-        return ['files' => [new UploadedFile(
+        return new UploadedFile(
             $this->createTempFile(512),
             'cat.ok',
             'text/plain'
-        )]];
+        );
     }
 
-    protected function getFileWithCorrectMimeType(): array
+    protected function getFileWithCorrectMimeType(): UploadedFile
     {
-        return ['files' => [new UploadedFile(
+        return new UploadedFile(
             $this->createTempFile(128),
             'cat.txt',
             'text/plain'
-        )]];
+        );
     }
 
-    protected function getFileWithCorrectMimeTypeAndIncorrectExtension(): array
+    protected function getFileWithCorrectMimeTypeAndIncorrectExtension(): UploadedFile
     {
-        return ['files' => [new UploadedFile(
+        return new UploadedFile(
             $this->createTempFile(128),
             'cat.txxt',
             'text/plain'
-        )]];
+        );
     }
 
-    protected function getFileWithIncorrectMimeType(): array
+    protected function getFileWithIncorrectMimeType(): UploadedFile
     {
-        return [new UploadedFile(
+        return new UploadedFile(
             $this->createTempFile(128),
             'cat.ok',
             'image/gif'
-        )];
+        );
     }
 }

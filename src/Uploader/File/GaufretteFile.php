@@ -12,20 +12,13 @@ use Gaufrette\FilesystemInterface;
 class GaufretteFile extends File implements FileInterface
 {
     /**
-     * @var string|null
-     */
-    protected $streamWrapperPrefix;
-
-    /**
      * @var string
      */
     protected $mimeType;
 
-    public function __construct(File $file, FilesystemInterface $filesystem, string $streamWrapperPrefix = null)
+    public function __construct(File $file, FilesystemInterface $filesystem, protected ?string $streamWrapperPrefix = null)
     {
         parent::__construct($file->getKey(), $filesystem);
-
-        $this->streamWrapperPrefix = $streamWrapperPrefix;
     }
 
     /**
@@ -38,7 +31,7 @@ class GaufretteFile extends File implements FileInterface
      * and will have heavy performance footprint.
      * !! ------- !!
      */
-    public function getSize(): int
+    public function getSize()
     {
         // This can only work on streamable files, so basically local files,
         // still only perform it once even on local files to avoid bothering the filesystem.php g
@@ -74,7 +67,7 @@ class GaufretteFile extends File implements FileInterface
         return pathinfo($this->getKey(), \PATHINFO_BASENAME);
     }
 
-    public function getMimeType(): string
+    public function getMimeType()
     {
         // This can only work on streamable files, so basically local files,
         // still only perform it once even on local files to avoid bothering the filesystem.

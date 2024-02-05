@@ -12,14 +12,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilesystemStorage implements ChunkStorageInterface
 {
-    /**
-     * @var string
-     */
-    protected $directory;
-
-    public function __construct(string $directory)
+    public function __construct(protected string $directory)
     {
-        $this->directory = $directory;
     }
 
     public function clear(int $maxAge): void

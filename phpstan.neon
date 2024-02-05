@@ -1,21 +1,44 @@
 parameters:
-    bootstrapFiles:
-        - %rootDir%/../../../vendor/autoload.php
-
-    excludes_analyse:
+    level: 9
+    paths:
+        - src
+        - tests
+    excludePaths:
         - src/DependencyInjection/Configuration.php
         - tests/App/cache
         - tests/App/logs
         - tests/App/var
         - var
         - vendor
-
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
+        - '#Cannot cast mixed to int\.#'
+        - '#Cannot call method addListener\(\) on mixed\.#'
+        - '#Cannot call method getSize\(\) on mixed\.#'
+        - '#Cannot call method maxSize\(\) on mixed\.#'
+        - '#Cannot call method getPathname\(\) on mixed\.#'
+        - '#Cannot call method getPath\(\) on mixed\.#'
+        - '#Cannot call method getRealPath\(\) on mixed\.#'
+        - '#Cannot call method getBasename\(\) on mixed\.#'
         - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\.#'
+        -
+            message: '#Cannot use array destructuring on array<int, string>\|false\.#'
+            path: '%currentWorkingDirectory%/src/Controller/BlueimpController.php'
+        -
+            message: '#Binary operation "/" between string and int results in an error\.#'
+            path: '%currentWorkingDirectory%/src/Controller/BlueimpController.php'
+        -
+            message: '#Dead catch - Gaufrette\\Exception\\FileNotFound is never thrown in the try block\.#'
+            path: '%currentWorkingDirectory%/src/Uploader/Chunk/Storage/GaufretteStorage.php'
+        -
+            message: '#Parameter \#1 \$finfo of function finfo_file|finfo_close expects finfo, resource given\.#'
+            path: '%currentWorkingDirectory%/src/Uploader/File/GaufretteFile.php'
+        -
+            message: '#Parameter \#2 ...\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.#'
+            path: '%currentWorkingDirectory%/src/Controller/PluploadController.php'
         -
             message: '#Parameter \#1 \$parameters of class Symfony\\Component\\HttpFoundation\\FileBag constructor expects array<Symfony\\Component\\HttpFoundation\\File\\UploadedFile>, array<int, Symfony\\Component\\HttpFoundation\\File\\UploadedFile\|null> given\.#'
             path: '%currentWorkingDirectory%/tests/Controller/FileBagExtractorTest.php'
