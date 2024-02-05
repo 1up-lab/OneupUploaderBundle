@@ -37,7 +37,7 @@ class FlysystemStorage implements ChunkStorageInterface
     /**
      * @throws FilesystemException
      */
-    public function clear(int $maxAge, string $prefix = null): void
+    public function clear(int $maxAge, ?string $prefix = null): void
     {
         $prefix = $prefix ?: $this->prefix;
         $matches = $this->filesystem->listContents($prefix, true);

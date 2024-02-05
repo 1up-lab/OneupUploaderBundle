@@ -164,7 +164,7 @@ abstract class AbstractController
         }
     }
 
-    protected function validate(FileInterface $file, Request $request, ResponseInterface $response = null): void
+    protected function validate(FileInterface $file, Request $request, ?ResponseInterface $response = null): void
     {
         $event = new ValidationEvent($file, $request, $this->config, $this->type, $response);
 
@@ -204,7 +204,7 @@ abstract class AbstractController
     /**
      * Event dispatch proxy that avoids using deprecated interfaces.
      */
-    protected function dispatchEvent(Event $event, string $eventName = null): void
+    protected function dispatchEvent(Event $event, ?string $eventName = null): void
     {
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get('event_dispatcher');

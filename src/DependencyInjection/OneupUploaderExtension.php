@@ -256,7 +256,7 @@ class OneupUploaderExtension extends Extension
         return $storageService;
     }
 
-    protected function registerFilesystem(string $type, string $key, string $class, string $filesystem, string $buffer, string $streamWrapper = null, string $prefix = ''): void
+    protected function registerFilesystem(string $type, string $key, string $class, string $filesystem, string $buffer, ?string $streamWrapper = null, string $prefix = ''): void
     {
         switch ($type) {
             case 'gaufrette':

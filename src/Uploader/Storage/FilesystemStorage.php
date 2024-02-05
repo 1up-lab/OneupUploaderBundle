@@ -19,7 +19,7 @@ class FilesystemStorage implements StorageInterface
      *
      * @return FileInterface|File
      */
-    public function upload($file, string $name, string $path = null)
+    public function upload($file, string $name, ?string $path = null)
     {
         $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
         $path = sprintf('%s/%s', $this->directory, $path);

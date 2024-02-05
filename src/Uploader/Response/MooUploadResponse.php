@@ -42,7 +42,7 @@ class MooUploadResponse extends AbstractResponse
         return $this->id;
     }
 
-    public function setName(string $name = null): self
+    public function setName(?string $name = null): self
     {
         $this->name = $name;
 

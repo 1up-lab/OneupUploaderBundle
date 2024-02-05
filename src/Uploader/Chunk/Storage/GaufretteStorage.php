@@ -42,7 +42,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
      * $prefix must be passable so it can clean the orphanage too
      * as it is forced to be the same filesystem.
      */
-    public function clear(int $maxAge, string $prefix = null): void
+    public function clear(int $maxAge, ?string $prefix = null): void
     {
         $prefix = $prefix ?: $this->prefix;
         $matches = $this->filesystem->listKeys($prefix);

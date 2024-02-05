@@ -16,7 +16,7 @@ class GaufretteFileTest extends FileTest
     protected function setUp(): void
     {
         $adapter = new Adapter(sys_get_temp_dir(), true);
-        $filesystem = new GaufretteFilesystem($adapter);
+        $filesystem = new GaufretteFileSystem($adapter);
 
         $map = StreamWrapper::getFilesystemMap();
         $map->set('oneup', $filesystem);
