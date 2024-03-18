@@ -34,6 +34,7 @@ The entry point of the documentation can be found in the file `docs/index.md`
 
 Upgrade Notes
 -------------
+* Version **5.0.0** supports now Symfony 7 (kudos to @[evertharmeling](https://github.com/evertharmeling) and @[joesenova](https://github.com/joesenova)), see [#436](https://github.com/1up-lab/OneupUploaderBundle/pull/436)! Symfony 4 and PHP 7 support was dropped.
 * Version **4.0.0** supports now [Flysystem 2 & 3](https://github.com/1up-lab/OneupFlysystemBundle) (kudos to @[m2mtech](https://github.com/m2mtech)), see [#412](https://github.com/1up-lab/OneupUploaderBundle/pull/412)! Flysystem 1 and OneupFlysystemBundle < 4.0 support was dropped.
 * Version **3.2.0** supports now Symfony 6 (kudos to @[pich](https://github.com/pich)), see [#421](https://github.com/1up-lab/OneupUploaderBundle/pull/421)! PHP 7.2/7.3 support was dropped.
 * Version **3.0.0** supports now Symfony 5 (kudos to @[steveWinter](https://github.com/steveWinter), @[gubler](https://github.com/gubler), @[patrickbussmann](https://github.com/patrickbussmann), @[ErnadoO](https://github.com/ErnadoO) and @[enumag](https://github.com/enumag), see [#373](https://github.com/1up-lab/OneupUploaderBundle/pull/373)! Symfony 3.x support was dropped.
