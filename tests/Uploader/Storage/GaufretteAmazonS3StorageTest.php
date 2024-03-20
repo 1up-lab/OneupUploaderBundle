@@ -65,8 +65,8 @@ class GaufretteAmazonS3StorageTest extends TestCase
         fclose($pointer);
 
         $service = new AmazonClient([
-          'key' => getenv('AWS_ACCESS_KEY_ID'),
-          'secret' => getenv('AWS_SECRET_ACCESS_KEY'),
+            'key' => getenv('AWS_ACCESS_KEY_ID'),
+            'secret' => getenv('AWS_SECRET_ACCESS_KEY'),
         ]);
         $adapter = new S3Adapter($service, getenv('AWS_BUCKET'));
         $this->filesystem = new GaufretteFilesystem($adapter);
