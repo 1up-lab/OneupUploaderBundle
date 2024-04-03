@@ -100,10 +100,8 @@ abstract class AbstractController
      *  function in the implemented Controller.
      *
      *  Note: The return value differs when
-     *
-     * @param File $file The file to upload
      */
-    protected function handleUpload(File $file, ResponseInterface $response, Request $request): void
+    protected function handleUpload(FileInterface|File $file, ResponseInterface $response, Request $request): void
     {
         // wrap the file if it is not done yet which can only happen
         // if it wasn't a chunked upload, in which case it is definitely
@@ -130,12 +128,8 @@ abstract class AbstractController
 
     /**
      *  This function is a helper function which dispatches pre upload event.
-     *
-     * @param FileInterface     $uploaded the uploaded file
-     * @param ResponseInterface $response a response object
-     * @param Request           $request  the request object
      */
-    protected function dispatchPreUploadEvent(FileInterface $uploaded, ResponseInterface $response, Request $request): void
+    protected function dispatchPreUploadEvent(FileInterface|File $uploaded, ResponseInterface $response, Request $request): void
     {
         // dispatch pre upload event (both the specific and the general)
         $preUploadEvent = new PreUploadEvent($uploaded, $response, $request, $this->type, $this->config);
@@ -146,10 +140,8 @@ abstract class AbstractController
     /**
      *  This function is a helper function which dispatches post upload
      *  and post persist events.
-     *
-     * @param File $uploaded the uploaded file
      */
-    protected function dispatchPostEvents(File $uploaded, ResponseInterface $response, Request $request): void
+    protected function dispatchPostEvents(FileInterface|File $uploaded, ResponseInterface $response, Request $request): void
     {
         // dispatch post upload event (both the specific and the general)
         $postUploadEvent = new PostUploadEvent($uploaded, $response, $request, $this->type, $this->config);
@@ -164,7 +156,7 @@ abstract class AbstractController
         }
     }
 
-    protected function validate(FileInterface $file, Request $request, ?ResponseInterface $response = null): void
+    protected function validate(FileInterface|File $file, Request $request, ?ResponseInterface $response = null): void
     {
         $event = new ValidationEvent($file, $request, $this->config, $this->type, $response);
 
