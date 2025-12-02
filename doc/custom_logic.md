@@ -40,16 +40,7 @@ class UploadListener
 }
 ```
 
-And register it in your `services.xml`.
-
-```xml
-<services>
-    <service id="app.upload_listener" class="AppBundle\EventListener\UploadListener">
-        <argument type="service" id="doctrine" />
-        <tag name="kernel.event_listener" event="oneup_uploader.post_persist" method="onUpload" />
-    </service>
-</services>
-```
+And register it in your `services.yaml`.
 
 ```yml
 services:

@@ -33,14 +33,14 @@ class OneupUploaderExtension extends Extension
         $this->config = $this->processConfiguration($configuration, $configs);
         $this->container = $container;
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('uploader.xml');
-        $loader->load('templating.xml');
-        $loader->load('validators.xml');
-        $loader->load('errorhandler.xml');
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('uploader.php');
+        $loader->load('templating.php');
+        $loader->load('validators.php');
+        $loader->load('errorhandler.php');
 
         if ($this->config['twig']) {
-            $loader->load('twig.xml');
+            $loader->load('twig.php');
         }
 
         $this->createChunkStorageService();
