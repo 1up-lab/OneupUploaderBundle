@@ -165,7 +165,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $root = self::$container->getParameter('kernel.project_dir');
 
         // assemble path
-        $path = sprintf('%s/cache/%s/upload', $root, $env);
+        $path = \sprintf('%s/cache/%s/upload', $root, $env);
 
         $finder = new Finder();
 

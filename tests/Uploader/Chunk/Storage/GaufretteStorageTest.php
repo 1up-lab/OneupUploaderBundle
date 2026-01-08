@@ -29,7 +29,7 @@ class GaufretteStorageTest extends ChunkStorageTest
     protected function setUp(): void
     {
         // create a cache dir
-        $parentDir = sprintf('/tmp/%s', uniqid());
+        $parentDir = \sprintf('/tmp/%s', uniqid());
 
         $system = new Filesystem();
         $system->mkdir($parentDir);

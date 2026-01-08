@@ -79,7 +79,7 @@ abstract class ChunkStorageTest extends TestCase
         $system = new Filesystem();
 
         for ($i = 0; $i < $number; ++$i) {
-            $system->touch(sprintf('%s/%s', $this->tmpDir, uniqid('', true)), time() - $i * 60);
+            $system->touch(\sprintf('%s/%s', $this->tmpDir, uniqid('', true)), time() - $i * 60);
         }
     }
 }

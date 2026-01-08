@@ -31,7 +31,7 @@ class FlysystemStorageTest extends ChunkStorageTest
     protected function setUp(): void
     {
         // create a cache dir
-        $parentDir = sprintf('/tmp/%s', uniqid('', true));
+        $parentDir = \sprintf('/tmp/%s', uniqid('', true));
 
         $system = new Filesystem();
         $system->mkdir($parentDir);
