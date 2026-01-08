@@ -9,8 +9,8 @@ use Oneup\UploaderBundle\Uploader\ErrorHandler\DropzoneErrorHandler;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\NoopErrorHandler;
 use Oneup\UploaderBundle\Uploader\ErrorHandler\PluploadErrorHandler;
 
-return static function (ContainerConfigurator $container) {
-    $services   = $container->services();
+return static function (ContainerConfigurator $container): void {
+    $services = $container->services();
     $parameters = $container->parameters();
     $parameters->set('oneup_uploader.error_handler.noop.class', NoopErrorHandler::class);
     $parameters->set('oneup_uploader.error_handler.blueimp.class', BlueimpErrorHandler::class);

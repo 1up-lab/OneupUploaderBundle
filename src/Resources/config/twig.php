@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Oneup\UploaderBundle\Twig\Extension\UploaderExtension;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('oneup_uploader.twig.extension.uploader', UploaderExtension::class)

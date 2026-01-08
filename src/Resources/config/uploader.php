@@ -24,8 +24,8 @@ use Oneup\UploaderBundle\Uploader\Storage\FilesystemStorage;
 use Oneup\UploaderBundle\Uploader\Storage\FlysystemStorage;
 use Oneup\UploaderBundle\Uploader\Storage\GaufretteStorage;
 
-return static function (ContainerConfigurator $container) {
-    $services   = $container->services();
+return static function (ContainerConfigurator $container): void {
+    $services = $container->services();
     $parameters = $container->parameters();
     $parameters->set('oneup_uploader.chunks.manager.class', ChunkManager::class);
     $parameters->set('oneup_uploader.chunks_storage.gaufrette.class', \Oneup\UploaderBundle\Uploader\Chunk\Storage\GaufretteStorage::class);
@@ -53,16 +53,16 @@ return static function (ContainerConfigurator $container) {
     $services->set('oneup_uploader.chunk_manager', '%oneup_uploader.chunks.manager.class%')
              ->public()
              ->args([
-                        '%oneup_uploader.chunks%',
-                        service('oneup_uploader.chunks_storage'),
-                    ]);
+                 '%oneup_uploader.chunks%',
+                 service('oneup_uploader.chunks_storage'),
+             ]);
 
     $services->set('oneup_uploader.orphanage_manager', '%oneup_uploader.orphanage.manager.class%')
              ->public()
              ->args([
-                        service('service_container'),
-                        '%oneup_uploader.orphanage%',
-                    ]);
+                 service('service_container'),
+                 '%oneup_uploader.orphanage%',
+             ]);
 
     $services->set('oneup_uploader.namer.uniqid', '%oneup_uploader.namer.uniqid.class%')
              ->public();

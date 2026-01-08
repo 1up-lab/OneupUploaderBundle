@@ -8,7 +8,7 @@ use Oneup\UploaderBundle\EventListener\AllowedMimetypeAndExtensionValidationList
 use Oneup\UploaderBundle\EventListener\DisallowedMimetypeValidationListener;
 use Oneup\UploaderBundle\EventListener\MaxSizeValidationListener;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set(MaxSizeValidationListener::class)
