@@ -27,7 +27,7 @@ class GaufretteStorage extends StreamManager implements ChunkStorageInterface
             : Filesystem::class;
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, $filesystem::class));
+            throw new \InvalidArgumentException(\sprintf('Expected an instance of "%s", got "%s".', $base, $filesystem::class));
         }
 
         if ($filesystem instanceof Filesystem && !($filesystem->getAdapter() instanceof StreamFactory)) {

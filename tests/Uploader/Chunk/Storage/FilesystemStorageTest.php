@@ -17,7 +17,7 @@ class FilesystemStorageTest extends ChunkStorageTest
     protected function setUp(): void
     {
         // create a cache dir
-        $tmpDir = sprintf('/tmp/%s', uniqid());
+        $tmpDir = \sprintf('/tmp/%s', uniqid());
 
         $system = new Filesystem();
         $system->mkdir($tmpDir);

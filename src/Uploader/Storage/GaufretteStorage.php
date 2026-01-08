@@ -21,7 +21,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
             : Filesystem::class;
 
         if (!$filesystem instanceof $base) {
-            throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", got "%s".', $base, $filesystem::class));
+            throw new \InvalidArgumentException(\sprintf('Expected an instance of "%s", got "%s".', $base, $filesystem::class));
         }
 
         $this->filesystem = $filesystem;
@@ -35,7 +35,7 @@ class GaufretteStorage extends StreamManager implements StorageInterface
      */
     public function upload($file, string $name, ?string $path = null)
     {
-        $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
+        $path = null === $path ? $name : \sprintf('%s/%s', $path, $name);
 
         if ($this->filesystem instanceof Filesystem && $this->filesystem->getAdapter() instanceof MetadataSupporter) {
             $this->filesystem->getAdapter()->setMetadata($name, ['contentType' => $file->getMimeType()]);

@@ -41,12 +41,12 @@ class FilesystemStorage implements ChunkStorageInterface
         $uuid = basename($uuid);
 
         $filesystem = new Filesystem();
-        $path = sprintf('%s/%s', $this->directory, $uuid);
-        $name = sprintf('%s_%s', $index, $original);
+        $path = \sprintf('%s/%s', $this->directory, $uuid);
+        $name = \sprintf('%s_%s', $index, $original);
 
         // create directory if it does not yet exist
         if (!$filesystem->exists($path)) {
-            $filesystem->mkdir(sprintf('%s/%s', $this->directory, $uuid));
+            $filesystem->mkdir(\sprintf('%s/%s', $this->directory, $uuid));
         }
 
         return $chunk->move($path, $name);
@@ -116,7 +116,7 @@ class FilesystemStorage implements ChunkStorageInterface
 
         $finder = new Finder();
         $finder
-            ->in(sprintf('%s/%s', $this->directory, $uuid))->files()->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
+            ->in(\sprintf('%s/%s', $this->directory, $uuid))->files()->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
                 $t = explode('_', $a->getBasename());
                 $s = explode('_', $b->getBasename());
                 $t = (int) $t[0];

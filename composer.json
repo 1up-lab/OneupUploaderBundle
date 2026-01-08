@@ -33,14 +33,14 @@
     ],
     "require": {
         "php": "^8.0",
-        "symfony/asset": "^5.4 || ^6.0 || ^7.0",
+        "symfony/asset": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "symfony/event-dispatcher-contracts": "^1.0 || ^2.0 || ^3.0",
-        "symfony/finder": "^5.4 || ^6.0 || ^7.0",
-        "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0",
-        "symfony/mime": "^5.4 || ^6.0 || ^7.0",
-        "symfony/translation": "^5.4 || ^6.0 || ^7.0",
+        "symfony/finder": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+        "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+        "symfony/mime": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+        "symfony/translation": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "symfony/translation-contracts": "^1.0 || ^2.0 || ^3.0",
-        "symfony/yaml": "^5.4 || ^6.0 || ^7.0",
+        "symfony/yaml": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "twig/twig": "^2.4 || ^3.0"
     },
     "require-dev": {
@@ -53,10 +53,10 @@
         "oneup/flysystem-bundle": "^4.1",
         "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5",
-        "symfony/browser-kit": "^5.4 || ^6.0 || ^7.0",
-        "symfony/phpunit-bridge": "^6.0.17 || ^7.0",
-        "symfony/security-bundle": "^5.4 || ^6.0 || ^7.0",
-        "symfony/var-dumper": "^5.4 || ^6.0 || ^7.0",
+        "symfony/browser-kit": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+        "symfony/phpunit-bridge": "^6.0.17 || ^7.0 || ^8.0",
+        "symfony/security-bundle": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+        "symfony/var-dumper": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "twistor/flysystem-stream-wrapper": "^1.0"
     },
     "suggest": {

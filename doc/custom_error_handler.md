@@ -27,12 +27,6 @@ class CustomErrorHandler implements ErrorHandlerInterface
 
 Define a service for your class.
 
-```xml
-<services>
-    <service id="acme_demo.custom_error_handler" class="Acme\DemoBundle\ErrorHandler\CustomErrorHandler" />
-</services>
-```
-
 ```yml
 services:
     acme_demo.custom_error_handler:

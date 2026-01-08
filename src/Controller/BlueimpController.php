@@ -45,7 +45,7 @@ class BlueimpController extends AbstractChunkedController
         $value = $request->get($name);
 
         // ref: https://github.com/blueimp/jQuery-File-Upload/wiki/PHP-Session-Upload-Progress
-        $key = sprintf('%s.%s', $prefix, $value);
+        $key = \sprintf('%s.%s', $prefix, $value);
         /** @var array<string, mixed> $value */
         $value = $session->get($key);
 
@@ -81,7 +81,7 @@ class BlueimpController extends AbstractChunkedController
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session
         // to the uuid otherwise we will get a mess
-        $uuid = md5(sprintf('%s.%s', $attachmentName, $session->getId()));
+        $uuid = md5(\sprintf('%s.%s', $attachmentName, $session->getId()));
         $orig = $attachmentName;
 
         return [$last, $uuid, $index, $orig];

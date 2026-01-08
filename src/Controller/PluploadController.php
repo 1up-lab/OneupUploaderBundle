@@ -44,7 +44,7 @@ class PluploadController extends AbstractChunkedController
         // it is possible, that two clients send a file with the
         // exact same filename, therefore we have to add the session
         // to the uuid otherwise we will get a mess
-        $uuid = md5(sprintf('%s.%s', $orig, $session->getId()));
+        $uuid = md5(\sprintf('%s.%s', $orig, $session->getId()));
 
         return [$last, $uuid, $index, $orig];
     }

@@ -118,7 +118,7 @@ class MooUploadController extends AbstractChunkedController
         // put data from php://input to temp file
         file_put_contents($tempFile, $contents);
 
-        $uploadFileName = sprintf('%s_%s', $headers->get('x-file-id'), $headers->get('x-file-name'));
+        $uploadFileName = \sprintf('%s_%s', $headers->get('x-file-id'), $headers->get('x-file-name'));
 
         // create an uploaded file to upload
         $file = new UploadedFile($tempFile, $uploadFileName, null, null, true);
