@@ -81,6 +81,12 @@ abstract class AbstractController
     {
         $files = [];
         $fileBag = $bag->all();
+        
+        // Ensure we have an array, not an object, to avoid PHP 8.5 deprecation
+        if (!\is_array($fileBag)) {
+            $fileBag = iterator_to_array($fileBag);
+        }
+        
         $fileIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fileBag), \RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($fileIterator as $file) {
