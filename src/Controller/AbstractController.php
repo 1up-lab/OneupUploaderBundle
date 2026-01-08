@@ -80,24 +80,26 @@ abstract class AbstractController
     protected function getFiles(FileBag $bag): array
     {
         $files = [];
-        $fileBag = $bag->all();
-        
-        // Ensure we have an array, not an object, to avoid PHP 8.5 deprecation
-        if (!\is_array($fileBag)) {
-            $fileBag = iterator_to_array($fileBag);
-        }
-        
-        $fileIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fileBag), \RecursiveIteratorIterator::SELF_FIRST);
-
-        foreach ($fileIterator as $file) {
-            if (\is_array($file) || null === $file) {
-                continue;
-            }
-
-            $files[] = $file;
-        }
+        $this->extractFiles($bag->all(), $files);
 
         return $files;
+    }
+
+    /**
+     * Recursively extracts files from a nested array structure.
+     *
+     * @param mixed $data  The data to extract files from
+     * @param array $files The array to collect files into (passed by reference)
+     */
+    private function extractFiles(mixed $data, array &$files): void
+    {
+        if (\is_array($data)) {
+            foreach ($data as $item) {
+                $this->extractFiles($item, $files);
+            }
+        } elseif (null !== $data) {
+            $files[] = $data;
+        }
     }
 
     /**
