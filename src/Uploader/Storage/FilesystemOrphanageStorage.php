@@ -84,11 +84,11 @@ class FilesystemOrphanageStorage extends FilesystemStorage implements OrphanageS
 
     protected function getPath(): string
     {
-        return sprintf('%s/%s', $this->session->getId(), $this->type);
+        return \sprintf('%s/%s', $this->session->getId(), $this->type);
     }
 
     protected function getFindPath(): string
     {
-        return sprintf('%s/%s', $this->config['directory'], $this->getPath());
+        return \sprintf('%s/%s', $this->config['directory'], $this->getPath());
     }
 }

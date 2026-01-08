@@ -18,7 +18,7 @@ class OrphanageManager
 
     public function has(string $key): bool
     {
-        return $this->container->has(sprintf('oneup_uploader.orphanage.%s', $key));
+        return $this->container->has(\sprintf('oneup_uploader.orphanage.%s', $key));
     }
 
     /**
@@ -26,7 +26,7 @@ class OrphanageManager
      */
     public function get(string $key)
     {
-        return $this->container->get(sprintf('oneup_uploader.orphanage.%s', $key));
+        return $this->container->get(\sprintf('oneup_uploader.orphanage.%s', $key));
     }
 
     public function clear(): void

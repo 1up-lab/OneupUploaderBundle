@@ -27,7 +27,7 @@ class FlysystemStorage implements StorageInterface
      */
     public function upload($file, string $name, ?string $path = null)
     {
-        $path = null === $path ? $name : sprintf('%s/%s', $path, $name);
+        $path = null === $path ? $name : \sprintf('%s/%s', $path, $name);
 
         if ($file instanceof FilesystemFile) {
             /** @var resource $stream */

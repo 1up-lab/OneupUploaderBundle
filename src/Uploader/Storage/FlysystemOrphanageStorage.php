@@ -101,6 +101,6 @@ class FlysystemOrphanageStorage extends FlysystemStorage implements OrphanageSto
     {
         // the storage is initiated in the root of the filesystem, from where the orphanage directory
         // should be relative.
-        return sprintf('%s/%s/%s', $this->config['directory'], $this->session->getId(), $this->type);
+        return \sprintf('%s/%s/%s', $this->config['directory'], $this->session->getId(), $this->type);
     }
 }

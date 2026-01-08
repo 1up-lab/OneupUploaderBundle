@@ -145,14 +145,12 @@ class FlysystemStorage implements ChunkStorageInterface
         return $this->filesystem->listContents($this->prefix . '/' . $uuid)
             ->filter(fn (StorageAttributes $attributes) => $attributes->isFile())
             ->sortByPath()
-            ->map(function (StorageAttributes $attributes) {
-                return [
-                    'path' => $attributes->path(),
-                    'type' => $attributes->type(),
-                    'timestamp' => $attributes->lastModified(),
-                    'size' => $this->filesystem->fileSize($attributes->path()),
-                ];
-            })->toArray();
+            ->map(fn (StorageAttributes $attributes) => [
+                'path' => $attributes->path(),
+                'type' => $attributes->type(),
+                'timestamp' => $attributes->lastModified(),
+                'size' => $this->filesystem->fileSize($attributes->path()),
+            ])->toArray();
     }
 
     public function getFilesystem(): FilesystemOperator
