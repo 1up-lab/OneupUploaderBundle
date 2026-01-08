@@ -11,9 +11,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class OneupUploaderExtension extends Extension
 {
@@ -33,14 +33,14 @@ class OneupUploaderExtension extends Extension
         $this->config = $this->processConfiguration($configuration, $configs);
         $this->container = $container;
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('uploader.xml');
-        $loader->load('templating.xml');
-        $loader->load('validators.xml');
-        $loader->load('errorhandler.xml');
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('uploader.php');
+        $loader->load('templating.php');
+        $loader->load('validators.php');
+        $loader->load('errorhandler.php');
 
         if ($this->config['twig']) {
-            $loader->load('twig.xml');
+            $loader->load('twig.php');
         }
 
         $this->createChunkStorageService();
@@ -57,7 +57,7 @@ class OneupUploaderExtension extends Extension
             $controllers[$key] = $this->processMapping($key, $mapping);
             $maxsize[$key] = $this->getMaxUploadSize($mapping['max_size']);
 
-            $container->setParameter(sprintf('oneup_uploader.config.%s', $key), $mapping);
+            $container->setParameter(\sprintf('oneup_uploader.config.%s', $key), $mapping);
         }
 
         $container->setParameter('oneup_uploader.config', $this->config);
@@ -71,7 +71,7 @@ class OneupUploaderExtension extends Extension
         $kernelCacheDir = $this->container->getParameter('kernel.cache_dir');
 
         if ('filesystem' === $this->config['chunks']['storage']['type']) {
-            $defaultDir = sprintf('%s/uploader/orphanage', $kernelCacheDir);
+            $defaultDir = \sprintf('%s/uploader/orphanage', $kernelCacheDir);
         } else {
             $defaultDir = 'orphanage';
         }
@@ -103,8 +103,8 @@ class OneupUploaderExtension extends Extension
         $storageService = $this->createStorageService($config['storage'], $key, $config['use_orphanage']);
 
         if ('custom' !== $config['frontend']) {
-            $controllerName = sprintf('oneup_uploader.controller.%s', $key);
-            $controllerType = sprintf('%%oneup_uploader.controller.%s.class%%', $config['frontend']);
+            $controllerName = \sprintf('oneup_uploader.controller.%s', $key);
+            $controllerType = \sprintf('%%oneup_uploader.controller.%s.class%%', $config['frontend']);
         } else {
             $customFrontend = $config['custom_frontend'];
 
@@ -112,7 +112,7 @@ class OneupUploaderExtension extends Extension
                 throw new ServiceNotFoundException('Empty controller class or name. If you really want to use a custom frontend implementation, be sure to provide a class and a name.');
             }
 
-            $controllerName = sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
+            $controllerName = \sprintf('oneup_uploader.controller.%s', $customFrontend['name']);
             $controllerType = $customFrontend['class'];
         }
 
@@ -148,17 +148,17 @@ class OneupUploaderExtension extends Extension
         $kernelCacheDir = $this->container->getParameter('kernel.cache_dir');
         $config = &$this->config['chunks']['storage'];
 
-        $storageClass = sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']);
+        $storageClass = \sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']);
 
         switch ($config['type']) {
             case 'filesystem':
                 $config['directory'] = null === $config['directory'] ?
-                    sprintf('%s/uploader/chunks', $kernelCacheDir) :
+                    \sprintf('%s/uploader/chunks', $kernelCacheDir) :
                     $this->normalizePath($config['directory'])
                 ;
 
                 $this->container
-                    ->register('oneup_uploader.chunks_storage', sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']))
+                    ->register('oneup_uploader.chunks_storage', \sprintf('%%oneup_uploader.chunks_storage.%s.class%%', $config['type']))
                     ->addArgument($config['directory'])
                 ;
                 break;
@@ -176,7 +176,7 @@ class OneupUploaderExtension extends Extension
 
                 $this->container->setParameter(
                     'oneup_uploader.orphanage.class',
-                    sprintf('Oneup\UploaderBundle\Uploader\Storage\%sOrphanageStorage', ucfirst($config['type']))
+                    \sprintf('Oneup\UploaderBundle\Uploader\Storage\%sOrphanageStorage', ucfirst($config['type']))
                 );
 
                 // enforce load distribution when using gaufrette as chunk
@@ -184,7 +184,7 @@ class OneupUploaderExtension extends Extension
                 $this->config['chunks']['load_distribution'] = true;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Filesystem "%s" is invalid', $config['type']));
+                throw new \InvalidArgumentException(\sprintf('Filesystem "%s" is invalid', $config['type']));
         }
     }
 
@@ -198,8 +198,8 @@ class OneupUploaderExtension extends Extension
             $storageService = new Reference($config['service']);
         } else {
             // no service was given, so we create one
-            $storageName = sprintf('oneup_uploader.storage.%s', $key);
-            $storageClass = sprintf('%%oneup_uploader.storage.%s.class%%', $config['type']);
+            $storageName = \sprintf('oneup_uploader.storage.%s', $key);
+            $storageClass = \sprintf('%%oneup_uploader.storage.%s.class%%', $config['type']);
 
             switch ($config['type']) {
                 case 'filesystem':
@@ -207,7 +207,7 @@ class OneupUploaderExtension extends Extension
                     $folder = $this->config['mappings'][$key]['root_folder'] ? '' : $key;
 
                     $config['directory'] = null === $config['directory'] ?
-                        sprintf('%s/uploads/%s', $this->getTargetDir(), $folder) :
+                        \sprintf('%s/uploads/%s', $this->getTargetDir(), $folder) :
                         $this->normalizePath($config['directory'])
                     ;
 
@@ -234,7 +234,7 @@ class OneupUploaderExtension extends Extension
             $storageService = new Reference($storageName);
 
             if ($orphanage) {
-                $orphanageName = sprintf('oneup_uploader.orphanage.%s', $key);
+                $orphanageName = \sprintf('oneup_uploader.orphanage.%s', $key);
 
                 // this mapping wants to use the orphanage, so create
                 // a masked filesystem for the controller
@@ -344,7 +344,7 @@ class OneupUploaderExtension extends Extension
             /** @var string $kernelRootDir */
             $kernelRootDir = $this->container->getParameter('kernel.root_dir');
 
-            $projectDir = sprintf('%s/..', $kernelRootDir);
+            $projectDir = \sprintf('%s/..', $kernelRootDir);
         }
 
         if ($this->container->hasParameter('kernel.project_dir')) {
@@ -354,10 +354,10 @@ class OneupUploaderExtension extends Extension
             $projectDir = $kernelProjectDir;
         }
 
-        $publicDir = sprintf('%s/public', $projectDir);
+        $publicDir = \sprintf('%s/public', $projectDir);
 
         if (!is_dir($publicDir)) {
-            $publicDir = sprintf('%s/web', $projectDir);
+            $publicDir = \sprintf('%s/web', $projectDir);
         }
 
         return $publicDir;

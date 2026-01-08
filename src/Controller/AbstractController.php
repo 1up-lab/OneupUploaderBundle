@@ -43,7 +43,7 @@ abstract class AbstractController
         $value = $request->get($name);
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
-        $key = sprintf('%s.%s', $prefix, $value);
+        $key = \sprintf('%s.%s', $prefix, $value);
         $value = $session->get($key);
 
         return new JsonResponse($value);
@@ -59,7 +59,7 @@ abstract class AbstractController
         $name = (string) \ini_get('session.upload_progress.name');
         /** @var string $value */
         $value = $request->get($name);
-        $key = sprintf('%s.%s', $prefix, $value);
+        $key = \sprintf('%s.%s', $prefix, $value);
 
         /** @var array $progress */
         $progress = $session->get($key);
@@ -210,6 +210,6 @@ abstract class AbstractController
         $dispatcher = $this->container->get('event_dispatcher');
 
         $dispatcher->dispatch($event, $eventName);
-        $dispatcher->dispatch($event, sprintf('%s.%s', $eventName, $this->type));
+        $dispatcher->dispatch($event, \sprintf('%s.%s', $eventName, $this->type));
     }
 }

@@ -42,6 +42,8 @@ jobs:
         symfony: [5.4, 6.0, 6.1, 6.2, 6.3, 6.4, 7.0]
         exclude:
           - php: 8.0
+            symfony: 6.0
+          - php: 8.0
             symfony: 6.1
           - php: 8.0
             symfony: 6.2

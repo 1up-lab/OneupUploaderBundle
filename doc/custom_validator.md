@@ -26,25 +26,7 @@ class AlwaysFalseValidationListener
 }
 ```
 
-After that register your new `EventListener` in the `services.xml` of your application.
-
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-    <services>
-        <service
-            id="acme_demo.always_false_listener"
-            class="Acme\DemoBundle\EventListener\AlwaysFalseValidationListener"
-        >
-            <tag name="kernel.event_listener" event="oneup_uploader.validation" method="onValidate" />
-        </service>
-    </services>
-</container>
-```
+After that register your new `EventListener` in the `services.yaml` of your application.
 
 ```yml
 services:
