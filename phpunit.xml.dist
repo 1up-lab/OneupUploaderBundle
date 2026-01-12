@@ -4,7 +4,7 @@
     <php>
         <server name="KERNEL_DIR" value="tests/App" />
         <server name="KERNEL_CLASS" value="Kernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled=1" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=999999&amp;verbose=1" />
     </php>
 
     <listeners>
