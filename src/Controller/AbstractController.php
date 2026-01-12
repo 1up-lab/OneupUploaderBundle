@@ -86,23 +86,6 @@ abstract class AbstractController
     }
 
     /**
-     * Recursively extracts files from a nested array structure.
-     *
-     * @param mixed $data  The data to extract files from
-     * @param array $files The array to collect files into (passed by reference)
-     */
-    private function extractFiles(mixed $data, array &$files): void
-    {
-        if (\is_array($data)) {
-            foreach ($data as $item) {
-                $this->extractFiles($item, $files);
-            }
-        } elseif (null !== $data) {
-            $files[] = $data;
-        }
-    }
-
-    /**
      *  This internal function handles the actual upload process
      *  and will most likely be called from the upload()
      *  function in the implemented Controller.
@@ -211,5 +194,22 @@ abstract class AbstractController
 
         $dispatcher->dispatch($event, $eventName);
         $dispatcher->dispatch($event, \sprintf('%s.%s', $eventName, $this->type));
+    }
+
+    /**
+     * Recursively extracts files from a nested array structure.
+     *
+     * @param mixed $data  The data to extract files from
+     * @param array $files The array to collect files into (passed by reference)
+     */
+    private function extractFiles(mixed $data, array &$files): void
+    {
+        if (\is_array($data)) {
+            foreach ($data as $item) {
+                $this->extractFiles($item, $files);
+            }
+        } elseif (null !== $data) {
+            $files[] = $data;
+        }
     }
 }
