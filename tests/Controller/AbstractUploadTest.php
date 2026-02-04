@@ -75,7 +75,7 @@ abstract class AbstractUploadTest extends AbstractControllerTest
 
             $me->assertInstanceOf(File::class, $file);
             $me->assertEquals(128, $file->getSize());
-            $me->assertEquals('cat', $request->get('grumpy'));
+            $me->assertEquals('cat', $request->attributes->get('grumpy'));
         });
 
         $client->request('POST', $endpoint, $this->getRequestParameters(), [$this->getRequestFile()]);

@@ -20,7 +20,7 @@ class FineUploaderController extends AbstractChunkedController
         $translator = $this->container->get('translator');
 
         $response = new FineUploaderResponse();
-        $totalParts = $request->get('qqtotalparts', 1);
+        $totalParts = $request->request->get('qqtotalparts', 1);
         $files = $this->getFiles($request->files);
         $chunked = $totalParts > 1;
 
@@ -46,10 +46,10 @@ class FineUploaderController extends AbstractChunkedController
 
     protected function parseChunkedRequest(Request $request): array
     {
-        $index = (int) $request->get('qqpartindex');
-        $total = (int) $request->get('qqtotalparts');
-        $uuid = $request->get('qquuid');
-        $orig = $request->get('qqfilename');
+        $index = (int) $request->request->get('qqpartindex');
+        $total = (int) $request->request->get('qqtotalparts');
+        $uuid = $request->request->get('qquuid');
+        $orig = $request->request->get('qqfilename');
         $last = ($total - 1) === $index;
 
         return [$last, $uuid, $index, $orig];

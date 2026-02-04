@@ -40,7 +40,7 @@ abstract class AbstractController
         $prefix = (string) \ini_get('session.upload_progress.prefix');
         $name = (string) \ini_get('session.upload_progress.name');
         /** @var string $value */
-        $value = $request->get($name);
+        $value = $request->request->get($name);
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
         $key = \sprintf('%s.%s', $prefix, $value);
@@ -58,7 +58,7 @@ abstract class AbstractController
         $prefix = (string) \ini_get('session.upload_progress.prefix');
         $name = (string) \ini_get('session.upload_progress.name');
         /** @var string $value */
-        $value = $request->get($name);
+        $value = $request->request->get($name);
         $key = \sprintf('%s.%s', $prefix, $value);
 
         /** @var array $progress */
