@@ -16,7 +16,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.1
           extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo, zlib
           coverage: none
 
@@ -38,45 +38,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [8.0, 8.1, 8.2, 8.3, 8.4, 8.5]
-        symfony: [5.4, 6.0, 6.1, 6.2, 6.3, 6.4, 7.0]
+        php: [8.1, 8.2, 8.3, 8.4, 8.5]
+        symfony: [6.4, 7.4, 8.0]
         exclude:
-          - php: 8.0
-            symfony: 6.0
-          - php: 8.0
-            symfony: 6.1
-          - php: 8.0
-            symfony: 6.2
-          - php: 8.0
-            symfony: 6.3
-          - php: 8.0
-            symfony: 6.4
-          - php: 8.0
-            symfony: 7.0
           - php: 8.1
-            symfony: 7.0
-          - php: 8.4
-            symfony: 5.4
-          - php: 8.4
-            symfony: 6.0
-          - php: 8.4
-            symfony: 6.1
-          - php: 8.4
-            symfony: 6.2
-          - php: 8.4
-            symfony: 6.3
+            symfony: 7.4
+          - php: 8.1
+            symfony: 8.0
+          - php: 8.2
+            symfony: 8.0
+          - php: 8.3
+            symfony: 8.0
           - php: 8.4
             symfony: 6.4
-          - php: 8.5
-            symfony: 5.4
-          - php: 8.5
-            symfony: 6.0
-          - php: 8.5
-            symfony: 6.1
-          - php: 8.5
-            symfony: 6.2
-          - php: 8.5
-            symfony: 6.3
           - php: 8.5
             symfony: 6.4
     steps:
@@ -105,7 +79,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.1
           extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo_mysql, zlib
           coverage: none
 
