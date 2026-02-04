@@ -40,7 +40,7 @@ abstract class AbstractController
         $prefix = (string) \ini_get('session.upload_progress.prefix');
         $name = (string) \ini_get('session.upload_progress.name');
         /** @var string $value */
-        $value = $request->get($name);
+        $value = $request->request->get($name);
         // assemble session key
         // ref: http://php.net/manual/en/session.upload-progress.php
         $key = \sprintf('%s.%s', $prefix, $value);
@@ -58,7 +58,7 @@ abstract class AbstractController
         $prefix = (string) \ini_get('session.upload_progress.prefix');
         $name = (string) \ini_get('session.upload_progress.name');
         /** @var string $value */
-        $value = $request->get($name);
+        $value = $request->request->get($name);
         $key = \sprintf('%s.%s', $prefix, $value);
 
         /** @var array $progress */
@@ -97,7 +97,7 @@ abstract class AbstractController
         // wrap the file if it is not done yet which can only happen
         // if it wasn't a chunked upload, in which case it is definitely
         // on the local filesystem.
-        if (!($file instanceof FileInterface)) {
+        if (!$file instanceof FileInterface) {
             $file = new FilesystemFile($file);
         }
 

@@ -77,7 +77,7 @@ As you can see, we extended the `request` part of the FineUploader by adding a `
 public function onUpload(PostPersistEvent $event)
 {
     $request = $event->getRequest();
-    $gallery = $request->get('gallery');
+    $gallery = $request->request->get('gallery');
     
     // ...
 }
