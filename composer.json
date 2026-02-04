@@ -46,7 +46,7 @@
     "require-dev": {
         "amazonwebservices/aws-sdk-for-php": "1.5.*",
         "doctrine/common": "^2.12 || ^3.0",
-        "doctrine/doctrine-bundle": "^2.4",
+        "doctrine/doctrine-bundle": "^2.4 || ^3.2",
         "friendsofphp/php-cs-fixer": "^3.40",
         "knplabs/gaufrette": "^0.9",
         "m2mtech/flysystem-stream-wrapper": "^1.0",
