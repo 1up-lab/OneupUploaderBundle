@@ -57,7 +57,7 @@ class FilesystemStorage implements ChunkStorageInterface
      */
     public function assembleChunks($chunks, bool $removeChunk, bool $renameChunk): File
     {
-        if (!($chunks instanceof \IteratorAggregate)) {
+        if (!$chunks instanceof \IteratorAggregate) {
             throw new \InvalidArgumentException('The first argument must implement \IteratorAggregate interface.');
         }
 
@@ -116,7 +116,7 @@ class FilesystemStorage implements ChunkStorageInterface
 
         $finder = new Finder();
         $finder
-            ->in(\sprintf('%s/%s', $this->directory, $uuid))->files()->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
+            ->in(\sprintf('%s/%s', $this->directory, $uuid))->files()->sort(static function (\SplFileInfo $a, \SplFileInfo $b) {
                 $t = explode('_', $a->getBasename());
                 $s = explode('_', $b->getBasename());
                 $t = (int) $t[0];

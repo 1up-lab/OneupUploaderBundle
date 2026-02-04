@@ -97,7 +97,7 @@ abstract class AbstractController
         // wrap the file if it is not done yet which can only happen
         // if it wasn't a chunked upload, in which case it is definitely
         // on the local filesystem.
-        if (!($file instanceof FileInterface)) {
+        if (!$file instanceof FileInterface) {
             $file = new FilesystemFile($file);
         }
 

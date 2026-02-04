@@ -143,7 +143,7 @@ class FlysystemStorage implements ChunkStorageInterface
         $uuid = basename($uuid);
 
         return $this->filesystem->listContents($this->prefix . '/' . $uuid)
-            ->filter(fn (StorageAttributes $attributes) => $attributes->isFile())
+            ->filter(static fn (StorageAttributes $attributes) => $attributes->isFile())
             ->sortByPath()
             ->map(fn (StorageAttributes $attributes) => [
                 'path' => $attributes->path(),

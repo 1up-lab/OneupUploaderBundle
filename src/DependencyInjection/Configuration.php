@@ -80,7 +80,7 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('endpoints')
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) {
+                                    ->then(static function ($v) {
                                         if ('/' !== substr($v, -1)) {
                                             $v .= '/';
                                         }
@@ -106,7 +106,7 @@ class Configuration implements ConfigurationInterface
                                     ->prototype('scalar')
                                         ->beforeNormalization()
                                             ->ifString()
-                                            ->then(fn ($v) => strtolower($v))
+                                            ->then(static fn ($v) => strtolower($v))
                                         ->end()
                                     ->end()
                                 ->end()
