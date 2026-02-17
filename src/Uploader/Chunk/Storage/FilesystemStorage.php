@@ -116,13 +116,13 @@ class FilesystemStorage implements ChunkStorageInterface
 
         $finder = new Finder();
         $finder
-            ->in(\sprintf('%s/%s', $this->directory, $uuid))->files()->sort(static function (\SplFileInfo $a, \SplFileInfo $b) {
+            ->in(\sprintf('%s/%s', $this->directory, $uuid))->files()->sort(static function (\SplFileInfo $a, \SplFileInfo $b): int {
                 $t = explode('_', $a->getBasename());
                 $s = explode('_', $b->getBasename());
                 $t = (int) $t[0];
                 $s = (int) $s[0];
 
-                return $s < $t;
+                return $t <=> $s;
             });
 
         return $finder;
